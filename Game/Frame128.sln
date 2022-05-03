@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Tool", "01. Tool", "{182EF422-719C-4E64-A303-23E630404BB2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tool", "Tool\Tool.vcxproj", "{309E792E-9A77-4AB9-A5A3-296BB314BC41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Header", "02. Header", "{83662810-0771-4661-B237-693ED690053F}"
+	ProjectSection(SolutionItems) = preProject
+		Header\Define.h = Header\Define.h
+		Header\Enum.h = Header\Enum.h
+		Header\Functor.h = Header\Functor.h
+		Header\Include.h = Header\Include.h
+		Header\Struct.h = Header\Struct.h
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Debug|x64.ActiveCfg = Debug|x64
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Debug|x64.Build.0 = Debug|x64
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Debug|x86.ActiveCfg = Debug|Win32
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Debug|x86.Build.0 = Debug|Win32
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Release|x64.ActiveCfg = Release|x64
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Release|x64.Build.0 = Release|x64
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Release|x86.ActiveCfg = Release|Win32
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{309E792E-9A77-4AB9-A5A3-296BB314BC41} = {182EF422-719C-4E64-A303-23E630404BB2}
+	EndGlobalSection
+EndGlobal
