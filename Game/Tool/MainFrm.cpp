@@ -44,3 +44,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // 만들지 못했습니다asdlfasjlfdkmas,
 		lasjdflaks fl;asd
 		d
+
+
+		깃에는
+		아까 말했던 브랜치 라는게 존재함
+		방금 그거 만져봄
+
+		병합하고
+		삭제하고
