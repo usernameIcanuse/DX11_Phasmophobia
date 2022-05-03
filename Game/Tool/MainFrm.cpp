@@ -43,36 +43,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("상태 표시줄을 만들지 못했습니다.\n");
 		return -1;      // 만들지 못했습니다.
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
-
-	// TODO: 도구 모음을 도킹할 수 없게 하려면 이 세 줄을 삭제하십시오.
-	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
-	EnableDocking(CBRS_ALIGN_ANY);
-	DockControlBar(&m_wndToolBar);*/
-
-
-
-	return 0;
-}
-
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
-	if (!CFrameWnd::PreCreateWindow(cs))
-		return FALSE;
-	// TODO: CREATESTRUCT cs를 수정하여 여기에서
-	//  Window 클래스 또는 스타일을 수정합니다.
-
-	뭘알려줘야툴을만들든하지아무것도안알려줬으면서툴을만들으래이정도면직무유기아님 ? ;;사실난컴맹이다 ㄹㅇㅋㅋㅋ
-	return TRUE;
-}aliskfdsakmdflajkfsdnslhfkjgdmdvpgikjsmkfgdsa; foixf casdokMFb asn;doikgmn fa:SOfdgknbasm'fssc'
-
-// CMainFrame 진단
-
-#ifdef _DEBUG
-void CMainFrame::AssertValid() const
-{
-	CFrameWnd::AssertValid();
-}
+HelloWorld
+HelloGit
 
 void CMainFrame::Dump(CDumpContext& dc) const
 {
