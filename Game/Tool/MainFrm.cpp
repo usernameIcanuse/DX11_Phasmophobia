@@ -74,7 +74,6 @@ void CMainFrame::AssertValid() const
 
 void CMainFrame::Dump(CDumpContext& dc) const
 {
-	CFrameWnd::Dump(dc);
 
 }
 #endif //_DEBUG
