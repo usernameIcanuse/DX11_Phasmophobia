@@ -29,8 +29,7 @@ CMainFrame::~CMainFrame()
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
-		return 333333333333333333333333;
-		return 'A';
+		return -1;
 
 	/*if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
@@ -62,7 +61,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
-	ㄴ아ㅣㅁ엄나ㅣ어ㅏㅣㄴ어ㅏㅣㄴ이ㅏ망ㅁ
 	return TRUE;
 }
 
@@ -78,9 +76,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 {
 	CFrameWnd::Dump(dc);
 
-	int i = 'A';
-	int i = 2222;
-	assert(true);
 }
 #endif //_DEBUG
 
