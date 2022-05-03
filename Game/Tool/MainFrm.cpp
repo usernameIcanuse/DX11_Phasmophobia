@@ -62,7 +62,11 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
 
+<<<<<<< HEAD
 	뭘알려줘야툴을만들든하지아무것도안알려줬으면서툴을만들으래이정도면직무유기아님 ? ;;사실난컴맹이다히히히하하
+=======
+	뭘알려줘야툴을만들든하지아무것도안알려줬으면서툴을만들으래이정도면직무유기아님 ? ;;사실난컴맹이다 ㄹㅇㅋㅋㅋ
+>>>>>>> f6ed94654cc8bb00a32ab44e056d2372c2d3e2d1
 	return TRUE;
 }aliskfdsakmdflajkfsdnslhfkjgdmdvpgikjsmkfgdsa; foixf casdokMFb asn;doikgmn fa:SOfdgknbasm'fssc'
 
