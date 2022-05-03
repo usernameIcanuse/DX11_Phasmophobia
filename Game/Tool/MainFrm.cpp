@@ -69,7 +69,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 >>>>>>> f6ed94654cc8bb00a32ab44e056d2372c2d3e2d1
 	return TRUE;
 }aliskfdsakmdflajkfsdnslhfkjgdmdvpgikjsmkfgdsa; foixf casdokMFb asn;doikgmn fa:SOfdgknbasm'fssc'
-
 // CMainFrame Áø´Ü
 
 #ifdef _DEBUG
