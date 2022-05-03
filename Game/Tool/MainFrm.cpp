@@ -57,14 +57,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
 
 	뭘알려줘야툴을만들든하지아무것도안알려줬으면서툴을만들으래이정도면직무유기아님 ? ;;
 	return TRUE;
-}
+}aliskfdsakmdflajkfsdnslhfkjgdmdvpgikjsmkfgdsa; foixf casdokMFb asn;doikgmn fa:SOfdgknbasm'fssc'
 
 // CMainFrame 진단
 
