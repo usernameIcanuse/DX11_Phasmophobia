@@ -1,8 +1,10 @@
 #pragma once
-#include "Header.h"
+#include "Define.h"
 
 class CZFrustum
 {
+	DECLARE_SINGLETON(CZFrustum)
+
 public:
 	CZFrustum();
 	~CZFrustum();
@@ -14,6 +16,8 @@ public:
 	void Draw();
 
 	void Release();
+	void LateTick();
+	
 
 private:
 	LPDIRECT3DDEVICE9 m_pDevice;

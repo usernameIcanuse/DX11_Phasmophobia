@@ -17,7 +17,7 @@ public:
 	void setHeightmapEntry(int row, int col, int value);
 
 	float getHeight(float x, float y);
-
+	HRESULT	ProcessFrustumCull();//절두체 컬링 위한 인덱스 저장
 	bool genTexture(D3DXVECTOR3* directionToLight);
 	void draw( bool drawTris = false);
 
@@ -26,6 +26,7 @@ private:
 	bool readRawFile();
 	bool computeVertices();
 	bool computeIndices();
+	
 	bool lightTerrain(D3DXVECTOR3* directionToLight);
 	float computeShade(int cellRow, int cellCol, D3DXVECTOR3* directionToLight);
 

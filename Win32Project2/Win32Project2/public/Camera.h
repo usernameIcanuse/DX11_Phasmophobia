@@ -13,6 +13,8 @@ public:
 	void	TransForm(D3DXMATRIX&  World);
 	void	TransView();
 	D3DXMATRIX	GetCameraMatrix();
+	D3DXVECTOR3 GetCameraPos() {	return vPlayerpos;}
+	void PlayerPos(D3DXVECTOR3& vPos) { vPlayerpos = vPos; }
 
 	void	Initialize();
 
@@ -24,7 +26,7 @@ private:
 	D3DXVECTOR3  vUp;
 	D3DXVECTOR3  vLook;
 	D3DXVECTOR3  vRight;
-
+	D3DXVECTOR3  vPlayerpos;
 	D3DXVECTOR3  vCenter;
 	int			m_iCnt = 0;;
 

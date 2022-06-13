@@ -14,7 +14,7 @@ public:
 	
 	void	Render();
 	void	Release();
-
+	
 private:
 	LPDIRECT3DDEVICE9		m_pDevice = nullptr;
 

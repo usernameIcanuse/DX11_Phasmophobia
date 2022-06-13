@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\public\Terrain.h"
 #include "Device.h"
+#include "ZFrustum.h"
+
 
 const DWORD CTerrain::TerrainVertex::FVF = D3DFVF_XYZ | D3DFVF_TEX1;
 
@@ -135,7 +137,7 @@ void CTerrain::draw(bool drawTris)
 {
 	D3DXMATRIX world;
 	D3DXMatrixIdentity(&world);
-	world._42 = -35.f;
+	world._42 = -25.f;
 	m_pDevice->SetTransform(D3DTS_WORLD, &world);
 
 	m_pDevice->SetStreamSource(0, m_pVB, 0, sizeof(TerrainVertex));
@@ -260,6 +262,8 @@ bool CTerrain::computeIndices()
 	{
 		for (int j = 0; j < m_iNumCellsPerRow; ++j)
 		{
+
+
 			Indices[baseIndex] = i*m_iNumVertsPerRow + j;
 			Indices[baseIndex + 1] = i*m_iNumVertsPerRow + j + 1;
 			Indices[baseIndex + 2] = (i+1)*m_iNumVertsPerRow + j;
@@ -274,6 +278,65 @@ bool CTerrain::computeIndices()
 	m_pIB->Unlock();
 
 	return true;
+}
+
+HRESULT CTerrain::ProcessFrustumCull()
+{
+	m_iNumTriangles = 0;
+	WORD	Height[4];
+	bool	b[4];
+	WORD* Indices = nullptr;
+	int baseIndex = 0;
+
+	if (FAILED(m_pIB->Lock(0, 0, (void**)&Indices, 0)))
+	{
+		MessageBox(0, L"ProcessFrustumCull - FAILED", 0, 0);
+		return E_FAIL;
+	}
+
+	for (int i = 0; i < m_iNumCellsPerCol; ++i)
+	{
+		for (int j = 0; j < m_iNumCellsPerRow; ++j)
+		{
+			Height[0] = (i*m_iNumVertsPerRow + j);
+			Height[1] = (i*m_iNumVertsPerRow + j+1);
+			Height[2] = ((i+1)*m_iNumVertsPerRow + j);
+			Height[3] = ((i+1)*m_iNumVertsPerRow + j+1);
+
+			b[0] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j,m_vheightmap[Height[0]],i));
+			b[1] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j+1, m_vheightmap[Height[1]], i));
+			b[2] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j, m_vheightmap[Height[2]], i+1));
+
+			if (b[0] | b[1] | b[2])
+			{
+				Indices[baseIndex] = Height[0];
+				Indices[baseIndex+1] = Height[1];
+				Indices[baseIndex+2] = Height[2];
+				++m_iNumTriangles;
+				baseIndex += 3;
+
+			}
+
+			b[2] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j, m_vheightmap[Height[0]], i+1));
+			b[1] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j + 1, m_vheightmap[Height[1]], i));
+			b[3] = CZFrustum::Get_Instance()->IsIn(&D3DXVECTOR3(j+1, m_vheightmap[Height[2]], i + 1));
+
+			if (b[2] | b[1] | b[3])
+			{
+				Indices[baseIndex] = Height[2];
+				Indices[baseIndex + 1] = Height[1];
+				Indices[baseIndex + 2] = Height[3];
+				++m_iNumTriangles;
+				baseIndex += 3;
+
+			}
+
+		}
+	}
+
+	m_pIB->Unlock();
+
+	return S_OK;
 }
 
 bool CTerrain::lightTerrain(D3DXVECTOR3 * directionToLight)

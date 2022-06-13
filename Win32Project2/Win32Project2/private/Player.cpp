@@ -236,6 +236,7 @@ void CPlayer::Tick()
 	m_matWorld._43 = m_vPos.z;
 
 	CCamera::Get_Instance()->TransForm(m_matWorld);
+	CCamera::Get_Instance()->PlayerPos(m_vPos);
 }
 
 void CPlayer::LateTick()

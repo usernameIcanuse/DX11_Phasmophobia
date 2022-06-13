@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "Monster.h"
 #include "Terrain.h"
-
+#include "ZFrustum.h"
 
 CMainApp::CMainApp()
 	:m_pGraphicDev(CDevice::Get_Instance()),m_pPlayer(nullptr)
@@ -34,7 +34,7 @@ HRESULT CMainApp::Initialize()
 
 	if (!m_pTerrain)
 	{
-		m_pTerrain = new CTerrain(64, 64, 10, 0.5f);
+		m_pTerrain = new CTerrain(64, 64, 10, 0.4f);
 		m_pTerrain->genTexture(&D3DXVECTOR3(1.f,1.f,1.f));
 	}
 
@@ -129,6 +129,7 @@ void CMainApp::Tick()
 void CMainApp::LateTick()
 {
 	CCamera::Get_Instance()->TransView();
+	CZFrustum::Get_Instance()->LateTick();
 	m_pPlayer->LateTick();
 	D3DXMATRIX Temp= CCamera::Get_Instance()->GetCameraMatrix();
 	D3DXMatrixIdentity(&matBillboard);
@@ -138,7 +139,7 @@ void CMainApp::LateTick()
 	matBillboard._33 == Temp._33;
 	D3DXMatrixInverse(&matBillboard, 0, &matBillboard);
 	matBillboard._41 = matBillboard._42 = matBillboard._43 = 0.f;
-
+	m_pTerrain->ProcessFrustumCull();
 
 	//m_pMonster->LateTick();
 }
@@ -198,5 +199,6 @@ void CMainApp::Release()
 	m_pTexture2->Release();
 
 	CCamera::Destroy_Instance();
+	CZFrustum::Destroy_Instance();
 	m_pGraphicDev->Destroy_Instance();
 }
