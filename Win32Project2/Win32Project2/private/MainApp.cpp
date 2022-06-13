@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include "Monster.h"
+#include "Terrain.h"
 
 
 CMainApp::CMainApp()
@@ -29,6 +30,12 @@ HRESULT CMainApp::Initialize()
 	{
 		m_pPlayer = new CPlayer;
 		m_pPlayer->Initialize();
+	}
+
+	if (!m_pTerrain)
+	{
+		m_pTerrain = new CTerrain(64, 64, 10, 0.5f);
+		m_pTerrain->genTexture(&D3DXVECTOR3(1.f,1.f,1.f));
 	}
 
 	/*if (!m_pMonster)
@@ -66,16 +73,6 @@ HRESULT CMainApp::Initialize()
 
 	m_pVB->Unlock();
 
-	D3DXCreateTextureFromFile(m_pDevice, L"checker.jpg", &m_pTexture);
-	D3DXCreateTextureFromFile(m_pDevice, L"Cube.png", &m_pTexture2);
-	/*텍스처 확대 축소 확인*/
-	m_pDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	m_pDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	m_pDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
-
-	m_pDevice->SetSamplerState(1, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	m_pDevice->SetSamplerState(1, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	m_pDevice->SetSamplerState(1, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
 	D3DXMATRIX proj;
 	D3DXMatrixPerspectiveFovLH(&proj,
@@ -150,41 +147,12 @@ void CMainApp::LateTick()
 void CMainApp::Render()
 {
 	m_pGraphicDev->Render_Begin();
+
+	m_pTerrain->draw();
+
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity(&matWorld);
-	if (35 > m_iTime)
-	{
-		m_pDevice->SetRenderState(D3DRS_STENCILENABLE, true);
-		m_pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
-		m_pDevice->SetRenderState(D3DRS_STENCILREF, 0x1);
-		m_pDevice->SetRenderState(D3DRS_STENCILMASK, 0xffffffff);
-		m_pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
-		m_pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-		m_pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
 
-		m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
-		m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-		m_pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ZERO);
-		m_pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-
-		m_pDevice->SetTransform(D3DTS_WORLD, &m_matSphereWorld);
-		m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-		m_pSphere->DrawSubset(0);
-
-		m_pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-		m_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
-
-		m_pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
-		m_pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-
-		
-
-		m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-		m_pDevice->SetStreamSource(0, m_pVB, 0, sizeof(Vertex_Tex));
-		m_pDevice->SetFVF(VTXTEX_FVF);
-		m_pDevice->SetTexture(0, m_pTexture2);
-		m_pDevice->SetTransform(D3DTS_WORLD, &matWorld);
-		m_pDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
 
 
 		//m_pDevice->SetTexture(0, m_pTexture);
@@ -204,24 +172,7 @@ void CMainApp::Render()
 		////스테이지 2단계 지정(멈춤)
 		//m_pDevice->SetTextureStageState(2, D3DTSS_COLOROP, D3DTOP_DISABLE);//0단계의 결과 텍스처를 사용
 		//m_pDevice->SetTextureStageState(2, D3DTSS_ALPHAOP, D3DTOP_DISABLE);//0단계의 결과 텍스처를 사용
-
-		m_pDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_GREATER);
-		m_pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-		m_pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-	}
-	m_pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	m_pDevice->SetStreamSource(0, m_pVB, 0, sizeof(Vertex_Tex));
-	m_pDevice->SetFVF(VTXTEX_FVF);
-	m_pDevice->SetTexture(0, 35 > m_iTime?m_pTexture : m_pTexture2);
-	//m_pDevice->SetTransform(D3DTS_WORLD, &matBillboard);
-	m_pDevice->SetTransform(D3DTS_WORLD, &matWorld);
-	m_pDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
-
 	
-	m_pDevice->SetTexture(0, 0);
-	m_pDevice->SetTexture(1, 0);
-	
-	m_pDevice->SetRenderState(D3DRS_STENCILENABLE, false);
 
 	m_pPlayer->Render();
 	//m_pMonster->Render();
@@ -234,6 +185,9 @@ void CMainApp::Release()
 
 	delete m_pPlayer;
 	m_pPlayer = nullptr;
+
+	delete m_pTerrain;
+	m_pTerrain = nullptr;
 
 	/*delete m_pMonster;
 	m_pMonster= nullptr;*/

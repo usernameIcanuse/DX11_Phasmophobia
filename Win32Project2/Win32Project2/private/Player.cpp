@@ -182,24 +182,24 @@ void CPlayer::Tick()
 	ZeroMemory(&vDir, sizeof(D3DXVECTOR3));
 	if (GetAsyncKeyState('A'))
 	{
-		vDir -= D3DXVECTOR3(m_vRight.x,0,m_vRight.z);
+		vDir -= D3DXVECTOR3(m_vRight.x,m_vRight.y,m_vRight.z);
 
 	}
 	else if (GetAsyncKeyState('D'))
 	{
-		vDir += D3DXVECTOR3(m_vRight.x, 0, m_vRight.z);
+		vDir += D3DXVECTOR3(m_vRight.x, m_vRight.y, m_vRight.z);
 
 	}
 
 	if (GetAsyncKeyState('W'))
 	{
-		vDir += D3DXVECTOR3(m_vLook.x, 0, m_vLook.z);
+		vDir += D3DXVECTOR3(m_vLook.x, m_vLook.y, m_vLook.z);
 
 
 	}
 	else if (GetAsyncKeyState('S'))
 	{
-		vDir -= D3DXVECTOR3(m_vLook.x, 0, m_vLook.z);
+		vDir -= D3DXVECTOR3(m_vLook.x, m_vLook.y, m_vLook.z);
 
 	}
 

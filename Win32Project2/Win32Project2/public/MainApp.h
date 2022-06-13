@@ -4,6 +4,7 @@
 class CDevice;
 class CPlayer;
 class CMonster;
+class CTerrain;
 
 class CMainApp
 {
@@ -27,6 +28,7 @@ private:
 private:
 	CPlayer*		m_pPlayer = nullptr;
 	//CMonster*		m_pMonster = nullptr;
+	CTerrain*		m_pTerrain = nullptr;
 
 	ID3DXMesh*			m_pSphere;
 	D3DXMATRIX			m_matSphereWorld;

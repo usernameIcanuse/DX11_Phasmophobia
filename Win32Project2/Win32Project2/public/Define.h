@@ -1,4 +1,6 @@
 #pragma once
+#include "Header.h"
+
 extern  HWND  g_hWnd;
 
 #define INFINITY		FLT_MAX;

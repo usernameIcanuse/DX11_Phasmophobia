@@ -34,6 +34,12 @@
     <Filter Include="02.Object\01.Monster">
       <UniqueIdentifier>{d589028b-f888-44e3-a543-89395105e88c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Terrain">
+      <UniqueIdentifier>{ff048d4a-a672-4112-9b9d-36e4d5df656a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Frustum">
+      <UniqueIdentifier>{d939e523-4ef3-475b-bf43-38f025bf81b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,6 +78,15 @@
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.Object\01.Monster</Filter>
     </ClInclude>
+    <ClInclude Include="Header.h">
+      <Filter>99.Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Terrain.h">
+      <Filter>04.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ZFrustum.h">
+      <Filter>98. Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.Object\01.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Terrain.cpp">
+      <Filter>04.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ZFrustum.cpp">
+      <Filter>98. Frustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
