@@ -84,6 +84,20 @@ HRESULT CMainApp::Initialize()
 	m_pDevice->SetTransform(D3DTS_PROJECTION, &proj);
 	m_pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
+	LogFont.Height = 25;
+	LogFont.Width = 12;
+	LogFont.Weight = 100;//±½±â
+	LogFont.Italic = false;
+	LogFont.CharSet = HANGEUL_CHARSET;
+	LogFont.MipLevels = 1;
+	LogFont.OutputPrecision = OUT_DEFAULT_PRECIS;
+	LogFont.Quality = DEFAULT_QUALITY;
+	LogFont.PitchAndFamily = DEFAULT_PITCH | FW_DONTCARE;
+
+	wcsncpy_s(LogFont.FaceName, _countof(LogFont.FaceName), L"±¼¸²", _TRUNCATE);
+
+
+	D3DXCreateFontIndirect(m_pDevice, &LogFont, &pFont);
 
 	return S_OK;
 }
@@ -131,14 +145,14 @@ void CMainApp::LateTick()
 	CCamera::Get_Instance()->TransView();
 	CZFrustum::Get_Instance()->LateTick();
 	m_pPlayer->LateTick();
-	D3DXMATRIX Temp= CCamera::Get_Instance()->GetCameraMatrix();
+	/*D3DXMATRIX Temp= CCamera::Get_Instance()->GetCameraMatrix();
 	D3DXMatrixIdentity(&matBillboard);
 	matBillboard._11 == Temp._11;
 	matBillboard._13 == Temp._13;
 	matBillboard._31 == Temp._31;
 	matBillboard._33 == Temp._33;
 	D3DXMatrixInverse(&matBillboard, 0, &matBillboard);
-	matBillboard._41 = matBillboard._42 = matBillboard._43 = 0.f;
+	matBillboard._41 = matBillboard._42 = matBillboard._43 = 0.f;*/
 	m_pTerrain->ProcessFrustumCull();
 
 	//m_pMonster->LateTick();
@@ -150,7 +164,7 @@ void CMainApp::Render()
 	m_pGraphicDev->Render_Begin();
 
 	m_pTerrain->draw();
-
+	CZFrustum::Get_Instance()->Draw();
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity(&matWorld);
 
@@ -177,6 +191,8 @@ void CMainApp::Render()
 
 	m_pPlayer->Render();
 	//m_pMonster->Render();
+
+	pFont->DrawTextW()
 
 	m_pGraphicDev->Render_End();
 }

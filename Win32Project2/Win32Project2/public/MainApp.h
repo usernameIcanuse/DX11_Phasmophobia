@@ -41,6 +41,10 @@ private:
 	IDirect3DVertexBuffer9* m_pVB;
 
 	D3DXMATRIX matBillboard;
+
+private:
+	LPD3DXFONT		pFont;
+	D3DXFONT_DESCW			LogFont;
 };
 
 
