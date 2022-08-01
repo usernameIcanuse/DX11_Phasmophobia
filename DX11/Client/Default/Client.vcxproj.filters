@@ -40,6 +40,9 @@
     <ClInclude Include="..\Public\Lobby.h">
       <Filter>02.GameObject\Lobby</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage1.h">
+      <Filter>01.Level\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Lobby.cpp">
       <Filter>02.GameObject\Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage1.cpp">
+      <Filter>01.Level\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
