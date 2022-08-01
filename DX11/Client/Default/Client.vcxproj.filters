@@ -37,6 +37,9 @@
     <ClInclude Include="..\Public\Loading.h">
       <Filter>02.GameObject\Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Lobby.h">
+      <Filter>02.GameObject\Lobby</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Loading.cpp">
       <Filter>02.GameObject\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby.cpp">
+      <Filter>02.GameObject\Lobby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +117,12 @@
     </Filter>
     <Filter Include="01.Level\Lobby">
       <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Stage">
+      <UniqueIdentifier>{7ba9e35c-4673-4fbb-b5f8-631b9e9abe25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby">
+      <UniqueIdentifier>{db9771c6-ed05-4149-bd7a-aa8a17d244aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

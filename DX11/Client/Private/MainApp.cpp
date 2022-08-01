@@ -119,10 +119,6 @@ HRESULT CMainApp::Ready_Loading_Background()
 		return E_FAIL;
 
 #pragma endregion
-
-	
-	
-
 	return S_OK;
 }
 

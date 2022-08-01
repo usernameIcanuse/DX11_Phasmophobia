@@ -2,6 +2,7 @@
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
 #include "BackGround.h"
+#include "Lobby.h"
 //#include "Camera_Free.h"
 //#include "Monster.h"
 //#include "Terrain.h"
@@ -111,6 +112,12 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
+
+	/*For, Prototype_GameObject_Lobby*/
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Lobby"),
+		CLobby::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Terrain*/
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
 	//	CTerrain::Create(m_pGraphic_Device))))
@@ -147,6 +154,10 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	}
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+	/*For.Prototype_Component_Texture_Lobby*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Lobby"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Phasmophobia_Lobby.dds")))))
+		return E_FAIL;
 	///* For.Prototype_Component_Texture_Terrain */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.tga"), 2))))

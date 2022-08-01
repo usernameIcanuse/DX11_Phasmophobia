@@ -172,6 +172,7 @@
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading.h" />
+    <ClInclude Include="..\Public\Lobby.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading.cpp" />
+    <ClCompile Include="..\Private\Lobby.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
