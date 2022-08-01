@@ -32,8 +32,8 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_LOGO:
 		hr = pLoader->Loading_ForLogoLevel();
 		break;
-	case LEVEL_GAMEPLAY:
-		hr = pLoader->Loading_ForGamePlayLevel();
+	case LEVEL_LOBBY:
+		hr = pLoader->Loading_ForLobbyLevel();
 		break;
 	}	
 
@@ -102,7 +102,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	return S_OK;
 }
 
-HRESULT CLoader::Loading_ForGamePlayLevel()
+HRESULT CLoader::Loading_ForLobbyLevel()
 {
 	CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
@@ -138,9 +138,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 
 #pragma endregion
-	for (int i = 0; i < 1000000; ++i)
+	for (int i = 0; i < 100000; ++i)
 	{
-		for (int j = 0; j < 1000000; ++j)
+		for (int j = 0; j < 100000; ++j)
 		{
 
 		}

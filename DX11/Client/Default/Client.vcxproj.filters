@@ -19,8 +19,8 @@
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_GamePlay.h">
-      <Filter>01.Level\GamePlay</Filter>
+    <ClInclude Include="..\Public\Level_Lobby.h">
+      <Filter>01.Level\Lobby</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Level\Loading</Filter>
@@ -48,8 +48,8 @@
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00.MainApp</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_GamePlay.cpp">
-      <Filter>01.Level\GamePlay</Filter>
+    <ClCompile Include="..\Private\Level_Lobby.cpp">
+      <Filter>01.Level\Lobby</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
       <Filter>01.Level\Loading</Filter>
@@ -91,9 +91,6 @@
     <Filter Include="01.Level\Logo">
       <UniqueIdentifier>{289b4d09-7c95-466b-9f74-173b2e22e40e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Level\GamePlay">
-      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Level\Loading">
       <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,9 @@
     </Filter>
     <Filter Include="02.GameObject\Loading">
       <UniqueIdentifier>{98268da5-d936-45a2-a853-506606e8aba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Level\Lobby">
+      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
