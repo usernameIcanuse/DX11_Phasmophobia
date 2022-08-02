@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "..\Public\Lobby.h"
-#include "GameInstance.h"
-#include "UIIcon.h"
+#include "..\Public\UIIcon.h"
 
-CLobby::CLobby(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+#include "GameInstance.h"
+
+CUIIcon::CUIIcon(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CLobby::CLobby(const CLobby& rhs)
+CUIIcon::CUIIcon(const CUIIcon& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CLobby::Initialize_Prototype()
+HRESULT CUIIcon::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CLobby::Initialize(void * pArg)
+HRESULT CUIIcon::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -29,10 +29,6 @@ HRESULT CLobby::Initialize(void * pArg)
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
-
-	if (FAILED(SetUp_Icon()))
-		return E_FAIL;
-
 
 	m_fSizeX = g_iWinCX;
 	m_fSizeY = g_iWinCY;
@@ -45,7 +41,7 @@ HRESULT CLobby::Initialize(void * pArg)
   	return S_OK;
 }
 
-void CLobby::Tick(_float fTimeDelta)
+void CUIIcon::Tick(_float fTimeDelta)
 {
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
@@ -57,12 +53,12 @@ void CLobby::Tick(_float fTimeDelta)
 	//RELEASE_INSTANCE(CGameInstance);
 }
 
-void CLobby::LateTick(_float fTimeDelta)
+void CUIIcon::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 }
 
-HRESULT CLobby::Render()
+HRESULT CUIIcon::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -79,7 +75,7 @@ HRESULT CLobby::Render()
 	return S_OK;
 }
 
-HRESULT CLobby::SetUp_Components()
+HRESULT CUIIcon::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -90,7 +86,7 @@ HRESULT CLobby::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Lobby"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -100,7 +96,7 @@ HRESULT CLobby::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CLobby::SetUp_ShaderResource()
+HRESULT CUIIcon::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -121,48 +117,33 @@ HRESULT CLobby::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CLobby::SetUp_Icon()
+CUIIcon * CUIIcon::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&m_pUIIcon)))
-		return E_FAIL;
-	
-	static_cast<CUIIcon*>(m_pUIIcon)->Set_IconPosition(g_iWinCX>>1, (g_iWinCY>>1)-150.f, 320.f,70.f);
-
-
-	RELEASE_INSTANCE(CGameInstance);
-
-	return S_OK;
-}
-
-CLobby * CLobby::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-{
-	CLobby*		pInstance = new CLobby(pDevice, pContext);
+	CUIIcon*		pInstance = new CUIIcon(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CLobby");		
+		MSG_BOX("Failed to Created : CUIIcon");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CLobby::Clone(void * pArg)
+CGameObject * CUIIcon::Clone(void * pArg)
 {
-	CLobby*		pInstance = new CLobby(*this);
+	CUIIcon*		pInstance = new CUIIcon(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CLobby");
+		MSG_BOX("Failed to Cloned : CUIIcon");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CLobby::Free()
+void CUIIcon::Free()
 {
 	__super::Free();
 
@@ -170,4 +151,6 @@ void CLobby::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
+
+
 }

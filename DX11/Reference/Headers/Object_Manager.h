@@ -25,7 +25,7 @@ public:
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
 
 	/* 원형객체르ㅏㅣㄹ 복사하여 사본객체를 추가한다. */
-	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, void* pArg = nullptr);
+	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, CGameObject** pOut = nullptr , void* pArg = nullptr);
 
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);

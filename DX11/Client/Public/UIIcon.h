@@ -11,15 +11,13 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-class CUIIcon;
 
-
-class CLobby final : public CGameObject
+class CUIIcon final : public CGameObject
 {
 public:
-	CLobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLobby(const CLobby& rhs);
-	virtual ~CLobby() = default;
+	CUIIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUIIcon(const CUIIcon& rhs);
+	virtual ~CUIIcon() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -33,21 +31,25 @@ private:
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
+public:
+	void	Set_IconPosition(_float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
+	{
+		m_fX = _fX;
+		m_fY = _fY;
+		m_fSizeX = _fSizeX;
+		m_fSizeY = _fSizeY;
+	}
 
 private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;
 
 private:
-	CGameObject* m_pUIIcon;
-
-private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-	HRESULT SetUp_Icon();
 
 public:
-	static CLobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUIIcon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
