@@ -125,10 +125,26 @@ HRESULT CLobby::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&m_pUIIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&m_pUIIcon[0])))
 		return E_FAIL;
 	
-	static_cast<CUIIcon*>(m_pUIIcon)->Set_IconPosition(g_iWinCX>>1, (g_iWinCY>>1)-150.f, 320.f,70.f);
+	static_cast<CUIIcon*>(m_pUIIcon[0])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) - 110.f, 325.f, 70.f);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[1])))
+		return E_FAIL;
+
+	static_cast<CUIIcon*>(m_pUIIcon[1])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) +35.f, 325.f, 70.f);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[2])))
+		return E_FAIL;
+
+	static_cast<CUIIcon*>(m_pUIIcon[2])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 110.f, 325.f, 70.f);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[3])))
+		return E_FAIL;
+
+	static_cast<CUIIcon*>(m_pUIIcon[3])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 180.f, 325.f, 70.f);
+
 
 
 	RELEASE_INSTANCE(CGameInstance);

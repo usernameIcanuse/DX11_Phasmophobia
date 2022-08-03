@@ -39,7 +39,7 @@ private:
 	_float4x4		m_ProjMatrix;
 
 private:
-	CGameObject* m_pUIIcon;
+	CGameObject* m_pUIIcon[4];
 
 private:
 	HRESULT SetUp_Components();
