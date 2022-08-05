@@ -5,6 +5,7 @@
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Component_Manager.h"
+#include "Input_Manager.h"
 #include "Timer_Manager.h"
 
 
@@ -55,9 +56,9 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
-public: /* For.Picking */
-	_bool Picking(class CVIBuffer* pVIBuffer, class CTransform* pTransform, _float3* pOut);
-
+public: /* For.Input_Manager*/
+	bool Is_KeyState(KEY _Key, KEY_STATE _KeyState);
+	
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -66,6 +67,7 @@ private:
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
+	CInput_Manager*					m_pInput_Manager = nullptr;
 
 
 public:

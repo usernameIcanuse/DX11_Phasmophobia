@@ -1,6 +1,7 @@
 #pragma once
 
 
+
 #define GET_INSTANCE(CLASSNAME)	[](){											\
 	CLASSNAME*	pInstance = CLASSNAME::Get_Instance();							\
 	if(nullptr == pInstance) {													\
@@ -62,3 +63,5 @@ unsigned long ClassName::Destroy_Instance()				\
 {														\
 	return Safe_Release(m_pInstance);					\
 }
+
+#define KEY_INPUT GET_INSTANCE(CGameInstance)->Is_KeyState

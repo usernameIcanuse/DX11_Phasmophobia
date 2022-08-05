@@ -174,8 +174,11 @@
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading.h" />
     <ClInclude Include="..\Public\Lobby.h" />
+    <ClInclude Include="..\Public\Lobby_WaitingRoom.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
+    <ClInclude Include="..\Public\UIWaitingRoom.h" />
+    <ClInclude Include="..\Public\UIWaitingRoomSmall.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -190,8 +193,11 @@
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading.cpp" />
     <ClCompile Include="..\Private\Lobby.cpp" />
+    <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
+    <ClCompile Include="..\Private\UIWaitingRoom.cpp" />
+    <ClCompile Include="..\Private\UIWaitingRoomSmall.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

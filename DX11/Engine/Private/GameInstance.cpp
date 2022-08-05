@@ -10,6 +10,7 @@ CGameInstance::CGameInstance()
 	, m_pObject_Manager(CObject_Manager::Get_Instance())
 	, m_pComponent_Manager(CComponent_Manager::Get_Instance())
 	, m_pTimer_Manager(CTimer_Manager::Get_Instance())
+	, m_pInput_Manager(CInput_Manager::Get_Instance())
 	
 {	
 
@@ -19,6 +20,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pGraphic_Device);
+	Safe_AddRef(m_pInput_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -58,7 +60,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Tick(fTimeDelta);
 
-
+	m_pInput_Manager->Tick(fTimeDelta);
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
@@ -210,6 +212,14 @@ _float CGameInstance::Compute_Timer(const _tchar * pTimerTag)
 	return m_pTimer_Manager->Compute_Timer(pTimerTag);
 }
 
+bool CGameInstance::Is_KeyState(KEY _Key, KEY_STATE _KeyState)
+{
+	if (nullptr == m_pInput_Manager)
+		return false;
+
+	return m_pInput_Manager->Get_KeyState(_Key) == _KeyState;
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -224,6 +234,8 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
+	CInput_Manager::Get_Instance()->Destroy_Instance();
+	
 	CInput_Device::Get_Instance()->Destroy_Instance();
 
 	

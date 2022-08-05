@@ -11,15 +11,13 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-class CUIIcon;
 
-
-class CLobby final : public CGameObject
+class CUIWaitingRoom final : public CGameObject
 {
 public:
-	CLobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLobby(const CLobby& rhs);
-	virtual ~CLobby() = default;
+	CUIWaitingRoom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CUIWaitingRoom(const CUIWaitingRoom& rhs);
+	virtual ~CUIWaitingRoom() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -28,36 +26,40 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	virtual void Set_Enable(_bool _bEnable);
-
 public:
-	_uint	Selected_Menu()
-	{
-		return m_iSelectedMenu;
-	}
+	virtual void	Set_Enable(_bool _bEnable);
 
+	_bool	Selected()
+	{
+		return m_bSelected;
+	}
 
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
+public:
+	void	Set_IconPosition(_float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
+	{
+		m_fX = _fX;
+		m_fY = _fY;
+		m_fSizeX = _fSizeX;
+		m_fSizeY = _fSizeY;
+	}
 
 private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;
 
-private:
-	CGameObject* m_pUIIcon[4];
-	_uint		 m_iSelectedMenu =0;
+	_bool			m_bSelected;
 
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
-	HRESULT SetUp_Icon();
 
 public:
-	static CLobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CUIWaitingRoom* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

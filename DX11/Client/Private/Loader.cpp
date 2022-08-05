@@ -4,6 +4,9 @@
 #include "BackGround.h"
 #include "Lobby.h"
 #include "UIIcon.h"
+#include "Lobby_WaitingRoom.h"
+#include "UIWaitingRoom.h"
+#include "UIWaitingRoomSmall.h"
 //#include "Camera_Free.h"
 //#include "Monster.h"
 //#include "Terrain.h"
@@ -123,15 +126,21 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CUIIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_WaitingRoom"),
+		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_UIWaitingRoom"),
+		CUIWaitingRoom::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_UIWaitingRoomSmall"),
+		CUIWaitingRoomSmall::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 
 #pragma endregion
-	for (int i = 0; i < 100000; ++i)
-	{
-		for (int j = 0; j < 100000; ++j)
-		{
-
-		}
-	}
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 	/*For.Prototype_Component_Texture_Lobby*/
@@ -141,6 +150,18 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Lobby/OutLine.dds")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_WaitingRoom"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/WaitingRoom.dds")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Large_outline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Large_outline.dds")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Small_outline"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Small_outline.dds")))))
 		return E_FAIL;
 
 

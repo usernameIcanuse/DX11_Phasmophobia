@@ -46,6 +46,15 @@
     <ClInclude Include="..\Public\UIIcon.h">
       <Filter>02.GameObject\Lobby\UIIcon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Lobby_WaitingRoom.h">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIWaitingRoom.h">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIWaitingRoomSmall.h">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -83,6 +92,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIIcon.cpp">
       <Filter>02.GameObject\Lobby\UIIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIWaitingRoom.cpp">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIWaitingRoomSmall.cpp">
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +156,15 @@
     </Filter>
     <Filter Include="02.GameObject\Lobby\UIIcon">
       <UniqueIdentifier>{dc77ade5-265d-4804-8415-d52db41b6c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom">
+      <UniqueIdentifier>{fc748823-651f-435a-86bd-459e6d18d002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom">
+      <UniqueIdentifier>{5a31451c-9837-4293-bf1f-84b0a0b05fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall">
+      <UniqueIdentifier>{8419f478-510a-45c6-9195-f4febc4787ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

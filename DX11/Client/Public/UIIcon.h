@@ -26,6 +26,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void Set_Enable(_bool _bEnable);
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
@@ -40,9 +42,16 @@ public:
 		m_fSizeY = _fSizeY;
 	}
 
+	_bool	Selected()
+	{
+		return m_bSelected;
+	}
+
 private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;
+
+	_bool			m_bSelected = false;
 
 private:
 	HRESULT SetUp_Components();

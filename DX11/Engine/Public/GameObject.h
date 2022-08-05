@@ -40,9 +40,22 @@ protected:
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;
 
 	static const _tchar*		m_pTransformTag;
+	
+	_bool		m_bEnable = true;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);
+public:
+
+	virtual void	Set_Enable(_bool _bEnable)
+	{
+		m_bEnable = _bEnable;
+	}
+
+	_bool Get_Enable()
+	{
+		return m_bEnable;
+	}
 
 private:
 	class CComponent* Find_Components(const _tchar* pComponentTag);

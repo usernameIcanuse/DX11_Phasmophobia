@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "..\Public\UIIcon.h"
+#include "..\Public\UIWaitingRoom.h"
 
 #include "GameInstance.h"
 
-CUIIcon::CUIIcon(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CUIWaitingRoom::CUIWaitingRoom(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CUIIcon::CUIIcon(const CUIIcon& rhs)
+CUIWaitingRoom::CUIWaitingRoom(const CUIWaitingRoom& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CUIIcon::Initialize_Prototype()
+HRESULT CUIWaitingRoom::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CUIIcon::Initialize(void * pArg)
+HRESULT CUIWaitingRoom::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -36,12 +36,12 @@ HRESULT CUIIcon::Initialize(void * pArg)
   	return S_OK;
 }
 
-void CUIIcon::Tick(_float fTimeDelta)
+void CUIWaitingRoom::Tick(_float fTimeDelta)
 {
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
-	
-	
+
+
 	if (GetKeyState(VK_LBUTTON) & 0x8000)
 	{
 		RECT rect{ m_fX - (m_fSizeX * 0.5f), m_fY - (m_fSizeY * 0.5f),m_fX + (m_fSizeX * 0.5f), m_fY + (m_fSizeY * 0.5f) };
@@ -57,16 +57,14 @@ void CUIIcon::Tick(_float fTimeDelta)
 	}
 	else
 		m_bSelected = false;
-
-
 }
 
-void CUIIcon::LateTick(_float fTimeDelta)
+void CUIWaitingRoom::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 }
 
-HRESULT CUIIcon::Render()
+HRESULT CUIWaitingRoom::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -83,12 +81,13 @@ HRESULT CUIIcon::Render()
 	return S_OK;
 }
 
-void CUIIcon::Set_Enable(_bool _bEnable)
+void CUIWaitingRoom::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
+
 }
 
-HRESULT CUIIcon::SetUp_Components()
+HRESULT CUIWaitingRoom::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -99,7 +98,7 @@ HRESULT CUIIcon::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Large_outline"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -109,7 +108,7 @@ HRESULT CUIIcon::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CUIIcon::SetUp_ShaderResource()
+HRESULT CUIWaitingRoom::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -130,33 +129,33 @@ HRESULT CUIIcon::SetUp_ShaderResource()
 	return S_OK;
 }
 
-CUIIcon * CUIIcon::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CUIWaitingRoom * CUIWaitingRoom::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CUIIcon*		pInstance = new CUIIcon(pDevice, pContext);
+	CUIWaitingRoom*		pInstance = new CUIWaitingRoom(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CUIIcon");		
+		MSG_BOX("Failed to Created : CUIWaitingRoom");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CUIIcon::Clone(void * pArg)
+CGameObject * CUIWaitingRoom::Clone(void * pArg)
 {
-	CUIIcon*		pInstance = new CUIIcon(*this);
+	CUIWaitingRoom*		pInstance = new CUIWaitingRoom(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CUIIcon");
+		MSG_BOX("Failed to Cloned : CUIWaitingRoom");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CUIIcon::Free()
+void CUIWaitingRoom::Free()
 {
 	__super::Free();
 

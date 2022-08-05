@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
+#include "Engine_Defines.h"
 #include "GameObject.h"
 
 BEGIN(Engine)
@@ -14,12 +15,12 @@ BEGIN(Client)
 class CUIIcon;
 
 
-class CLobby final : public CGameObject
+class CLobby_WaitingRoom final : public CGameObject
 {
 public:
-	CLobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLobby(const CLobby& rhs);
-	virtual ~CLobby() = default;
+	CLobby_WaitingRoom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CLobby_WaitingRoom(const CLobby_WaitingRoom& rhs);
+	virtual ~CLobby_WaitingRoom() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -49,7 +50,7 @@ private:
 
 private:
 	CGameObject* m_pUIIcon[4];
-	_uint		 m_iSelectedMenu =0;
+	_uint		 m_iSelectedMenu = 0;
 
 private:
 	HRESULT SetUp_Components();
@@ -57,7 +58,7 @@ private:
 	HRESULT SetUp_Icon();
 
 public:
-	static CLobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLobby_WaitingRoom* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

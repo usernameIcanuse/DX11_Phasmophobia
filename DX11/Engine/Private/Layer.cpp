@@ -32,7 +32,7 @@ void CLayer::Tick(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 	{
-		if (nullptr != pGameObject)
+		if (nullptr != pGameObject && pGameObject->Get_Enable())
 			pGameObject->Tick(fTimeDelta);
 	}
 }
@@ -41,7 +41,7 @@ void CLayer::LateTick(_float fTimeDelta)
 {
 	for (auto& pGameObject : m_GameObjects)
 	{
-		if (nullptr != pGameObject)
+		if (nullptr != pGameObject && pGameObject->Get_Enable())
 			pGameObject->LateTick(fTimeDelta);
 	}
 }

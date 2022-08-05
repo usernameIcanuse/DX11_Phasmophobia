@@ -46,11 +46,8 @@
     <ClInclude Include="..\Public\Component_Manager.h">
       <Filter>01.Utility\03.Component\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Object_Manager.h">
-      <Filter>01.Utility\02.GameObject\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Layer.h">
-      <Filter>01.Utility\02.GameObject\Manager\Layer</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Camera.h">
       <Filter>01.Utility\02.GameObject\Camera</Filter>
@@ -78,6 +75,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Transform.h">
       <Filter>01.Utility\03.Component\02.Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Manager.h">
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Input_Manager.h">
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -108,11 +111,8 @@
     <ClCompile Include="..\Private\Component_Manager.cpp">
       <Filter>01.Utility\03.Component\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Object_Manager.cpp">
-      <Filter>01.Utility\02.GameObject\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
-      <Filter>01.Utility\02.GameObject\Manager\Layer</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Camera.cpp">
       <Filter>01.Utility\02.GameObject\Camera</Filter>
@@ -143,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Transform.cpp">
       <Filter>01.Utility\03.Component\02.Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Input_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +197,6 @@
     <Filter Include="01.Utility\03.Component\Manager">
       <UniqueIdentifier>{153dd55b-ecdc-4490-8ca3-2dd2d795a28d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\02.GameObject\Manager\Layer">
-      <UniqueIdentifier>{1a17b1d3-a76f-4074-b59d-ee83a32093d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\02.GameObject\Camera">
       <UniqueIdentifier>{a9a64c53-12de-4ff0-bf34-5d4590a7a6c8}</UniqueIdentifier>
     </Filter>
@@ -214,6 +217,15 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\02.Transform">
       <UniqueIdentifier>{1a479879-7c63-431b-a020-ea7503be601c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Object_Mgr">
+      <UniqueIdentifier>{912012a1-9f40-40c3-841a-8b033235c427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Object_Mgr\Layer">
+      <UniqueIdentifier>{1a17b1d3-a76f-4074-b59d-ee83a32093d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Input_Mgr">
+      <UniqueIdentifier>{cf4ee622-1283-4da3-ba34-af47e855cc88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

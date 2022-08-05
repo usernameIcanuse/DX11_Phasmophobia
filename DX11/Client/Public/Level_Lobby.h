@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+BEGIN(Engine)
+class CGameObject;
+END
+
 BEGIN(Client)
 
 class CLevel_Lobby final : public CLevel
@@ -16,12 +20,13 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
-public:
-	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+private:
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Effect(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_WaitingRoom(const _tchar* pLayerTag);
+
+private:
+	CGameObject* m_pLobby;
+	CGameObject* m_pWaitingRoom;
 
 public:
 	static CLevel_Lobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
