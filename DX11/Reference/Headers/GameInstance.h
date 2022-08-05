@@ -34,10 +34,10 @@ public: /* For.Graphic_Device */
 	HRESULT Present();
 
 
-public: /* For.Input_Device */
-	_byte Get_DIKeyState(_ubyte byKeyID);
+public: /* For.Input_Manager*/
 	_byte Get_DIMouseKeyState(MOUSEBUTTON eMouseButtonID);
 	_long Get_DIMouseMoveState(MOUSEMOVE eMouseMove);
+	bool Is_KeyState(KEY _Key, KEY_STATE _KeyState);
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
@@ -56,13 +56,11 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
-public: /* For.Input_Manager*/
-	bool Is_KeyState(KEY _Key, KEY_STATE _KeyState);
+
 	
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
-	CInput_Device*					m_pInput_Device = nullptr;
 	CLevel_Manager*					m_pLevel_Manager = nullptr;
 	CObject_Manager*				m_pObject_Manager = nullptr;
 	CComponent_Manager*				m_pComponent_Manager = nullptr;

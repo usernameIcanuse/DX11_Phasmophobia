@@ -63,5 +63,3 @@ unsigned long ClassName::Destroy_Instance()				\
 {														\
 	return Safe_Release(m_pInstance);					\
 }
-
-#define KEY_INPUT GET_INSTANCE(CGameInstance)->Is_KeyState

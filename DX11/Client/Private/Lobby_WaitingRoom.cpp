@@ -53,10 +53,8 @@ void CLobby_WaitingRoom::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
 	m_iSelectedMenu = 0;
-	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
-	{
-	}
 
+	
 	for (int i = 1; i < 4; ++i)
 	{
 		if (static_cast<CUIWaitingRoomSmall*>(m_pUIIcon[i])->Selected())

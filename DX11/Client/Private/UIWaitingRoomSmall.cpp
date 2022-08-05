@@ -42,7 +42,7 @@ void CUIWaitingRoomSmall::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
 
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
+	if (CGameInstance::Get_Instance()->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{
 		RECT rect{ m_fX - (m_fSizeX * 0.5f), m_fY - (m_fSizeY * 0.5f),m_fX + (m_fSizeX * 0.5f), m_fY + (m_fSizeY * 0.5f) };
 		POINT pt{};
