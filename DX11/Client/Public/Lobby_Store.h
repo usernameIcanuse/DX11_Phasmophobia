@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Engine_Defines.h"
+#include "UIBackground.h"
 
 BEGIN(Engine)
 class CShader;
@@ -14,12 +15,12 @@ BEGIN(Client)
 class CUIIcon;
 
 
-class CLobby final : public CGameObject
+class CLobby_Store final : public CUIBackground
 {
 public:
-	CLobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLobby(const CLobby& rhs);
-	virtual ~CLobby() = default;
+	CLobby_Store(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CLobby_Store(const CLobby_Store& rhs);
+	virtual ~CLobby_Store() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -30,12 +31,6 @@ public:
 
 	virtual void Set_Enable(_bool _bEnable);
 
-public:
-	_uint	Selected_Menu()
-	{
-		return m_iSelectedMenu;
-	}
-
 
 private:
 	CShader*				m_pShaderCom = nullptr;
@@ -43,13 +38,6 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
-private:
-	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4		m_ProjMatrix;
-
-private:
-	CGameObject* m_pUIIcon[4];
-	_uint		 m_iSelectedMenu =0;
 
 private:
 	HRESULT SetUp_Components();
@@ -57,7 +45,7 @@ private:
 	HRESULT SetUp_Icon();
 
 public:
-	static CLobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLobby_Store* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

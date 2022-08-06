@@ -34,6 +34,7 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForLobbyLevel();
+	HRESULT Loading_ForStage1Level();
 
 private:
 	ID3D11Device*				m_pDevice = nullptr;

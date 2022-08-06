@@ -24,13 +24,13 @@ void CLevel_Stage1::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	/*CGameInstance* pGameInstance = CGameInstance::Get_Instance();
 	Safe_AddRef(pGameInstance);
 
 	if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY))))
 		return;
 
-	Safe_Release(pGameInstance);
+	Safe_Release(pGameInstance);*/
 }
 
 HRESULT CLevel_Stage1::Render()

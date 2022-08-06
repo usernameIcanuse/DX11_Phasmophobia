@@ -47,6 +47,8 @@ public:
 		return m_bSelected;
 	}
 
+	void	Set_Texture(const _tchar* _pPrototypeTag);
+
 private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;

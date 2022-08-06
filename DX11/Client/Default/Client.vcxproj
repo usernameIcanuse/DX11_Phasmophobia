@@ -167,18 +167,20 @@
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\Level_Lobby.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
     <ClInclude Include="..\Public\Level_Stage1.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading.h" />
-    <ClInclude Include="..\Public\Lobby.h" />
+    <ClInclude Include="..\Public\Lobby_AddItems.h" />
+    <ClInclude Include="..\Public\Lobby_Main.h" />
+    <ClInclude Include="..\Public\Lobby_Store.h" />
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\Public\UIBackground.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
-    <ClInclude Include="..\Public\UIWaitingRoom.h" />
-    <ClInclude Include="..\Public\UIWaitingRoomSmall.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -186,18 +188,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\Level_Lobby.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
     <ClCompile Include="..\Private\Level_Stage1.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading.cpp" />
-    <ClCompile Include="..\Private\Lobby.cpp" />
+    <ClCompile Include="..\Private\Lobby_AddItems.cpp" />
+    <ClCompile Include="..\Private\Lobby_Main.cpp" />
+    <ClCompile Include="..\Private\Lobby_Store.cpp" />
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="..\Private\UIBackground.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
-    <ClCompile Include="..\Private\UIWaitingRoom.cpp" />
-    <ClCompile Include="..\Private\UIWaitingRoomSmall.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

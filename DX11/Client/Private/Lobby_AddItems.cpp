@@ -1,24 +1,25 @@
 #include "stdafx.h"
-#include "..\Public\Lobby.h"
+#include "..\Public\Lobby_AddItems.h"
 #include "GameInstance.h"
 #include "UIIcon.h"
 
-CLobby::CLobby(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CGameObject(pDevice, pContext)
+
+CLobby_AddItems::CLobby_AddItems(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+	: CUIBackground(pDevice, pContext)
 {
 }
 
-CLobby::CLobby(const CLobby& rhs)
-	: CGameObject(rhs)
+CLobby_AddItems::CLobby_AddItems(const CLobby_AddItems& rhs)
+	: CUIBackground(rhs)
 {
 }
 
-HRESULT CLobby::Initialize_Prototype()
+HRESULT CLobby_AddItems::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CLobby::Initialize(void * pArg)
+HRESULT CLobby_AddItems::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -45,26 +46,20 @@ HRESULT CLobby::Initialize(void * pArg)
   	return S_OK;
 }
 
-void CLobby::Tick(_float fTimeDelta)
+void CLobby_AddItems::Tick(_float fTimeDelta)
 {
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
-	
-	m_iSelectedMenu = 0;
-	
-	for (int i = 0; i < 4; ++i)
-	{
-		if (static_cast<CUIIcon*>(m_pUIIcon[i])->Selected())
-			m_iSelectedMenu = i + 1;
-	}
+
+	__super::Tick(fTimeDelta);
 }
 
-void CLobby::LateTick(_float fTimeDelta)
+void CLobby_AddItems::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 }
 
-HRESULT CLobby::Render()
+HRESULT CLobby_AddItems::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -81,18 +76,12 @@ HRESULT CLobby::Render()
 	return S_OK;
 }
 
-void CLobby::Set_Enable(_bool _bEnable)
+void CLobby_AddItems::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
-
-	for (int i = 0; i < 4; ++i)
-		m_pUIIcon[i]->Set_Enable(_bEnable);
-
 }
 
-
-
-HRESULT CLobby::SetUp_Components()
+HRESULT CLobby_AddItems::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -103,7 +92,7 @@ HRESULT CLobby::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Lobby"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_WaitingRoom"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -113,11 +102,11 @@ HRESULT CLobby::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CLobby::SetUp_ShaderResource()
+HRESULT CLobby_AddItems::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
-
+	
 	/*if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
 		return E_FAIL;*/
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
@@ -131,67 +120,77 @@ HRESULT CLobby::SetUp_ShaderResource()
 		return E_FAIL;
 
 
+
 	return S_OK;
 }
 
-HRESULT CLobby::SetUp_Icon()
+HRESULT CLobby_AddItems::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&m_pUIIcon[0])))
+	CGameObject* pIcon;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"),&pIcon)))
 		return E_FAIL;
-	//싱글 플레이
-	static_cast<CUIIcon*>(m_pUIIcon[0])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) - 110.f, 325.f, 70.f);
+	//의뢰 선택하기
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(310.f, 560.f, 260.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
+	m_vecUIIcon.push_back(pIcon);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[1])))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
-	//장비 상점
-	static_cast<CUIIcon*>(m_pUIIcon[1])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) +35.f, 325.f, 70.f);
+	//추가
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(760.f, 475.f, 150.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	m_vecUIIcon.push_back(pIcon);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[2])))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
-	//옵션
-	static_cast<CUIIcon*>(m_pUIIcon[2])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 110.f, 325.f, 70.f);
+	//구입
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(940.f, 475.f, 150.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	m_vecUIIcon.push_back(pIcon);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &m_pUIIcon[3])))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
-	//게임종료
-	static_cast<CUIIcon*>(m_pUIIcon[3])->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 180.f, 325.f, 70.f);
-
-
+	//떠나기
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(955.f, 555.f, 170.f, 60.f);
+	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	m_vecUIIcon.push_back(pIcon);
 
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
 
-CLobby * CLobby::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+
+CLobby_AddItems * CLobby_AddItems::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CLobby*		pInstance = new CLobby(pDevice, pContext);
+	CLobby_AddItems*		pInstance = new CLobby_AddItems(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CLobby");		
+		MSG_BOX("Failed to Created : CLobby_AddItems");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CLobby::Clone(void * pArg)
+CGameObject * CLobby_AddItems::Clone(void * pArg)
 {
-	CLobby*		pInstance = new CLobby(*this);
+	CLobby_AddItems*		pInstance = new CLobby_AddItems(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CLobby");
+		MSG_BOX("Failed to Cloned : CLobby_AddItems");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CLobby::Free()
+void CLobby_AddItems::Free()
 {
 	__super::Free();
 

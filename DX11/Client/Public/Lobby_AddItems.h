@@ -15,12 +15,12 @@ BEGIN(Client)
 class CUIIcon;
 
 
-class CLobby_WaitingRoom final : public CUIBackground
+class CLobby_AddItems final : public CUIBackground
 {
 public:
-	CLobby_WaitingRoom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CLobby_WaitingRoom(const CLobby_WaitingRoom& rhs);
-	virtual ~CLobby_WaitingRoom() = default;
+	CLobby_AddItems(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CLobby_AddItems(const CLobby_AddItems& rhs);
+	virtual ~CLobby_AddItems() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -45,7 +45,7 @@ private:
 	HRESULT SetUp_Icon();
 
 public:
-	static CLobby_WaitingRoom* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLobby_AddItems* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

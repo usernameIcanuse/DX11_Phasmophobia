@@ -88,6 +88,13 @@ void CUIIcon::Set_Enable(_bool _bEnable)
 	__super::Set_Enable(_bEnable);
 }
 
+void CUIIcon::Set_Texture(const _tchar* _pPrototypeTag)
+{
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(LEVEL_LOBBY, _pPrototypeTag, TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+		return;
+}
+
 HRESULT CUIIcon::SetUp_Components()
 {
 	/* For.Com_Shader */
@@ -98,9 +105,6 @@ HRESULT CUIIcon::SetUp_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
-		return E_FAIL;
 
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))

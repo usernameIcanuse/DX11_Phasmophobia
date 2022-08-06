@@ -3,6 +3,7 @@
 #include "Loader.h"
 #include "Level_Logo.h"
 #include "Level_Lobby.h"
+#include "Level_Stage1.h"
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -45,6 +46,9 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			break;
 		case LEVEL_LOBBY:
 			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
+			break;
+		case LEVEL_STAGE1:
+			pLevel = CLevel_Stage1::Create(m_pDevice, m_pContext);
 			break;
 		}
 

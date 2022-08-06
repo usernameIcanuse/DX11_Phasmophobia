@@ -1,25 +1,25 @@
 #include "stdafx.h"
-#include "..\Public\Lobby_WaitingRoom.h"
+#include "..\Public\Lobby_Store.h"
 #include "GameInstance.h"
 #include "UIIcon.h"
 
 
-CLobby_WaitingRoom::CLobby_WaitingRoom(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CLobby_Store::CLobby_Store(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUIBackground(pDevice, pContext)
 {
 }
 
-CLobby_WaitingRoom::CLobby_WaitingRoom(const CLobby_WaitingRoom& rhs)
+CLobby_Store::CLobby_Store(const CLobby_Store& rhs)
 	: CUIBackground(rhs)
 {
 }
 
-HRESULT CLobby_WaitingRoom::Initialize_Prototype()
+HRESULT CLobby_Store::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CLobby_WaitingRoom::Initialize(void * pArg)
+HRESULT CLobby_Store::Initialize(void * pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
 	TransformDesc.fSpeedPerSec = 5.f;
@@ -46,7 +46,7 @@ HRESULT CLobby_WaitingRoom::Initialize(void * pArg)
   	return S_OK;
 }
 
-void CLobby_WaitingRoom::Tick(_float fTimeDelta)
+void CLobby_Store::Tick(_float fTimeDelta)
 {
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
@@ -54,12 +54,12 @@ void CLobby_WaitingRoom::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-void CLobby_WaitingRoom::LateTick(_float fTimeDelta)
+void CLobby_Store::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 }
 
-HRESULT CLobby_WaitingRoom::Render()
+HRESULT CLobby_Store::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -76,12 +76,12 @@ HRESULT CLobby_WaitingRoom::Render()
 	return S_OK;
 }
 
-void CLobby_WaitingRoom::Set_Enable(_bool _bEnable)
+void CLobby_Store::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 }
 
-HRESULT CLobby_WaitingRoom::SetUp_Components()
+HRESULT CLobby_Store::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -102,7 +102,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CLobby_WaitingRoom::SetUp_ShaderResource()
+HRESULT CLobby_Store::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -124,51 +124,37 @@ HRESULT CLobby_WaitingRoom::SetUp_ShaderResource()
 	return S_OK;
 }
 
-HRESULT CLobby_WaitingRoom::SetUp_Icon()
+HRESULT CLobby_Store::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	CGameObject* pIcon;
 
-	//의뢰 선택하기
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"),&pIcon)))
 		return E_FAIL;
+	//의뢰 선택하기
 	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(310.f, 560.f, 260.f, 70.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//추가
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
+	//추가
 	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(760.f, 475.f, 150.f, 70.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//구입
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
+	//구입
 	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(940.f, 475.f, 150.f, 70.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+		return E_FAIL;
 	//떠나기
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
-		return E_FAIL;
 	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(955.f, 555.f, 170.f, 60.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
-	m_vecUIIcon.push_back(pIcon);
-
-	//준비
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
-		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(550.f, 555.f, 170.f, 60.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
-	m_vecUIIcon.push_back(pIcon);
-
-	//시작
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
-		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(750.f, 555.f, 170.f, 60.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
@@ -178,33 +164,33 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 }
 
 
-CLobby_WaitingRoom * CLobby_WaitingRoom::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CLobby_Store * CLobby_Store::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CLobby_WaitingRoom*		pInstance = new CLobby_WaitingRoom(pDevice, pContext);
+	CLobby_Store*		pInstance = new CLobby_Store(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CLobby_WaitingRoom");		
+		MSG_BOX("Failed to Created : CLobby_Store");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CLobby_WaitingRoom::Clone(void * pArg)
+CGameObject * CLobby_Store::Clone(void * pArg)
 {
-	CLobby_WaitingRoom*		pInstance = new CLobby_WaitingRoom(*this);
+	CLobby_Store*		pInstance = new CLobby_Store(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CLobby_WaitingRoom");
+		MSG_BOX("Failed to Cloned : CLobby_Store");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CLobby_WaitingRoom::Free()
+void CLobby_Store::Free()
 {
 	__super::Free();
 

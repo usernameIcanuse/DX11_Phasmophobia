@@ -19,9 +19,6 @@
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Lobby.h">
-      <Filter>01.Level\Lobby</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
       <Filter>01.Level\Loading</Filter>
     </ClInclude>
@@ -35,25 +32,34 @@
       <Filter>02.GameObject\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loading.h">
-      <Filter>02.GameObject\Loading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Lobby.h">
-      <Filter>02.GameObject\Lobby</Filter>
+      <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage1.h">
       <Filter>01.Level\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIIcon.h">
-      <Filter>02.GameObject\Lobby\UIIcon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIWaitingRoom.h">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom</Filter>
+    <ClInclude Include="..\Public\UIBackground.h">
+      <Filter>02.GameObject\UI\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIWaitingRoomSmall.h">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall</Filter>
+    <ClInclude Include="..\Public\Lobby_Main.h">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIIcon.h">
+      <Filter>02.GameObject\UI\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Lobby.h">
+      <Filter>01.Level\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Lobby_AddItems.h">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_AddItems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Lobby_Store.h">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_Store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Item.h">
+      <Filter>02.GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -82,25 +88,31 @@
       <Filter>02.GameObject\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loading.cpp">
-      <Filter>02.GameObject\Loading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Lobby.cpp">
-      <Filter>02.GameObject\Lobby</Filter>
+      <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage1.cpp">
       <Filter>01.Level\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UIIcon.cpp">
-      <Filter>02.GameObject\Lobby\UIIcon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UIWaitingRoom.cpp">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom</Filter>
+    <ClCompile Include="..\Private\UIBackground.cpp">
+      <Filter>02.GameObject\UI\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UIWaitingRoomSmall.cpp">
-      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall</Filter>
+    <ClCompile Include="..\Private\Lobby_Main.cpp">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIIcon.cpp">
+      <Filter>02.GameObject\UI\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby_AddItems.cpp">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_AddItems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby_Store.cpp">
+      <Filter>02.GameObject\BackGround\Lobby\Lobby_Store</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp">
+      <Filter>02.GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,29 +154,71 @@
     <Filter Include="03.ShaderFiles">
       <UniqueIdentifier>{d3a98933-0c07-4640-bc38-9a0b4f9abd9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Loading">
-      <UniqueIdentifier>{98268da5-d936-45a2-a853-506606e8aba6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Level\Lobby">
       <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Level\Stage">
       <UniqueIdentifier>{7ba9e35c-4673-4fbb-b5f8-631b9e9abe25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Lobby">
+    <Filter Include="02.GameObject\BackGround\Lobby">
       <UniqueIdentifier>{db9771c6-ed05-4149-bd7a-aa8a17d244aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Lobby\UIIcon">
-      <UniqueIdentifier>{dc77ade5-265d-4804-8415-d52db41b6c08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom">
+    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_WaitingRoom">
       <UniqueIdentifier>{fc748823-651f-435a-86bd-459e6d18d002}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoom">
-      <UniqueIdentifier>{5a31451c-9837-4293-bf1f-84b0a0b05fec}</UniqueIdentifier>
+    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_Main">
+      <UniqueIdentifier>{0274cd69-4777-4ca3-9878-37152820be8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom\UIWaitingRoomSmall">
-      <UniqueIdentifier>{8419f478-510a-45c6-9195-f4febc4787ae}</UniqueIdentifier>
+    <Filter Include="02.GameObject\BackGround\Loading">
+      <UniqueIdentifier>{98268da5-d936-45a2-a853-506606e8aba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_AddItems">
+      <UniqueIdentifier>{0e291708-5e83-42d0-a397-f32dc17c9d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_Store">
+      <UniqueIdentifier>{e9aea82a-f1e5-45af-be51-f58840590cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI">
+      <UniqueIdentifier>{f03a9b21-23f7-4cae-aa05-9ff33763f2ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI\BackGround">
+      <UniqueIdentifier>{4a8baf37-5452-4b5c-a72d-c15e8b4d0a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI\Icon">
+      <UniqueIdentifier>{9af7ccad-c0b1-4ccd-9cd4-ca988c825e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item">
+      <UniqueIdentifier>{5c22e3a9-deef-4eb8-acbb-bb7d3987d9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\EMF">
+      <UniqueIdentifier>{19316ece-7fdd-469a-aa61-57d9ffc504ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\FlashLight">
+      <UniqueIdentifier>{64d8b76c-1c4d-4fb4-8068-0d0b1ea4d1db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\UVLight">
+      <UniqueIdentifier>{1c79b06b-d210-4fd9-bf09-05ce274ef6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Video Camera">
+      <UniqueIdentifier>{a61a971b-618d-4d4f-a4d6-519c91c48b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\SpiritBox">
+      <UniqueIdentifier>{2001f4b9-4342-48d2-879d-30448ceb0678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\GhostWritingBook">
+      <UniqueIdentifier>{2954d003-abb4-490c-b666-3f8117641bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\DotsProjecter">
+      <UniqueIdentifier>{d80b218c-d9c8-42e6-a209-2141c8b896b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Player">
+      <UniqueIdentifier>{e66bc9f3-b9e1-4e47-b035-ed700e7051ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost">
+      <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Thermometer">
+      <UniqueIdentifier>{da948321-6e4e-46f9-ad65-1d576b4a5779}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

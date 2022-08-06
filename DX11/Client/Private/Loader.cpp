@@ -2,11 +2,12 @@
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
 #include "BackGround.h"
-#include "Lobby.h"
+#include "Lobby_Main.h"
 #include "UIIcon.h"
 #include "Lobby_WaitingRoom.h"
-#include "UIWaitingRoom.h"
-#include "UIWaitingRoomSmall.h"
+#include "Lobby_AddItems.h"
+#include "Lobby_Store.h"
+
 //#include "Camera_Free.h"
 //#include "Monster.h"
 //#include "Terrain.h"
@@ -39,6 +40,9 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		break;
 	case LEVEL_LOBBY:
 		hr = pLoader->Loading_ForLobbyLevel();
+		break;
+	case LEVEL_STAGE1:
+		hr = pLoader->Loading_ForStage1Level();
 		break;
 	}	
 
@@ -119,25 +123,24 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	/*For, Prototype_GameObject_Lobby*/
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Lobby"),
-		CLobby::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
-		CUIIcon::Create(m_pDevice, m_pContext))))
+		CLobby_Main::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_WaitingRoom"),
 		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_UIWaitingRoom"),
-		CUIWaitingRoom::Create(m_pDevice, m_pContext))))
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Store"),
+		CLobby_Store::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_AddItems"),
+		CLobby_AddItems::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_UIWaitingRoomSmall"),
-		CUIWaitingRoomSmall::Create(m_pDevice, m_pContext))))
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
+		CUIIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
 
 
 #pragma endregion
@@ -184,6 +187,17 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	Safe_Release(pGameInstance);
 
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForStage1Level()
+{
+	lstrcpy(m_szLoadingText, TEXT("¸ðµ¨À» ·ÎµùÁßÀÌºñ³®. "));
+
+
+
+	m_isFinished = true;
 
 	return S_OK;
 }
