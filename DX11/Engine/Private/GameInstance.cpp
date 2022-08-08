@@ -10,6 +10,7 @@ CGameInstance::CGameInstance()
 	, m_pComponent_Manager(CComponent_Manager::Get_Instance())
 	, m_pTimer_Manager(CTimer_Manager::Get_Instance())
 	, m_pInput_Manager(CInput_Manager::Get_Instance())
+	, m_pPipeLine(CPipeLine::Get_Instance())
 	
 {	
 
@@ -19,6 +20,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pInput_Manager);
+	Safe_AddRef(m_pPipeLine);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -58,6 +60,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 
 	m_pInput_Manager->Tick(fTimeDelta);
+
+	m_pPipeLine->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
@@ -207,7 +211,45 @@ _float CGameInstance::Compute_Timer(const _tchar * pTimerTag)
 	return m_pTimer_Manager->Compute_Timer(pTimerTag);
 }
 
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return;
 
+	m_pPipeLine->Set_Transform(eState, TransformState);
+}
+
+_matrix CGameInstance::Get_Transform(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return XMMatrixIdentity();
+
+	return m_pPipeLine->Get_Transform(eState);
+}
+
+const _float4x4* CGameInstance::Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return nullptr;
+
+	return m_pPipeLine->Get_Transform_float4x4(eState);
+}
+
+ _float4x4* CGameInstance::Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return nullptr;
+
+	return m_pPipeLine->Get_Transform_TP(eState);
+}
+
+_float4 CGameInstance::Get_CamPosition()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4(0.f, 0.f, 0.f, 1.f);
+
+	return m_pPipeLine->Get_CamPosition();
+}
 
 
 void CGameInstance::Release_Engine()

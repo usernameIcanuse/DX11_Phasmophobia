@@ -25,6 +25,10 @@ public:
 		return XMLoadFloat4x4(&m_WorldMatrix).r[eState];
 	}
 
+	_matrix Get_WorldMatrix() {
+		return XMLoadFloat4x4(&m_WorldMatrix);
+	}
+
 	void Set_State(STATE eState, _fvector vState)
 	{
 		_float4		vData;

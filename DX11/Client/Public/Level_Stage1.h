@@ -16,6 +16,10 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
+private:
+	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+
 public:
 	static CLevel_Stage1* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

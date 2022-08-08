@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Level_Stage1.h"
 #include "GameInstance.h"
-#include "Level_Loading.h"
+#include "Camera_Free.h"
 
 
 
@@ -16,6 +16,13 @@ HRESULT CLevel_Stage1::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 	/*메쉬 등 추가*/
+
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -39,6 +46,46 @@ HRESULT CLevel_Stage1::Render()
 		return E_FAIL;
 
 	SetWindowText(g_hWnd, TEXT("Level_Stage1. "));
+
+	return S_OK;
+}
+
+HRESULT CLevel_Stage1::Ready_Layer_SkyBox(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	/* For.Lobby*/
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
+		return E_FAIL;
+
+
+
+	Safe_Release(pGameInstance);
+}
+
+HRESULT CLevel_Stage1::Ready_Layer_Camera(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+	CCamera::CAMERADESC			CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+
+	CameraDesc.vEye = _float4(0.0f, 10.f, -10.f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
+	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
+
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), nullptr,&CameraDesc)))
+		return E_FAIL;
+
+
+	Safe_Release(pGameInstance);
 
 	return S_OK;
 }

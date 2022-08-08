@@ -49,9 +49,6 @@
     <ClInclude Include="..\Public\Layer.h">
       <Filter>01.Utility\02.GameObject\Manager\Object_Mgr\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera.h">
-      <Filter>01.Utility\02.GameObject\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Manager.h">
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClInclude>
@@ -73,14 +70,23 @@
     <ClInclude Include="..\public\Texture.h">
       <Filter>01.Utility\03.Component\02.Textures</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Transform.h">
-      <Filter>01.Utility\03.Component\02.Transform</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Object_Manager.h">
       <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera.h">
+      <Filter>01.Utility\02.GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PipeLine.h">
+      <Filter>01.Utility\04. PipeLine</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Input_Manager.h">
-      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\Input_Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Transform.h">
+      <Filter>01.Utility\03.Component\02.Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +120,6 @@
     <ClCompile Include="..\Private\Layer.cpp">
       <Filter>01.Utility\02.GameObject\Manager\Object_Mgr\Layer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera.cpp">
-      <Filter>01.Utility\02.GameObject\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Manager.cpp">
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClCompile>
@@ -141,14 +144,23 @@
     <ClCompile Include="..\private\Texture.cpp">
       <Filter>01.Utility\03.Component\02.Textures</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Transform.cpp">
-      <Filter>01.Utility\03.Component\02.Transform</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
       <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Camera.cpp">
+      <Filter>01.Utility\02.GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PipeLine.cpp">
+      <Filter>01.Utility\04. PipeLine</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Input_Manager.cpp">
-      <Filter>01.Utility\02.GameObject\Manager\Object_Mgr</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\Input_Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform.cpp">
+      <Filter>01.Utility\03.Component\02.Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +238,12 @@
     </Filter>
     <Filter Include="01.Utility\02.GameObject\Manager\Input_Mgr">
       <UniqueIdentifier>{cf4ee622-1283-4da3-ba34-af47e855cc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. PipeLine">
+      <UniqueIdentifier>{9ed463c4-69c6-41e8-af8b-ef7dbc7d9dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Cube">
+      <UniqueIdentifier>{c5b9caa1-8b86-4423-8027-97040d669d08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

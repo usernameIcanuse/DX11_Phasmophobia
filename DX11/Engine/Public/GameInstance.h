@@ -7,6 +7,7 @@
 #include "Component_Manager.h"
 #include "Input_Manager.h"
 #include "Timer_Manager.h"
+#include "PipeLine.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -56,8 +57,13 @@ public: /* For.Timer_Manager */
 	HRESULT Add_Timer(const _tchar* pTimerTag);
 	_float Compute_Timer(const _tchar* pTimerTag);
 
+public: /* For.PipeLine*/
+	void Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState);
+	_matrix Get_Transform(CPipeLine::TRANSFORMSTATE eState);
+	const _float4x4* Get_Transform_float4x4(CPipeLine::TRANSFORMSTATE eState);
+	_float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
+	_float4 Get_CamPosition();
 
-	
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -66,6 +72,7 @@ private:
 	CComponent_Manager*				m_pComponent_Manager = nullptr;
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CInput_Manager*					m_pInput_Manager = nullptr;
+	CPipeLine*						m_pPipeLine = nullptr;
 
 
 public:

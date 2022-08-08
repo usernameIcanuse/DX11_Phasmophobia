@@ -61,6 +61,12 @@
     <ClInclude Include="..\Public\Item.h">
       <Filter>02.GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Free.h">
+      <Filter>02.GameObject\Camera\Camera_Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sky.h">
+      <Filter>02.GameObject\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -113,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Item.cpp">
       <Filter>02.GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Free.cpp">
+      <Filter>02.GameObject\Camera\Camera_Free</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sky.cpp">
+      <Filter>02.GameObject\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +232,15 @@
     <Filter Include="02.GameObject\Item\Thermometer">
       <UniqueIdentifier>{da948321-6e4e-46f9-ad65-1d576b4a5779}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\Camera">
+      <UniqueIdentifier>{5d12a99a-44c4-4372-8213-87d41cfa9cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Camera\Camera_Free">
+      <UniqueIdentifier>{7eb266e0-882f-4ee7-a30e-83b3e9711426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\SkyBox">
+      <UniqueIdentifier>{53853896-c273-4e11-b812-589a75254050}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -233,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

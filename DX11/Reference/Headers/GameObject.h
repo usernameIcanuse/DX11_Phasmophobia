@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Transform.h"
 
 BEGIN(Engine)
 
@@ -24,7 +25,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(); 
-
+	
 
 
 protected:
