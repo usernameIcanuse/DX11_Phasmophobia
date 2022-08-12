@@ -16,6 +16,18 @@ public:
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+
+public:
+	ID3D11Device* Get_Device()
+	{
+		return m_pDevice;
+	}
+
+	ID3D11DeviceContext* Get_Context()
+	{
+		return m_pDeviceContext;
+	}
+
 private:	
 
 	/* 메모리 할당. (정점버퍼, 인덱스버퍼, 텍스쳐로드) */

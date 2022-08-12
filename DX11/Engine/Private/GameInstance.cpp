@@ -11,7 +11,6 @@ CGameInstance::CGameInstance()
 	, m_pTimer_Manager(CTimer_Manager::Get_Instance())
 	, m_pInput_Manager(CInput_Manager::Get_Instance())
 	, m_pPipeLine(CPipeLine::Get_Instance())
-	
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -28,6 +27,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;	
 
+	m_tagGraphicDesc = GraphicDesc;
 	/* 그래픽디바이스. */
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.isWindowMode, GraphicDesc.iWinCX, GraphicDesc.iWinCY, ppDeviceOut, ppDeviceContextOut)))
 		return E_FAIL;
@@ -122,6 +122,26 @@ HRESULT CGameInstance::Present()
 	return S_OK;
 }
 
+GRAPHICDESC CGameInstance::Get_GraphicDesc()
+{
+	return m_tagGraphicDesc;
+}
+
+ID3D11Device* CGameInstance::Get_Device()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+	return m_pGraphic_Device->Get_Device();
+}
+
+ID3D11DeviceContext* CGameInstance::Get_Context()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_Context();
+}
+
 bool CGameInstance::Is_KeyState(KEY _Key, KEY_STATE _KeyState)
 {
 	if (nullptr == m_pInput_Manager)
@@ -152,6 +172,21 @@ HRESULT CGameInstance::Open_Level(_uint iLevelID, CLevel * pLevel)
 		return E_FAIL;
 
 	return m_pLevel_Manager->Open_Level(iLevelID, pLevel);
+}
+
+_uint CGameInstance::Get_Current_Level()
+{
+	if (nullptr == m_pLevel_Manager)
+		return -1;
+	return m_pLevel_Manager->Get_Current_Level();
+}
+
+void CGameInstance::Set_Current_Level(_uint _iCurrentLevelID)
+{
+	if (nullptr == m_pLevel_Manager)
+		return;
+	return m_pLevel_Manager->Set_Current_Level(_iCurrentLevelID);
+
 }
 
 HRESULT CGameInstance::Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype)
@@ -264,11 +299,7 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
-	CInput_Manager::Get_Instance()->Destroy_Instance();
-	
-	CInput_Device::Get_Instance()->Destroy_Instance();
-
-	
+	//CInput_Manager::Get_Instance()->Destroy_Instance();
 
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
@@ -281,5 +312,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pGraphic_Device);
 }

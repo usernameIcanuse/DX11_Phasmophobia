@@ -38,6 +38,19 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXTEX_DECLARATION;
 
+	typedef struct tagVertex_Normal_Texture
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexUV;
+	}VTXNORTEX;
+
+	typedef struct ENGINE_DLL tagVertex_Normal_Texture_Declaration
+	{
+		static const unsigned int		iNumElements = 3;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXNORTEX_DECLARATION;
+
 	typedef struct tagVertex_Cube_Texture
 	{
 		XMFLOAT3		vPosition;
@@ -58,6 +71,14 @@ namespace Engine
 		HWND	hWnd;
 		WINMODE	isWindowMode;
 	}GRAPHICDESC;
+
+	typedef struct tagRay
+	{
+		
+		_float3 vPos;
+		_float3 vDir;
+		_float fLength;
+	}RAY;
 
 
 	enum class KEY_STATE {

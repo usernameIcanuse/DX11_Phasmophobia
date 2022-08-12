@@ -2,6 +2,13 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CShader;
+class CTexture;
+class CRenderer;
+class CVIBuffer;
+END
+
 BEGIN(Client)
 
 class CItem : public CGameObject
@@ -18,9 +25,20 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+protected:
+	CShader* m_pShaderCom = nullptr;
+	CTexture* m_pTextureCom = nullptr;
+	CRenderer* m_pRendererCom = nullptr;
+
+
+protected:
+	virtual	HRESULT	Setup_Component() PURE;
+	virtual HRESULT SetUp_ShaderResource()PURE;
+
+	_bool	Picking(CVIBuffer* pVIBufferCom, _float3& vOut);
+
 public:
-	static CItem* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual CGameObject* Clone(void* pArg) PURE;
 	virtual void Free() override;
 };
 

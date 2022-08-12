@@ -47,6 +47,8 @@ HRESULT CLobby_Main::Initialize(void * pArg)
 
 void CLobby_Main::Tick(_float fTimeDelta)
 {
+	if (!m_bEnable)
+		return;
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 	
@@ -55,6 +57,9 @@ void CLobby_Main::Tick(_float fTimeDelta)
 
 void CLobby_Main::LateTick(_float fTimeDelta)
 {
+	if (!m_bEnable)
+		return;
+
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
@@ -119,6 +124,11 @@ HRESULT CLobby_Main::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
+	_bool	bAlpha = false;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &bAlpha, sizeof(_bool))))
+		return E_FAIL;
+
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
 
@@ -135,28 +145,28 @@ HRESULT CLobby_Main::SetUp_Icon()
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&pIcon)))
 		return E_FAIL;
 	//싱글 플레이
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) - 110.f, 325.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) - 110.f, 320.f, 65.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 
 	m_vecUIIcon.push_back(pIcon);
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
 	//장비 상점
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) +35.f, 325.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) +42.f, 320.f, 65.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
 	//옵션
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 110.f, 325.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 112.f, 320.f, 65.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
 		return E_FAIL;
 	//게임종료
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 180.f, 325.f, 70.f);
+	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 183.f, 320.f, 65.f);
 	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 

@@ -3,12 +3,6 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 
-BEGIN(Engine)
-class CShader;
-class CTexture;
-class CRenderer;
-class CVIBuffer_Rect;
-END
 
 BEGIN(Client)
 class CUIIcon;
@@ -16,7 +10,7 @@ class CUIIcon;
 
 class CUIBackground : public CGameObject
 {
-public:
+protected:
 	CUIBackground(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CUIBackground(const CUIBackground& rhs);
 	virtual ~CUIBackground() = default;

@@ -17,6 +17,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	, m_pVB(rhs.m_pVB)
 	, m_pIB(rhs.m_pIB)	
 	, m_eToplogy(rhs.m_eToplogy)
+	, m_pVerticesPos(rhs.m_pVerticesPos)//얕은 복사
+	, m_pIndices(rhs.m_pIndices)
 {
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);
@@ -29,6 +31,7 @@ HRESULT CVIBuffer::Initialize_Prototype()
 
 HRESULT CVIBuffer::Initialize(void * pArg)
 {
+
 	return S_OK;
 }
 
@@ -87,4 +90,11 @@ void CVIBuffer::Free()
 
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
+
+	//클론 안 했을때만
+	if (!m_bCloned)
+	{
+		Safe_Delete_Array(m_pVerticesPos);
+		Safe_Delete_Array(m_pIndices);
+	}
 }

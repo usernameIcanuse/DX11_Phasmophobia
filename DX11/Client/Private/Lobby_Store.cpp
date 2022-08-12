@@ -48,6 +48,9 @@ HRESULT CLobby_Store::Initialize(void * pArg)
 
 void CLobby_Store::Tick(_float fTimeDelta)
 {
+	if (!m_bEnable)
+		return;
+
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
@@ -56,6 +59,9 @@ void CLobby_Store::Tick(_float fTimeDelta)
 
 void CLobby_Store::LateTick(_float fTimeDelta)
 {
+	if (!m_bEnable)
+		return;
+
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 }
 
@@ -114,6 +120,11 @@ HRESULT CLobby_Store::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	_bool	bAlpha = false;
+
+	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &bAlpha, sizeof(_bool))))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))

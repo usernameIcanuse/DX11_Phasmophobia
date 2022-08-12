@@ -14,7 +14,7 @@ BEGIN(Client)
 
 class CUIIcon final : public CGameObject
 {
-public:
+private:
 	CUIIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CUIIcon(const CUIIcon& rhs);
 	virtual ~CUIIcon() = default;
@@ -54,6 +54,7 @@ private:
 	_float4x4		m_ProjMatrix;
 
 	_bool			m_bSelected = false;
+	_bool			m_bOnMouse = false;
 
 private:
 	HRESULT SetUp_Components();

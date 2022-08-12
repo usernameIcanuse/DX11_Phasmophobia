@@ -17,7 +17,7 @@ class CUIIcon;
 
 class CLobby_AddItems final : public CUIBackground
 {
-public:
+private:
 	CLobby_AddItems(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CLobby_AddItems(const CLobby_AddItems& rhs);
 	virtual ~CLobby_AddItems() = default;

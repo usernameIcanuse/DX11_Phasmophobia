@@ -26,30 +26,31 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 	m_BufferDesc.MiscFlags = 0;
 
 	VTXCUBETEX* pVertices = new VTXCUBETEX[m_iNumVertices];
+	m_pVerticesPos = new _float3[m_iNumVertices];
 
-	pVertices[0].vPosition = _float3(-0.5f, 0.5f, -0.5f);
+	m_pVerticesPos[0] = pVertices[0].vPosition = _float3(-0.5f, 0.5f, -0.5f);
 	pVertices[0].vTexUV = pVertices[0].vPosition;
 
-	pVertices[1].vPosition = _float3(0.5f, 0.5f, -0.5f);
+	m_pVerticesPos[1] = pVertices[1].vPosition = _float3(0.5f, 0.5f, -0.5f);
 	pVertices[1].vTexUV = pVertices[1].vPosition;
 
-	pVertices[2].vPosition = _float3(0.5f, -0.5f, -0.5f);
+	m_pVerticesPos[2] = pVertices[2].vPosition = _float3(0.5f, -0.5f, -0.5f);
 	pVertices[2].vTexUV = pVertices[2].vPosition;
 
-	pVertices[3].vPosition = _float3(-0.5f, -0.5f, -0.5f);
+	m_pVerticesPos[3] = pVertices[3].vPosition = _float3(-0.5f, -0.5f, -0.5f);
 	pVertices[3].vTexUV = pVertices[3].vPosition;
 
 
-	pVertices[4].vPosition = _float3(-0.5f, 0.5f, 0.5f);
+	m_pVerticesPos[4] = pVertices[4].vPosition = _float3(-0.5f, 0.5f, 0.5f);
 	pVertices[4].vTexUV = pVertices[4].vPosition;
 
-	pVertices[5].vPosition = _float3(0.5f, 0.5f, 0.5f);
+	m_pVerticesPos[5] = pVertices[5].vPosition = _float3(0.5f, 0.5f, 0.5f);
 	pVertices[5].vTexUV = pVertices[5].vPosition;
 
-	pVertices[6].vPosition = _float3(0.5f, -0.5f, 0.5f);
+	m_pVerticesPos[6] = pVertices[6].vPosition = _float3(0.5f, -0.5f, 0.5f);
 	pVertices[6].vTexUV = pVertices[6].vPosition;
 
-	pVertices[7].vPosition = _float3(-0.5f, -0.5f, 0.5f);
+	m_pVerticesPos[7] = pVertices[7].vPosition = _float3(-0.5f, -0.5f, 0.5f);
 	pVertices[7].vTexUV = pVertices[7].vPosition;
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -80,6 +81,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 	m_BufferDesc.MiscFlags = 0;
 
 	FACEINDICES16* pIndices = new FACEINDICES16[m_iNumPrimitive];
+	m_pIndices = new FACEINDICES16[m_iNumPrimitive];
 	ZeroMemory(pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 
 	/* +x */
@@ -109,6 +111,8 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pIndices;
 
+	memcpy(m_pIndices, pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
+
 	if (FAILED(Create_IndexBuffer()))
 		return E_FAIL;
 
@@ -119,6 +123,8 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 
 HRESULT CVIBuffer_Cube::Initialize(void * pArg)
 {
+	m_bCloned = true;
+
 	return S_OK;
 }
 

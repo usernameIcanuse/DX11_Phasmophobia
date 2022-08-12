@@ -14,7 +14,7 @@ BEGIN(Client)
 
 class CSky final : public CGameObject
 {
-public:
+private:
 	CSky(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CSky(const CSky& rhs);
 	virtual ~CSky() = default;

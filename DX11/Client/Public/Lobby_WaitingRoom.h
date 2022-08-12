@@ -17,7 +17,7 @@ class CUIIcon;
 
 class CLobby_WaitingRoom final : public CUIBackground
 {
-public:
+private:
 	CLobby_WaitingRoom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CLobby_WaitingRoom(const CLobby_WaitingRoom& rhs);
 	virtual ~CLobby_WaitingRoom() = default;

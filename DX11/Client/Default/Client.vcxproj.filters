@@ -67,6 +67,69 @@
     <ClInclude Include="..\Public\Sky.h">
       <Filter>02.GameObject\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_FPS.h">
+      <Filter>02.GameObject\Camera\Camera_FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>03.ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DotsProjecter.h">
+      <Filter>02.GameObject\Item\DotsProjecter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EMF.h">
+      <Filter>02.GameObject\Item\EMF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FlashLight.h">
+      <Filter>02.GameObject\Item\FlashLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GhostWritingBook.h">
+      <Filter>02.GameObject\Item\GhostWritingBook</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SpiritBox.h">
+      <Filter>02.GameObject\Item\SpiritBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Thermometer.h">
+      <Filter>02.GameObject\Item\Thermometer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UVLight.h">
+      <Filter>02.GameObject\Item\UVLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Video_Camera.h">
+      <Filter>02.GameObject\Item\Video Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imconfig.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_dx11.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_win32.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_internal.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_rectpack.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_textedit.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_truetype.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImguiMgr.h">
+      <Filter>IMGUI\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -125,6 +188,63 @@
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
       <Filter>02.GameObject\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_FPS.cpp">
+      <Filter>02.GameObject\Camera\Camera_FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObject\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DotsProjecter.cpp">
+      <Filter>02.GameObject\Item\DotsProjecter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EMF.cpp">
+      <Filter>02.GameObject\Item\EMF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FlashLight.cpp">
+      <Filter>02.GameObject\Item\FlashLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GhostWritingBook.cpp">
+      <Filter>02.GameObject\Item\GhostWritingBook</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SpiritBox.cpp">
+      <Filter>02.GameObject\Item\SpiritBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Thermometer.cpp">
+      <Filter>02.GameObject\Item\Thermometer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UVLight.cpp">
+      <Filter>02.GameObject\Item\UVLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Video_Camera.cpp">
+      <Filter>02.GameObject\Item\Video Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_demo.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_draw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_tables.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImguiMgr.cpp">
+      <Filter>IMGUI\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +361,18 @@
     <Filter Include="02.GameObject\SkyBox">
       <UniqueIdentifier>{53853896-c273-4e11-b812-589a75254050}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\Camera\Camera_FPS">
+      <UniqueIdentifier>{a84f1b54-3439-4aac-a718-632691e11708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Terrain">
+      <UniqueIdentifier>{bade37b0-84f2-4b1d-8d76-0aa0e160bf24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMGUI">
+      <UniqueIdentifier>{8b81be48-a812-498a-a94a-4d1dbc3f3159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMGUI\Manager">
+      <UniqueIdentifier>{d6b61735-f3dc-4d86-ba99-69974b08ee7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -257,6 +389,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

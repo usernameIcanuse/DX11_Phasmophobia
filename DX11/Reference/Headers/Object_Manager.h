@@ -50,8 +50,6 @@ private:
 	class CLayer* Find_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 
 
-
-
 public:
 	virtual void Free() override;
 };

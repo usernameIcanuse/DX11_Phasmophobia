@@ -9,11 +9,13 @@
 #include "Lobby_Store.h"
 
 #include "Camera_Free.h"
+#include "Camera_FPS.h"
 //#include "Monster.h"
-//#include "Terrain.h"
-//#include "Player.h"
+#include "Terrain.h"
+#include "Player.h"
 //#include "Effect.h"
 #include "Sky.h"
+#include "DotsProjecter.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -119,29 +121,31 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
+	m_fLoadingRatio = 0.f;
+	_float		fRatio = 1.f / 10.f;//로딩 퍼센테이지
 
 	/*For, Prototype_GameObject_Lobby*/
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Lobby"),
 		CLobby_Main::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	m_fLoadingRatio += fRatio;
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_WaitingRoom"),
 		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Store"),
 		CLobby_Store::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	
+	m_fLoadingRatio += fRatio;
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_AddItems"),
 		CLobby_AddItems::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
 		CUIIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 
 #pragma endregion
 
@@ -150,23 +154,23 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Lobby"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Lobby/Lobby_Main.dds")))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Lobby/OutLine.dds")))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_WaitingRoom"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/WaitingRoom.dds")))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Large_outline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Large_outline.dds")))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Small_outline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Small_outline.dds")))))
 		return E_FAIL;
-
+	m_fLoadingRatio += fRatio;
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
@@ -201,23 +205,32 @@ HRESULT CLoader::Loading_ForStage1Level()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	/* For.Prototype_GameObject_Terrain*/
-	/*if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Camera_FPS*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_FPS"),
+		CCamera_FPS::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Player */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
-	//	CPlayer::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
+		CPlayer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For.Prototype_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DotsProjecter"),
+		CDotsProjecter::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Monster */
@@ -235,9 +248,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
 	/* For.Prototype_Component_Texture_Terrain */
-	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	///* For.Prototype_Component_Texture_Player */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Player"),
@@ -264,9 +277,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
 
 	/* For.Prototype_Component_VIBuffer_Terrain */
-	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Cube*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Cube"),
@@ -274,10 +287,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
-	/* For.Prototype_Component_Shader_VtxTex */
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxNorTex"),
-	//	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Shader_VtxNorTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
 
 	/* For.Prototype_Component_Shader_VtxCubeTex */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxCubeTex"),

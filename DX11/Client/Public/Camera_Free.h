@@ -6,7 +6,7 @@ BEGIN(Client)
 
 class CCamera_Free final : public CCamera
 {
-public:
+private:
 	CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCamera_Free(const CCamera_Free& rhs);
 	virtual ~CCamera_Free() = default;

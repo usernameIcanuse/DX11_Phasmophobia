@@ -8,6 +8,7 @@
 #include "Input_Manager.h"
 #include "Timer_Manager.h"
 #include "PipeLine.h"
+#include "Math_Utility.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -33,6 +34,9 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+	GRAPHICDESC		Get_GraphicDesc();
+	ID3D11Device* Get_Device();
+	ID3D11DeviceContext* Get_Context();
 
 
 public: /* For.Input_Manager*/
@@ -42,6 +46,8 @@ public: /* For.Input_Manager*/
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
+	_uint	Get_Current_Level();
+	void	Set_Current_Level(_uint _iCurrentLevelID);
 
 public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
@@ -74,6 +80,7 @@ private:
 	CInput_Manager*					m_pInput_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
 
+	GRAPHICDESC						m_tagGraphicDesc;
 
 public:
 	static void Release_Engine();

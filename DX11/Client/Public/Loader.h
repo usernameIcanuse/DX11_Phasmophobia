@@ -36,6 +36,12 @@ public:
 	HRESULT Loading_ForLobbyLevel();
 	HRESULT Loading_ForStage1Level();
 
+public:
+	_float	Get_LoadingRatio()
+	{
+		return m_fLoadingRatio*100.f;
+	}
+
 private:
 	ID3D11Device*				m_pDevice = nullptr;
 	ID3D11DeviceContext*		m_pContext = nullptr;	
@@ -46,6 +52,8 @@ private:
 	CRITICAL_SECTION		m_CriticalSection;
 	_bool					m_isFinished = false;
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
+
+	_float					m_fLoadingRatio = 0.f;
 
 public:
 

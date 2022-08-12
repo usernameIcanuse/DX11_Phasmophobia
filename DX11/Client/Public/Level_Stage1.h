@@ -7,7 +7,7 @@ BEGIN(Client)
 
 class CLevel_Stage1 final : public CLevel
 {
-public:
+private:
 	CLevel_Stage1(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_Stage1() = default;
 
@@ -19,6 +19,8 @@ public:
 private:
 	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Player(const _tchar* pLayertag);
+	HRESULT Ready_Layer_Terrain(const _tchar* pLayertag);
 
 public:
 	static CLevel_Stage1* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

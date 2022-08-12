@@ -11,7 +11,7 @@ BEGIN(Client)
 
 class CLevel_Lobby final : public CLevel
 {
-public:
+private:
 	CLevel_Lobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_Lobby() = default;
 
@@ -31,8 +31,6 @@ private://각 로비 저장할 용도로만
 	CGameObject* m_pWaitingRoom;
 	CGameObject* m_pStore;
 	CGameObject* m_pAddItems;
-
-private:
 
 
 public:

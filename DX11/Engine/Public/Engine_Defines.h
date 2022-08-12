@@ -14,6 +14,8 @@
 
 #include <typeinfo>
 
+#include <DirectXCollision.h>
+
 using namespace DirectX;
 
 #define DIRECTINPUT_VERSION  0x0800
@@ -40,12 +42,12 @@ using namespace DirectX;
 #include <stdlib.h>
 #include <crtdbg.h>
 
-#ifndef DBG_NEW 
-
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
-#define new DBG_NEW 
-
-#endif
+//#ifndef DBG_NEW 
+//
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+//#define new DBG_NEW 
+//
+//#endif
 
 #endif // _DEBUG
 

@@ -83,13 +83,14 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	if (FAILED(Create_IndexBuffer()))
 		return E_FAIL;
 
-
+	Safe_Delete_Array(pIndices);
 
 	return S_OK;
 }
 
 HRESULT CVIBuffer_Rect::Initialize(void * pArg)
 {
+	m_bCloned = true;
 	return S_OK;
 }
 

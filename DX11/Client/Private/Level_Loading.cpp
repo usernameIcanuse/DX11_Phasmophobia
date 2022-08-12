@@ -34,6 +34,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
 
+
 	if (true == m_pLoader->is_Finished())
 	{
 		
@@ -42,12 +43,15 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 		switch (m_eNextLevel)
 		{
 		case LEVEL_LOGO:
+			//GAMEINSTANCE->Set_Current_Level(LEVEL_LOGO);
 			pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
 			break;
 		case LEVEL_LOBBY:
+			//GAMEINSTANCE->Set_Current_Level(LEVEL_LOBBY);
 			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
 			break;
 		case LEVEL_STAGE1:
+			//GAMEINSTANCE->Set_Current_Level(LEVEL_STAGE1);
 			pLevel = CLevel_Stage1::Create(m_pDevice, m_pContext);
 			break;
 		}

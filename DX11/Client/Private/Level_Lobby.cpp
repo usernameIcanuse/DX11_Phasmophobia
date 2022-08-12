@@ -155,7 +155,7 @@ HRESULT CLevel_Lobby::Ready_Layer_Store(const _tchar* pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, pLayerTag, TEXT("Prototype_GameObject_Store"), &m_pStore)))
 		return E_FAIL;
 
-	m_pWaitingRoom->Set_Enable(false);
+	m_pStore->Set_Enable(false);
 
 	Safe_Release(pGameInstance);
 }
@@ -169,7 +169,7 @@ HRESULT CLevel_Lobby::Ready_Layer_AddItems(const _tchar* pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, pLayerTag, TEXT("Prototype_GameObject_AddItems"), &m_pAddItems)))
 		return E_FAIL;
 
-	m_pWaitingRoom->Set_Enable(false);
+	m_pAddItems->Set_Enable(false);
 
 	Safe_Release(pGameInstance);
 }

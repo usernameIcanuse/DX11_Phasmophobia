@@ -14,7 +14,7 @@ BEGIN(Client)
 
 class CLoading final : public CGameObject
 {
-public:
+private:
 	CLoading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CLoading(const CLoading& rhs);
 	virtual ~CLoading() = default;

@@ -41,29 +41,27 @@ void CUIIcon::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 	
-	
-	if (CGameInstance::Get_Instance()->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	RECT rect{ m_fX - (m_fSizeX * 0.5f), m_fY - (m_fSizeY * 0.5f),m_fX + (m_fSizeX * 0.5f), m_fY + (m_fSizeY * 0.5f) };
+	POINT pt{};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+	m_bSelected = false;
+	m_bOnMouse = false;
+
+	if (PtInRect(&rect, pt))
 	{
-		RECT rect{ m_fX - (m_fSizeX * 0.5f), m_fY - (m_fSizeY * 0.5f),m_fX + (m_fSizeX * 0.5f), m_fY + (m_fSizeY * 0.5f) };
-		POINT pt{};
-
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-
-		if (PtInRect(&rect, pt))
+		m_bOnMouse = true;
+		if (CGameInstance::Get_Instance()->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 		{
 			m_bSelected = true;
 		}
 	}
-	else
-		m_bSelected = false;
-
-
+	
 }
 
 void CUIIcon::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 }
 
 HRESULT CUIIcon::Render()
@@ -75,8 +73,8 @@ HRESULT CUIIcon::Render()
 	/* 셰이더 전역변수에 값을 던진다. */
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
-
-	m_pShaderCom->Begin(0);
+	
+	m_pShaderCom->Begin(1);
 
 	m_pVIBufferCom->Render();
 
@@ -125,6 +123,10 @@ HRESULT CUIIcon::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &m_bOnMouse, sizeof(_bool))))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))

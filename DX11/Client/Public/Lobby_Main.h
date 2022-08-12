@@ -16,7 +16,7 @@ class CUIIcon;
 
 class CLobby_Main final : public CUIBackground
 {
-public:
+private:
 	CLobby_Main(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CLobby_Main(const CLobby_Main& rhs);
 	virtual ~CLobby_Main() = default;

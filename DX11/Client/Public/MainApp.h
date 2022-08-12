@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Base.h"
+#include "ImguiMgr.h"
 
 BEGIN(Engine)
 class CRenderer;
@@ -22,6 +23,7 @@ public:
 
 private:
 	CGameInstance*			m_pGameInstance = nullptr;
+	CImguiMgr*				m_pImguiMgr = nullptr;
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
 	CRenderer*				m_pRenderer = nullptr;

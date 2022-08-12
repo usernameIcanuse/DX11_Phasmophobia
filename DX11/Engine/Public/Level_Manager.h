@@ -20,6 +20,15 @@ public:
 	void Tick(_float fTimeDelta);
 	HRESULT Render();
 
+	void	Set_Current_Level(_uint _iCurrentLevelID)
+	{
+		m_iCurrentLevelID = _iCurrentLevelID;
+	}
+	_uint	Get_Current_Level()
+	{
+		return m_iCurrentLevelID;
+	}
+
 private:
 	class CLevel*			m_pCurrentLevel = nullptr;
 	_uint					m_iCurrentLevelID = 0;

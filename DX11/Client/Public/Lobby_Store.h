@@ -17,7 +17,7 @@ class CUIIcon;
 
 class CLobby_Store final : public CUIBackground
 {
-public:
+private:
 	CLobby_Store(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CLobby_Store(const CLobby_Store& rhs);
 	virtual ~CLobby_Store() = default;

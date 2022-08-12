@@ -34,9 +34,22 @@ protected:
 	DXGI_FORMAT						m_eIndexFormat;
 	D3D11_PRIMITIVE_TOPOLOGY		m_eToplogy;
 
-protected:
-	
-	
+
+	_float3*						m_pVerticesPos = nullptr;
+	void*							m_pIndices = nullptr;
+
+	_bool							m_bCloned = false;
+
+public:
+	_uint	Get_NumPrimitive()
+	{
+		return m_iNumPrimitive;
+	}
+	const _float3* Get_VerticesPos()
+	{
+		return m_pVerticesPos;
+	}
+	virtual _uint3	Get_Indices(_uint iIndex)const = 0;
 
 
 protected:

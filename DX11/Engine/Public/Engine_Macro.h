@@ -63,3 +63,8 @@ unsigned long ClassName::Destroy_Instance()				\
 {														\
 	return Safe_Release(m_pInstance);					\
 }
+#define		GAMEINSTANCE	CGameInstance::Get_Instance()
+#define		DEVICE			CGameInstance::Get_Instance()->Get_Device()
+#define     CONTEXT			CGameInstance::Get_Instance()->Get_Context()
+
+#define		CURRENT_LEVEL	GAMEINSTANCE->Get_Current_Level()

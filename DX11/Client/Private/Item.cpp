@@ -27,6 +27,8 @@ HRESULT CItem::Initialize(void* pArg)
 
 void CItem::Tick(_float fTimeDelta)
 {
+    __super::Tick(fTimeDelta);
+ 
 }
 
 void CItem::LateTick(_float fTimeDelta)
@@ -38,32 +40,22 @@ HRESULT CItem::Render()
     return S_OK;
 }
 
-CItem* CItem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+
+
+_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float3& vOut)
 {
-    CItem* pInstance = new CItem(pDevice, pContext);
+    RAY tagMouseRay = CMath_Utility::Get_MouseRayInWorldSpace();
+    _float3 fDist;
 
-    if (FAILED(pInstance->Initialize_Prototype()))
-    {
-        MSG_BOX("Failed to Created : CItem");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
-}
-
-CGameObject* CItem::Clone(void* pArg)
-{
-    CItem* pInstance = new CItem(*this);
-
-    if (FAILED(pInstance->Initialize(pArg)))
-    {
-        MSG_BOX("Failed to Cloned : CItem");
-        Safe_Release(pInstance);
-    }
-
-    return pInstance;
+    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, tagMouseRay, &vOut);
 }
 
 void CItem::Free()
 {
+    __super::Free();
+    
+    Safe_Release(m_pShaderCom);
+    Safe_Release(m_pRendererCom);
+    Safe_Release(m_pTextureCom);
+    //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

@@ -19,9 +19,6 @@
     <ClInclude Include="..\Public\Engine_Typedef.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Base.h">
-      <Filter>01.Utility\99.SuperClass</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Component.h">
       <Filter>01.Utility\03.Component</Filter>
     </ClInclude>
@@ -88,11 +85,17 @@
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Terrain.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>01.Utility\99.SuperClass\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Math_Utility.h">
+      <Filter>01.Utility\99.SuperClass\Math_Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\Base.cpp">
-      <Filter>01.Utility\99.SuperClass</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Component.cpp">
       <Filter>01.Utility\03.Component</Filter>
     </ClCompile>
@@ -161,6 +164,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Terrain.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>01.Utility\99.SuperClass\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Math_Utility.cpp">
+      <Filter>01.Utility\99.SuperClass\Math_Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +256,15 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.VIBuffer\Cube">
       <UniqueIdentifier>{c5b9caa1-8b86-4423-8027-97040d669d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Terrain">
+      <UniqueIdentifier>{d34a62d8-bc3f-4516-bc85-da8a2b062142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SuperClass\Base">
+      <UniqueIdentifier>{8cbbb85d-630f-4896-8b5d-7e580aa3ba9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SuperClass\Math_Utility">
+      <UniqueIdentifier>{9a057c2f-dc40-47eb-be10-53e7fec07661}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

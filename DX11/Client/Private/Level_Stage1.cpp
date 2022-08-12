@@ -20,7 +20,13 @@ HRESULT CLevel_Stage1::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+		return E_FAIL;
+
+	/*if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;*/
+
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
 
@@ -62,6 +68,8 @@ HRESULT CLevel_Stage1::Ready_Layer_SkyBox(const _tchar* pLayerTag)
 
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
 }
 
 HRESULT CLevel_Stage1::Ready_Layer_Camera(const _tchar* pLayerTag)
@@ -71,7 +79,7 @@ HRESULT CLevel_Stage1::Ready_Layer_Camera(const _tchar* pLayerTag)
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 
-	CameraDesc.vEye = _float4(0.0f, 10.f, -10.f, 1.f);
+	CameraDesc.vEye = _float4(0.0f, 20.f, -100.f, 1.f);
 	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
 	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
@@ -86,6 +94,34 @@ HRESULT CLevel_Stage1::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Stage1::Ready_Layer_Player(const _tchar* pLayertag)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if(FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayertag, TEXT("Prototype_GameObject_Player"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_Stage1::Ready_Layer_Terrain(const _tchar* pLayertag)
+{
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayertag, TEXT("Prototype_GameObject_Terrain"))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Item"), TEXT("Prototype_GameObject_DotsProjecter"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
