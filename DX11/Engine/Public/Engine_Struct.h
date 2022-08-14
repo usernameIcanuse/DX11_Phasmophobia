@@ -113,4 +113,21 @@ namespace Engine
 	};
 
 
+	enum class LAYER
+	{
+		PLAYER,
+		CAMERA,
+		GHOST,
+		ITEM,
+		OBJECT,
+		HOUSE,
+		MISC
+	};
+
+	enum class OBJ_TAG
+	{
+
+	};
+
+
 }

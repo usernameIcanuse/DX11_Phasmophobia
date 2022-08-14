@@ -9,7 +9,7 @@ public:
 	virtual ~CMath_Utility() = default;
 
 public:
-	static	bool		Picking(class CVIBuffer* pVIBuffer, class CTransform* pTransform, RAY _Ray, _float3* pOut);
+	static	bool		Picking(class CVIBuffer* pVIBuffer, class CTransform* pTransform, _float4* pOut);
 	static  RAY			Get_MouseRayInWorldSpace();
 };
 

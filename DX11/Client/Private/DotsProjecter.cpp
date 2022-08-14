@@ -31,14 +31,15 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
 void CDotsProjecter::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    if (GAMEINSTANCE->Is_KeyState(KEY::E, KEY_STATE::TAP))
-    {
-        _float3 fDist;
-        if (Picking((CVIBuffer*)m_pVIBufferCom,fDist))
-        {
-            int a = 0;
-        }
-    }
+    m_pTransformCom->Set_Scaled(_float3(10.f, 10.f, 10.f));
+    //if (GAMEINSTANCE->Is_KeyState(KEY::E, KEY_STATE::TAP))
+    //{
+    //    _float4 fDist;
+    //    if (Picking((CVIBuffer*)m_pVIBufferCom,fDist))
+    //    {
+    //        int a = 0;
+    //    }
+    //}
 
 }
 
@@ -102,7 +103,7 @@ HRESULT CDotsProjecter::SetUp_ShaderResource()
         return E_FAIL;
     if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
         return E_FAIL;
-    if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 2)))
+    if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 1)))
         return E_FAIL;
 
     RELEASE_INSTANCE(CGameInstance);

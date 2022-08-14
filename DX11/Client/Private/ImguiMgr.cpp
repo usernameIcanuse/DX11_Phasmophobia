@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+#include "GameObject.h"
+
 
 IMPLEMENT_SINGLETON(CImguiMgr)
 
@@ -82,29 +84,154 @@ void CImguiMgr::Tick(_float fTimeDelta)
 		ImGui::End();
 	}
 
-	Tile_Texture();
+	if (CURRENT_LEVEL == LEVEL_STAGE1)
+	{
+		Set_Prototype();
+		Tool_Map();
+		Picking_Object();
+	}
 }
 
 void CImguiMgr::Render()
 {
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+
+}
+
+void CImguiMgr::Set_Prototype()
+{
+	static _bool	bFirst = false;
+	if (!bFirst)
+	{
+		bFirst = true;
+
+		CGameObject* pTerrain = nullptr;
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
+			return;
+
+		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
+		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
+
+		CGameObject* pTemp = nullptr;
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototype.push_back(pTemp);
+	}
 }
 
 void CImguiMgr::ShowWindow(bool* p_open)
 {
 }
 
-void CImguiMgr::Tile_Texture()
+void CImguiMgr::Tool_Map()
 {
-	ImGui::Begin("Tile_Texture");
+	ImGui::Begin("Tool_Map");
 
+
+	const char* items[] = { "DotsProjecter" };
+	static int item_current_idx = 0; // Here we store our selection data as an index.
 	if (ImGui::BeginListBox("listbox 1"))
 	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			m_vecPrototype[n]->Set_Enable(false);
+			const bool is_selected = (item_current_idx == n);
+			if (ImGui::Selectable(items[n], is_selected))
+				item_current_idx = n;
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+
 		ImGui::EndListBox();
+		m_pSelectedObject = m_vecPrototype[item_current_idx];
+		m_pSelectedObject->Set_Enable(true);
+
 	}
 	ImGui::End();
+
+
+	//ImGui::Begin("Main (Map Tool)", 0, ImGuiWindowFlags_AlwaysAutoResize);
+//if (ImGui::BeginTabBar("Main Tab Bar Map Tool"))
+//{
+//	Map_MapTool();
+//	Object_MapTool();
+
+//	ImGui::EndTabBar();
+//} /*TabBar*/
+//ImGui::End();
+
 }
+
+void CImguiMgr::Picking_Object()
+{
+	_float4 fPosition;
+	if (m_pSelectedObject)
+	{
+		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
+		{
+			CTransform* pSelectedTransfrom = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
+			pSelectedTransfrom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
+		}
+	}
+}
+
+
+void CImguiMgr::Object_MapTool()
+{
+	if (ImGui::BeginTabItem("Objects"))
+	{
+		//Widget_WallListBox_Map();
+		SelectObjectButton_Map();
+		ImGui::EndTabItem();
+	}
+}
+
+void CImguiMgr::Map_MapTool()
+{
+}
+
+void CImguiMgr::SelectObjectButton_Map()
+{
+	//static char SelectObjectBuffer[255] = "";
+	//ImGui::InputText("Input object to select", SelectObjectBuffer, sizeof(SelectObjectBuffer));
+	//m_strSelectObject_Map = SelectObjectBuffer;
+	//if (ImGui::Button("Select object"))
+	//{
+	//	for (auto& iter : m_PrototypeTagList)
+	//	{
+	//		if (0 == m_strSelectObject_Map.compare(iter.c_str()))
+	//		{
+	//			m_strCurObj = m_strSelectObject_Map;
+	//			MessageBox(0, TEXT("changed object"), TEXT("message box"), MB_OK);
+	//		/*	if ("Brix" == m_strCurObj)
+	//			{
+	//				m_bIsBrix = true;
+	//				Update_PreviewCubeScale(_float3(1.f, 1.f, 1.f));
+	//			}
+	//			else
+	//			{
+	//				m_bIsBrix = false;*/
+	//				if (0 == m_strCurObj.compare("Monster_Afrit"))
+	//				{
+	//					m_tInstallObjData.tObjTag = OBJ_TAG::AFRIT;
+	//					m_tInstallObjData.tLayerTag = LAYER_TAG::MONSTER;
+	//					Update_PreviewCubeScale(_float3(1.f, 1.f, 1.f));
+	//				}
+	//			
+
+	//			}
+	//		}
+	//	}
+	//}
+}
+
 
 
 //void  CImguiMgr::CleanupDeviceD3D()

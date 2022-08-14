@@ -5,8 +5,10 @@ CMath_Utility::CMath_Utility()
 {
 }
 
-bool CMath_Utility::Picking(CVIBuffer* pVIBuffer, CTransform* pTransform, RAY _Ray, _float3* pOut)
+bool CMath_Utility::Picking(CVIBuffer* pVIBuffer, CTransform* pTransform,  _float4* pOut)
 {
+	RAY _Ray = Get_MouseRayInWorldSpace();
+
 	_fmatrix WorldMatrix = pTransform->Get_WorldMatrix();                 // 월드 메트릭스 가져옴
 	_fmatrix LocalMatrix = XMMatrixInverse(nullptr, WorldMatrix);    // 열행렬 곱해 로컬스페이스로 감
 
@@ -31,7 +33,14 @@ bool CMath_Utility::Picking(CVIBuffer* pVIBuffer, CTransform* pTransform, RAY _R
 			if (fDist < _Ray.fLength)
 			{
 				vPickedPos = vRayPos + vRayDir * fDist;
-				XMStoreFloat3(pOut, XMVector3TransformCoord(vPickedPos, pTransform->Get_WorldMatrix()));
+				_float3 fTemp;
+				XMStoreFloat3(&fTemp, XMVector3TransformCoord(vPickedPos, pTransform->Get_WorldMatrix()));
+
+				pOut->x = fTemp.x;
+				pOut->y = fTemp.y;
+				pOut->z = fTemp.z;
+				pOut->w = 1.f;
+
 				return true;
 			}
 

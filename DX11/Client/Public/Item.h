@@ -35,7 +35,7 @@ protected:
 	virtual	HRESULT	Setup_Component() PURE;
 	virtual HRESULT SetUp_ShaderResource()PURE;
 
-	_bool	Picking(CVIBuffer* pVIBufferCom, _float3& vOut);
+	_bool	Picking(CVIBuffer* pVIBufferCom, _float4& vOut);
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

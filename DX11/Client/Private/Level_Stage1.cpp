@@ -26,8 +26,8 @@ HRESULT CLevel_Stage1::Initialize()
 	/*if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;*/
 
 
 	return S_OK;
@@ -65,7 +65,8 @@ HRESULT CLevel_Stage1::Ready_Layer_SkyBox(const _tchar* pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
 		return E_FAIL;
 
-
+	/*if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Item"), TEXT("Prototype_GameObject_DotsProjecter"))))
+		return E_FAIL;*/
 
 	Safe_Release(pGameInstance);
 
@@ -118,8 +119,7 @@ HRESULT CLevel_Stage1::Ready_Layer_Terrain(const _tchar* pLayertag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, pLayertag, TEXT("Prototype_GameObject_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Item"), TEXT("Prototype_GameObject_DotsProjecter"))))
-		return E_FAIL;
+	
 
 	RELEASE_INSTANCE(CGameInstance);
 

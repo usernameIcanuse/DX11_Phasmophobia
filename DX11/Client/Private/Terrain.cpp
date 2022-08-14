@@ -35,16 +35,15 @@ HRESULT CTerrain::Initialize(void * pArg)
 
 void CTerrain::Tick(_float fTimeDelta)
 {
-	RAY tagMouseRay = CMath_Utility::Get_MouseRayInWorldSpace();
-	_float3 fDist;
+	/*_float4 fDist;
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{
-		if (true == CMath_Utility::Picking(m_pVIBufferCom, m_pTransformCom, tagMouseRay, &fDist))
+		if (true == CMath_Utility::Picking(m_pVIBufferCom, m_pTransformCom, &fDist))
 		{
-			_float3 Temp = fDist;
+			_float4 Temp = fDist;
 		}
-	}
+	}*/
 }
 
 void CTerrain::LateTick(_float fTimeDelta)

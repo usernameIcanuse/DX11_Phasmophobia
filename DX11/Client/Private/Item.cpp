@@ -42,12 +42,9 @@ HRESULT CItem::Render()
 
 
 
-_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float3& vOut)
+_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float4& vOut)
 {
-    RAY tagMouseRay = CMath_Utility::Get_MouseRayInWorldSpace();
-    _float3 fDist;
-
-    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, tagMouseRay, &vOut);
+    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, &vOut);
 }
 
 void CItem::Free()

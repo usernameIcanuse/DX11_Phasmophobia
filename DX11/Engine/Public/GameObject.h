@@ -26,7 +26,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(); 
 	
-
+public:
+	static const _tchar*		m_pTransformTag;
 
 protected:
 	ID3D11Device*				m_pDevice = nullptr;
@@ -40,7 +41,6 @@ protected:
 	map<const _tchar*, class CComponent*>			m_Components;
 	typedef map<const _tchar*, class CComponent*>	COMPONENTS;
 
-	static const _tchar*		m_pTransformTag;
 	
 	_bool		m_bEnable = true;
 
