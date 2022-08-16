@@ -48,16 +48,20 @@ private:
 	void ShowWindow(bool* p_open);
 	void Tool_Map();
 
-	void Picking_Object();
 
 	void Object_MapTool();//오브젝트 배치
 	void Map_MapTool();//갈 수 있는 영역 배치
 
-	void SelectObjectButton_Map();
+	void Rotation();
+	void Scaling();
+	void Picking_Object();
+	void CollocateObject();
+
 
 private:
 	vector<CGameObject*> m_vecPrototype;
 	vector<CGameObject*> m_vecCollocatedObject;
+	_uint				 m_iSelectedIndex = 0;
 
 	string	m_strSelectObject_Map = "";
 
@@ -75,7 +79,7 @@ private:
 
 	//선택한 오브젝트
 	CGameObject* m_pSelectedObject = nullptr;
-
+	CTransform* m_pSelectedTransform = nullptr;
 	//지형
 	//CGameObject* m_pTerrain = nullptr;
 	CTransform* m_pTerrainTransform = nullptr;

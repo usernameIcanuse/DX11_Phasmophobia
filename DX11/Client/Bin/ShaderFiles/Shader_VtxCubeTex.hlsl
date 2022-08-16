@@ -89,4 +89,15 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_SKY();
 	}
 
+	pass Cube
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_SKY();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_SKY();
+	
+	}
 }

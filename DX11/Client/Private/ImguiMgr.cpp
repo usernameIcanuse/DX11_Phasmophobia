@@ -88,6 +88,7 @@ void CImguiMgr::Tick(_float fTimeDelta)
 	{
 		Set_Prototype();
 		Tool_Map();
+		
 		Picking_Object();
 	}
 }
@@ -132,7 +133,15 @@ void CImguiMgr::Tool_Map()
 
 
 	const char* items[] = { "DotsProjecter" };
-	static int item_current_idx = 0; // Here we store our selection data as an index.
+	static int item_current_idx = -1; // Here we store our selection data as an index.
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		item_current_idx = -1;
+		m_pSelectedObject =  nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+
 	if (ImGui::BeginListBox("listbox 1"))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
@@ -140,20 +149,25 @@ void CImguiMgr::Tool_Map()
 			m_vecPrototype[n]->Set_Enable(false);
 			const bool is_selected = (item_current_idx == n);
 			if (ImGui::Selectable(items[n], is_selected))
-				item_current_idx = n;
+				m_iSelectedIndex = item_current_idx = n;
 
 			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 			if (is_selected)
 			{
 				ImGui::SetItemDefaultFocus();
+				m_pSelectedObject = m_vecPrototype[item_current_idx];
+				m_pSelectedObject->Set_Enable(true);
+				m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
+
 			}
 		}
 
 		ImGui::EndListBox();
-		m_pSelectedObject = m_vecPrototype[item_current_idx];
-		m_pSelectedObject->Set_Enable(true);
-
 	}
+
+	Rotation();
+	Scaling();
+
 	ImGui::End();
 
 
@@ -176,9 +190,16 @@ void CImguiMgr::Picking_Object()
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
-			CTransform* pSelectedTransfrom = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
-			pSelectedTransfrom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
+			_float3 fScale = m_pSelectedTransform->Get_Scaled();
+			fPosition.y += fScale.y*0.5f;
+			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
+			
+			CollocateObject();
 		}
+	}
+	else
+	{
+
 	}
 }
 
@@ -188,7 +209,7 @@ void CImguiMgr::Object_MapTool()
 	if (ImGui::BeginTabItem("Objects"))
 	{
 		//Widget_WallListBox_Map();
-		SelectObjectButton_Map();
+		
 		ImGui::EndTabItem();
 	}
 }
@@ -197,47 +218,54 @@ void CImguiMgr::Map_MapTool()
 {
 }
 
-void CImguiMgr::SelectObjectButton_Map()
-{
-	//static char SelectObjectBuffer[255] = "";
-	//ImGui::InputText("Input object to select", SelectObjectBuffer, sizeof(SelectObjectBuffer));
-	//m_strSelectObject_Map = SelectObjectBuffer;
-	//if (ImGui::Button("Select object"))
-	//{
-	//	for (auto& iter : m_PrototypeTagList)
-	//	{
-	//		if (0 == m_strSelectObject_Map.compare(iter.c_str()))
-	//		{
-	//			m_strCurObj = m_strSelectObject_Map;
-	//			MessageBox(0, TEXT("changed object"), TEXT("message box"), MB_OK);
-	//		/*	if ("Brix" == m_strCurObj)
-	//			{
-	//				m_bIsBrix = true;
-	//				Update_PreviewCubeScale(_float3(1.f, 1.f, 1.f));
-	//			}
-	//			else
-	//			{
-	//				m_bIsBrix = false;*/
-	//				if (0 == m_strCurObj.compare("Monster_Afrit"))
-	//				{
-	//					m_tInstallObjData.tObjTag = OBJ_TAG::AFRIT;
-	//					m_tInstallObjData.tLayerTag = LAYER_TAG::MONSTER;
-	//					Update_PreviewCubeScale(_float3(1.f, 1.f, 1.f));
-	//				}
-	//			
+void CImguiMgr::Rotation()
+{ // Sliders
+	static ImGuiSliderFlags flags_i = ImGuiSliderFlags_None;
 
-	//			}
-	//		}
-	//	}
-	//}
+	static int slider_i = 0;
+	
+	ImGui::Text("Underlying float value: %f", slider_i);
+	ImGui::SliderInt("Rotation", &slider_i, 0, 360, "%d", flags_i);
+	
+	if (m_pSelectedObject)
+	{
+		m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(slider_i));
+	}
 }
 
+void CImguiMgr::Scaling()
+{
+	static ImGuiSliderFlags flags_f = ImGuiSliderFlags_None;
 
+	static float slider_f = 1.f;
 
-//void  CImguiMgr::CleanupDeviceD3D()
-//{
-//	CleanupRenderTarget();
-//	if (g_pSwapChain) { g_pSwapChain->Release(); g_pSwapChain = NULL; }
-//	if (g_pd3dDeviceContext) { g_pd3dDeviceContext->Release(); g_pd3dDeviceContext = NULL; }
-//	if (g_pd3dDevice) { g_pd3dDevice->Release(); g_pd3dDevice = NULL; }
-//}
+	ImGui::Text("Underlying float value: %f", slider_f);
+	ImGui::SliderFloat("Scaling", &slider_f, 0.5f, 10.0f, "%.3f", flags_f);
+	
+	if (m_pSelectedObject)
+	{
+		m_pSelectedTransform->Set_Scaled(_float3(slider_f, slider_f, slider_f));
+	}
+}
+
+void CImguiMgr::CollocateObject()
+{
+	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		CGameObject* pTemp = nullptr;
+		if ( 0 == m_iSelectedIndex)
+		{
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_DotsObjecter"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+				return;
+		}
+		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+		
+		pTempTransform->Set_State(CTransform::STATE_RIGHT,m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
+		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
+		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
+		pTempTransform->Set_State(CTransform::STATE_TRANSLATION,m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
+
+		m_vecCollocatedObject.push_back(pTemp);
+
+	}
+}

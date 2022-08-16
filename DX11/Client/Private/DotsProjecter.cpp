@@ -22,6 +22,8 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+   // m_pTransformCom->Set_Scaled(_float3(5.f, 5.f, 5.f));
+
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
@@ -31,7 +33,7 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
 void CDotsProjecter::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    m_pTransformCom->Set_Scaled(_float3(10.f, 10.f, 10.f));
+ 
     //if (GAMEINSTANCE->Is_KeyState(KEY::E, KEY_STATE::TAP))
     //{
     //    _float4 fDist;
@@ -61,7 +63,7 @@ HRESULT CDotsProjecter::Render()
     if (FAILED(SetUp_ShaderResource()))
         return E_FAIL;
 
-    m_pShaderCom->Begin(0);
+    m_pShaderCom->Begin(1);
 
     m_pVIBufferCom->Render();
 
