@@ -80,7 +80,7 @@
       <Filter>01.Utility\02.GameObject\Manager\Input_Mgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Transform.h">
-      <Filter>01.Utility\03.Component\02.Transform</Filter>
+      <Filter>01.Utility\03.Component\03.Transform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
@@ -93,6 +93,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Math_Utility.h">
       <Filter>01.Utility\99.SuperClass\Math_Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\03.Component\04. Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MeshContainer.h">
+      <Filter>01.Utility\03.Component\04. Model\MeshContainer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +166,7 @@
       <Filter>01.Utility\02.GameObject\Manager\Input_Mgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Transform.cpp">
-      <Filter>01.Utility\03.Component\02.Transform</Filter>
+      <Filter>01.Utility\03.Component\03.Transform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cube</Filter>
@@ -173,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Math_Utility.cpp">
       <Filter>01.Utility\99.SuperClass\Math_Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\03.Component\04. Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MeshContainer.cpp">
+      <Filter>01.Utility\03.Component\04. Model\MeshContainer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +251,6 @@
     <Filter Include="01.Utility\03.Component\02.Textures">
       <UniqueIdentifier>{74aa39ae-e2ea-4861-a61b-624b33cac053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Component\02.Transform">
-      <UniqueIdentifier>{1a479879-7c63-431b-a020-ea7503be601c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\02.GameObject\Manager\Object_Mgr">
       <UniqueIdentifier>{912012a1-9f40-40c3-841a-8b033235c427}</UniqueIdentifier>
     </Filter>
@@ -265,6 +274,15 @@
     </Filter>
     <Filter Include="01.Utility\99.SuperClass\Math_Utility">
       <UniqueIdentifier>{9a057c2f-dc40-47eb-be10-53e7fec07661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\03.Transform">
+      <UniqueIdentifier>{1a479879-7c63-431b-a020-ea7503be601c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\04. Model">
+      <UniqueIdentifier>{965a3066-1471-4649-b1ad-adff75398175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\04. Model\MeshContainer">
+      <UniqueIdentifier>{62a3484d-c27b-4ecf-b912-267992f0b03f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
