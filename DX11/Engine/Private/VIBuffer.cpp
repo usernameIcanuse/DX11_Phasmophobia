@@ -92,7 +92,7 @@ void CVIBuffer::Free()
 	Safe_Release(m_pIB);
 
 	//클론 안 했을때만
-	if (!m_bCloned)
+	if (!m_isCloned)
 	{
 		Safe_Delete_Array(m_pVerticesPos);
 		Safe_Delete_Array(m_pIndices);

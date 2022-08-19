@@ -38,7 +38,7 @@ protected:
 	_float3*						m_pVerticesPos = nullptr;
 	void*							m_pIndices = nullptr;
 
-	_bool							m_bCloned = false;
+
 
 public:
 	_uint	Get_NumPrimitive()

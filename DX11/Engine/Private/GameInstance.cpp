@@ -316,6 +316,8 @@ void CGameInstance::Release_Engine()
 
 	CLevel_Manager::Get_Instance()->Destroy_Instance();	
 
+	CLight_Manager::Get_Instance()->Destroy_Instance();
+
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
 	//CInput_Manager::Get_Instance()->Destroy_Instance();
@@ -331,6 +333,8 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pGraphic_Device);
+
 }

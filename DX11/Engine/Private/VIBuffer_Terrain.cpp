@@ -171,7 +171,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMapFilePath
 
 HRESULT CVIBuffer_Terrain::Initialize(void * pArg)
 {
-	m_bCloned = true;
+	m_isCloned = true;
 
 	return S_OK;
 }

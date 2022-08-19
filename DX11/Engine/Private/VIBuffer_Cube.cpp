@@ -123,7 +123,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 
 HRESULT CVIBuffer_Cube::Initialize(void * pArg)
 {
-	m_bCloned = true;
+	m_isCloned = true;
 
 	return S_OK;
 }

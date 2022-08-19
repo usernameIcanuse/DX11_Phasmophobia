@@ -90,7 +90,7 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 
 HRESULT CVIBuffer_Rect::Initialize(void * pArg)
 {
-	m_bCloned = true;
+	m_isCloned = true;
 	return S_OK;
 }
 
