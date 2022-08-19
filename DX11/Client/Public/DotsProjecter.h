@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 
 BEGIN(Engine)
-class CVIBuffer_Cube;
+class CModel;
 END
 
 
@@ -24,7 +24,7 @@ public:
 	virtual HRESULT Render();
 
 private:
-	CVIBuffer_Cube* m_pVIBufferCom = nullptr;
+	CModel* m_pModelCom = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

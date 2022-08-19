@@ -11,6 +11,7 @@ CGameInstance::CGameInstance()
 	, m_pTimer_Manager(CTimer_Manager::Get_Instance())
 	, m_pInput_Manager(CInput_Manager::Get_Instance())
 	, m_pPipeLine(CPipeLine::Get_Instance())
+	, m_pLight_Manager(CLight_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -20,6 +21,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pInput_Manager);
 	Safe_AddRef(m_pPipeLine);
+	Safe_AddRef(m_pLight_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -285,6 +287,23 @@ _float4 CGameInstance::Get_CamPosition()
 
 	return m_pPipeLine->Get_CamPosition();
 }
+
+HRESULT CGameInstance::Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(pDevice, pContext, LightDesc);
+}
+
+LIGHTDESC* CGameInstance::Get_LightDesc(_uint iIndex)
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
+
+	return m_pLight_Manager->Get_LightDesc(iIndex);
+}
+
 
 
 void CGameInstance::Release_Engine()

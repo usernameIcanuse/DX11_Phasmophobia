@@ -25,6 +25,23 @@ namespace Engine
 		unsigned short _1, _2, _3;
 	}FACEINDICES16;
 
+	typedef struct tagLightDesc
+	{
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+
+		TYPE			eType = TYPE_END;
+
+		XMFLOAT4		vDirection;
+
+		XMFLOAT4		vPosition;
+		float			fRange;
+
+		XMFLOAT4		vDiffuse;
+		XMFLOAT4		vAmbient;
+		XMFLOAT4		vSpecular;
+
+	}LIGHTDESC;
+
 	typedef struct tagModelMaterial
 	{
 		class CTexture* pTextures[AI_TEXTURE_TYPE_MAX];

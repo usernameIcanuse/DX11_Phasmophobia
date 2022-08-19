@@ -100,6 +100,12 @@
     <ClInclude Include="..\Public\MeshContainer.h">
       <Filter>01.Utility\03.Component\04. Model\MeshContainer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>01.Utility\05. Light\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>01.Utility\05. Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -185,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MeshContainer.cpp">
       <Filter>01.Utility\03.Component\04. Model\MeshContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>01.Utility\05. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>01.Utility\05. Light\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +295,12 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\04. Model\MeshContainer">
       <UniqueIdentifier>{62a3484d-c27b-4ecf-b912-267992f0b03f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05. Light">
+      <UniqueIdentifier>{dd6d6e99-a211-4c15-ac5b-2eb2a625062b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\05. Light\Manager">
+      <UniqueIdentifier>{755c56bc-af20-4d4e-922c-ced9b7cb1dcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

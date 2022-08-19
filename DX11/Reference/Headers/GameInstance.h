@@ -9,6 +9,7 @@
 #include "Timer_Manager.h"
 #include "PipeLine.h"
 #include "Math_Utility.h"
+#include "Light_Manager.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -70,6 +71,10 @@ public: /* For.PipeLine*/
 	_float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 	_float4 Get_CamPosition();
 
+public: /* For.Light_Manager */
+	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
+	LIGHTDESC* Get_LightDesc(_uint iIndex);
+
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -79,6 +84,7 @@ private:
 	CTimer_Manager*					m_pTimer_Manager = nullptr;
 	CInput_Manager*					m_pInput_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
+	CLight_Manager*					m_pLight_Manager = nullptr;
 
 	GRAPHICDESC						m_tagGraphicDesc;
 

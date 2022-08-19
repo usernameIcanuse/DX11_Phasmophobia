@@ -394,5 +394,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
