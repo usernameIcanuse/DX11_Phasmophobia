@@ -120,6 +120,11 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototype.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Shelter"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototype.push_back(pTemp);
 	}
 }
 
@@ -132,7 +137,7 @@ void CImguiMgr::Tool_Map()
 	ImGui::Begin("Tool_Map");
 
 
-	const char* items[] = { "DotsProjecter" };
+	const char* items[] = { "DotsProjecter", "Shelter"};
 	static int item_current_idx = -1; // Here we store our selection data as an index.
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -186,7 +191,7 @@ void CImguiMgr::Tool_Map()
 void CImguiMgr::Picking_Object()
 {
 	_float4 fPosition;
-	if (m_pSelectedObject)
+	if (-1 < m_iSelectedIndex && m_pSelectedObject)
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
@@ -258,6 +263,12 @@ void CImguiMgr::CollocateObject()
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_DotsObjecter"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 				return;
 		}
+		if (1 == m_iSelectedIndex)
+		{
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Shelter"), TEXT("Prototype_GameObject_Shelter"), &pTemp)))
+				return;
+		}
+
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 		
 		pTempTransform->Set_State(CTransform::STATE_RIGHT,m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));

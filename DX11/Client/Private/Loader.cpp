@@ -10,6 +10,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
+#include "House.h"
 //#include "Monster.h"
 #include "Model.h"
 #include "Terrain.h"
@@ -234,6 +235,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CDotsProjecter::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_Shelter*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Shelter"),
+		CHouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Monster */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
 	//	CMonster::Create(m_pGraphic_Device))))
@@ -297,6 +303,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Shelter"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Shelter/", "Shelter.fbx", TransformMatrix))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
 	/* For.Prototype_Component_Shader_VtxNorTex */

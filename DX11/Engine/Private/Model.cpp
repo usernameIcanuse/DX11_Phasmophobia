@@ -77,6 +77,7 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
+
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);	
 }
 
@@ -84,7 +85,7 @@ HRESULT CModel::Create_MeshContainers()
 {
 	m_iNumMeshContainers = m_pAIScene->mNumMeshes;
 
-	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+	for (_uint i = 0; i < m_iNumMeshContainers; ++i)//57번 Scene이라는 이름
 	{
 		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i], XMLoadFloat4x4(&m_TransformMatrix));
 		if (nullptr == pMeshContainer)

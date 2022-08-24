@@ -180,6 +180,7 @@
     <ClInclude Include="..\Public\EMF.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
     <ClInclude Include="..\Public\GhostWritingBook.h" />
+    <ClInclude Include="..\Public\House.h" />
     <ClInclude Include="..\Public\imconfig.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">아니오</ExcludedFromBuild>
     </ClInclude>
@@ -241,6 +242,7 @@
     <ClCompile Include="..\Private\EMF.cpp" />
     <ClCompile Include="..\Private\FlashLight.cpp" />
     <ClCompile Include="..\Private\GhostWritingBook.cpp" />
+    <ClCompile Include="..\Private\House.cpp" />
     <ClCompile Include="..\Private\imgui.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">아니오</ExcludedFromBuild>
     </ClCompile>
