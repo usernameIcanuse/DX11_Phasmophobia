@@ -57,11 +57,14 @@ private:
 	void Picking_Object();
 	void CollocateObject();
 
+	void Save(char* strFileName);
+	void Load(char* strFileName);
+
 
 private:
 	vector<CGameObject*> m_vecPrototype;
 	vector<CGameObject*> m_vecCollocatedObject;
-	_uint				 m_iSelectedIndex = 0;
+	_int				 m_iSelectedIndex = 0;
 
 	string	m_strSelectObject_Map = "";
 

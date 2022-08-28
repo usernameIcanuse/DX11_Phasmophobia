@@ -131,7 +131,7 @@
       <Filter>IMGUI\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\House.h">
-      <Filter>02.GameObject\House</Filter>
+      <Filter>02.GameObject\Stage\House</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -250,7 +250,7 @@
       <Filter>IMGUI\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\House.cpp">
-      <Filter>02.GameObject\House</Filter>
+      <Filter>02.GameObject\Stage\House</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,7 +379,10 @@
     <Filter Include="IMGUI\Manager">
       <UniqueIdentifier>{d6b61735-f3dc-4d86-ba99-69974b08ee7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\House">
+    <Filter Include="02.GameObject\Stage">
+      <UniqueIdentifier>{aff1362c-eb2c-4246-9a0e-b59a49c96ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\House">
       <UniqueIdentifier>{7251ce8a-28ad-478b-9ab8-af2a80958cf5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

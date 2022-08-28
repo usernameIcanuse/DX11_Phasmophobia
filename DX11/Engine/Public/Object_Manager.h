@@ -32,6 +32,7 @@ public:
 
 public:
 	void Clear(_uint iLevelIndex);
+	void Load(const char* szFilePath);
 
 
 private:

@@ -99,7 +99,7 @@ HRESULT CDotsProjecter::Setup_Component()
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Lighter"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     return S_OK;

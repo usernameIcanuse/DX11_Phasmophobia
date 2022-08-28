@@ -303,9 +303,51 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Shelter"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Shelter/", "Shelter.fbx", TransformMatrix))))
+	/* For.Prototype_Component_Model_MapleTree*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/MapleTree/", "Maple_468Poly.fbx", TransformMatrix))))
 		return E_FAIL;
+	
+	/* For.Prototype_Component_Model_AbandonedMarket*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_AbandonedMarket"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/AbandonedMarket/", "AbandonedMarket.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	
+/* For.Prototype_Component_Model_FurnishedCabin*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FurnishedCabin"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "FurnishedCabin.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	
+	/* For.Prototype_Component_Model_Garage 됨/중간 물건들 텍스처문제*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Garage"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Garage/", "Garage.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	
+	
+	/* For.Prototype_Component_Model_Pier_house*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house/", "Pier_house.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	
+	/* For.Prototype_Component_Model_Pier_house2*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house2"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house2/", "Pier_house2.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	
+	/* For.Prototype_Component_Model_RoofTop*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop/", "RoofTop.fbx", TransformMatrix))))
+	//	return E_FAIL;
+
+	/* For.Prototype_Component_Model_SlumHouse*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SlumHouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SlumHouse/", "SlumHouse5.fbx", TransformMatrix))))
+		return E_FAIL;
+	
+		/* For.Prototype_Component_Model_RoofTop_OldHouse*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_OldHouse"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/OldHouse/", "Well.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
 	/* For.Prototype_Component_Shader_VtxNorTex */

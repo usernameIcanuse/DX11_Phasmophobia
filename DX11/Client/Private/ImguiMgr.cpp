@@ -107,6 +107,7 @@ void CImguiMgr::Set_Prototype()
 	if (!bFirst)
 	{
 		bFirst = true;
+		m_iSelectedIndex = -1;
 
 		CGameObject* pTerrain = nullptr;
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
@@ -128,13 +129,25 @@ void CImguiMgr::Set_Prototype()
 	}
 }
 
-void CImguiMgr::ShowWindow(bool* p_open)
-{
-}
 
 void CImguiMgr::Tool_Map()
 {
 	ImGui::Begin("Tool_Map");
+	/* Save Map*/
+	static char str0[256] = "";
+	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
+
+	
+	if (ImGui::Button("Save"))                            
+	{
+		Save(str0);
+	}
+	
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load(str0);
+	}
 
 
 	const char* items[] = { "DotsProjecter", "Shelter"};
@@ -142,12 +155,12 @@ void CImguiMgr::Tool_Map()
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
-		item_current_idx = -1;
+		m_iSelectedIndex = item_current_idx = -1; 
 		m_pSelectedObject =  nullptr;
 		m_pSelectedTransform = nullptr;
 	}
 
-	if (ImGui::BeginListBox("listbox 1"))
+	if (ImGui::BeginListBox("Object"))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 		{
@@ -160,14 +173,19 @@ void CImguiMgr::Tool_Map()
 			if (is_selected)
 			{
 				ImGui::SetItemDefaultFocus();
-				m_pSelectedObject = m_vecPrototype[item_current_idx];
-				m_pSelectedObject->Set_Enable(true);
-				m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
-
+				
 			}
 		}
 
 		ImGui::EndListBox();
+	}
+
+	if (-1 < m_iSelectedIndex)
+	{
+		m_pSelectedObject = m_vecPrototype[m_iSelectedIndex];
+		m_pSelectedObject->Set_Enable(true);
+		m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
+
 	}
 
 	Rotation();
@@ -202,6 +220,7 @@ void CImguiMgr::Picking_Object()
 			CollocateObject();
 		}
 	}
+	
 	else
 	{
 
@@ -279,4 +298,12 @@ void CImguiMgr::CollocateObject()
 		m_vecCollocatedObject.push_back(pTemp);
 
 	}
+}
+
+void CImguiMgr::Save(char* strFileName)
+{
+}
+
+void CImguiMgr::Load(char* strFileName)
+{
 }

@@ -105,6 +105,10 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
+void CObject_Manager::Load(const char* szFilePath)
+{
+}
+
 CGameObject * CObject_Manager::Find_Prototype(const _tchar * pPrototypeTag)
 {
 	auto	iter = find_if(m_Prototypes.begin(), m_Prototypes.end(), CTag_Finder(pPrototypeTag));

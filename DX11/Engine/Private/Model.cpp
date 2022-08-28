@@ -77,6 +77,14 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+	{
+		m_Materials[iMaterialIndex].pTextures[eType] = CTexture::Create(m_pDevice, m_pContext,
+			TEXT("..\\Bin\\Resources\\Textures\\Default_Texture.png"));
+
+	}
+
+
 
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);	
 }
@@ -85,7 +93,7 @@ HRESULT CModel::Create_MeshContainers()
 {
 	m_iNumMeshContainers = m_pAIScene->mNumMeshes;
 
-	for (_uint i = 0; i < m_iNumMeshContainers; ++i)//57번 Scene이라는 이름
+	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
 		CMeshContainer*		pMeshContainer = CMeshContainer::Create(m_pDevice, m_pContext, m_eModelType, m_pAIScene->mMeshes[i], XMLoadFloat4x4(&m_TransformMatrix));
 		if (nullptr == pMeshContainer)
@@ -113,7 +121,9 @@ HRESULT CModel::Create_Materials(const char* pModelFilePath)
 			aiString		strPath;
 						
 			if (FAILED(m_pAIScene->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
+			{
 				continue;
+			}
 
 			char			szFileName[MAX_PATH] = "";
 			char			szExt[MAX_PATH] = "";
@@ -122,7 +132,10 @@ HRESULT CModel::Create_Materials(const char* pModelFilePath)
 
 			strcpy_s(szFullPath, pModelFilePath);
 			strcat_s(szFullPath, szFileName);
-			strcat_s(szFullPath, szExt);		
+			if(0==strcmp(szExt, ".tga"))
+				strcat_s(szFullPath, ".png");
+			else
+				strcat_s(szFullPath, szExt);		
 
 			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
 
