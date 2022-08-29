@@ -57,6 +57,7 @@ private:
 	void Tool_Map();
 	void Tool_Object();
 
+	void Translation();
 	void Rotation();
 	void Scaling();
 
@@ -82,6 +83,7 @@ private:
 	//선택한 오브젝트
 	CGameObject* m_pSelectedObject = nullptr;
 	CTransform* m_pSelectedTransform = nullptr;
+	_vector		m_vSelectedOffSet;
 	//지형
 	//CGameObject* m_pTerrain = nullptr;
 	CTransform* m_pTerrainTransform = nullptr;

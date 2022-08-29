@@ -21,6 +21,7 @@ namespace Engine
 
 	typedef wchar_t						_tchar;
 
+	
 	typedef XMFLOAT2					_float2;
 	typedef XMFLOAT3					_float3;
 	typedef XMFLOAT4					_float4;

@@ -33,6 +33,8 @@ void CImguiMgr::Init(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	m_pContext = _pContext;
 	Safe_AddRef(m_pContext);
 
+	m_vSelectedOffSet = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -278,6 +280,7 @@ void CImguiMgr::Tool_Map()
 
 	}
 
+	Translation();
 	Rotation();
 	Scaling();
 
@@ -364,6 +367,7 @@ void CImguiMgr::Tool_Object()
 
 	}
 
+	Translation();
 	Rotation();
 	Scaling();
 
@@ -378,7 +382,9 @@ void CImguiMgr::Picking_Object()
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
 			_float3 fScale = m_pSelectedTransform->Get_Scaled();
-			fPosition.y += fScale.y*0.5f;
+			
+			XMStoreFloat4(&fPosition,XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
+
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 			
 			if (show_Map_Tool && !show_Object_Tool)
@@ -393,7 +399,22 @@ void CImguiMgr::Picking_Object()
 
 	}
 }
-
+void CImguiMgr::Translation()
+{
+	if (m_pSelectedObject)
+	{
+	
+		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet += XMVectorSet(0.f,1.f,0.f,0.f);
+		}
+		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet -= XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		}
+	
+	}
+}
 
 void CImguiMgr::Rotation()
 { // Sliders
