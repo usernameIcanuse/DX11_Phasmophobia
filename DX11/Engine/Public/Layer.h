@@ -20,6 +20,9 @@ public:
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 
+public:
+	void Clear_Layer();
+
 private:
 	list<class CGameObject*>			m_GameObjects;
 	typedef list<class CGameObject*>	GAMEOBJECTS;

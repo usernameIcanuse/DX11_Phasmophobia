@@ -71,6 +71,15 @@ HRESULT CHouse::Render()
     return S_OK;
 }
 
+HRESULT CHouse::SetUp_ModelCom(const _tchar* pPrototypeTag)
+{
+    /* For.Com_Model */
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 
 HRESULT CHouse::Setup_Component()
 {
@@ -85,11 +94,7 @@ HRESULT CHouse::Setup_Component()
     /* For.Com_Renderer*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
-
-    /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SlumHouse"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-        return E_FAIL;
-
+   
     return S_OK;
 }
 

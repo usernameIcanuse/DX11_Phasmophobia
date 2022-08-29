@@ -11,9 +11,9 @@ END
 
 BEGIN(Client)
 
-class CHouse : public CGameObject
+class CHouse final : public CGameObject
 {
-protected:
+private:
 	CHouse(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHouse(const CHouse& rhs);
 	virtual ~CHouse() = default;
@@ -25,13 +25,16 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-protected:
+public:
+	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag );
+
+private:
 	CShader* m_pShaderCom = nullptr;
 	CTexture* m_pTextureCom = nullptr;
 	CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
 
-protected:
+private:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource();
 
