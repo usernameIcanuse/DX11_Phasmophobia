@@ -308,20 +308,20 @@ void CImguiMgr::Tool_Object()
 
 	if (ImGui::Button("Save"))
 	{
-		Save_Map(Stage, str0);
+		Save_Object(Stage, str0);
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Load"))
 	{
-		Load_Map(Stage, str0);
+		Load_Object(Stage, str0);
 	}
 
 	if (ImGui::Button("Clear"))
 	{
-		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_House"));
-		for (int i = 0; i < (_uint)MODEL_TAG::MODEL_END; ++i)
-			m_vecCollocatedHouse[i].clear();
+		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Object"));//일단 맵 만들 때는 레이어 하나로만
+		for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+			m_vecCollocatedObject[i].clear();
 
 	}
 
@@ -336,7 +336,7 @@ void CImguiMgr::Tool_Object()
 		m_pSelectedTransform = nullptr;
 	}
 
-	if (ImGui::BeginListBox("House"))
+	if (ImGui::BeginListBox("Object"))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 		{
@@ -381,7 +381,10 @@ void CImguiMgr::Picking_Object()
 			fPosition.y += fScale.y*0.5f;
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 			
-			CollocateHouse();
+			if (show_Map_Tool && !show_Object_Tool)
+				CollocateHouse();
+			else if (!show_Map_Tool && show_Object_Tool)
+				CollocateObject();
 		}
 	}
 	
@@ -499,12 +502,14 @@ void CImguiMgr::CollocateObject()
 		LAYER tLayerIndex = LAYER::LAYER_END;
 		OBJ_TAG tObjIndex = OBJ_TAG::OBJ_END;
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
-			return;
-
-		switch (m_iSelectedIndex)
+		switch (m_iSelectedIndex)//오브젝트
 		{
-
+		case 0:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+				return;
+			break;
 	
 		}
 
@@ -516,6 +521,7 @@ void CImguiMgr::CollocateObject()
 		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
 
 		m_vecCollocatedObject[(_uint)tLayerIndex].push_back(pTemp);
+		m_vecObjectTag[(_uint)tLayerIndex].push_back(tObjIndex);
 
 	}
 }
@@ -687,6 +693,7 @@ void CImguiMgr::Save_Object(const char* strStageName, const char* strFileName)
 	OBJ_DATA tObjData;
 	for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
 	{
+		_uint iIndex = 0;
 		for (auto& elem : m_vecCollocatedObject[i])
 		{
 			ZeroMemory(&tObjData, sizeof(OBJ_DATA));
@@ -694,7 +701,7 @@ void CImguiMgr::Save_Object(const char* strStageName, const char* strFileName)
 			CTransform* pTranform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
 			tObjData.matWorld = pTranform->Get_WorldMatrix();
 			tObjData.tLayerTag = (LAYER)i;
-			tObjData.tObjTag = (OBJ_TAG)m_iSelectedIndex;
+			tObjData.tObjTag = m_vecObjectTag[i][iIndex];
 			WriteFile(hFileBrix, &tObjData, sizeof(OBJ_DATA), &dwByteBrix, nullptr);
 
 		}
@@ -737,12 +744,29 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 
 			CGameObject* pTemp = nullptr;
 			LAYER iLayerTag = tDataObj.tLayerTag;
+			const _tchar* strLayer = nullptr;
+
 			OBJ_TAG iObjTag = tDataObj.tObjTag;
+			const _tchar* strPrototypeTag=nullptr;
+
+			switch (iLayerTag)
+			{
+			case LAYER::OBJECT:
+				strLayer = TEXT("Layer_Object");
+				break;
+			}
+
+			switch (iObjTag)
+			{
+			case OBJ_TAG::DOTSPROJECTER:
+				strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
+				break;
+			}
 
 			if (FAILED(pGameInstance->Add_GameObject(
 				LEVEL_STAGE1,
-				TEXT("Layer_House"),
-				TEXT("Prototype_GameObject_House"),
+				strLayer,
+				strPrototypeTag,
 				&pTemp)))
 			{
 				MSG_BOX("Fail");
@@ -757,52 +781,8 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 
 
 
-			switch (iObjTag)
-			{
-			/*case MODEL_TAG::ABANDONEDMARKET:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
 
-				break;
-			case MODEL_TAG::FURNISHEDCABIN:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-
-				break;
-			case MODEL_TAG::GARAGE:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
-
-				break;
-			case MODEL_TAG::PIER_HOUSE:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
-
-				break;
-			case MODEL_TAG::PIER_HOUSE2:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house2"));
-
-				break;
-			case MODEL_TAG::OLDHOUSE:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
-
-				break;
-			case MODEL_TAG::ROOFTOP:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop"));
-
-				break;
-			case MODEL_TAG::ROOFTOP_BACKGROUND1:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
-
-				break;
-			case MODEL_TAG::SHELTER:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
-
-				break;
-			case MODEL_TAG::SLUMHOUSE1:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
-
-				break;*/
-
-			}
-
-			m_vecCollocatedHouse[(_uint)iLayerTag].push_back(pTemp);
+			m_vecCollocatedObject[(_uint)iLayerTag].push_back(pTemp);
 
 		}
 	}
