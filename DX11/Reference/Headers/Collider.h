@@ -1,67 +1,68 @@
 #pragma once
+
 #include "Component.h"
 
 BEGIN(Engine)
 
-class CTransform;
-class CCollider_Pre;
+/* 충돌체. */
+/* 각종 충돌을 위한 함수를. */
+/* 화면에 그려서 보여줄수 있음 좋겄다. */
 
-class ENGINE_DLL CCollider abstract :
-    public CComponent
+class ENGINE_DLL CCollider final : public CComponent
 {
-protected:
-    CCollider() = default;
-    CCollider(const CCollider& Prototype);
-    virtual ~CCollider() = default;
+public:
+	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 
 public:
-    void Link_Transform(CTransform * _TransformCom);
+	typedef struct tagColliderDesc
+	{
+		_float3			vScale;
+		_float4			vRotation;
+		_float3			vTranslation;
+	}COLLIDERDESC;
 
-    virtual void Set_Collider_Size(const _float3& _Size) PURE;
-    virtual _float3 Get_Collider_Size() PURE;
-    virtual _float3 Get_Collider_Position() PURE;
-    
-
-    void Set_Collision_Type(COLLISION_TYPE _eType);
-    COLLISION_TYPE Get_Collision_Type() const { return m_eCollision_Type; };
-    _uint Get_ID() const { return m_iID; };
-    COLLIDER_SHAPE Get_Collider_Shape() const { return m_eShape; };
-
-    void Link_Pre_Collider(CCollider_Pre* _PreCol);
-    CCollider_Pre* Get_Pre_Collider() const;
-    void Set_OffSet(_float3 _vOffset);
-    _float3 Get_Offset();
-
-public:
-    virtual void Tick(_float fTimeDelta) override;
-
-
-protected:
-    COLLISION_TYPE m_eCollision_Type;
-    COLLIDER_SHAPE m_eShape = COLLIDER_SHAPE::SHAPE_END;
-
-    static _uint g_iNextID;
-    _uint m_iID; //충돌체 고유 인덱스 (모든 충돌체는 인덱스가 서로 다름)
-
-    _float3 m_vOffSet;
-protected:
-    CTransform* m_pMyTransformCom = nullptr;
-    ID3DXMesh* m_pMesh = nullptr;
 private:
-    CCollider_Pre* m_pPreCollider = nullptr;
+	CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCollider(const CCollider& rhs);
+	virtual ~CCollider() = default;
 
 public:
+	virtual HRESULT Initialize_Prototype(TYPE eType);
+	virtual HRESULT Initialize(void* pArg);
 public:
-    //객체의 상태가 활성화 상태로 변경될 때, 호출되는 이벤트입니다.
-    virtual void OnEnable(void* _Arg = nullptr) override;
+	void Update(_fmatrix TransformMatrix);
+	_bool Collision(CCollider* pTargetCollider);
+	_bool Collision(RAY _tRay,_float& fDist);//Ray Collision
+	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
-    //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
-    virtual void OnDisable() override;
+
 
 public:
-    virtual	CComponent* Clone(void* pArg) PURE;
-    virtual void Free() override;
+	HRESULT Render();
 
+
+private:
+	BoundingSphere*				m_pSphere_Original = nullptr;
+	BoundingBox*				m_pAABB_Original = nullptr;
+	BoundingOrientedBox*		m_pOBB_Original = nullptr;
+
+	BoundingSphere*				m_pSphere = nullptr;
+	BoundingBox*				m_pAABB = nullptr;	
+	BoundingOrientedBox*		m_pOBB = nullptr;
+	TYPE						m_eType = TYPE_END;
+	COLLIDERDESC				m_ColliderDesc;
+
+#ifdef _DEBUG
+private:
+	BasicEffect*									m_pEffect = nullptr;	
+	PrimitiveBatch<VertexPositionColor>*			m_pBatch = nullptr;
+	ID3D11InputLayout*								m_pInputLayout = nullptr;
+#endif // _DEBUG
+
+public:
+	static CCollider* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType);
+	virtual CComponent* Clone(void* pArg);
+	virtual void Free() override;
 };
 
 END

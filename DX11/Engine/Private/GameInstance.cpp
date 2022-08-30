@@ -12,6 +12,7 @@ CGameInstance::CGameInstance()
 	, m_pInput_Manager(CInput_Manager::Get_Instance())
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
+	, m_pZFrustum(CZFrustum::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -22,6 +23,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pInput_Manager);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pLight_Manager);
+	Safe_AddRef(m_pZFrustum);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -64,6 +66,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pInput_Manager->Tick(fTimeDelta);
 
 	m_pPipeLine->Tick();
+
+	m_pZFrustum->Update_Frustum();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
@@ -215,6 +219,14 @@ CComponent * CGameInstance::Get_Component(_uint iLevelIndex, const _tchar * pLay
 	return m_pObject_Manager->Get_Component(iLevelIndex, pLayerTag, pComponentTag, iIndex);	
 }
 
+void CGameInstance::Clear_Layer(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	return m_pObject_Manager->Clear_Layer(iLevelIndex, pLayerTag);
+}
+
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _tchar * pPrototypeTag, CComponent * pPrototype)
 {
 	if (nullptr == m_pComponent_Manager)
@@ -305,6 +317,40 @@ LIGHTDESC* CGameInstance::Get_LightDesc(_uint iIndex)
 }
 
 
+void CGameInstance::Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix)
+{
+	if (nullptr == m_pZFrustum)
+		return;
+
+	m_pZFrustum->Make(screenDepth, projectionMatrix, viewMatrix);
+}
+
+BOOL CGameInstance::CheckPoint(float x, float y, float z)
+{
+	if (nullptr == m_pZFrustum)
+		return false;
+
+	return	m_pZFrustum->CheckPoint(x, y, z);
+}
+
+
+BOOL CGameInstance::CheckSphere(float xCenter, float yCenter, float zCenter, float radius)
+{
+	if (nullptr == m_pZFrustum)
+		return false;
+
+	return m_pZFrustum->CheckSphere(xCenter, yCenter, zCenter, radius);
+}
+
+BOOL CGameInstance::CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize)
+{
+	if (nullptr == m_pZFrustum)
+		return false;
+
+	return	m_pZFrustum->CheckRectangle(xCenter, yCenter, zCenter, xSize, ySize, zSize);
+}
+
+
 
 void CGameInstance::Release_Engine()
 {
@@ -322,6 +368,8 @@ void CGameInstance::Release_Engine()
 
 	//CInput_Manager::Get_Instance()->Destroy_Instance();
 
+	CZFrustum::Get_Instance()->Destroy_Instance();
+
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
 }
@@ -336,5 +384,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pGraphic_Device);
+	Safe_Release(m_pZFrustum);
 
 }

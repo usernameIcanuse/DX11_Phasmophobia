@@ -11,6 +11,7 @@
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
 #include "Model.h"
+#include "Collider.h"
 
 BEGIN(Engine)
 

@@ -4,6 +4,7 @@
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
 #include "GameObject.h"
+#include "House.h"
 
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -32,11 +33,15 @@ void CImguiMgr::Init(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 	m_pContext = _pContext;
 	Safe_AddRef(m_pContext);
 
+	m_vSelectedOffSet = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	ImGui::StyleColorsDark();
+
+
 
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
@@ -61,6 +66,9 @@ void CImguiMgr::Tick(_float fTimeDelta)
 		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 		ImGui::Checkbox("Another Window", &show_another_window);
+
+		ImGui::Checkbox("Map Tool", &show_Map_Tool);
+		ImGui::Checkbox("Object Tool", &show_Object_Tool);
 
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 		//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
@@ -87,7 +95,10 @@ void CImguiMgr::Tick(_float fTimeDelta)
 	if (CURRENT_LEVEL == LEVEL_STAGE1)
 	{
 		Set_Prototype();
-		Tool_Map();
+		if (show_Map_Tool && !show_Object_Tool)
+			Tool_Map();
+		else if (!show_Map_Tool && show_Object_Tool)
+			Tool_Object();
 		
 		Picking_Object();
 	}
@@ -106,6 +117,7 @@ void CImguiMgr::Set_Prototype()
 	static _bool	bFirst = false;
 	if (!bFirst)
 	{
+
 		bFirst = true;
 		m_iSelectedIndex = -1;
 
@@ -115,17 +127,82 @@ void CImguiMgr::Set_Prototype()
 
 		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
 		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
-
+		
+		
+		/* Object */
 		CGameObject* pTemp = nullptr;
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
-		m_vecPrototype.push_back(pTemp);
+		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Shelter"), &pTemp)))
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
-		m_vecPrototype.push_back(pTemp);
+		m_vecPrototypeObject.push_back(pTemp);
+
+		/* House */
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house2"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+
 	}
 }
 
@@ -133,25 +210,48 @@ void CImguiMgr::Set_Prototype()
 void CImguiMgr::Tool_Map()
 {
 	ImGui::Begin("Tool_Map");
-	/* Save Map*/
+
+	static int item_current_idx = -1; // Here we store our selection data as an index.
+
+	if (ImGui::Button("Close Me"))
+	{
+		show_Map_Tool = false;
+		m_iSelectedIndex = item_current_idx = -1;
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+	/* Save/Load Map*/
+	static char Stage[256] = "";
+	ImGui::InputText("Stage Name", Stage, IM_ARRAYSIZE(Stage));
+
 	static char str0[256] = "";
 	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
-
+	
 	
 	if (ImGui::Button("Save"))                            
 	{
-		Save(str0);
+		Save_Map(Stage,str0);
 	}
 	
 	ImGui::SameLine();
 	if (ImGui::Button("Load"))
 	{
-		Load(str0);
+		Load_Map(Stage,str0);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1,TEXT("Layer_House"));
+		for(int i=0;i<(_uint)MODEL_TAG::MODEL_END;++i)
+			m_vecCollocatedHouse[i].clear();
+
 	}
 
 
-	const char* items[] = { "DotsProjecter", "Shelter"};
-	static int item_current_idx = -1; // Here we store our selection data as an index.
+	const char* items[] = { "AbandonedMarket","FurnishedCabin","Garage",
+							"Pier_house","Pier_house2","RoofTop","RoofTop_Background1","SlumHouse1",
+							"OldHouse","Shelter"};
+
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
@@ -160,11 +260,11 @@ void CImguiMgr::Tool_Map()
 		m_pSelectedTransform = nullptr;
 	}
 
-	if (ImGui::BeginListBox("Object"))
+	if (ImGui::BeginListBox("House"))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 		{
-			m_vecPrototype[n]->Set_Enable(false);
+			m_vecPrototypeHouse[n]->Set_Enable(false);
 			const bool is_selected = (item_current_idx == n);
 			if (ImGui::Selectable(items[n], is_selected))
 				m_iSelectedIndex = item_current_idx = n;
@@ -182,64 +282,178 @@ void CImguiMgr::Tool_Map()
 
 	if (-1 < m_iSelectedIndex)
 	{
-		m_pSelectedObject = m_vecPrototype[m_iSelectedIndex];
+		m_pSelectedObject = m_vecPrototypeHouse[m_iSelectedIndex];
 		m_pSelectedObject->Set_Enable(true);
 		m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
 
 	}
 
+	Translation();
 	Rotation();
 	Scaling();
 
 	ImGui::End();
 
+}
 
-	//ImGui::Begin("Main (Map Tool)", 0, ImGuiWindowFlags_AlwaysAutoResize);
-//if (ImGui::BeginTabBar("Main Tab Bar Map Tool"))
-//{
-//	Map_MapTool();
-//	Object_MapTool();
+void CImguiMgr::Tool_Object()
+{
+	ImGui::Begin("Tool_Object");
 
-//	ImGui::EndTabBar();
-//} /*TabBar*/
-//ImGui::End();
+	static int Object_current_idx = -1; // Here we store our selection data as an index.
 
+	if (ImGui::Button("Close Me"))
+	{
+		show_Object_Tool = false;
+		m_iSelectedIndex = Object_current_idx = -1;
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+	/* Save/Load Map*/
+	static char Stage[256] = "";
+	ImGui::InputText("Stage Name", Stage, IM_ARRAYSIZE(Stage));
+
+	static char str0[256] = "";
+	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
+
+
+	if (ImGui::Button("Save"))
+	{
+		Save_Object(Stage, str0);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load_Object(Stage, str0);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Object"));//일단 맵 만들 때는 레이어 하나로만
+		for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+		{
+			m_vecObjectTag[i].clear();
+			m_vecCollocatedObject[i].clear();
+		}
+
+	}
+
+
+	const char* items[] = {"DotsProjecter", "FlashLight"};
+
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		m_iSelectedIndex = Object_current_idx = -1;
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+
+	if (ImGui::BeginListBox("Object"))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			m_vecPrototypeObject[n]->Set_Enable(false);
+			const bool is_selected = (Object_current_idx == n);
+			if (ImGui::Selectable(items[n], is_selected))
+				m_iSelectedIndex = Object_current_idx = n;
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+
+			}
+		}
+
+		ImGui::EndListBox();
+	}
+
+	if (-1 < m_iSelectedIndex)
+	{
+		m_pSelectedObject = m_vecPrototypeObject[m_iSelectedIndex];
+		m_pSelectedObject->Set_Enable(true);
+		m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
+	}
+
+	Translation();
+	Rotation();
+	Scaling();
+
+	ImGui::End();
 }
 
 void CImguiMgr::Picking_Object()
 {
+	
 	_float4 fPosition;
-	if (-1 < m_iSelectedIndex && m_pSelectedObject)
+	if (-1 < m_iSelectedIndex || m_pSelectedObject)
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
 			_float3 fScale = m_pSelectedTransform->Get_Scaled();
-			fPosition.y += fScale.y*0.5f;
+
+			XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
+
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
-			
-			CollocateObject();
-		}
+
+			if (show_Map_Tool && !show_Object_Tool)
+				CollocateHouse();
+			else if (!show_Map_Tool && show_Object_Tool)
+			{
+				if(-1 < m_iSelectedIndex)
+					CollocateObject();
+				else
+					MoveObject(fPosition);
+			}}
 	}
 	
 	else
 	{
+		CCollider* pCollider = nullptr;
+		if (!show_Map_Tool && show_Object_Tool)
+		{
+			if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+			{
+				_float fDist = -1.f;
+				RAY		tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+				for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+				{
+					for (auto& elem : m_vecCollocatedObject[i])
+					{
+						pCollider = (CCollider*)elem->Get_Component(TEXT("Com_AABB"));
+						if (pCollider->Collision(tRay, fDist))
+						{
 
+							m_pSelectedObject = elem;
+							m_pSelectedTransform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
+
+						}
+					}
+				}
+			}
+		}
 	}
 }
-
-
-void CImguiMgr::Object_MapTool()
+void CImguiMgr::Translation()
 {
-	if (ImGui::BeginTabItem("Objects"))
+	ImGui::Text("[ P ] : y+");
+	ImGui::Text("[ O ] : y-");
+
+	if (m_pSelectedObject)
 	{
-		//Widget_WallListBox_Map();
-		
-		ImGui::EndTabItem();
+	
+		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet += XMVectorSet(0.f,0.5f,0.f,0.f);
+		}
+		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet -= XMVectorSet(0.f, 0.5f, 0.f, 0.f);
+		}
+	
 	}
-}
-
-void CImguiMgr::Map_MapTool()
-{
 }
 
 void CImguiMgr::Rotation()
@@ -248,7 +462,7 @@ void CImguiMgr::Rotation()
 
 	static int slider_i = 0;
 	
-	ImGui::Text("Underlying float value: %f", slider_i);
+	ImGui::Text("Underlying int value: %d", slider_i);
 	ImGui::SliderInt("Rotation", &slider_i, 0, 360, "%d", flags_i);
 	
 	if (m_pSelectedObject)
@@ -272,20 +486,68 @@ void CImguiMgr::Scaling()
 	}
 }
 
-void CImguiMgr::CollocateObject()
+void CImguiMgr::MoveObject(_float4 _fPosition)
 {
 	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+}
+void CImguiMgr::CollocateHouse()
+{
+	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+	
 		CGameObject* pTemp = nullptr;
-		if ( 0 == m_iSelectedIndex)
+		MODEL_TAG	tIndex = MODEL_TAG::MODEL_END;
+	
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+
+		switch (m_iSelectedIndex)
 		{
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_DotsObjecter"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
-				return;
-		}
-		if (1 == m_iSelectedIndex)
-		{
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Shelter"), TEXT("Prototype_GameObject_Shelter"), &pTemp)))
-				return;
+		
+		case 0:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
+			tIndex = MODEL_TAG::ABANDONEDMARKET;
+			break;
+		case 1:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+			tIndex = MODEL_TAG::FURNISHEDCABIN;
+			break;
+		case 2:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
+			tIndex = MODEL_TAG::GARAGE;
+			break;
+		case 3:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
+			tIndex = MODEL_TAG::PIER_HOUSE;
+			break;
+		case 4:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house2"));
+			tIndex = MODEL_TAG::PIER_HOUSE2;
+			break;
+		case 5:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop"));
+			tIndex = MODEL_TAG::ROOFTOP;
+			break;
+		case 6:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND1;
+			break;
+		case 7:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
+			tIndex = MODEL_TAG::SLUMHOUSE1;
+			break;
+		case 8:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
+			tIndex = MODEL_TAG::OLDHOUSE;
+			break;
+		case 9:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
+			tIndex = MODEL_TAG::SHELTER;
+			break;
 		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
@@ -295,15 +557,313 @@ void CImguiMgr::CollocateObject()
 		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
 		pTempTransform->Set_State(CTransform::STATE_TRANSLATION,m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
 
-		m_vecCollocatedObject.push_back(pTemp);
+		m_vecCollocatedHouse[(_uint)tIndex].push_back(pTemp);
 
 	}
 }
 
-void CImguiMgr::Save(char* strFileName)
+void CImguiMgr::CollocateObject()
 {
+	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+
+		CGameObject* pTemp = nullptr;
+		LAYER tLayerIndex = LAYER::LAYER_END;
+		OBJ_TAG tObjIndex = OBJ_TAG::OBJ_END;
+
+		switch (m_iSelectedIndex)//오브젝트
+		{
+		case 0:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+				return;
+			break;
+
+		case 1:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::FLASHLIGHT;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+				return;
+			break;
+		}
+
+		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+
+		pTempTransform->Set_State(CTransform::STATE_RIGHT, m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
+		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
+		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
+		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
+
+
+		m_vecCollocatedObject[(_uint)tLayerIndex].push_back(pTemp);
+		m_vecObjectTag[(_uint)tLayerIndex].push_back(tObjIndex);
+
+	}
 }
 
-void CImguiMgr::Load(char* strFileName)
+void CImguiMgr::Save_Map(const char* strStageName,const char* strFileName)
 {
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath),"/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+
+	HANDLE hFileBrix = CreateFileA(Filepath,
+		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFileBrix)
+	{
+		MSG_BOX("Failed to save file"); 
+		return;
+	}
+
+	DWORD dwByteBrix = 0;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	
+	MAP_DATA tMapData;
+	for (int i = 0; i < (_uint)MODEL_TAG::MODEL_END; ++i)
+	{
+		for (auto& elem : m_vecCollocatedHouse[i])
+		{
+			ZeroMemory(&tMapData, sizeof(MAP_DATA));
+
+			CTransform* pTranform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
+			tMapData.matWorld = pTranform->Get_WorldMatrix();
+			tMapData.tModelTag = (MODEL_TAG)i;
+			WriteFile(hFileBrix, &tMapData, sizeof(MAP_DATA), &dwByteBrix, nullptr);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFileBrix);
+	MSG_BOX("Saved file");
+}
+
+void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse= 0;
+	MAP_DATA tDataMap;
+	ZeroMemory(&tDataMap, sizeof(MAP_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataMap, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+			MODEL_TAG	 iModelTag = tDataMap.tModelTag;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_House"),
+				TEXT("Prototype_GameObject_House"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance); 
+				return;
+			}
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+			switch (iModelTag)
+			{
+			case MODEL_TAG::ABANDONEDMARKET:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
+
+				break;
+			case MODEL_TAG::FURNISHEDCABIN:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+
+				break;
+			case MODEL_TAG::GARAGE:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
+
+				break;
+			case MODEL_TAG::PIER_HOUSE:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
+
+				break;
+			case MODEL_TAG::PIER_HOUSE2:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house2"));
+
+				break;
+			case MODEL_TAG::OLDHOUSE:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
+
+				break;
+			case MODEL_TAG::ROOFTOP:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop"));
+
+				break;
+			case MODEL_TAG::ROOFTOP_BACKGROUND1:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
+
+				break;
+			case MODEL_TAG::SHELTER:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
+
+				break;
+			case MODEL_TAG::SLUMHOUSE1:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
+
+				break;
+
+			}
+
+			m_vecCollocatedHouse[(_uint)iModelTag].push_back(pTemp);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
+}
+
+void CImguiMgr::Save_Object(const char* strStageName, const char* strFileName)
+{
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+
+	HANDLE hFileBrix = CreateFileA(Filepath,
+		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFileBrix)
+	{
+		MSG_BOX("Failed to save file");
+		return;
+	}
+
+	DWORD dwByteBrix = 0;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	OBJ_DATA tObjData;
+	for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+	{
+		_uint iIndex = 0;
+		for (auto& elem : m_vecCollocatedObject[i])
+		{
+			ZeroMemory(&tObjData, sizeof(OBJ_DATA));
+
+			CTransform* pTranform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
+			tObjData.matWorld = pTranform->Get_WorldMatrix();
+			tObjData.tLayerTag = (LAYER)i;
+			tObjData.tObjTag = m_vecObjectTag[i][iIndex];
+			WriteFile(hFileBrix, &tObjData, sizeof(OBJ_DATA), &dwByteBrix, nullptr);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFileBrix);
+	MSG_BOX("Saved file");
+}
+
+void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse = 0;
+	OBJ_DATA tDataObj;
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+			LAYER iLayerTag = tDataObj.tLayerTag;
+			const _tchar* strLayer = nullptr;
+
+			OBJ_TAG iObjTag = tDataObj.tObjTag;
+			const _tchar* strPrototypeTag=nullptr;
+
+			switch (iLayerTag)
+			{
+			case LAYER::OBJECT:
+				strLayer = TEXT("Layer_Object");
+				break;
+			}
+
+			switch (iObjTag)
+			{
+			case OBJ_TAG::DOTSPROJECTER:
+				strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
+				break;
+			}
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				strLayer,
+				strPrototypeTag,
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return;
+			}
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataObj.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataObj.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataObj.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataObj.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+
+			m_vecCollocatedObject[(_uint)iLayerTag].push_back(pTemp);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
 }

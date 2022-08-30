@@ -2,9 +2,7 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
-BEGIN(Engine)
-class CModel;
-END
+
 
 
 BEGIN(Client)
@@ -22,9 +20,6 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-
-private:
-	CModel* m_pModelCom = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

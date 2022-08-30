@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Camera_Free.h"
-
+#include "GameInstance.h"
 CCamera_Free::CCamera_Free(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCamera(pDevice,pContext)
 {
@@ -30,6 +30,63 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 void CCamera_Free::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (pGameInstance->Is_KeyState(KEY::W, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Go_Straight(fTimeDelta);
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::S, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Go_Backward(fTimeDelta);
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::A, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Go_Left(fTimeDelta);
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::D, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Go_Right(fTimeDelta);
+	}
+
+	/*_long		MouseMove = 0;
+
+	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_X))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
+	}
+
+	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
+	{
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+	}*/
+
+	if (pGameInstance->Is_KeyState(KEY::LEFT, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
+	}
+	if (pGameInstance->Is_KeyState(KEY::RIGHT, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::UP, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), -1.f*fTimeDelta);
+	}
+	if (pGameInstance->Is_KeyState(KEY::DOWN, KEY_STATE::HOLD))
+	{
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta);
+	}
+
+	
+
+	RELEASE_INSTANCE(CGameInstance);
+
 
 	if (FAILED(Bind_PipeLine()))
 		return;

@@ -21,6 +21,12 @@ public:
 		_matrix		matWorld;
 	} OBJ_DATA;
 
+	typedef struct tagHouseData
+	{
+		MODEL_TAG	tModelTag;
+		_matrix		matWorld;
+	}MAP_DATA;//layer 무조건 house
+
 
 public:
 	CImguiMgr();
@@ -41,48 +47,44 @@ private:
 	bool show_demo_window = true;
 	bool show_another_window = false;
 
+	bool show_Map_Tool = false;
+	bool show_Object_Tool = false;
+
 private:
 	void Set_Prototype();
 
 
-	void ShowWindow(bool* p_open);
 	void Tool_Map();
+	void Tool_Object();
 
-
-	void Object_MapTool();//오브젝트 배치
-	void Map_MapTool();//갈 수 있는 영역 배치
-
+	void Translation();
 	void Rotation();
 	void Scaling();
+
 	void Picking_Object();
+	void MoveObject(_float4 _fPosition);
+	void CollocateHouse();
 	void CollocateObject();
 
-	void Save(char* strFileName);
-	void Load(char* strFileName);
+	void Save_Map(const char* strStageName,const char* strFileName);
+	void Load_Map(const char* strStageName, const char* strFileName);
 
+	void Save_Object(const char* strStageName, const char* strFileName);
+	void Load_Object(const char* strStageName, const char* strFileName);
 
 private:
-	vector<CGameObject*> m_vecPrototype;
-	vector<CGameObject*> m_vecCollocatedObject;
-	_int				 m_iSelectedIndex = 0;
+	vector<CGameObject*> m_vecPrototypeHouse;
+	vector<CGameObject*> m_vecPrototypeObject;
 
-	string	m_strSelectObject_Map = "";
-
-
-	list<string> m_PrototypeTagList;
-
-
-	string	m_strCurObj = "";
-
-
-	// 저장할 때
-	OBJ_DATA m_tObjData;
-	// 설치할 때
-	OBJ_DATA m_tInstallObjData;
+	vector<CGameObject*> m_vecCollocatedHouse[(_uint)MODEL_TAG::MODEL_END];
+	vector<CGameObject*> m_vecCollocatedObject[(_uint)LAYER::LAYER_END];
+	vector<OBJ_TAG>		 m_vecObjectTag[(_uint)LAYER::LAYER_END];
+	_int				 m_iSelectedIndex = 0;//오브젝트 선택 시 OBJ_TAG와 순서 맞춰주기
 
 	//선택한 오브젝트
 	CGameObject* m_pSelectedObject = nullptr;
 	CTransform* m_pSelectedTransform = nullptr;
+	_vector		m_vSelectedOffSet;
 	//지형
 	//CGameObject* m_pTerrain = nullptr;
 	CTransform* m_pTerrainTransform = nullptr;

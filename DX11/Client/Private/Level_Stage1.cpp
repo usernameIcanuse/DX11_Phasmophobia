@@ -20,14 +20,14 @@ HRESULT CLevel_Stage1::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+		return E_FAIL;*/
 
 	if(FAILED(Ready_Lights()))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
 
 	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;*/
@@ -85,7 +85,7 @@ HRESULT CLevel_Stage1::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 	CameraDesc.vEye = _float4(0.0f, 20.f, -100.f, 1.f);
 	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.TransformDesc.fSpeedPerSec = 5.f;
+	CameraDesc.TransformDesc.fSpeedPerSec = 20.f;
 	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
@@ -124,7 +124,7 @@ HRESULT CLevel_Stage1::Ready_Lights()
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))

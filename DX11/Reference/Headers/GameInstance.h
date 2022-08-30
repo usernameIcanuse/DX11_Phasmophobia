@@ -10,6 +10,7 @@
 #include "PipeLine.h"
 #include "Math_Utility.h"
 #include "Light_Manager.h"
+#include "ZFrustum.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -54,6 +55,7 @@ public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, CGameObject** pOut = nullptr,void* pArg = nullptr);
 	class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
+	void	Clear_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 
 public: /* For.Component_Mananger */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, class CComponent* pPrototype);
@@ -75,6 +77,13 @@ public: /* For.Light_Manager */
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
 	LIGHTDESC* Get_LightDesc(_uint iIndex);
 
+public:/* For.ZFrustum*/
+	void	Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix);
+	BOOL	CheckPoint(float x, float y, float z);
+	//BOOL	CheckCube(float, float, float, float);
+	BOOL	CheckSphere(float xCenter, float yCenter, float zCenter, float radius);
+	BOOL	CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize);
+
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -85,6 +94,7 @@ private:
 	CInput_Manager*					m_pInput_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
+	CZFrustum*						m_pZFrustum = nullptr;
 
 	GRAPHICDESC						m_tagGraphicDesc;
 

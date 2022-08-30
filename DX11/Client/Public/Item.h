@@ -6,7 +6,8 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CRenderer;
-class CVIBuffer;
+class CModel;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -26,16 +27,16 @@ public:
 	virtual HRESULT Render();
 
 protected:
-	CShader* m_pShaderCom = nullptr;
-	CTexture* m_pTextureCom = nullptr;
-	CRenderer* m_pRendererCom = nullptr;
-
-
+	CShader*    m_pShaderCom = nullptr;
+	CTexture*   m_pTextureCom = nullptr;
+	CRenderer*  m_pRendererCom = nullptr;
+	CModel*     m_pModelCom = nullptr;
+	CCollider*  m_pAABBCom = nullptr;
 protected:
 	virtual	HRESULT	Setup_Component() PURE;
 	virtual HRESULT SetUp_ShaderResource()PURE;
 
-	_bool	Picking(CVIBuffer* pVIBufferCom, _float4& vOut);
+	//_bool	Picking(CVIBuffer* pVIBufferCom, _float4& vOut);
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

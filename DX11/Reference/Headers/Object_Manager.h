@@ -31,7 +31,9 @@ public:
 	void LateTick(_float fTimeDelta);
 
 public:
+	void Clear_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 	void Clear(_uint iLevelIndex);
+	void Load(const char* szFilePath);
 
 
 private:

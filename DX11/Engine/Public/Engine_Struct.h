@@ -164,7 +164,7 @@ namespace Engine
 		LAST,
 	};
 
-
+	/*For Object Load & Save*/
 	enum class LAYER
 	{
 		PLAYER,
@@ -173,12 +173,30 @@ namespace Engine
 		ITEM,
 		OBJECT,
 		HOUSE,
-		MISC
+		MISC,
+		LAYER_END
 	};
 
 	enum class OBJ_TAG
 	{
+		DOTSPROJECTER,
+		FLASHLIGHT,
+		OBJ_END
+	};
 
+	enum class MODEL_TAG
+	{
+		ABANDONEDMARKET,
+		FURNISHEDCABIN,
+		GARAGE,
+		PIER_HOUSE,
+		PIER_HOUSE2,
+		ROOFTOP,
+		ROOFTOP_BACKGROUND1,
+		SLUMHOUSE1,
+		OLDHOUSE,
+		SHELTER,
+		MODEL_END
 	};
 
 

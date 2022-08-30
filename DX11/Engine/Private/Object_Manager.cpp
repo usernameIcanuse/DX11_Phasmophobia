@@ -94,6 +94,19 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 	}
 }
 
+void CObject_Manager::Clear_Layer(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return;
+
+	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
+	if (nullptr != pLayer)
+	{
+		pLayer->Clear_Layer();
+	}
+	
+}
+
 void CObject_Manager::Clear(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)
