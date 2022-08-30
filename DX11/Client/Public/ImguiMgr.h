@@ -62,6 +62,7 @@ private:
 	void Scaling();
 
 	void Picking_Object();
+	void MoveObject(_float4 _fPosition);
 	void CollocateHouse();
 	void CollocateObject();
 

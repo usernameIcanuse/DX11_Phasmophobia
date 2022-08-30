@@ -42,6 +42,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     //        int a = 0;
     //    }
     //}
+    m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
 
@@ -80,6 +81,11 @@ HRESULT CDotsProjecter::Render()
         m_pModelCom->Render(i);
     }
 
+#ifdef _DEBUG
+    m_pAABBCom->Render();
+#endif // _DEBUG
+
+
     return S_OK;
 }
 
@@ -100,6 +106,16 @@ HRESULT CDotsProjecter::Setup_Component()
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
+
+    CCollider::COLLIDERDESC			ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+    ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -178,5 +194,4 @@ void CDotsProjecter::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pModelCom);
 }

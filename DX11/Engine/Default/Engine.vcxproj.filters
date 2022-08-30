@@ -106,6 +106,15 @@
     <ClInclude Include="..\Public\Light.h">
       <Filter>01.Utility\05. Light</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ZFrustum.h">
+      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\03.Component\05.Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>01.Utility\03.Component\05.Collider\debugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -197,6 +206,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Light_Manager.cpp">
       <Filter>01.Utility\05. Light\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ZFrustum.cpp">
+      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\03.Component\05.Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>01.Utility\03.Component\05.Collider\debugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +319,15 @@
     </Filter>
     <Filter Include="01.Utility\05. Light\Manager">
       <UniqueIdentifier>{755c56bc-af20-4d4e-922c-ced9b7cb1dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.SuperClass\ZFrustum">
+      <UniqueIdentifier>{761d41c5-0207-4f9d-a557-19166cc30a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\05.Collider">
+      <UniqueIdentifier>{a38efd28-1475-4580-8365-a4630f000c41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\05.Collider\debugDraw">
+      <UniqueIdentifier>{8343df91-de0d-431f-a1a0-0501d0afc475}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -42,10 +42,10 @@ HRESULT CItem::Render()
 
 
 
-_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float4& vOut)
-{
-    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, &vOut);
-}
+//_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float4& vOut)
+//{
+//    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, &vOut);
+//}
 
 void CItem::Free()
 {
@@ -54,5 +54,7 @@ void CItem::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pRendererCom);
     Safe_Release(m_pTextureCom);
+    Safe_Release(m_pModelCom);
+    Safe_Release(m_pAABBCom);
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

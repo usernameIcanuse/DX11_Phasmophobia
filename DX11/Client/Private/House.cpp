@@ -37,8 +37,14 @@ void CHouse::Tick(_float fTimeDelta)
 void CHouse::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+    _float4 vPosition;
+    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
+    {
+        m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    }
+
 }
 
 HRESULT CHouse::Render()

@@ -180,6 +180,7 @@ namespace Engine
 	enum class OBJ_TAG
 	{
 		DOTSPROJECTER,
+		FLASHLIGHT,
 		OBJ_END
 	};
 

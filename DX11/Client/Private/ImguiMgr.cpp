@@ -127,13 +127,21 @@ void CImguiMgr::Set_Prototype()
 
 		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
 		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
-
+		
+		
+		/* Object */
 		CGameObject* pTemp = nullptr;
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		/* House */
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
@@ -324,12 +332,15 @@ void CImguiMgr::Tool_Object()
 	{
 		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Object"));//일단 맵 만들 때는 레이어 하나로만
 		for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+		{
+			m_vecObjectTag[i].clear();
 			m_vecCollocatedObject[i].clear();
+		}
 
 	}
 
 
-	const char* items[] = {"DotsProjecter"};
+	const char* items[] = {"DotsProjecter"/*, "FlashLight"*/};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -364,7 +375,6 @@ void CImguiMgr::Tool_Object()
 		m_pSelectedObject = m_vecPrototypeObject[m_iSelectedIndex];
 		m_pSelectedObject->Set_Enable(true);
 		m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
-
 	}
 
 	Translation();
@@ -376,41 +386,71 @@ void CImguiMgr::Tool_Object()
 
 void CImguiMgr::Picking_Object()
 {
+	
 	_float4 fPosition;
-	if (-1 < m_iSelectedIndex && m_pSelectedObject)
+	if (-1 < m_iSelectedIndex || m_pSelectedObject)
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
 			_float3 fScale = m_pSelectedTransform->Get_Scaled();
-			
-			XMStoreFloat4(&fPosition,XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
+
+			XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
 
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
-			
+
 			if (show_Map_Tool && !show_Object_Tool)
 				CollocateHouse();
 			else if (!show_Map_Tool && show_Object_Tool)
-				CollocateObject();
-		}
+			{
+				if(-1 < m_iSelectedIndex)
+					CollocateObject();
+				else
+					MoveObject(fPosition);
+			}}
 	}
 	
 	else
 	{
+		CCollider* pCollider = nullptr;
+		if (!show_Map_Tool && show_Object_Tool)
+		{
+			if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+			{
+				_float fDist = -1.f;
+				RAY		tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+				for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+				{
+					for (auto& elem : m_vecCollocatedObject[i])
+					{
+						pCollider = (CCollider*)elem->Get_Component(TEXT("Com_AABB"));
+						if (pCollider->Collision(tRay, fDist))
+						{
 
+							m_pSelectedObject = elem;
+							m_pSelectedTransform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
+
+						}
+					}
+				}
+			}
+		}
 	}
 }
 void CImguiMgr::Translation()
 {
+	ImGui::Text("[ P ] : y+");
+	ImGui::Text("[ O ] : y-");
+
 	if (m_pSelectedObject)
 	{
 	
 		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
 		{
-			m_vSelectedOffSet += XMVectorSet(0.f,1.f,0.f,0.f);
+			m_vSelectedOffSet += XMVectorSet(0.f,0.5f,0.f,0.f);
 		}
 		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
 		{
-			m_vSelectedOffSet -= XMVectorSet(0.f, 1.f, 0.f, 0.f);
+			m_vSelectedOffSet -= XMVectorSet(0.f, 0.5f, 0.f, 0.f);
 		}
 	
 	}
@@ -446,6 +486,14 @@ void CImguiMgr::Scaling()
 	}
 }
 
+void CImguiMgr::MoveObject(_float4 _fPosition)
+{
+	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+}
 void CImguiMgr::CollocateHouse()
 {
 	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
@@ -531,7 +579,13 @@ void CImguiMgr::CollocateObject()
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 				return;
 			break;
-	
+
+		//case 1:
+		//	tLayerIndex = LAYER::OBJECT;
+		//	tObjIndex = OBJ_TAG::FLASHLIGHT;
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+		//		return;
+		//	break;
 		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
@@ -540,6 +594,7 @@ void CImguiMgr::CollocateObject()
 		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
 		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
 		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
+
 
 		m_vecCollocatedObject[(_uint)tLayerIndex].push_back(pTemp);
 		m_vecObjectTag[(_uint)tLayerIndex].push_back(tObjIndex);
