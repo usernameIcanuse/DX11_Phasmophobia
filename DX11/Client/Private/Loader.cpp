@@ -236,9 +236,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_FlashLight*/
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FlashLight"),
-	//	CFlashLight::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FlashLight"),
+		CFlashLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
@@ -309,9 +309,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_FlashLight*/
-	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	/* For.Prototype_Component_Model_MapleTree*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),

@@ -136,10 +136,10 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
-		//	return;
-		//pTemp->Set_Enable(false);
-		//m_vecPrototypeObject.push_back(pTemp);
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
 
 		/* House */
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
@@ -340,7 +340,7 @@ void CImguiMgr::Tool_Object()
 	}
 
 
-	const char* items[] = {"DotsProjecter"/*, "FlashLight"*/};
+	const char* items[] = {"DotsProjecter", "FlashLight"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -580,12 +580,12 @@ void CImguiMgr::CollocateObject()
 				return;
 			break;
 
-		//case 1:
-		//	tLayerIndex = LAYER::OBJECT;
-		//	tObjIndex = OBJ_TAG::FLASHLIGHT;
-		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
-		//		return;
-		//	break;
+		case 1:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::FLASHLIGHT;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+				return;
+			break;
 		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);

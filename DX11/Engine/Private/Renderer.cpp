@@ -80,7 +80,7 @@ void CRenderer::Free()
 	__super::Free();
 
 	for (_uint i = 0; i < RENDER_END; ++i)
-	{
+	{//Release모드일 때 4까지 돎
 		for (auto& pGameObject : m_RenderObjects[i])
 			Safe_Release(pGameObject);
 

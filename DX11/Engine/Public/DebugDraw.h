@@ -11,7 +11,7 @@
 
 #include "Engine_Defines.h"
 
-
+#ifdef _DEBUG
 namespace DX
 {
     void XM_CALLCONV Draw(DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* batch,
@@ -47,3 +47,4 @@ namespace DX
         DirectX::FXMVECTOR pointA, DirectX::FXMVECTOR pointB, DirectX::FXMVECTOR pointC,
         DirectX::GXMVECTOR color = DirectX::Colors::White);
 }
+#endif

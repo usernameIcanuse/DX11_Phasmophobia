@@ -117,7 +117,7 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxTex.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
-	//Safe_AddRef(m_pRenderer);
+	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
 }

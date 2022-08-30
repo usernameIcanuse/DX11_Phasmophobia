@@ -7,7 +7,7 @@
 
 
 #include "DebugDraw.h"
-
+#ifdef _DEBUG
 using namespace DirectX;
 
 namespace
@@ -278,3 +278,4 @@ void XM_CALLCONV DX::DrawTriangle(PrimitiveBatch<VertexPositionColor>* batch,
 }
 
 
+#endif

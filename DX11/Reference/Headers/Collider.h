@@ -37,10 +37,9 @@ public:
 
 
 
-#ifdef _DEBUG
 public:
 	HRESULT Render();
-#endif // _DEBUG
+
 
 private:
 	BoundingSphere*				m_pSphere_Original = nullptr;
