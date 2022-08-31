@@ -329,5 +329,8 @@
     <Filter Include="01.Utility\03.Component\05.Collider\debugDraw">
       <UniqueIdentifier>{8343df91-de0d-431f-a1a0-0501d0afc475}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Collider_Mgr">
+      <UniqueIdentifier>{3df63192-7481-4bc6-8bc1-3d5780f54ad7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

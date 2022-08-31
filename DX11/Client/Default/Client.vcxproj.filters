@@ -88,8 +88,8 @@
     <ClInclude Include="..\Public\FlashLight.h">
       <Filter>02.GameObject\Item\FlashLight</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GhostWritingBook.h">
-      <Filter>02.GameObject\Item\GhostWritingBook</Filter>
+    <ClInclude Include="..\Public\Note.h">
+      <Filter>02.GameObject\Item\Note</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SpiritBox.h">
       <Filter>02.GameObject\Item\SpiritBox</Filter>
@@ -210,8 +210,8 @@
     <ClCompile Include="..\Private\FlashLight.cpp">
       <Filter>02.GameObject\Item\FlashLight</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GhostWritingBook.cpp">
-      <Filter>02.GameObject\Item\GhostWritingBook</Filter>
+    <ClCompile Include="..\Private\Note.cpp">
+      <Filter>02.GameObject\Item\Note</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SpiritBox.cpp">
       <Filter>02.GameObject\Item\SpiritBox</Filter>
@@ -343,9 +343,6 @@
     <Filter Include="02.GameObject\Item\SpiritBox">
       <UniqueIdentifier>{2001f4b9-4342-48d2-879d-30448ceb0678}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Item\GhostWritingBook">
-      <UniqueIdentifier>{2954d003-abb4-490c-b666-3f8117641bf2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Item\DotsProjecter">
       <UniqueIdentifier>{d80b218c-d9c8-42e6-a209-2141c8b896b7}</UniqueIdentifier>
     </Filter>
@@ -384,6 +381,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\House">
       <UniqueIdentifier>{7251ce8a-28ad-478b-9ab8-af2a80958cf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Note">
+      <UniqueIdentifier>{2954d003-abb4-490c-b666-3f8117641bf2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

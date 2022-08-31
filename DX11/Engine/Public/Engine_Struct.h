@@ -164,6 +164,34 @@ namespace Engine
 		LAST,
 	};
 
+	enum class COLLISION_TYPE
+	{
+		DEFAULT = 0,
+		PLAYER,
+		PLAYER_ATTACK,
+		MONSTER,
+		MONSTER_ATTACK,
+		EFFECTS,
+		SIGHT,
+		RANGE,
+		CAMERA,
+		MOUSE,
+		OBJECT,
+		ITEM,
+		TYPE_END
+	};
+
+	union COLLIDER_ID
+	{
+		struct
+		{
+			unsigned long Left_id;
+			unsigned long Right_id;
+		};
+		unsigned long long  ID;
+
+	};
+
 	/*For Object Load & Save*/
 	enum class LAYER
 	{
@@ -181,6 +209,11 @@ namespace Engine
 	{
 		DOTSPROJECTER,
 		FLASHLIGHT,
+		THERMOMETER,
+		EMF,
+		NOTE,
+		SPIRITBOX,
+		VIDEOCAMERA,
 		OBJ_END
 	};
 

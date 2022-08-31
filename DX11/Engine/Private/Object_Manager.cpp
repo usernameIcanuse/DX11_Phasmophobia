@@ -9,7 +9,7 @@ CObject_Manager::CObject_Manager()
 }
 
 CComponent * CObject_Manager::Get_Component(_uint iLevelIndex, const _tchar * pLayerTag, const _tchar * pComponentTag, _uint iIndex)
-{
+{//해당 레벨 상에 있는 객체들 중 원하는 컴포넌트를 가져와야 할 때
 	CLayer*		pLayer = Find_Layer(iLevelIndex, pLayerTag);
 
 	if (nullptr == pLayer)

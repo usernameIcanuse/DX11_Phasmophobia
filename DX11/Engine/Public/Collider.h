@@ -35,7 +35,15 @@ public:
 	_bool Collision(RAY _tRay,_float& fDist);//Ray Collision
 	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
-
+public:
+	COLLISION_TYPE Get_Collision_Type()
+	{
+		return m_eType;
+	}
+	TYPE	Get_Type()
+	{
+		return m_eCollisionType;
+	}
 
 public:
 	HRESULT Render();
@@ -49,7 +57,8 @@ private:
 	BoundingSphere*				m_pSphere = nullptr;
 	BoundingBox*				m_pAABB = nullptr;	
 	BoundingOrientedBox*		m_pOBB = nullptr;
-	TYPE						m_eType = TYPE_END;
+	TYPE						m_eCollisionType = TYPE_END;
+	COLLISION_TYPE				m_eType = COLLISION_TYPE::TYPE_END;
 	COLLIDERDESC				m_ColliderDesc;
 
 #ifdef _DEBUG

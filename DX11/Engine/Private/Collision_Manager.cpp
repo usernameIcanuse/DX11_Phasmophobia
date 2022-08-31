@@ -1,7 +1,7 @@
 #include "Collision_Manager.h"
 #include "GameObject.h"
 #include "GameInstance.h"
-#include "Collider_Mesh.h"
+#include "Collider.h"
 
 IMPLEMENT_SINGLETON(CCollision_Manager)
 
@@ -255,270 +255,42 @@ bool CCollision_Manager::Is3DCollision(CCollider* _pLeft, CCollider* _pRight, _f
 	//}
 
 
-	if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::OBB)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::OBB))
-	{
-		return IsOBBCollision(_pLeft, _pRight);
-	}// 사각 - 사각
-	else if((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
-	{
-		return IsSphereCollision(_pLeft, _pRight);
-	}// 사각 - 원, 원 - 원
+	//if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::OBB)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::OBB))
+	//{
+	//	return IsOBBCollision(_pLeft, _pRight);
+	//}// 사각 - 사각
+	//else if((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
+	//{
+	//	return IsSphereCollision(_pLeft, _pRight);
+	//}// 사각 - 원, 원 - 원
 
-	else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::MESH))
-	{
-		return IsMesh_To_SphereCollision(_pLeft, _pRight);
-	}
-	else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::MESH)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
-	{
-		return IsMesh_To_SphereCollision(_pRight, _pLeft);
-	}
-	else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::RAY)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
-	{
-		return IsRay_To_SphereCollision(_pLeft, _pRight);
-	}
-	else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
-		&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::RAY))
-	{
-		return IsRay_To_SphereCollision(_pRight, _pLeft);
-	}
+	//else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::MESH))
+	//{
+	//	return IsMesh_To_SphereCollision(_pLeft, _pRight);
+	//}
+	//else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::MESH)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
+	//{
+	//	return IsMesh_To_SphereCollision(_pRight, _pLeft);
+	//}
+	//else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::RAY)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE))
+	//{
+	//	return IsRay_To_SphereCollision(_pLeft, _pRight);
+	//}
+	//else if ((_pLeft->Get_Collider_Shape() == COLLIDER_SHAPE::SPHERE)
+	//	&& (_pRight->Get_Collider_Shape() == COLLIDER_SHAPE::RAY))
+	//{
+	//	return IsRay_To_SphereCollision(_pRight, _pLeft);
+	//}
 
 	return IsSphereCollision(_pLeft, _pRight, _fDistance);
 }
 
-bool CCollision_Manager::IsOBBCollision(CCollider* _pLeft, CCollider* _pRight, _float* _fDistance)
-{
-	OBBINFO	LeftBox = static_cast<CCollider_OBB*>(_pLeft)->Get_OBBInfo();
-	OBBINFO	RightBox = static_cast<CCollider_OBB*>(_pRight)->Get_OBBInfo();
 
-
-	D3DXVECTOR3 Axis_c1[3] = {
-		LeftBox.tVertex[1] - LeftBox.tVertex[0],
-		LeftBox.tVertex[3] - LeftBox.tVertex[0],
-		LeftBox.tVertex[4] - LeftBox.tVertex[0] };
-
-	D3DXVECTOR3 Axis_c2[3] = {
-		RightBox.tVertex[1] - RightBox.tVertex[0],
-		RightBox.tVertex[3] - RightBox.tVertex[0],
-		RightBox.tVertex[4] - RightBox.tVertex[0] };
-
-	// 2. 축을 기준으로 검산 
-	for (int i = 0; i < 3; ++i)
-	{
-		// 기준이 되는 축 생성
-		D3DXVECTOR3 Axis_norm;
-		D3DXVec3Normalize(&Axis_norm, &Axis_c1[i]);
-
-		// 2 - 1. 축에대한 길이 A와 B 도출
-		map<float, UINT> mValue_Right;
-		map<float, UINT> mValue_Left;
-		UINT minIndex_Right, maxIndex_Right;
-		UINT minIndex_Left, maxIndex_Left;
-
-		//가장 짧은길이의 정점을 찾아낸다.
-		for (int v = 0; v < sizeof(RightBox.tVertex) / sizeof(D3DXVECTOR3); ++v)
-		{
-			mValue_Right.insert(make_pair(fabsf(D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[v])), v));
-			mValue_Left.insert(make_pair(fabsf(D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[v])), v));
-		}
-
-
-		// 비교될 상대 대상의 최단, 최장 정점의 Index 번호
-
-		map<float, UINT>::iterator Right_iter;
-		Right_iter = mValue_Right.end();
-		--Right_iter;
-
-		minIndex_Right = mValue_Right.begin()->second;
-		maxIndex_Right = Right_iter->second;
-
-		map<float, UINT>::iterator Left_iter;
-		Left_iter = mValue_Left.end();
-		--Left_iter;
-
-		minIndex_Left = mValue_Left.begin()->second;
-		maxIndex_Left = Left_iter->second;
-
-
-		// 1, 3, 4 순서로 가장 큼
-		FLOAT A, B, Dist;
-		D3DXVECTOR3 vec;
-
-		FLOAT A1 = (D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[maxIndex_Left]));
-		FLOAT A2 = (D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[minIndex_Left]));
-
-		A = fabs(A1 - A2);
-
-
-		FLOAT B1 = (D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[maxIndex_Right]));
-		FLOAT B2 = (D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[minIndex_Right]));
-
-		B = fabs(B1 - B2);
-
-		A = A * 0.5F;
-		B = B * 0.5F;
-
-		// 2 - 2. 두 원점에대한 축의 내적연산으로 길이 Dist 도출
-
-		B1 = (D3DXVec3Dot(&Axis_norm, &LeftBox.ObbCenterPos));
-		B2 = (D3DXVec3Dot(&Axis_norm, &RightBox.ObbCenterPos));
-		Dist = fabsf(B1 - B2);
-
-		// 2 - 3. Dist와 A * 0.5 + B * 0.5 를 비교
-		if (Dist > A + B)
-			return false; //충돌 안함
-		// Dist < A + B 충돌 함
-	}
-
-	// 2. 축을 기준으로 검산 
-	for (int i = 0; i < 3; ++i)
-	{
-		D3DXVECTOR3 Axis_norm;
-		D3DXVec3Normalize(&Axis_norm, &Axis_c2[i]);
-
-		// 2 - 1. 축에대한 길이 A와 B 도출
-		map<float, UINT> mValue_Right;
-		map<float, UINT> mValue_Left;
-		UINT minIndex_Right, maxIndex_Right;
-		UINT minIndex_Left, maxIndex_Left;
-
-		//가장 짧은길이의 정점을 찾아낸다.
-		for (int v = 0; v < sizeof(RightBox.tVertex) / sizeof(D3DXVECTOR3); ++v)
-		{
-			mValue_Right.insert(make_pair(fabsf(D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[v])), v));
-			mValue_Left.insert(make_pair(fabsf(D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[v])), v));
-		}
-
-
-		// 비교될 상대 대상의 최단, 최장 정점의 Index 번호
-
-		map<float, UINT>::iterator Right_iter;
-		Right_iter = mValue_Right.end();
-		--Right_iter;
-
-		minIndex_Right = mValue_Right.begin()->second;
-		maxIndex_Right = Right_iter->second;
-
-		map<float, UINT>::iterator Left_iter;
-		Left_iter = mValue_Left.end();
-		--Left_iter;
-
-		minIndex_Left = mValue_Left.begin()->second;
-		maxIndex_Left = Left_iter->second;
-
-
-		// 1, 3, 4 순서로 가장 큼
-		FLOAT A, B, Dist;
-		D3DXVECTOR3 vec;
-
-		FLOAT A1 = (D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[maxIndex_Left]));
-		FLOAT A2 = (D3DXVec3Dot(&Axis_norm, &LeftBox.tVertex[minIndex_Left]));
-
-		A = fabs(A1 - A2);
-
-
-		FLOAT B1 = (D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[maxIndex_Right]));
-		FLOAT B2 = (D3DXVec3Dot(&Axis_norm, &RightBox.tVertex[minIndex_Right]));
-
-		B = fabs(B1 - B2);
-
-		A = A * 0.5F;
-		B = B * 0.5F;
-
-		// 2 - 2. 두 원점에대한 축의 내적연산으로 길이 Dist 도출
-
-		B1 = (D3DXVec3Dot(&Axis_norm, &LeftBox.ObbCenterPos));
-		B2 = (D3DXVec3Dot(&Axis_norm, &RightBox.ObbCenterPos));
-		Dist = fabsf(B1 - B2);
-
-		// 2 - 3. Dist와 A * 0.5 + B * 0.5 를 비교
-		if (Dist > A + B)
-			return false; //충돌 안함
-	}
-
-	return true;
-}
-
-bool CCollision_Manager::IsSphereCollision(CCollider* _pLeft, CCollider* _pRight, _float* _fDistance)
-{
-	if (!_pLeft || !_pRight)
-	{
-		return false;
-	}
-
-	D3DXVECTOR3 CenterDiff = _pRight->Get_Collider_Position() - _pLeft->Get_Collider_Position();
-	float Dist = D3DXVec3Length(&CenterDiff);
-	if (_fDistance)
-		*_fDistance = Dist;
-	Dist = fabsf(Dist);
-
-	float LeftRadius = _pLeft->Get_Collider_Size().x;
-	float RightRadius = _pRight->Get_Collider_Size().x;
-
-	if (Dist > LeftRadius + RightRadius)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-bool CCollision_Manager::IsMesh_To_SphereCollision(CCollider* _pLeft, CCollider* _pRight)
-{
-	_float3		vSphereCenter = _pLeft->Get_Collider_Position(); 
-	_float3     vMeshCenter = _pRight->Get_Collider_Position();
-	LPD3DXBASEMESH pMesh = static_cast<CCollider_Mesh*>(_pRight)->Get_Collider_Mesh();
-	CTransform* pMeshTransform = _pRight->Get_Owner()->Get_Component<CTransform>();
-
-
-	RAY	 CollisionRay;
-	CollisionRay.Dir = vMeshCenter - vSphereCenter;
-	CollisionRay.fLength = D3DXVec3Length(&CollisionRay.Dir);
-	D3DXVec3Normalize(&CollisionRay.Dir, &CollisionRay.Dir);
-	CollisionRay.Pos = vSphereCenter;
-
-	_float3		vPickingMeshOut;
-
-	return CMath_Utillity::Picking_Mesh(pMesh, pMeshTransform, CollisionRay, &vPickingMeshOut);
-}
-
-bool CCollision_Manager::IsRay_To_SphereCollision(CCollider* _pLeft, CCollider* _pRight)
-{
-	RAY	rayCollider = static_cast<CCollider_Ray*>(_pLeft)->Get_ColliderRay();
-	D3DXVec3Normalize(&rayCollider.Dir, &rayCollider.Dir);
-	
-	_float Range = _pRight->Get_Collider_Size().x;
-	_float3 fSpherePos = _pRight->Get_Collider_Position();
-
-	_float3 SphereRay = fSpherePos - rayCollider.Pos;
-
-	_float Dotproduct = D3DXVec3Dot(&rayCollider.Dir, &SphereRay);
-
-	if (Dotproduct > 0.f && rayCollider.fLength > Dotproduct)
-	{
-		_float3 Projection = Dotproduct * rayCollider.Dir;
-
-		Projection += rayCollider.Pos;
-
-		_float3 Length = fSpherePos - Projection;
-
-		_float fDist = D3DXVec3Length(&Length);
-
-
-		if (Range > fDist)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
 
 void CCollision_Manager::Free()
 {

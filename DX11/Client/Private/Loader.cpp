@@ -10,7 +10,12 @@
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
+#include "Thermometer.h"
 #include "House.h"
+#include "EMF.h"
+#include "Note.h"
+#include "SpiritBox.h"
+#include "Video_Camera.h"
 //#include "Monster.h"
 #include "Terrain.h"
 #include "Player.h"
@@ -240,6 +245,31 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CFlashLight::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Thermometer*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thermometer"),
+		CThermometer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_EMF*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EMF"),
+		CEMF::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Note*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Note"),
+		CNote::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SpiritBox*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SpiritBox"),
+		CSpiritBox::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Video_Camera*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Video_Camera"),
+		CVideo_Camera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
 		CHouse::Create(m_pDevice, m_pContext))))
@@ -312,6 +342,32 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Thermometer*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Thermometer"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Thermometer/", "Thermometer.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_EMF*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_EMF"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Note*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_SpiritBox*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SpiritBox"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/SpiritBox/", "SpiritBox.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Video_Camera*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
+		return E_FAIL;
+
 
 	/* For.Prototype_Component_Model_MapleTree*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),

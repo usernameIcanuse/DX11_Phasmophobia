@@ -23,7 +23,7 @@ CCollider::CCollider(const CCollider & rhs)
 
 HRESULT CCollider::Initialize_Prototype(TYPE eType)
 {
-	m_eType = eType;
+	m_eCollisionType = eType;
 
 	
 
@@ -53,7 +53,7 @@ HRESULT CCollider::Initialize(void * pArg)
 
 	memcpy(&m_ColliderDesc, pArg, sizeof(COLLIDERDESC));
 
-	switch (m_eType)
+	switch (m_eCollisionType)
 	{
 	case TYPE_AABB:
 		m_pAABB_Original = new BoundingBox(m_ColliderDesc.vTranslation, _float3(m_ColliderDesc.vScale.x * 0.5f, m_ColliderDesc.vScale.y * 0.5f, m_ColliderDesc.vScale.z * 0.5f));
@@ -74,7 +74,7 @@ HRESULT CCollider::Initialize(void * pArg)
 
 void CCollider::Update(_fmatrix TransformMatrix)
 {
-	switch (m_eType)
+	switch (m_eCollisionType)
 	{
 	case TYPE_AABB:
 		m_pAABB_Original->Transform(*m_pAABB, Remove_Rotation(TransformMatrix));
@@ -141,7 +141,7 @@ HRESULT CCollider::Render()
 
 	m_pBatch->Begin();
 
-	switch (m_eType)
+	switch (m_eCollisionType)
 	{
 	case TYPE_AABB:
 		DX::Draw(m_pBatch, *m_pAABB);

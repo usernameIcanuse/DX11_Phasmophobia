@@ -141,6 +141,31 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Note"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+		
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+		
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
 		/* House */
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
@@ -340,7 +365,8 @@ void CImguiMgr::Tool_Object()
 	}
 
 
-	const char* items[] = {"DotsProjecter", "FlashLight"};
+	const char* items[] = {"DotsProjecter", "FlashLight", "Thermometer","EMF",
+							"Note","SpiritBox","Video Camera"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -584,6 +610,41 @@ void CImguiMgr::CollocateObject()
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::FLASHLIGHT;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+				return;
+			break;
+
+		case 2:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::THERMOMETER;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
+				return;
+			break;
+
+		case 3:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::EMF;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
+				return;
+			break;
+
+		case 4:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::NOTE;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Note"), &pTemp)))
+				return;
+			break;
+
+		case 5:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::SPIRITBOX;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
+				return;
+			break;
+
+		case 6:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::VIDEOCAMERA;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
 				return;
 			break;
 		}
