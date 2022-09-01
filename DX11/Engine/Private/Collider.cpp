@@ -1,6 +1,9 @@
 #include "..\Public\Collider.h"
 #include "DebugDraw.h"
 #include "PipeLine.h"
+#include "GameInstance.h"
+
+_ulong		CCollider::g_iNextID = 0;
 
 CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -9,7 +12,7 @@ CCollider::CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 
 CCollider::CCollider(const CCollider & rhs)
 	: CComponent(rhs)
-	, m_eType(rhs.m_eType)
+	, m_eCollisionType(rhs.m_eCollisionType)
 #ifdef _DEBUG
 	, m_pBatch(rhs.m_pBatch)
 	, m_pEffect(rhs.m_pEffect)
@@ -24,8 +27,6 @@ CCollider::CCollider(const CCollider & rhs)
 HRESULT CCollider::Initialize_Prototype(TYPE eType)
 {
 	m_eCollisionType = eType;
-
-	
 
 
 #ifdef _DEBUG
@@ -43,6 +44,8 @@ HRESULT CCollider::Initialize_Prototype(TYPE eType)
 
 #endif // _DEBUG
 
+	
+
 	return S_OK;
 }
 
@@ -50,6 +53,9 @@ HRESULT CCollider::Initialize(void * pArg)
 {
 	if (nullptr == pArg)
 		return E_FAIL;
+
+	m_iID = g_iNextID++;
+
 
 	memcpy(&m_ColliderDesc, pArg, sizeof(COLLIDERDESC));
 
@@ -67,8 +73,14 @@ HRESULT CCollider::Initialize(void * pArg)
 		m_pSphere_Original = new BoundingSphere(m_ColliderDesc.vTranslation, m_ColliderDesc.vScale.x * 0.5f);
 		m_pSphere = new BoundingSphere(*m_pSphere_Original);
 		break;
+
+	case TYPE_RAY:
+		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		break;
 	}
 
+
+		
 	return S_OK;
 }
 
@@ -85,14 +97,51 @@ void CCollider::Update(_fmatrix TransformMatrix)
 	case TYPE_SPHERE:
 		m_pSphere_Original->Transform(*m_pSphere, TransformMatrix);
 		break;
+		
+	case TYPE_RAY:
+		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		break;
 	}
-
+	GAMEINSTANCE->Add_Collider(this);
 	
 }
 
 _bool CCollider::Collision(CCollider * pTargetCollider)
 {
-	return _bool();
+	if (m_pAABB)
+	{
+		switch (pTargetCollider->Get_Collision_Type())
+		{
+		case TYPE_AABB:
+			return m_pAABB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+		
+		case TYPE_RAY:
+			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
+			_float fDist = 0;
+			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
+			if (m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
+			{
+				XMStoreFloat3(&m_vCollidePos,XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
+				return true;
+			}
+			
+		}
+	}
+
+	else if (TYPE_RAY == m_eCollisionType)
+	{
+		m_vCollidePos = _float3(0.f, 0.f, 0.f);
+		_float	fDist=0;
+		XMStoreFloat3(&m_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&m_tRay.vDir)));
+		BoundingBox* pCollider = (BoundingBox*)pTargetCollider->Get_Collider();
+		if (pCollider->Intersects(XMVectorSetW(XMLoadFloat3(&m_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&m_tRay.vDir), 0.f), fDist))
+		{
+			XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 _bool CCollider::Collision(RAY _tRay, _float& fDist)

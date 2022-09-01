@@ -115,6 +115,9 @@
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>01.Utility\03.Component\05.Collider\debugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collision_Manager.h">
+      <Filter>01.Utility\02.GameObject\Manager\Collider_Mgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>01.Utility\03.Component\05.Collider\debugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collision_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Manager\Collider_Mgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

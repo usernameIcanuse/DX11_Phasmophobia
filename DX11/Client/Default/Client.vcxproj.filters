@@ -385,6 +385,9 @@
     <Filter Include="02.GameObject\Item\Note">
       <UniqueIdentifier>{2954d003-abb4-490c-b666-3f8117641bf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\Player\Inventory">
+      <UniqueIdentifier>{4f36e463-4da4-40d5-8baf-566b4f98c2ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

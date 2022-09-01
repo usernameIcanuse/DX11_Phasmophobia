@@ -2,6 +2,11 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CCollider;
+END
+
+
 BEGIN(Client)
 
 class CPlayer : public CGameObject
@@ -18,6 +23,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+private:
+	CCollider* m_pRayCom = nullptr;
 
 private:
 	HRESULT	Setup_Component();

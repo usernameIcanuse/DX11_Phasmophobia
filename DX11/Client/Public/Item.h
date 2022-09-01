@@ -33,10 +33,15 @@ protected:
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pAABBCom = nullptr;
 protected:
-	virtual	HRESULT	Setup_Component() PURE;
+	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;
 
 	//_bool	Picking(CVIBuffer* pVIBufferCom, _float4& vOut);
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider);
+	virtual void On_Collision_Stay(CCollider* pCollider);
+	virtual void On_Collision_Exit(CCollider* pCollider);
 
 public:
 	virtual CGameObject* Clone(void* pArg) PURE;

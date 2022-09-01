@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 
+class CGameObject;
 /* 충돌체. */
 /* 각종 충돌을 위한 함수를. */
 /* 화면에 그려서 보여줄수 있음 좋겄다. */
@@ -11,7 +12,7 @@ BEGIN(Engine)
 class ENGINE_DLL CCollider final : public CComponent
 {
 public:
-	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
+	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_RAY,TYPE_END };
 
 public:
 	typedef struct tagColliderDesc
@@ -19,6 +20,9 @@ public:
 		_float3			vScale;
 		_float4			vRotation;
 		_float3			vTranslation;
+		CGameObject*    pOwner;
+		COLLISION_TYPE				m_eObjID;
+
 	}COLLIDERDESC;
 
 private:
@@ -36,15 +40,53 @@ public:
 	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
 public:
-	COLLISION_TYPE Get_Collision_Type()
+	_float3 Get_Scale()
 	{
-		return m_eType;
+		return m_ColliderDesc.vScale;
 	}
-	TYPE	Get_Type()
+
+	_ulong Get_ID()
+	{
+		return m_iID;
+	}
+
+	CGameObject* Get_Owner()
+	{
+		return m_ColliderDesc.pOwner;
+	}
+
+
+	COLLISION_TYPE Get_Type()
+	{
+		return m_ColliderDesc.m_eObjID;
+	}
+	TYPE	Get_Collision_Type()
 	{
 		return m_eCollisionType;
 	}
 
+	void* Get_Collider()
+	{
+		switch (m_eCollisionType)
+		{
+		case TYPE_AABB:
+			return m_pAABB;
+			 
+		case TYPE_OBB:
+			return m_pOBB;
+
+		case TYPE_SPHERE:
+			return m_pSphere;
+
+		case TYPE_RAY:
+			return &m_tRay;
+		}
+	}
+
+	_float3 Get_CollidePos()
+	{
+		return m_vCollidePos;
+	}
 public:
 	HRESULT Render();
 
@@ -58,8 +100,15 @@ private:
 	BoundingBox*				m_pAABB = nullptr;	
 	BoundingOrientedBox*		m_pOBB = nullptr;
 	TYPE						m_eCollisionType = TYPE_END;
-	COLLISION_TYPE				m_eType = COLLISION_TYPE::TYPE_END;
 	COLLIDERDESC				m_ColliderDesc;
+	
+	/*Ray일 때만*/
+	RAY							m_tRay;
+	_float3						m_vCollidePos;
+
+
+	static _ulong				g_iNextID;
+	_ulong						m_iID;
 
 #ifdef _DEBUG
 private:

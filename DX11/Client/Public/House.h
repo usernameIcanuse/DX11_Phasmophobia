@@ -7,6 +7,7 @@ class CShader;
 class CTexture;
 class CRenderer;
 class CModel;
+
 END
 
 BEGIN(Client)
@@ -33,6 +34,7 @@ private:
 	CTexture* m_pTextureCom = nullptr;
 	CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
+
 
 private:
 	virtual	HRESULT	Setup_Component();

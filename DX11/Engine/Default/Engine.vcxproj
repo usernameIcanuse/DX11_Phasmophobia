@@ -166,6 +166,7 @@
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Collider.h" />
+    <ClInclude Include="..\Public\Collision_Manager.h" />
     <ClInclude Include="..\Public\Component.h" />
     <ClInclude Include="..\Public\Component_Manager.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Collider.cpp" />
+    <ClCompile Include="..\Private\Collision_Manager.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />

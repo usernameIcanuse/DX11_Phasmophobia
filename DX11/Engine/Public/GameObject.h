@@ -4,6 +4,7 @@
 #include "Transform.h"
 
 BEGIN(Engine)
+class CCollider;
 
 class ENGINE_DLL CGameObject abstract : public CBase
 {
@@ -57,6 +58,12 @@ public:
 	{
 		return m_bEnable;
 	}
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider) {};
+	virtual void On_Collision_Stay(CCollider* pCollider) {};
+	virtual void On_Collision_Exit(CCollider* pCollider) {};
+
 
 private:
 	class CComponent* Find_Components(const _tchar* pComponentTag);

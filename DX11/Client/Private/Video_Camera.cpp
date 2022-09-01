@@ -31,6 +31,8 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
 void CVideo_Camera::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+    m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 }
 
 void CVideo_Camera::LateTick(_float fTimeDelta)
@@ -69,25 +71,34 @@ HRESULT CVideo_Camera::Render()
     }
 
 #ifdef _DEBUG
-    //  m_pAABBCom->Render();
+      m_pAABBCom->Render();
 #endif // _DEBUG
 
 
     return S_OK;
 }
 
+void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
+{
+    __super::On_Collision_Enter(pCollider);
+}
+
+void CVideo_Camera::On_Collision_Stay(CCollider* pCollider)
+{
+}
+
+void CVideo_Camera::On_Collision_Exit(CCollider* pCollider)
+{
+}
+
 HRESULT CVideo_Camera::Setup_Component()
 {
+
+    if (FAILED(__super::Setup_Component()))
+        return E_FAIL;
+
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-        return E_FAIL;
-
-    /* For.Com_Texture*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
-        return E_FAIL;
-
-    /* For.Com_Renderer*/
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
 
     /* For.Com_Model */
