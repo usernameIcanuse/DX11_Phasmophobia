@@ -26,8 +26,8 @@ HRESULT CLevel_Stage1::Initialize()
 	if(FAILED(Ready_Lights()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	//	return E_FAIL;
 
 	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;*/

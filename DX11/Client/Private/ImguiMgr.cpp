@@ -41,7 +41,7 @@ void CImguiMgr::Init(ID3D11Device* _pDevice, ID3D11DeviceContext* _pContext)
 
 	ImGui::StyleColorsDark();
 
-
+	
 
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
@@ -117,7 +117,11 @@ void CImguiMgr::Set_Prototype()
 	static _bool	bFirst = false;
 	if (!bFirst)
 	{
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
+			return;
 
+		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
+		
 		bFirst = true;
 		m_iSelectedIndex = -1;
 
@@ -418,10 +422,25 @@ void CImguiMgr::Picking_Object()
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
 		{
-			_float3 fScale = m_pSelectedTransform->Get_Scaled();
-
+			//_float3 fScale = m_pSelectedTransform->Get_Scaled();
+			
+			
 			XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
 
+			
+			for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
+			{
+				for (auto& elem : m_vecCollocatedObject[i])
+				{
+					CCollider* pObjCollider =   (CCollider*)elem->Get_Component(TEXT("Com_AABB"));
+					if (m_pRayCom->Collision(pObjCollider))
+					{
+
+						XMStoreFloat4(&fPosition, XMVectorSetW(XMLoadFloat3( &m_pRayCom->Get_CollidePos()),1.f));
+
+					}
+				}
+			}
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 
 			if (show_Map_Tool && !show_Object_Tool)

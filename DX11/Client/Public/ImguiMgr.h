@@ -6,6 +6,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CCollider;
 END
 
 class CImguiMgr final : public CBase
@@ -82,6 +83,10 @@ private:
 	_int				 m_iSelectedIndex = 0;//오브젝트 선택 시 OBJ_TAG와 순서 맞춰주기
 
 	//선택한 오브젝트
+
+	CGameObject* m_pPlayer = nullptr;
+	CCollider* m_pRayCom = nullptr;
+
 	CGameObject* m_pSelectedObject = nullptr;
 	CTransform* m_pSelectedTransform = nullptr;
 	_vector		m_vSelectedOffSet;

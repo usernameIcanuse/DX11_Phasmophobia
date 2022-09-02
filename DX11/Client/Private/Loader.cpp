@@ -19,6 +19,7 @@
 //#include "Monster.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "Inventory.h"
 //#include "Effect.h"
 #include "Sky.h"
 #include "DotsProjecter.h"
@@ -226,9 +227,14 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CCamera_FPS::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Player */
+	/* For.Prototype_GameObject_Player */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Inventory */
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Inventory"),
+		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sky */
@@ -337,6 +343,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Lighter"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 		return E_FAIL;
+	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	/* For.Prototype_Component_Model_FlashLight*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
@@ -367,6 +374,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
 		return E_FAIL;
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 
 	/* For.Prototype_Component_Model_MapleTree*/
@@ -439,6 +447,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Collider_SPHERE */	
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"),
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_Ray*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_Ray"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_RAY))))
 		return E_FAIL;
 
 

@@ -11,6 +11,7 @@
 #include "Math_Utility.h"
 #include "Light_Manager.h"
 #include "ZFrustum.h"
+#include "Collision_Manager.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -84,6 +85,9 @@ public:/* For.ZFrustum*/
 	BOOL	CheckSphere(float xCenter, float yCenter, float zCenter, float radius);
 	BOOL	CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize);
 
+public:/* For.Collision_Manager*/
+	void Add_Collider(CCollider* pCollider);
+	void Erase_Collider(CCollider* pCollider);
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -95,6 +99,7 @@ private:
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 	CZFrustum*						m_pZFrustum = nullptr;
+	CCollision_Manager*				m_pCollision_Manager = nullptr;
 
 	GRAPHICDESC						m_tagGraphicDesc;
 

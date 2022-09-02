@@ -181,5 +181,6 @@ void CHouse::Free()
     Safe_Release(m_pRendererCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
+   
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

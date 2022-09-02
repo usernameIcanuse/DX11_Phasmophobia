@@ -2,7 +2,14 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CCollider;
+END
+
+
 BEGIN(Client)
+
+class CInventory;
 
 class CPlayer : public CGameObject
 {
@@ -18,10 +25,20 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+private:
+	CCollider* m_pRayCom = nullptr;
+
+	CInventory* m_pInventory = nullptr;
 
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_Camera();
+	HRESULT Setup_Inventory();
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider);
+	virtual void On_Collision_Stay(CCollider* pCollider);
+	virtual void On_Collision_Exit(CCollider* pCollider);
 
 public:
 	static CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

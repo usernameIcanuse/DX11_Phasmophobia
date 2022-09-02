@@ -13,6 +13,7 @@ CGameInstance::CGameInstance()
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 	, m_pZFrustum(CZFrustum::Get_Instance())
+	, m_pCollision_Manager(CCollision_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -24,6 +25,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pZFrustum);
+	Safe_AddRef(m_pCollision_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -40,6 +42,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 	if (FAILED(m_pInput_Manager->Initialize(hInst, GraphicDesc.hWnd)))
 		return E_FAIL;
 
+	m_pCollision_Manager->Initialize();
+		
 
 	/* 오브젝트 매니져의 예약. */
 	if (FAILED(m_pObject_Manager->Reserve_Container(iNumLevels)))
@@ -68,6 +72,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPipeLine->Tick();
 
 	m_pZFrustum->Update_Frustum();
+
+	m_pCollision_Manager->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
@@ -350,6 +356,16 @@ BOOL CGameInstance::CheckRectangle(float xCenter, float yCenter, float zCenter, 
 	return	m_pZFrustum->CheckRectangle(xCenter, yCenter, zCenter, xSize, ySize, zSize);
 }
 
+void CGameInstance::Add_Collider(CCollider* pCollider)
+{
+	m_pCollision_Manager->Add_Collider(pCollider);
+}
+
+void CGameInstance::Erase_Collider(CCollider* pCollider)
+{
+	m_pCollision_Manager->Erase_Collider(pCollider);
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -370,6 +386,8 @@ void CGameInstance::Release_Engine()
 
 	CZFrustum::Get_Instance()->Destroy_Instance();
 
+	CCollision_Manager::Get_Instance()->Destroy_Instance();
+
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
 }
@@ -385,5 +403,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pZFrustum);
+	Safe_Release(m_pCollision_Manager);
 
 }

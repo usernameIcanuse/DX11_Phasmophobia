@@ -31,6 +31,8 @@ HRESULT CSpiritBox::Initialize(void* pArg)
 void CSpiritBox::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+    m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 }
 
 void CSpiritBox::LateTick(_float fTimeDelta)
@@ -69,26 +71,35 @@ HRESULT CSpiritBox::Render()
     }
 
 #ifdef _DEBUG
-    //  m_pAABBCom->Render();
+      m_pAABBCom->Render();
 #endif // _DEBUG
 
 
     return S_OK;
 }
 
+void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
+{
+    __super::On_Collision_Enter(pCollider);
+}
+
+void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
+{
+}
+
+void CSpiritBox::On_Collision_Exit(CCollider* pCollider)
+{
+}
+
 HRESULT CSpiritBox::Setup_Component()
 {
+    if (FAILED(__super::Setup_Component()))
+        return E_FAIL;
+
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
-    /* For.Com_Texture*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
-        return E_FAIL;
-
-    /* For.Com_Renderer*/
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-        return E_FAIL;
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SpiritBox"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))

@@ -12,12 +12,8 @@ CCollision_Manager::CCollision_Manager()
 
 void CCollision_Manager::Initialize()
 {
-	CheckGroup(COLLISION_TYPE::PLAYER_ATTACK, COLLISION_TYPE::MONSTER);
-	CheckGroup(COLLISION_TYPE::MONSTER_ATTACK, COLLISION_TYPE::PLAYER);
-	CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::OBJECT);
-	CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::MONSTER);
-	CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::ITEM);
-	//CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::PLAYER);
+	
+	CheckGroup(COLLISION_TYPE::SIGHT, COLLISION_TYPE::ITEM);
 
 	//CheckGroup(COLLISION_TYPE::PLAYER_ATTACK, COLLISION_TYPE::PLAYER_ATTACK);
 	//CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::MONSTER);
@@ -69,9 +65,9 @@ void CCollision_Manager::Reset()
 
 void CCollision_Manager::Add_Collider(CCollider* pCollider)
 {
-	m_ColliderList[(UINT)pCollider->Get_Collision_Type()].push_back(pCollider);
+	m_ColliderList[(UINT)pCollider->Get_Type()].push_back(pCollider);
+	Safe_AddRef(m_ColliderList[(UINT)pCollider->Get_Type()].back());
 
-	pCollider->Set_WeakPtr(&m_ColliderList[(UINT)pCollider->Get_Collision_Type()].back());
 }
 
 void CCollision_Manager::Erase_Collider(CCollider* pCollider)
@@ -90,7 +86,7 @@ void CCollision_Manager::Clear_ColliderList()
 	{
 		for (auto& elem_Collider : ColliderList_Type)
 		{
-			RETURN_WEAKPTR(elem_Collider);
+			Safe_Release(elem_Collider);
 		}
 
 		ColliderList_Type.clear();
@@ -248,7 +244,7 @@ void CCollision_Manager::CollisionGroupUpdate(COLLISION_TYPE _eLeft, COLLISION_T
 
 bool CCollision_Manager::Is3DCollision(CCollider* _pLeft, CCollider* _pRight, _float* _fDistance)
 {
-
+	return _pLeft->Collision(_pRight);
 	//if (!IsSphereCollision(_pLeft->Get_Pre_Collider(), _pRight->Get_Pre_Collider()))
 	//{
 	//	return false;
@@ -287,16 +283,14 @@ bool CCollision_Manager::Is3DCollision(CCollider* _pLeft, CCollider* _pRight, _f
 	//	return IsRay_To_SphereCollision(_pRight, _pLeft);
 	//}
 
-	return IsSphereCollision(_pLeft, _pRight, _fDistance);
 }
 
 
 
 void CCollision_Manager::Free()
 {
-	__super::Free();
+	//__super::Free();
 
 	Clear_ColliderList();
 
-	delete this;
 }
