@@ -133,6 +133,9 @@
     <ClInclude Include="..\Public\House.h">
       <Filter>02.GameObject\Stage\House</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Inventory.h">
+      <Filter>02.GameObject\Player\Inventory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -251,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\House.cpp">
       <Filter>02.GameObject\Stage\House</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Inventory.cpp">
+      <Filter>02.GameObject\Player\Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

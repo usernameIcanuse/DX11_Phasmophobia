@@ -13,7 +13,7 @@ CCollision_Manager::CCollision_Manager()
 void CCollision_Manager::Initialize()
 {
 	
-	//CheckGroup(COLLISION_TYPE::SIGHT, COLLISION_TYPE::ITEM);
+	CheckGroup(COLLISION_TYPE::SIGHT, COLLISION_TYPE::ITEM);
 
 	//CheckGroup(COLLISION_TYPE::PLAYER_ATTACK, COLLISION_TYPE::PLAYER_ATTACK);
 	//CheckGroup(COLLISION_TYPE::PLAYER, COLLISION_TYPE::MONSTER);

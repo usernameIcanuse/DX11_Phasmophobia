@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "GameInstance.h"
 #include "Camera_FPS.h"
+#include "Inventory.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -33,8 +34,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	//if (FAILED(Setup_Camera()))
-	//	return E_FAIL;
+	if (FAILED(Setup_Inventory()))
+		return E_FAIL;
+	if (FAILED(Setup_Camera()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -109,6 +112,8 @@ HRESULT CPlayer::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -145,6 +150,38 @@ HRESULT CPlayer::Setup_Camera()
 	return S_OK;
 }
 
+HRESULT CPlayer::Setup_Inventory()
+{
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Inventory"), TEXT("Prototype_GameObject_Inventory"), (CGameObject**)&m_pInventory, this)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CPlayer::On_Collision_Enter(CCollider* pCollider)
+{
+	
+}
+
+void CPlayer::On_Collision_Stay(CCollider* pCollider)
+{
+	if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
+	{
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+		if (pGameInstance->Is_KeyState(KEY::E, KEY_STATE::TAP))
+		{
+			m_pInventory->Add_Item(pCollider->Get_Owner());
+		}
+
+		RELEASE_INSTANCE(CGameInstance);
+	}
+}
+
+void CPlayer::On_Collision_Exit(CCollider* pCollider)
+{
+}
+
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CPlayer* pInstance = new CPlayer(pDevice, pContext);
@@ -176,4 +213,5 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pRayCom);
+	Safe_Release(m_pInventory);
 }
