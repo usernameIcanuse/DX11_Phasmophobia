@@ -33,9 +33,7 @@ private:
 	_uint					m_iIndex = 0;
 	CGameObject*			m_pPlayer = nullptr;
 
-	_bool					m_bFirst = true;
-
-
+	
 public:
 	static CInventory* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;//clone을 할 때 플레이어의 주소를 갖다줌

@@ -66,7 +66,7 @@ void CInventory::Tick(_float fTimeDelta)
 
 		vPlayerPos += XMVector3Normalize(vRight);
 		vPlayerPos -= XMVector3Normalize(vUp);
-		vPlayerPos += vLook * 4;
+		vPlayerPos += vLook*2;
 
 		CTransform* pItemTransform = (CTransform*)m_vInventory[m_iIndex]->Get_Component(CGameObject::m_pTransformTag);
 		pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
@@ -111,7 +111,7 @@ void CInventory::Add_Item(CGameObject* pItem)
 
 	vPlayerPos += XMVector3Normalize(vRight);
 	vPlayerPos -= XMVector3Normalize(vUp);
-	vPlayerPos += vLook * 4;
+	vPlayerPos += vLook*2;
 
 	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
 	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
@@ -168,7 +168,7 @@ void CInventory::Change_Item()
 
 		vPlayerPos += XMVector3Normalize(vRight);
 		vPlayerPos -= XMVector3Normalize(vUp);
-		vPlayerPos += vLook * 4;
+		vPlayerPos += vLook*2;
 
 		CTransform* pItemTransform = (CTransform*)m_vInventory[m_iIndex]->Get_Component(CGameObject::m_pTransformTag);
 		pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);

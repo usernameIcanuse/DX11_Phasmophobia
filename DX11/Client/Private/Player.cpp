@@ -80,8 +80,6 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}
 
-
-
 	if (pGameInstance->Is_KeyState(KEY::G, KEY_STATE::TAP))
 	{
 		m_pInventory->Drop_Item();
