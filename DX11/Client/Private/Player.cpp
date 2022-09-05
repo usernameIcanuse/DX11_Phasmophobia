@@ -100,11 +100,13 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
 	{
-		m_pInventory->Install_Item(m_pRayCom->Get_CollidePos());
+		if(m_bFlag)
+			m_pInventory->Install_Item(m_vColliderPos);
 	}
 
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_fDist = FLT_MAX;
+	m_bFlag = false;
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -193,8 +195,10 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 
 		if (DBL_EPSILON < fCollisionDist && m_fDist > fCollisionDist)
 		{
+			m_bFlag = true;
 			m_fDist = fCollisionDist;
 			m_pItem = pCollider->Get_Owner();
+			m_vColliderPos = m_pRayCom->Get_CollidePos();
 		}
 	}
 }

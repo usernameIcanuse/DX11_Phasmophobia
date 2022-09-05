@@ -100,9 +100,6 @@ void CInventory::Add_Item(CGameObject* pItem)
 
 	if (-1 == iEmptyIndex)
 		return;
-
-
-	pItem->Set_Enable(false);
 		
 	
 	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
@@ -123,8 +120,11 @@ void CInventory::Add_Item(CGameObject* pItem)
 	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
 
 	m_vInventory[iEmptyIndex] = pItem;
+
 	if (m_iIndex == iEmptyIndex)
 		m_vInventory[m_iIndex]->Set_Enable(true);
+	else
+		m_vInventory[iEmptyIndex]->Set_Enable(false);
 }
 
 void CInventory::Drop_Item()
