@@ -33,6 +33,7 @@ private:
 	_uint					m_iIndex = 0;
 	CGameObject*			m_pPlayer = nullptr;
 
+	_bool					m_bFirst = true;
 
 
 public:

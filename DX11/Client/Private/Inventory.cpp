@@ -56,8 +56,6 @@ void CInventory::Tick(_float fTimeDelta)
 	
 	if (m_vInventory[m_iIndex])
 	{
-		m_vInventory[m_iIndex]->Set_Enable(true);
-
 
 		CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
 		_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
@@ -103,8 +101,31 @@ void CInventory::Add_Item(CGameObject* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 
+	if (!m_bFirst)
+		pItem->Set_Enable(false);
 
-	pItem->Set_Enable(false);
+	else
+	{
+		pItem->Set_Enable(true);
+		m_bFirst = false;
+	}
+
+	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
+	_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+	_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
+	_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
+	_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
+
+	vPlayerPos += XMVector3Normalize(vRight);
+	vPlayerPos -= XMVector3Normalize(vUp);
+	vPlayerPos += vLook * 4;
+
+	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
+	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
+	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
+	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
+	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
 
 	m_vInventory[iEmptyIndex] = pItem;
 }
@@ -132,8 +153,32 @@ void CInventory::Install_Item(_float3 _vInstallPos)
 
 void CInventory::Change_Item()
 {
-	m_vInventory[m_iIndex]->Set_Enable(false);
+	if (m_vInventory[m_iIndex])
+		m_vInventory[m_iIndex]->Set_Enable(false);
+
 	m_iIndex = (++m_iIndex) % 3;
+
+	if (m_vInventory[m_iIndex])
+	{
+		m_vInventory[m_iIndex]->Set_Enable(true);
+
+		CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
+		_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
+		_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
+		_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
+
+		vPlayerPos += XMVector3Normalize(vRight);
+		vPlayerPos -= XMVector3Normalize(vUp);
+		vPlayerPos += vLook * 4;
+
+		CTransform* pItemTransform = (CTransform*)m_vInventory[m_iIndex]->Get_Component(CGameObject::m_pTransformTag);
+		pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
+		pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
+		pItemTransform->Set_State(CTransform::STATE_UP, vUp);
+		pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
+	}
 }
 
 

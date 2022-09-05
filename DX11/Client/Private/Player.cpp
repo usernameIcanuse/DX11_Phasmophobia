@@ -81,6 +81,17 @@ void CPlayer::Tick(_float fTimeDelta)
 	}
 
 
+
+	if (pGameInstance->Is_KeyState(KEY::G, KEY_STATE::TAP))
+	{
+		m_pInventory->Drop_Item();
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::Q, KEY_STATE::TAP))
+	{
+		m_pInventory->Change_Item();
+	}
+
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 
@@ -172,6 +183,11 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		if (pGameInstance->Is_KeyState(KEY::E, KEY_STATE::TAP))
 		{
 			m_pInventory->Add_Item(pCollider->Get_Owner());
+		}
+
+		if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+		{
+			m_pInventory->Install_Item(m_pRayCom->Get_CollidePos());
 		}
 
 		RELEASE_INSTANCE(CGameInstance);
