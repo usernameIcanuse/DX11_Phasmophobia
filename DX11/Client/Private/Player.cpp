@@ -92,8 +92,19 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pInventory->Change_Item();
 	}
 
-	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+	if (pGameInstance->Is_KeyState(KEY::E, KEY_STATE::TAP))
+	{
+		if(m_pItem)
+			m_pInventory->Add_Item(m_pItem);
+	}
 
+	if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+	{
+		m_pInventory->Install_Item(m_pRayCom->Get_CollidePos());
+	}
+
+	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_fDist = FLT_MAX;
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -178,19 +189,13 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
 	{
-		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
-		if (pGameInstance->Is_KeyState(KEY::E, KEY_STATE::TAP))
+		if (DBL_EPSILON < fCollisionDist && m_fDist > fCollisionDist)
 		{
-			m_pInventory->Add_Item(pCollider->Get_Owner());
+			m_fDist = fCollisionDist;
+			m_pItem = pCollider->Get_Owner();
 		}
-
-		if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
-		{
-			m_pInventory->Install_Item(m_pRayCom->Get_CollidePos());
-		}
-
-		RELEASE_INSTANCE(CGameInstance);
 	}
 }
 

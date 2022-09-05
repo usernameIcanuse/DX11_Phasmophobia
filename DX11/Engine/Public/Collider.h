@@ -40,6 +40,11 @@ public:
 	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
 public:
+	_float	Get_Collision_Dist()
+	{
+		return m_fDist;
+	}
+
 	_float3 Get_Scale()
 	{
 		return m_ColliderDesc.vScale;
@@ -105,7 +110,7 @@ private:
 	/*Ray¿œ ∂ß∏∏*/
 	RAY							m_tRay;
 	_float3						m_vCollidePos;
-
+	_float						m_fDist= FLT_MAX;
 
 	static _ulong				g_iNextID;
 	_ulong						m_iID;

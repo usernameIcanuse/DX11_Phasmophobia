@@ -76,6 +76,7 @@ HRESULT CCollider::Initialize(void * pArg)
 
 	case TYPE_RAY:
 		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		m_fDist = FLT_MAX;
 		break;
 	}
 
@@ -100,6 +101,7 @@ void CCollider::Update(_fmatrix TransformMatrix)
 		
 	case TYPE_RAY:
 		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		m_fDist = FLT_MAX;
 		break;
 	}
 	GAMEINSTANCE->Add_Collider(this);
@@ -122,6 +124,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 			if (m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
 			{
 				XMStoreFloat3(&m_vCollidePos,XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
+				m_fDist = fDist;
 				return true;
 			}
 			
@@ -137,6 +140,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		if (pCollider->Intersects(XMVectorSetW(XMLoadFloat3(&m_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&m_tRay.vDir), 0.f), fDist))
 		{
 			XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
+			m_fDist = fDist;
 			return true;
 		}
 	}

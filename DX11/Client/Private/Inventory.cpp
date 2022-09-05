@@ -89,7 +89,7 @@ HRESULT CInventory::Render()
 void CInventory::Add_Item(CGameObject* pItem)
 {
 	_int	iEmptyIndex = -1;
-	for (int i = 0; i < 3; ++i)
+	for (int i = m_iIndex; i < 3; i=(++i)%3)
 	{
 		if (m_vInventory[i] == nullptr)
 		{
@@ -101,15 +101,10 @@ void CInventory::Add_Item(CGameObject* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 
-	if (!m_bFirst)
-		pItem->Set_Enable(false);
 
-	else
-	{
-		pItem->Set_Enable(true);
-		m_bFirst = false;
-	}
-
+	pItem->Set_Enable(false);
+		
+	
 	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
 	_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
 
@@ -128,6 +123,8 @@ void CInventory::Add_Item(CGameObject* pItem)
 	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
 
 	m_vInventory[iEmptyIndex] = pItem;
+	if (m_iIndex == iEmptyIndex)
+		m_vInventory[m_iIndex]->Set_Enable(true);
 }
 
 void CInventory::Drop_Item()

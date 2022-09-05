@@ -30,6 +30,10 @@ private:
 
 	CInventory* m_pInventory = nullptr;
 
+	_float			m_fDist = FLT_MAX;
+	CGameObject*	m_pItem = nullptr;
+	_float3			m_vColliderPos;
+
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_Camera();
