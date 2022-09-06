@@ -29,6 +29,9 @@ public:
 	void	Change_Item();
 
 private:
+	void	Adjust_Item(CGameObject* pItem);
+
+private:
 	vector<CGameObject*>	m_vInventory;
 	_uint					m_iIndex = 0;
 	CGameObject*			m_pPlayer = nullptr;

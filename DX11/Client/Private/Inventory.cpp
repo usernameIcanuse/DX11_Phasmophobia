@@ -56,23 +56,7 @@ void CInventory::Tick(_float fTimeDelta)
 	
 	if (m_vInventory[m_iIndex])
 	{
-
-		CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
-		_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
-
-		_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
-		_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
-		_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
-
-		vPlayerPos += XMVector3Normalize(vRight);
-		vPlayerPos -= XMVector3Normalize(vUp);
-		vPlayerPos += vLook*2;
-
-		CTransform* pItemTransform = (CTransform*)m_vInventory[m_iIndex]->Get_Component(CGameObject::m_pTransformTag);
-		pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
-		pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
-		pItemTransform->Set_State(CTransform::STATE_UP, vUp);
-		pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
+		Adjust_Item(m_vInventory[m_iIndex]);
 	}
 }
 
@@ -101,23 +85,7 @@ void CInventory::Add_Item(CGameObject* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 		
-	
-	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
-	_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
-
-	_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
-	_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
-	_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
-
-	vPlayerPos += XMVector3Normalize(vRight);
-	vPlayerPos -= XMVector3Normalize(vUp);
-	vPlayerPos += vLook*2;
-
-	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
-	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
-	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
-	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
-	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
+	Adjust_Item(pItem);
 
 	m_vInventory[iEmptyIndex] = pItem;
 
@@ -157,25 +125,30 @@ void CInventory::Change_Item()
 
 	if (m_vInventory[m_iIndex])
 	{
-		m_vInventory[m_iIndex]->Set_Enable(true);
-
-		CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
-		_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
-
-		_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
-		_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
-		_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
-
-		vPlayerPos += XMVector3Normalize(vRight);
-		vPlayerPos -= XMVector3Normalize(vUp);
-		vPlayerPos += vLook*2;
-
-		CTransform* pItemTransform = (CTransform*)m_vInventory[m_iIndex]->Get_Component(CGameObject::m_pTransformTag);
-		pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
-		pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
-		pItemTransform->Set_State(CTransform::STATE_UP, vUp);
-		pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
+		Adjust_Item(m_vInventory[m_iIndex]);
 	}
+}
+
+void	CInventory::Adjust_Item(CGameObject* pItem)
+{
+	pItem->Set_Enable(true);
+
+	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
+	_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+	_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
+	_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
+	_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
+
+	vPlayerPos += XMVector3Normalize(vRight);
+	vPlayerPos -= XMVector3Normalize(vUp) * 2;
+	vPlayerPos += vLook * 2;
+
+	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
+	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
+	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
+	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
+	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
 }
 
 
