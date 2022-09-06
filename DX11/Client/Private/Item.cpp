@@ -42,12 +42,6 @@ HRESULT CItem::Render()
 }
 
 
-
-//_bool CItem::Picking(CVIBuffer* pVIBufferCom,  _float4& vOut)
-//{
-//    return CMath_Utility::Picking(pVIBufferCom, m_pTransformCom, &vOut);
-//}
-
 HRESULT CItem::Setup_Component()
 {
     /* For.Com_Renderer*/

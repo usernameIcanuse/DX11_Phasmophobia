@@ -28,6 +28,18 @@ HRESULT CLight_Manager::Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pC
 	return S_OK;
 }
 
+HRESULT CLight_Manager::Clear_Light()
+{
+	for (auto& pLight : m_Lights)
+	{
+		Safe_Release(pLight);
+	}
+
+	m_Lights.clear();
+
+	return S_OK;
+}
+
 void CLight_Manager::Free()
 {
 	for (auto& pLight : m_Lights)

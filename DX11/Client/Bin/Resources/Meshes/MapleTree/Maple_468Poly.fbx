@@ -7,12 +7,12 @@ FBXHeaderExtension:  {
 	CreationTimeStamp:  {
 		Version: 1000
 		Year: 2022
-		Month: 8
-		Day: 23
-		Hour: 14
-		Minute: 31
-		Second: 16
-		Millisecond: 410
+		Month: 9
+		Day: 6
+		Hour: 16
+		Minute: 27
+		Second: 19
+		Millisecond: 462
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.2"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -28,8 +28,8 @@ FBXHeaderExtension:  {
 			Comment: ""
 		}
 		Properties70:  {
-			P: "DocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\MapleTree\t3v987fu_Maple_468Poly.fbx"
-			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\MapleTree\t3v987fu_Maple_468Poly.fbx"
+			P: "DocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\트럭\z78ijhtu_Maple_468Poly.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\트럭\z78ijhtu_Maple_468Poly.fbx"
 			P: "Original", "Compound", "", ""
 			P: "Original|ApplicationVendor", "KString", "", "", ""
 			P: "Original|ApplicationName", "KString", "", "", "Unity FBX Exporter"
@@ -75,7 +75,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 1852190396096, "Scene", "Scene" {
+	Document: 2187242051360, "Scene", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -192,9 +192,9 @@ Definitions:  {
 	}
 	ObjectType: "Material" {
 		Count: 2
-		PropertyTemplate: "FbxSurfacePhong" {
+		PropertyTemplate: "FbxSurfaceLambert" {
 			Properties70:  {
-				P: "ShadingModel", "KString", "", "", "Phong"
+				P: "ShadingModel", "KString", "", "", "Lambert"
 				P: "MultiLayer", "bool", "", "",0
 				P: "EmissiveColor", "Color", "", "A",0,0,0
 				P: "EmissiveFactor", "Number", "", "A",1
@@ -211,11 +211,6 @@ Definitions:  {
 				P: "DisplacementFactor", "double", "Number", "",1
 				P: "VectorDisplacementColor", "ColorRGB", "Color", "",0,0,0
 				P: "VectorDisplacementFactor", "double", "Number", "",1
-				P: "SpecularColor", "Color", "", "A",0.2,0.2,0.2
-				P: "SpecularFactor", "Number", "", "A",1
-				P: "ShininessExponent", "Number", "", "A",20
-				P: "ReflectionColor", "Color", "", "A",0,0,0
-				P: "ReflectionFactor", "Number", "", "A",1
 			}
 		}
 	}
@@ -291,7 +286,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 1852202363216, "Geometry::Scene", "Mesh" {
+	Geometry: 2187423867536, "Geometry::Scene", "Mesh" {
 		Vertices: *1899 {
 			a: 147.063004970551,-135.924577713013,2005.69953918457,145.378863811493,-137.211012840271,2005.70430755615,151.398408412933,-144.390738010406,2076.6960144043,143.450093269348,-136.390161514282,2005.9398651123,123.226189613342,-138.44290971756,1917.50507354736,125.868761539459,-139.514076709747,1917.17910766602,95.8148837089539,-141.931879520416,1739.55631256104,99.2709517478943,-143.178641796112,1739.12143707275,68.6028599739075,-140.40219783783,1561.44857406616,72.8893339633942,-141.775977611542,1560.89897155762,48.9086300134659,-133.888566493988,1382.38277435303,54.0398776531219,-135.347175598145,1381.71396255493,47.5370645523071,-101.205492019653,1198.33097457886,53.0180871486664,-102.586507797241,1197.60694503784,30.5430114269257,-69.7884023189545,1017.17662811279,36.3714337348938,-71.0877060890198,1016.39719009399,4.29430715739727,-42.3529624938965,838.369941711426,10.4668103158474,-43.5688585042953,837.535667419434,-5.79506941139698,-22.5689873099327,748.091459274292,0.548557098954916,-23.7437918782234,747.230243682861,-5.34102767705917,-5.13630472123623,701.443147659302,1.08831590041518,-6.29128590226173,700.56848526001,-2.21546702086926,16.2709131836891,654.054832458496,4.29955422878265,15.1354029774666,653.166627883911,-14.6164298057556,3.69338616728783,-9.15728136897087,-1.47764049470425,-1.00742448121309,153.770077228546,-10.7461281120777,-8.92134085297585,-8.68395417928696,-5.02895712852478,10.5141766369343,153.208208084106,1.09742162749171,4.20273020863533,317.740702629089,-2.12530326098204,14.6220147609711,317.089653015137,-2.78754029422998,18.6150744557381,481.513166427612,0.0985631137154996,9.30547490715981,482.252407073975,-6.99069872498512,17.6420480012894,564.883136749268,-4.27535139024258,8.88960659503937,565.666723251343,-8.60570669174194,20.0760126113892,647.19443321228,-6.06254599988461,11.8818670511246,648.021745681763,11.7834515869617,38.4567081928253,752.851819992065,9.37384516000748,46.2133139371872,752.06413269043,40.455824136734,77.4648725986481,855.625152587891,38.1803542375565,84.7832798957825,854.876518249512,
 75.0901758670807,132.634913921356,1065.03381729126,73.0847060680389,139.075744152069,1064.36491012573,135.312652587891,233.017373085022,1488.32111358643,133.850872516632,237.699437141418,1487.81137466431,155.924165248871,269.143891334534,1702.43129730225,154.73461151123,272.946166992188,1702.00119018555,163.80068063736,282.841181755066,1810.6128692627,162.747097015381,286.203742027283,1810.22243499756,176.616561412811,300.317859649658,1917.47894287109,175.698661804199,303.240919113159,1917.12799072266,195.620632171631,322.689366340637,2022.98316955566,194.838106632233,325.173234939575,2022.67169952393,214.68551158905,343.14079284668,2128.05328369141,214.03796672821,345.185923576355,2127.78167724609,-5.50059117376804,13.3267551660538,-9.43146795034409,3.24240438640118,19.3324118852615,152.696371078491,5.32100647687912,22.6072072982788,316.341352462769,3.84969934821129,25.7525026798248,480.528974533081,-0.753013463690877,24.3511721491814,563.781833648682,-2.76500303298235,26.3541668653488,645.97544670105,14.8974701762199,52.1569073200226,750.90069770813,43.3882683515549,90.3912842273712,853.769969940186,77.6641011238098,144.009435176849,1063.37022781372,137.180745601654,241.277742385864,1487.04137802124,157.440662384033,275.845837593079,1701.34296417236,165.14083147049,288.764524459839,1809.62047576904,177.779614925385,305.463266372681,1916.58248901367,196.605587005615,327.057719230652,2022.18246459961,215.491104125977,346.733331680298,2127.34832763672,235.810327529907,364.691662788391,2216.1600112915,236.756038665771,365.698409080505,2215.84644317627,241.128253936768,364.982771873474,2226.19495391846,7.4856698513031,10.3455446660519,-9.23127457499504,15.0652945041656,16.6293248534203,152.748072147369,15.9902706742287,20.1734229922295,316.245627403259,13.3731752634048,23.5805332660675,480.285358428955,8.19992497563362,22.3077327013016,563.463878631592,5.61890192329884,24.4382232427597,645.584011077881,22.8307440876961,50.3439605236053,750.525712966919,50.871467590332,88.680624961853,853.410530090332,84.2489898204803,142.502319812775,1063.04445266724,
@@ -717,10 +712,10 @@ Objects:  {
 			}
 		}
 	}
-	NodeAttribute: 1846647790800, "NodeAttribute::Bone001_Skel", "LimbNode" {
+	NodeAttribute: 2187238133232, "NodeAttribute::Bone001_Skel", "LimbNode" {
 		TypeFlags: "Skeleton"
 	}
-	Model: 1840725983040, "Model::Maple_468Poly", "Null" {
+	Model: 2183252501680, "Model::Maple_468Poly", "Null" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -732,7 +727,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Model: 1840725973040, "Model::Bone001", "LimbNode" {
+	Model: 2183252507680, "Model::Bone001", "LimbNode" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -748,7 +743,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Model: 1846647857136, "Model::Bone002", "Null" {
+	Model: 2183252509680, "Model::Bone002", "Null" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -760,7 +755,7 @@ Objects:  {
 		Shading: Y
 		Culling: "CullingOff"
 	}
-	Model: 1852480186816, "Model::Maple468", "Mesh" {
+	Model: 2183252511680, "Model::Maple468", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -774,59 +769,54 @@ Objects:  {
 		Shading: W
 		Culling: "CullingOff"
 	}
-	Pose: 1849215583696, "Pose::Maple468", "BindPose" {
+	Pose: 2187239501184, "Pose::Maple468", "BindPose" {
 		Type: "BindPose"
 		Version: 100
 		NbPoseNodes: 2
 		PoseNode:  {
-			Node: 1840725973040
+			Node: 2183252507680
 			Matrix: *16 {
-				a: -0.00629744445905114,0.999950945045394,0.00759430921864076,0,-0.994593143457367,-0.00547611072302248,-0.10370304460124,0,-0.103656395227365,-0.00820631402512646,0.994579079615955,0,-9.85015779733658,-5.29251410592267,-5.33423297889792,1
+				a: -0.00629744445905114,0.999950945045394,0.00759430921864076,0,-0.994593143457367,-0.00547611072302248,-0.10370304460124,0,-0.103656395227365,-0.00820631402512646,0.994579079615955,0,-9.85015779733658,-5.29251596856767,-5.33423633165927,1
 			} 
 		}
 		PoseNode:  {
-			Node: 1852480186816
+			Node: 2183252511680
 			Matrix: *16 {
 				a: 0.999999999999923,-1.71895478002977e-14,3.93251015403889e-07,0,3.93250991964302e-07,4.37113854259879e-08,-0.999999940395277,0,7.22390352855906e-23,0.999999940395355,4.37113854259912e-08,0,0,0,0,1
 			} 
 		}
 	}
-	Material: 1849214424608, "Material::bark2", "" {
-		Version: 102
-		ShadingModel: "phong"
-		MultiLayer: 0
-		Properties70:  {
-			P: "AmbientColor", "Color", "", "A",0,0,0
-			P: "DiffuseColor", "Color", "", "A",1,1,1
-			P: "SpecularColor", "Color", "", "A",0.199999958276749,0.199999958276749,0.199999958276749
-			P: "Emissive", "Vector3D", "Vector", "",0,0,0
-			P: "Ambient", "Vector3D", "Vector", "",0,0,0
-			P: "Diffuse", "Vector3D", "Vector", "",1,1,1
-			P: "Specular", "Vector3D", "Vector", "",0.199999958276749,0.199999958276749,0.199999958276749
-			P: "Shininess", "double", "Number", "",20
-			P: "Opacity", "double", "Number", "",1
-			P: "Reflectivity", "double", "Number", "",0
-		}
-	}
-	Material: 1848540924704, "Material::Klen_AT", "" {
+	Material: 2183253793968, "Material::bark2", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
 		Properties70:  {
 			P: "AmbientColor", "Color", "", "A",0,0,0
 			P: "DiffuseColor", "Color", "", "A",1,1,1
-			P: "BumpFactor", "double", "Number", "",0
 			P: "Emissive", "Vector3D", "Vector", "",0,0,0
 			P: "Ambient", "Vector3D", "Vector", "",0,0,0
 			P: "Diffuse", "Vector3D", "Vector", "",1,1,1
 			P: "Opacity", "double", "Number", "",1
 		}
 	}
-	Deformer: 1849215584752, "Deformer::Maple468_Skin", "Skin" {
+	Material: 2183253795168, "Material::Klen_AT", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties70:  {
+			P: "AmbientColor", "Color", "", "A",0,0,0
+			P: "DiffuseColor", "Color", "", "A",1,1,1
+			P: "Emissive", "Vector3D", "Vector", "",0,0,0
+			P: "Ambient", "Vector3D", "Vector", "",0,0,0
+			P: "Diffuse", "Vector3D", "Vector", "",1,1,1
+			P: "Opacity", "double", "Number", "",1
+		}
+	}
+	Deformer: 2187239503120, "Deformer::Maple468_Skin", "Skin" {
 		Version: 101
 		Link_DeformAcuracy: 50
 	}
-	Deformer: 1852015554832, "SubDeformer::BoneWeightCluster", "Cluster" {
+	Deformer: 2187415307360, "SubDeformer::BoneWeightCluster", "Cluster" {
 		Version: 100
 		UserData: "", ""
 		Indexes: *633 {
@@ -837,16 +827,16 @@ Objects:  {
 			a: 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 		} 
 		Transform: *16 {
-			a: -0.00629744636044662,-0.994593353060273,-0.103656052052041,0,-0.00759427342761792,0.103702664658366,-0.994579521477776,0,0.999951661901713,-0.00547611585913702,-0.00820627385720123,0,5.27073756588251,-10.3790597627105,4.24085460569881,1
+			a: -0.00629744636044662,-0.994593353060273,-0.103656052052041,0,-0.00759427342761792,0.103702664658366,-0.994579521477776,0,0.999951661901713,-0.00547611585913702,-0.00820627385720123,0,5.27073945389951,-10.3790601206021,4.24085792500119,1
 		} 
 		TransformLink: *16 {
-			a: -0.00629744445905109,0.999950945045394,0.00759430921864076,0,-0.994593143457367,-0.00547611072302242,-0.10370304460124,0,-0.103656395227365,-0.00820631402512646,0.994579079615955,0,-9.85015779733658,-5.29251410592267,-5.33423297889792,1
+			a: -0.00629744445905109,0.999950945045394,0.00759430921864076,0,-0.994593143457367,-0.00547611072302242,-0.10370304460124,0,-0.103656395227365,-0.00820631402512646,0.994579079615955,0,-9.85015779733658,-5.29251596856767,-5.33423633165927,1
 		} 
 		Transform: *16 {
 			a: 1,0,0,0,-0,1,0,0,0,-0,1,0,0,0,0,1
 		} 
 	}
-	Video: 1849214412128, "Video::DiffuseColor_Texture", "Clip" {
+	Video: 2187418670240, "Video::DiffuseColor_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
 			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\klen\Model\Materials\bark2.png"
@@ -856,7 +846,7 @@ Objects:  {
 		Filename: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\bark2.png"
 		RelativeFilename: "..\klen\Model\Materials\bark2.png"
 	}
-	Video: 1849214412608, "Video::NormalMap_Texture", "Clip" {
+	Video: 2187418661600, "Video::NormalMap_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
 			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\klen\Model\Materials\bark2_NRM.png"
@@ -866,17 +856,17 @@ Objects:  {
 		Filename: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\bark2_NRM.png"
 		RelativeFilename: "..\klen\Model\Materials\bark2_NRM.png"
 	}
-	Video: 1849214413088, "Video::SpecularColor_Texture", "Clip" {
+	Video: 2187418640480, "Video::DiffuseColor_Texture_1", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\klen\Model\Materials\barkSpec.tga"
-			P: "RelPath", "KString", "XRefUrl", "", "..\klen\Model\Materials\barkSpec.tga"
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\klen\Model\Materials\Klen_AT.tga"
+			P: "RelPath", "KString", "XRefUrl", "", "..\klen\Model\Materials\Klen_AT.tga"
 		}
 		UseMipMap: 0
-		Filename: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\barkSpec.tga"
-		RelativeFilename: "..\klen\Model\Materials\barkSpec.tga"
+		Filename: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\Klen_AT.tga"
+		RelativeFilename: "..\klen\Model\Materials\Klen_AT.tga"
 	}
-	Texture: 1849214410208, "Texture::DiffuseColor_Texture", "" {
+	Texture: 2187418669280, "Texture::DiffuseColor_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::DiffuseColor_Texture"
@@ -888,7 +878,7 @@ Objects:  {
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	Texture: 1849214411168, "Texture::NormalMap_Texture", "" {
+	Texture: 2187418662080, "Texture::NormalMap_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::NormalMap_Texture"
@@ -900,13 +890,13 @@ Objects:  {
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	Texture: 1849214411648, "Texture::SpecularColor_Texture", "" {
+	Texture: 2187418669760, "Texture::DiffuseColor_Texture_1", "" {
 		Type: "TextureVideoClip"
 		Version: 202
-		TextureName: "Texture::SpecularColor_Texture"
-		Media: "Video::SpecularColor_Texture"
-		FileName: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\barkSpec.tga"
-		RelativeFilename: "..\klen\Model\Materials\barkSpec.tga"
+		TextureName: "Texture::DiffuseColor_Texture_1"
+		Media: "Video::DiffuseColor_Texture_1"
+		FileName: "C:\Users\dhgld\My project\Assets\klen\Model\Materials\Klen_AT.tga"
+		RelativeFilename: "..\klen\Model\Materials\Klen_AT.tga"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
@@ -920,64 +910,64 @@ Objects:  {
 Connections:  {
 	
 	;Model::Maple_468Poly, Model::RootNode
-	C: "OO",1840725983040,0
+	C: "OO",2183252501680,0
 	
 	;Model::Bone001, Model::Maple_468Poly
-	C: "OO",1840725973040,1840725983040
+	C: "OO",2183252507680,2183252501680
 	
 	;Model::Maple468, Model::Maple_468Poly
-	C: "OO",1852480186816,1840725983040
+	C: "OO",2183252511680,2183252501680
 	
 	;Model::Bone002, Model::Bone001
-	C: "OO",1846647857136,1840725973040
+	C: "OO",2183252509680,2183252507680
 	
 	;NodeAttribute::Bone001_Skel, Model::Bone001
-	C: "OO",1846647790800,1840725973040
+	C: "OO",2187238133232,2183252507680
 	
 	;Material::bark2, Model::Maple468
-	C: "OO",1849214424608,1852480186816
+	C: "OO",2183253793968,2183252511680
 	
 	;Material::Klen_AT, Model::Maple468
-	C: "OO",1848540924704,1852480186816
+	C: "OO",2183253795168,2183252511680
 	
 	;Geometry::Scene, Model::Maple468
-	C: "OO",1852202363216,1852480186816
+	C: "OO",2187423867536,2183252511680
 	
 	;Deformer::Maple468_Skin, Geometry::Scene
-	C: "OO",1849215584752,1852202363216
+	C: "OO",2187239503120,2187423867536
 	
 	;Texture::DiffuseColor_Texture, Material::bark2
-	C: "OO",1849214410208,1849214424608
+	C: "OO",2187418669280,2183253793968
 	
 	;Texture::NormalMap_Texture, Material::bark2
-	C: "OO",1849214411168,1849214424608
-	
-	;Texture::SpecularColor_Texture, Material::bark2
-	C: "OO",1849214411648,1849214424608
+	C: "OO",2187418662080,2183253793968
 	
 	;Texture::DiffuseColor_Texture, Material::bark2
-	C: "OP",1849214410208,1849214424608, "DiffuseColor"
+	C: "OP",2187418669280,2183253793968, "DiffuseColor"
 	
 	;Texture::NormalMap_Texture, Material::bark2
-	C: "OP",1849214411168,1849214424608, "NormalMap"
-	
-	;Texture::SpecularColor_Texture, Material::bark2
-	C: "OP",1849214411648,1849214424608, "SpecularColor"
+	C: "OP",2187418662080,2183253793968, "NormalMap"
 	
 	;Video::DiffuseColor_Texture, Texture::DiffuseColor_Texture
-	C: "OO",1849214412128,1849214410208
+	C: "OO",2187418670240,2187418669280
 	
 	;Video::NormalMap_Texture, Texture::NormalMap_Texture
-	C: "OO",1849214412608,1849214411168
+	C: "OO",2187418661600,2187418662080
 	
-	;Video::SpecularColor_Texture, Texture::SpecularColor_Texture
-	C: "OO",1849214413088,1849214411648
+	;Texture::DiffuseColor_Texture_1, Material::Klen_AT
+	C: "OO",2187418669760,2183253795168
+	
+	;Texture::DiffuseColor_Texture_1, Material::Klen_AT
+	C: "OP",2187418669760,2183253795168, "DiffuseColor"
+	
+	;Video::DiffuseColor_Texture_1, Texture::DiffuseColor_Texture_1
+	C: "OO",2187418640480,2187418669760
 	
 	;SubDeformer::BoneWeightCluster, Deformer::Maple468_Skin
-	C: "OO",1852015554832,1849215584752
+	C: "OO",2187415307360,2187239503120
 	
 	;Model::Bone001, SubDeformer::BoneWeightCluster
-	C: "OO",1840725973040,1852015554832
+	C: "OO",2183252507680,2187415307360
 }
 ;Takes section
 ;----------------------------------------------------

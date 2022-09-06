@@ -77,6 +77,7 @@ public: /* For.PipeLine*/
 public: /* For.Light_Manager */
 	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
 	LIGHTDESC* Get_LightDesc(_uint iIndex);
+	void	Clear_Light();
 
 public:/* For.ZFrustum*/
 	void	Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix);

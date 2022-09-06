@@ -179,6 +179,7 @@
     <ClInclude Include="..\Public\DotsProjecter.h" />
     <ClInclude Include="..\Public\EMF.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
+    <ClInclude Include="..\Public\Ghost.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\Note.h" />
     <ClInclude Include="..\Public\House.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="..\Private\DotsProjecter.cpp" />
     <ClCompile Include="..\Private\EMF.cpp" />
     <ClCompile Include="..\Private\FlashLight.cpp" />
+    <ClCompile Include="..\Private\Ghost.cpp" />
     <ClCompile Include="..\Private\Inventory.cpp" />
     <ClCompile Include="..\Private\Note.cpp" />
     <ClCompile Include="..\Private\House.cpp" />

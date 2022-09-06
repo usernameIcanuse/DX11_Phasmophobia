@@ -25,8 +25,10 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+
 private:
 	CCollider* m_pRayCom = nullptr;
+	CCollider* m_pOBBCom = nullptr;
 
 	CInventory* m_pInventory = nullptr;
 
@@ -34,6 +36,7 @@ private:
 	_bool			m_bFlag = false;
 	CGameObject*	m_pItem = nullptr;
 	_float3			m_vColliderPos;
+
 
 private:
 	HRESULT	Setup_Component();

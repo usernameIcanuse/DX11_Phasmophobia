@@ -2,6 +2,8 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+
+
 BEGIN(Client)
 
 class CFlashLight final : public CItem
@@ -22,6 +24,7 @@ public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);
 	virtual void On_Collision_Exit(CCollider* pCollider);
+
 
 private:
 	virtual	HRESULT	Setup_Component() override;

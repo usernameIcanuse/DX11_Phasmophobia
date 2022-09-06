@@ -26,17 +26,23 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void	Turn_Switch(_bool  bFlag)
+	{
+		m_bSwitch = bFlag;
+	}
+
 protected:
 	CShader*    m_pShaderCom = nullptr;
 	CTexture*   m_pTextureCom = nullptr;
 	CRenderer*  m_pRendererCom = nullptr;
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pAABBCom = nullptr;
+
+	_bool		m_bSwitch = false;
 protected:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;
-
-	//_bool	Picking(CVIBuffer* pVIBufferCom, _float4& vOut);
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

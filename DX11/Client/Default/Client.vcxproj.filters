@@ -136,6 +136,9 @@
     <ClInclude Include="..\Public\Inventory.h">
       <Filter>02.GameObject\Player\Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ghost.h">
+      <Filter>02.GameObject\Ghost</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -257,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Inventory.cpp">
       <Filter>02.GameObject\Player\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ghost.cpp">
+      <Filter>02.GameObject\Ghost</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

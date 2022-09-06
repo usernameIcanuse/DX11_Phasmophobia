@@ -322,6 +322,14 @@ LIGHTDESC* CGameInstance::Get_LightDesc(_uint iIndex)
 	return m_pLight_Manager->Get_LightDesc(iIndex);
 }
 
+void CGameInstance::Clear_Light()
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	m_pLight_Manager->Clear_Light();
+}
+
 
 void CGameInstance::Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix)
 {
