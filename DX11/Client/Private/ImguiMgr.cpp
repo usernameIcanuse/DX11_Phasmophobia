@@ -174,20 +174,20 @@ void CImguiMgr::Set_Prototype()
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
-		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-		m_vecPrototypeHouse.push_back(pTemp);
+		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+		//m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
-		m_vecPrototypeHouse.push_back(pTemp);
+		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
+		//m_vecPrototypeHouse.push_back(pTemp);
 
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
@@ -211,6 +211,84 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background2"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background3"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background4"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background5"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background6"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background7"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background8"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background9"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background10"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background11"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background12"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background13"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background14"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
@@ -277,8 +355,13 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "AbandonedMarket","FurnishedCabin","Garage",
-							"Pier_house","Pier_house2","RoofTop","RoofTop_Background1","SlumHouse1",
+	const char* items[] = { "Truck",/*"FurnishedCabin","Garage",*/
+							"Pier_house","Pier_house2","RoofTop","RoofTop_Background1",
+							"RoofTop_Background2","RoofTop_Background3",
+		"RoofTop_Background4","RoofTop_Background5","RoofTop_Background6",
+		"RoofTop_Background7","RoofTop_Background8","RoofTop_Background9",
+		"RoofTop_Background10","RoofTop_Background11","RoofTop_Background12",
+		"RoofTop_Background13","RoofTop_Background14","SlumHouse1",
 							"OldHouse","Shelter"};
 
 
@@ -554,8 +637,8 @@ void CImguiMgr::CollocateHouse()
 		{
 		
 		case 0:
-			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
-			tIndex = MODEL_TAG::ABANDONEDMARKET;
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
+			tIndex = MODEL_TAG::TRUCK;
 			break;
 		case 1:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
@@ -581,15 +664,80 @@ void CImguiMgr::CollocateHouse()
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
 			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND1;
 			break;
+
 		case 7:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background2"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND2;
+			break;
+
+		case 8:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background3"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND3;
+			break;
+
+		case 9:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background4"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND4;
+			break;
+
+		case 10:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background5"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND5;
+			break;
+
+		case 11:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background6"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND6;
+			break;
+
+		case 12:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background7"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND7;
+			break;
+
+		case 13:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background8"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND8;
+			break;
+
+		case 14:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background9"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND9;
+			break;
+
+		case 15:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background10"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND10;
+			break;
+
+		case 16:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background11"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND11;
+			break;
+
+		case 17:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background12"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND12;
+			break;
+
+		case 18:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background13"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND13;
+			break;
+
+		case 19:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background14"));
+			tIndex = MODEL_TAG::ROOFTOP_BACKGROUND14;
+			break;
+		case 20:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
 			tIndex = MODEL_TAG::SLUMHOUSE1;
 			break;
-		case 8:
+		case 21:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
 			tIndex = MODEL_TAG::OLDHOUSE;
 			break;
-		case 9:
+		case 22:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
 			tIndex = MODEL_TAG::SHELTER;
 			break;
@@ -774,8 +922,8 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 
 			switch (iModelTag)
 			{
-			case MODEL_TAG::ABANDONEDMARKET:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_AbandonedMarket"));
+			case MODEL_TAG::TRUCK:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
 
 				break;
 			case MODEL_TAG::FURNISHEDCABIN:
@@ -804,6 +952,45 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				break;
 			case MODEL_TAG::ROOFTOP_BACKGROUND1:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND2:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background2"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND3:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background3"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND4:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background4"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND5:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background5"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND6:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background6"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND7:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background7"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND8:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background8"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND9:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background9"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND10:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background10"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND11:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background11"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND12:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background12"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND13:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background13"));
+
+			case MODEL_TAG::ROOFTOP_BACKGROUND14:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background14"));
 
 				break;
 			case MODEL_TAG::SHELTER:

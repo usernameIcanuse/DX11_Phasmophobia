@@ -115,6 +115,17 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXCUBETEX_DECLARATION;
 
+	typedef struct tagVertex_Position
+	{
+		XMFLOAT3		vPosition;
+	}VTXPOS;
+
+	typedef struct ENGINE_DLL tagVertex_Position_Declaration
+	{
+		static const unsigned int		iNumElements = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXPOS_DECLARATION;
+
 	typedef struct tagGraphicDesc
 	{
 		enum WINMODE { MODE_FULL, MODE_WIN, MODE_END };
@@ -226,9 +237,23 @@ namespace Engine
 		PIER_HOUSE2,
 		ROOFTOP,
 		ROOFTOP_BACKGROUND1,
+		ROOFTOP_BACKGROUND2,
+		ROOFTOP_BACKGROUND3,
+		ROOFTOP_BACKGROUND4,
+		ROOFTOP_BACKGROUND5,
+		ROOFTOP_BACKGROUND6,
+		ROOFTOP_BACKGROUND7,
+		ROOFTOP_BACKGROUND8,
+		ROOFTOP_BACKGROUND9,
+		ROOFTOP_BACKGROUND10,
+		ROOFTOP_BACKGROUND11,
+		ROOFTOP_BACKGROUND12,
+		ROOFTOP_BACKGROUND13,
+		ROOFTOP_BACKGROUND14,
 		SLUMHOUSE1,
 		OLDHOUSE,
 		SHELTER,
+		TRUCK,
 		MODEL_END
 	};
 
