@@ -193,9 +193,20 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 
 		if (DBL_EPSILON < fCollisionDist && m_fDist > fCollisionDist)
 		{
-			m_bFlag = true;
+			
 			m_fDist = fCollisionDist;
 			m_pItem = pCollider->Get_Owner();
+			
+		}
+	}
+	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type())
+	{
+		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
+
+		if (DBL_EPSILON < fCollisionDist && m_fDist > fCollisionDist)
+		{
+			m_bFlag = true;
+			m_fDist = fCollisionDist;
 			m_vColliderPos = m_pRayCom->Get_CollidePos();
 		}
 	}

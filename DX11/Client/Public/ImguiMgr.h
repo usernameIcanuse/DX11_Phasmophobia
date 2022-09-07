@@ -28,6 +28,10 @@ public:
 		_matrix		matWorld;
 	}MAP_DATA;//layer 무조건 house
 
+	typedef struct tagCollider
+	{
+		_matrix matWorld;
+	}COLLIDER_DATA;
 
 public:
 	CImguiMgr();
@@ -50,6 +54,7 @@ private:
 
 	bool show_Map_Tool = false;
 	bool show_Object_Tool = false;
+	bool show_Collider_Tool = false;
 
 private:
 	void Set_Prototype();
@@ -57,6 +62,7 @@ private:
 
 	void Tool_Map();
 	void Tool_Object();
+	void Tool_Collider();
 
 	void Translation();
 	void Rotation();
@@ -66,12 +72,16 @@ private:
 	void MoveObject(_float4 _fPosition);
 	void CollocateHouse();
 	void CollocateObject();
+	void CollocateCollider();
 
 	void Save_Map(const char* strStageName,const char* strFileName);
 	void Load_Map(const char* strStageName, const char* strFileName);
 
 	void Save_Object(const char* strStageName, const char* strFileName);
 	void Load_Object(const char* strStageName, const char* strFileName);
+
+	void Save_Collider(const char* strStageName, const char* strFileName);
+	void Load_Collider(const char* strStageName, const char* strFileName);
 
 private:
 	vector<CGameObject*> m_vecPrototypeHouse;
@@ -81,6 +91,9 @@ private:
 	vector<CGameObject*> m_vecCollocatedObject[(_uint)LAYER::LAYER_END];
 	vector<OBJ_TAG>		 m_vecObjectTag[(_uint)LAYER::LAYER_END];
 	_int				 m_iSelectedIndex = 0;//오브젝트 선택 시 OBJ_TAG와 순서 맞춰주기
+
+	CGameObject*		m_ColliderPrototype = nullptr;
+	vector<CGameObject*> m_vecCollider;
 
 	//선택한 오브젝트
 

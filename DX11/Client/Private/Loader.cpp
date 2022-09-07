@@ -7,6 +7,7 @@
 #include "Lobby_WaitingRoom.h"
 #include "Lobby_AddItems.h"
 #include "Lobby_Store.h"
+#include "Object_Collider.h"
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
@@ -276,15 +277,16 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CVideo_Camera::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Collider*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Collider"),
+		CObject_Collider::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For. Prototype_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
 		CHouse::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	///* For.Prototype_GameObject_Monster */
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Monster"),
-	//	CMonster::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
@@ -326,7 +328,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp")))))
+		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height2.bmp")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Cube*/
@@ -392,10 +394,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 //		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/AbandonedMarket/", "AbandonedMarket.fbx", TransformMatrix))))
 //		return E_FAIL;
 //	
-///* For.Prototype_Component_Model_FurnishedCabin*/
-//	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FurnishedCabin"),
-//		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "FurnishedCabin.fbx", TransformMatrix))))
-//		return E_FAIL;
+	/* For.Prototype_Component_Model_FurnishedCabin*/
+		if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FurnishedCabin"),
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "FurnishedCabin.fbx", TransformMatrix))))
+			return E_FAIL;
 //	
 //	/* For.Prototype_Component_Model_Garage 됨/중간 물건들 텍스처문제*/
 //	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Garage"),

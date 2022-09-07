@@ -222,6 +222,7 @@
     <ClInclude Include="..\Public\Lobby_Store.h" />
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\Public\Object_Collider.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SpiritBox.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Object_Collider.cpp" />
     <ClCompile Include="..\Private\DotsProjecter.cpp" />
     <ClCompile Include="..\Private\EMF.cpp" />
     <ClCompile Include="..\Private\FlashLight.cpp" />

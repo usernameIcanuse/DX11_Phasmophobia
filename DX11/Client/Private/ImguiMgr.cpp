@@ -69,6 +69,8 @@ void CImguiMgr::Tick(_float fTimeDelta)
 
 		ImGui::Checkbox("Map Tool", &show_Map_Tool);
 		ImGui::Checkbox("Object Tool", &show_Object_Tool);
+		ImGui::Checkbox("Collider Tool", &show_Collider_Tool);
+
 
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
 		//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
@@ -95,11 +97,13 @@ void CImguiMgr::Tick(_float fTimeDelta)
 	if (CURRENT_LEVEL == LEVEL_STAGE1)
 	{
 		Set_Prototype();
-		if (show_Map_Tool && !show_Object_Tool)
+		if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)
 			Tool_Map();
-		else if (!show_Map_Tool && show_Object_Tool)
+		else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool)
 			Tool_Object();
-		
+		else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
+			Tool_Collider();
+
 		Picking_Object();
 	}
 }
@@ -132,6 +136,10 @@ void CImguiMgr::Set_Prototype()
 		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
 		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
 		
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Collider"), &m_ColliderPrototype)))
+			return;
+		m_ColliderPrototype->Set_Enable(false);
+
 		
 		/* Object */
 		CGameObject* pTemp = nullptr;
@@ -177,11 +185,11 @@ void CImguiMgr::Set_Prototype()
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
-		//	return;
-		//pTemp->Set_Enable(false);
-		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-		//m_vecPrototypeHouse.push_back(pTemp);
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+		m_vecPrototypeHouse.push_back(pTemp);
 
 		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 		//	return;
@@ -355,7 +363,7 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "Truck",/*"FurnishedCabin","Garage",*/
+	const char* items[] = { "Truck","FurnishedCabin",/*"Garage",*/
 							"Pier_house","Pier_house2","RoofTop","RoofTop_Background1",
 							"RoofTop_Background2","RoofTop_Background3",
 		"RoofTop_Background4","RoofTop_Background5","RoofTop_Background6",
@@ -497,6 +505,79 @@ void CImguiMgr::Tool_Object()
 	ImGui::End();
 }
 
+void CImguiMgr::Tool_Collider()
+{
+	ImGui::Begin("Tool_Collider");
+
+	if (ImGui::Button("Close Me"))
+	{
+		show_Collider_Tool = false;
+		m_ColliderPrototype->Set_Enable(false);
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+	/* Save/Load Map*/
+	static char Stage[256] = "";
+	ImGui::InputText("Stage Name", Stage, IM_ARRAYSIZE(Stage));
+
+	static char str0[256] = "";
+	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
+
+
+	if (ImGui::Button("Save"))
+	{
+		Save_Collider(Stage, str0);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load_Collider(Stage, str0);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Collider"));//일단 맵 만들 때는 레이어 하나로만
+		m_vecCollider.clear();
+
+	}
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		m_pSelectedTransform->Set_State(CTransform::STATE_RIGHT, XMVectorSet(1.f,0.f,0.f,0.f));
+		m_pSelectedTransform->Set_State(CTransform::STATE_UP, XMVectorSet(0.f, 1.f, 0.f, 0.f));
+		m_pSelectedTransform->Set_State(CTransform::STATE_LOOK, XMVectorSet(0.f, 0.f, 1.f, 0.f));
+		m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+		m_ColliderPrototype->Set_Enable(false);
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+
+	if (ImGui::Button("Collider"))
+	{
+		m_ColliderPrototype->Set_Enable(true);
+		m_pSelectedObject = m_ColliderPrototype;
+		m_pSelectedTransform = (CTransform*)m_ColliderPrototype->Get_Component(CGameObject::m_pTransformTag);
+
+	}
+
+
+	Translation();
+	Rotation();
+
+	static float Scale[4] = { 1.f, 1.f, 1.f, 0.44f };
+	ImGui::InputFloat3("input float3", Scale);
+
+	if (m_pSelectedObject)
+	{
+		m_pSelectedTransform->Set_Scaled(_float3(Scale[0], Scale[1], Scale[2]));
+	}
+
+	ImGui::End();
+
+}
+
 void CImguiMgr::Picking_Object()
 {
 	
@@ -526,21 +607,25 @@ void CImguiMgr::Picking_Object()
 			}
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 
-			if (show_Map_Tool && !show_Object_Tool)
+			if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)
 				CollocateHouse();
-			else if (!show_Map_Tool && show_Object_Tool)
+			else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool)
 			{
-				if(-1 < m_iSelectedIndex)
+				if (-1 < m_iSelectedIndex)
 					CollocateObject();
 				else
 					MoveObject(fPosition);
-			}}
+			}
+			else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
+				CollocateCollider();
+		}
+
 	}
 	
 	else
 	{
 		CCollider* pCollider = nullptr;
-		if (!show_Map_Tool && show_Object_Tool)
+		if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
 		{
 			if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 			{
@@ -550,7 +635,7 @@ void CImguiMgr::Picking_Object()
 				{
 					for (auto& elem : m_vecCollocatedObject[i])
 					{
-						pCollider = (CCollider*)elem->Get_Component(TEXT("Com_AABB"));
+						pCollider = (CCollider*)elem->Get_Component(TEXT("Com_OBB"));
 						if (pCollider->Collision(tRay, fDist))
 						{
 
@@ -574,11 +659,11 @@ void CImguiMgr::Translation()
 	
 		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
 		{
-			m_vSelectedOffSet += XMVectorSet(0.f,0.5f,0.f,0.f);
+			m_vSelectedOffSet += XMVectorSet(0.f,0.05f,0.f,0.f);
 		}
 		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
 		{
-			m_vSelectedOffSet -= XMVectorSet(0.f, 0.5f, 0.f, 0.f);
+			m_vSelectedOffSet -= XMVectorSet(0.f, 0.05f, 0.f, 0.f);
 		}
 	
 	}
@@ -624,7 +709,7 @@ void CImguiMgr::MoveObject(_float4 _fPosition)
 }
 void CImguiMgr::CollocateHouse()
 {
-	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
 	{
 	
 		CGameObject* pTemp = nullptr;
@@ -757,7 +842,7 @@ void CImguiMgr::CollocateHouse()
 
 void CImguiMgr::CollocateObject()
 {
-	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
 	{
 
 		CGameObject* pTemp = nullptr;
@@ -827,6 +912,27 @@ void CImguiMgr::CollocateObject()
 		m_vecCollocatedObject[(_uint)tLayerIndex].push_back(pTemp);
 		m_vecObjectTag[(_uint)tLayerIndex].push_back(tObjIndex);
 
+	}
+}
+
+void CImguiMgr::CollocateCollider()
+{
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+	{
+
+		CGameObject* pTemp = nullptr;
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Collider"), &pTemp)))
+			return;
+
+		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+
+		pTempTransform->Set_State(CTransform::STATE_RIGHT, m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
+		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
+		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
+		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
+
+		m_vecCollider.push_back(pTemp);
 	}
 }
 
@@ -1126,6 +1232,105 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 
 
 			m_vecCollocatedObject[(_uint)iLayerTag].push_back(pTemp);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
+}
+
+void CImguiMgr::Save_Collider(const char* strStageName, const char* strFileName)
+{
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+
+	HANDLE hFileBrix = CreateFileA(Filepath,
+		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFileBrix)
+	{
+		MSG_BOX("Failed to save file");
+		return;
+	}
+
+	DWORD dwByteBrix = 0;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	COLLIDER_DATA tColliderData;
+
+	for (auto& elem : m_vecCollider)
+	{
+		ZeroMemory(&tColliderData, sizeof(COLLIDER_DATA));
+
+		CTransform* pTranform = (CTransform*)elem->Get_Component(CGameObject::m_pTransformTag);
+		tColliderData.matWorld = pTranform->Get_WorldMatrix();
+		WriteFile(hFileBrix, &tColliderData, sizeof(COLLIDER_DATA), &dwByteBrix, nullptr);
+
+	}
+	
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFileBrix);
+	MSG_BOX("Saved file");
+}
+
+void CImguiMgr::Load_Collider(const char* strStageName, const char* strFileName)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse = 0;
+	COLLIDER_DATA tDataCollider;
+	ZeroMemory(&tDataCollider, sizeof(COLLIDER_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataCollider, sizeof(COLLIDER_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Collider"),
+				TEXT("Prototype_GameObject_Collider"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return;
+			}
+
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+
+			m_vecCollider.push_back(pTemp);
 
 		}
 	}

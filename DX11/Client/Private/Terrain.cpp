@@ -48,7 +48,7 @@ void CTerrain::Tick(_float fTimeDelta)
 
 void CTerrain::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_TERRAIN, this);
 }
 
 HRESULT CTerrain::Render()

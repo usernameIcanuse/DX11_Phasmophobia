@@ -139,6 +139,9 @@
     <ClInclude Include="..\Public\Ghost.h">
       <Filter>02.GameObject\Ghost</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Object_Collider.h">
+      <Filter>02.GameObject\Stage\Object_Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -263,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ghost.cpp">
       <Filter>02.GameObject\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Collider.cpp">
+      <Filter>02.GameObject\Stage\Object_Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +405,12 @@
     </Filter>
     <Filter Include="02.GameObject\Player\Inventory">
       <UniqueIdentifier>{4f36e463-4da4-40d5-8baf-566b4f98c2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Photo_Camera">
+      <UniqueIdentifier>{db605888-1a45-44a4-8588-210117f933d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Object_Collider">
+      <UniqueIdentifier>{994f7727-b98f-423a-9720-b833a20d2f43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
