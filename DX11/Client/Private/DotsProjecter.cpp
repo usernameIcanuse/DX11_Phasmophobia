@@ -42,7 +42,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     //        int a = 0;
     //    }
     //}
-    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+    m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
 
@@ -82,7 +82,7 @@ HRESULT CDotsProjecter::Render()
     }
 
 #ifdef _DEBUG
-    m_pOBBCom->Render();
+    m_pAABBCom->Render();
 #endif // _DEBUG
 
 
@@ -117,20 +117,7 @@ HRESULT CDotsProjecter::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
-
-    /* For.Com_OBB*/
-    CCollider::COLLIDERDESC			ColliderDesc;
-    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-    ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
-    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-    ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
-
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
-        return E_FAIL;
-
+   
 
     return S_OK;
 }

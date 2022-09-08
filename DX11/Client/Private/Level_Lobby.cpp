@@ -62,10 +62,6 @@ void CLevel_Lobby::Tick(_float fTimeDelta)
 			m_pStore->Set_Enable(true);
 			break;
 
-		case 4:
-			DestroyWindow(g_hWnd);
-			break;
-
 		}
 	}
 #pragma endregion Lobby_Main
