@@ -177,7 +177,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 	}
 
 	CloseHandle(hFile);
-	MSG_BOX("Loaded Map");
+	//MSG_BOX("Loaded Map");
 
 
 	char Filepath1[255] = "../Bin/Resources/Map/NormalHouse/Object_Collider";
@@ -226,90 +226,89 @@ HRESULT CLevel_Stage1::Load_Stage()
 	}
 
 	CloseHandle(hFile);
-	MSG_BOX("Loaded Collider");
+	//MSG_BOX("Loaded Collider");
 
-	//char Filepath2[255] = "../Bin/Resources/Map/NormalHouse/Items";
-	//hFile = CreateFileA(Filepath,
-	//	GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	char Filepath2[255] = "../Bin/Resources/Map/NormalHouse/Items";
+	hFile = CreateFileA(Filepath2,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	//if (INVALID_HANDLE_VALUE == hFile)
-	//{
-	//	MSG_BOX("Failed to load file");
-	//	RELEASE_INSTANCE(CGameInstance);
-	//	return E_FAIL;
-	//}
-	//
-	//dwByteHouse = 0;
-	//OBJ_DATA tDataObj;
-	//ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
-	//while (true)
-	//{
-	//	if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
-	//	{
-	//		if (0 == dwByteHouse)
-	//		{
-	//			break;
-	//		}
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	OBJ_DATA tDataObj;
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
 
-	//		CGameObject* pTemp = nullptr;
-	//		LAYER iLayerTag = tDataObj.tLayerTag;
-	//		const _tchar* strLayer = nullptr;
+			CGameObject* pTemp = nullptr;
+			LAYER iLayerTag = tDataObj.tLayerTag;
+			const _tchar* strLayer = nullptr;
 
-	//		OBJ_TAG iObjTag = tDataObj.tObjTag;
-	//		const _tchar* strPrototypeTag = nullptr;
-
-
-	//		switch (iObjTag)
-	//		{
-	//		case OBJ_TAG::DOTSPROJECTER:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
-	//			break;
-	//		case OBJ_TAG::FLASHLIGHT:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_FlashLight");
-	//			break;
-	//		
-	//		case OBJ_TAG::THERMOMETER:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_Theremometer");
-	//			break;
-
-	//		case OBJ_TAG::EMF:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_EMF");
-	//			break;
-
-	//		case OBJ_TAG::NOTE:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_Note");
-	//			break;
-
-	//		case OBJ_TAG::SPIRITBOX:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_SpiritBox");
-	//			break;
-
-	//		case OBJ_TAG::VIDEOCAMERA:
-	//			strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
-	//			break;
-	//		}
-
-	//		if (FAILED(pGameInstance->Add_GameObject(
-	//			LEVEL_STAGE1,
-	//			TEXT("Layer_Object") ,
-	//			strPrototypeTag,
-	//			&pTemp)))
-	//		{
-	//			MSG_BOX("Fail");
-	//			RELEASE_INSTANCE(CGameInstance);
-	//			return E_FAIL;
-	//		}
-	//		CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-	//		pTransform->Set_State(CTransform::STATE_RIGHT, tDataObj.matWorld.r[CTransform::STATE_RIGHT]);
-	//		pTransform->Set_State(CTransform::STATE_UP, tDataObj.matWorld.r[CTransform::STATE_UP]);
-	//		pTransform->Set_State(CTransform::STATE_LOOK, tDataObj.matWorld.r[CTransform::STATE_LOOK]);
-	//		pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataObj.matWorld.r[CTransform::STATE_TRANSLATION]);
-
-	//	}
-	//}
+			OBJ_TAG iObjTag = tDataObj.tObjTag;
+			const _tchar* strPrototypeTag = nullptr;
 
 
-	//CloseHandle(hFile);
+			switch (iObjTag)
+			{
+			case OBJ_TAG::DOTSPROJECTER:
+				strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
+				break;
+			case OBJ_TAG::FLASHLIGHT:
+				strPrototypeTag = TEXT("Prototype_GameObject_FlashLight");
+				break;
+
+			case OBJ_TAG::THERMOMETER:
+				strPrototypeTag = TEXT("Prototype_GameObject_Thermometer");
+				break;
+
+			case OBJ_TAG::EMF:
+				strPrototypeTag = TEXT("Prototype_GameObject_EMF");
+				break;
+
+			case OBJ_TAG::NOTE:
+				strPrototypeTag = TEXT("Prototype_GameObject_Note");
+				break;
+
+			case OBJ_TAG::SPIRITBOX:
+				strPrototypeTag = TEXT("Prototype_GameObject_SpiritBox");
+				break;
+
+			case OBJ_TAG::VIDEOCAMERA:
+				strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
+				break;
+			}
+
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Object"),
+				strPrototypeTag,
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataObj.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataObj.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataObj.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataObj.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+		}
+	}
+	CloseHandle(hFile);
 	//MSG_BOX("Loaded Items");
 
 	RELEASE_INSTANCE(CGameInstance);

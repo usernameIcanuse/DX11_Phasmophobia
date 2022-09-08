@@ -1209,7 +1209,7 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 				break;
 
 			case OBJ_TAG::THERMOMETER:
-				strPrototypeTag = TEXT("Prototype_GameObject_Theremometer");
+				strPrototypeTag = TEXT("Prototype_GameObject_Thermometer");
 				break;
 
 			case OBJ_TAG::EMF:

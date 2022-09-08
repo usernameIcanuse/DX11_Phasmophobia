@@ -25,17 +25,20 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
+	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
+
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(20.f, 10.f, 0.f, 1.f));
 
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
 	if (FAILED(Setup_Inventory()))
 		return E_FAIL;
+
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
 
