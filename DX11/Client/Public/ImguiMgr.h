@@ -69,6 +69,7 @@ private:
 	vector<CGameObject*> m_vecPrototypeObject;
 
 	vector<CGameObject*> m_vecCollocatedHouse[(_uint)MODEL_TAG::MODEL_END];
+
 	vector<CGameObject*> m_vecCollocatedObject[(_uint)LAYER::LAYER_END];
 	vector<OBJ_TAG>		 m_vecObjectTag[(_uint)LAYER::LAYER_END];
 	_int				 m_iSelectedIndex = 0;//오브젝트 선택 시 OBJ_TAG와 순서 맞춰주기

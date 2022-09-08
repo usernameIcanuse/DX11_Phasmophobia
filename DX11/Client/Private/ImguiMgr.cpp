@@ -179,7 +179,7 @@ void CImguiMgr::Set_Prototype()
 		m_vecPrototypeObject.push_back(pTemp);
 
 		/* House */
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
@@ -189,7 +189,7 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-		m_vecPrototypeHouse.push_back(pTemp);
+		m_vecPrototypeHouse.push_back(pTemp);*/
 
 		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 		//	return;
@@ -197,7 +197,7 @@ void CImguiMgr::Set_Prototype()
 		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
 		//m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
@@ -315,7 +315,7 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
-		m_vecPrototypeHouse.push_back(pTemp);
+		m_vecPrototypeHouse.push_back(pTemp);*/
 
 
 	}
@@ -1140,7 +1140,7 @@ void CImguiMgr::Save_Object(const char* strStageName, const char* strFileName)
 			tObjData.tLayerTag = (LAYER)i;
 			tObjData.tObjTag = m_vecObjectTag[i][iIndex];
 			WriteFile(hFileBrix, &tObjData, sizeof(OBJ_DATA), &dwByteBrix, nullptr);
-
+			++iIndex;
 		}
 	}
 
@@ -1186,23 +1186,41 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 			OBJ_TAG iObjTag = tDataObj.tObjTag;
 			const _tchar* strPrototypeTag=nullptr;
 
-			switch (iLayerTag)
-			{
-			case LAYER::OBJECT:
-				strLayer = TEXT("Layer_Object");
-				break;
-			}
-
+		
 			switch (iObjTag)
 			{
 			case OBJ_TAG::DOTSPROJECTER:
 				strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
 				break;
+			case OBJ_TAG::FLASHLIGHT:
+				strPrototypeTag = TEXT("Prototype_GameObject_FlashLight");
+				break;
+
+			case OBJ_TAG::THERMOMETER:
+				strPrototypeTag = TEXT("Prototype_GameObject_Theremometer");
+				break;
+
+			case OBJ_TAG::EMF:
+				strPrototypeTag = TEXT("Prototype_GameObject_EMF");
+				break;
+
+			case OBJ_TAG::NOTE:
+				strPrototypeTag = TEXT("Prototype_GameObject_Note");
+				break;
+
+			case OBJ_TAG::SPIRITBOX:
+				strPrototypeTag = TEXT("Prototype_GameObject_SpiritBox");
+				break;
+
+			case OBJ_TAG::VIDEOCAMERA:
+				strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
+				break;
 			}
+			
 
 			if (FAILED(pGameInstance->Add_GameObject(
 				LEVEL_STAGE1,
-				strLayer,
+				TEXT("Layer_Object"),
 				strPrototypeTag,
 				&pTemp)))
 			{
