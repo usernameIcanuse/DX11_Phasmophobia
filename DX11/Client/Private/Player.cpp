@@ -134,6 +134,17 @@ HRESULT CPlayer::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
 		return E_FAIL;
 
+	/* For.Com_OBB*/
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(5.f, 10.f, 5.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+	ColliderDesc.pOwner = this;
+	ColliderDesc.m_eObjID = COLLISION_TYPE::PLAYER;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pRayCom, &ColliderDesc)))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -247,5 +258,6 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pRayCom);
+	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pInventory);
 }

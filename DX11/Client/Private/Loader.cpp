@@ -130,31 +130,30 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-	m_fLoadingRatio = 0.f;
-	_float		fRatio = 1.f / 10.f;//로딩 퍼센테이지
+	
 
 	/*For, Prototype_GameObject_Lobby*/
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Lobby"),
 		CLobby_Main::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_WaitingRoom"),
 		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Store"),
 		CLobby_Store::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_AddItems"),
 		CLobby_AddItems::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+	
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
 		CUIIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 
 #pragma endregion
 
@@ -163,23 +162,23 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Lobby"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Lobby/Lobby_Main.dds")))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Lobby/OutLine.dds")))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_WaitingRoom"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/WaitingRoom.dds")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/WaitingRoom_3.dds")))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Large_outline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Large_outline.dds")))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Small_outline"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Small_outline.dds")))))
 		return E_FAIL;
-	m_fLoadingRatio += fRatio;
+
 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));

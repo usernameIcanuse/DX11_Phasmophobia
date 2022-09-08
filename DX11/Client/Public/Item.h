@@ -37,7 +37,7 @@ protected:
 	CTexture*   m_pTextureCom = nullptr;
 	CRenderer*  m_pRendererCom = nullptr;
 	CModel*     m_pModelCom = nullptr;
-	CCollider*  m_pAABBCom = nullptr;
+	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
 protected:

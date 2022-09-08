@@ -111,6 +111,7 @@ void CInventory::Install_Item(_float3 _vInstallPos)
 	CGameObject* pCurItem = m_vInventory[m_iIndex];
 	CTransform* pItemTransform = (CTransform*)pCurItem->Get_Component(CGameObject::m_pTransformTag);
 
+
 	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&_vInstallPos), 1.f));
 
 	m_vInventory[m_iIndex] = nullptr;
