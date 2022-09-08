@@ -33,6 +33,13 @@ public:
 		
 	}
 
+	_bool	Able_To_Install()
+	{
+		return m_bAbleInstall;
+	}
+
+	
+
 protected:
 	CShader*    m_pShaderCom = nullptr;
 	CTexture*   m_pTextureCom = nullptr;
@@ -41,6 +48,8 @@ protected:
 	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
+	_bool		m_bAbleInstall = false;
+
 protected:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;

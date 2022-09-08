@@ -8,6 +8,7 @@
 #include "Lobby_AddItems.h"
 #include "Lobby_Store.h"
 #include "Object_Collider.h"
+#include "Wall_Collider.h"
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
@@ -282,6 +283,12 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CObject_Collider::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Wall*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wall"),
+		CWall_Collider::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For. Prototype_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
 		CHouse::Create(m_pDevice, m_pContext))))
@@ -339,38 +346,49 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	_matrix			TransformMatrix;
 
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 
 	///* For.Prototype_Component_Model_Lighter*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Lighter"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 	//	return E_FAIL;
-	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f)* XMMatrixTranslation(0.f, 0.35f, 0.f);
 
 	/* For.Prototype_Component_Model_FlashLight*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	TransformMatrix = XMMatrixScaling(0.07f, 0.07f, 0.07f);
+
+
 	/* For.Prototype_Component_Model_Thermometer*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Thermometer"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Thermometer/", "Thermometer.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	TransformMatrix = XMMatrixScaling(0.06f, 0.06f, 0.06f)*XMMatrixTranslation(0.f,0.6f,0.f);
+
 	/* For.Prototype_Component_Model_EMF*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_EMF"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
 		return E_FAIL;
+	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
 
 	/* For.Prototype_Component_Model_Note*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f);
+
 	/* For.Prototype_Component_Model_SpiritBox*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SpiritBox"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/SpiritBox/", "SpiritBox.fbx", TransformMatrix))))
 		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
 
 	/* For.Prototype_Component_Model_Video_Camera*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"),

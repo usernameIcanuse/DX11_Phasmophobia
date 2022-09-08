@@ -188,6 +188,7 @@ namespace Engine
 		CAMERA,
 		MOUSE,
 		OBJECT,
+		WALL,
 		ITEM,
 		TYPE_END
 	};

@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CModel;
 END
 
 
@@ -29,13 +30,15 @@ public:
 	 
 
 private:
-	CCollider* m_pOBBCom = nullptr;
+	CCollider*		m_pOBBCom = nullptr;
+	CCollider*		m_pSphereCom = nullptr;
+	CModel*			m_pModelCom = nullptr;
+
+	_uint	   m_iAnger = 0;
 	
 	
 private:
 	HRESULT	Setup_Component();
-	HRESULT Setup_Camera();
-	HRESULT Setup_Inventory();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

@@ -106,7 +106,7 @@ void CInventory::Drop_Item()
 
 void CInventory::Install_Item(_float3 _vInstallPos)
 {
-	if (nullptr == m_vInventory[m_iIndex]/* || 설치 불가 아이템*/)
+	if (nullptr == m_vInventory[m_iIndex] || !m_vInventory[m_iIndex]->Able_To_Install())
 		return;
 
 	CGameObject* pCurItem = m_vInventory[m_iIndex];
@@ -149,8 +149,8 @@ void	CInventory::Adjust_Item(CGameObject* pItem)
 	_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
 
 	vPlayerPos += XMVector3Normalize(vRight);
-	vPlayerPos -= XMVector3Normalize(vUp) * 2;
-	vPlayerPos += vLook * 2;
+	vPlayerPos -= XMVector3Normalize(vUp)*1.5f ;
+	vPlayerPos += vLook*2.f;
 
 	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
 	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);

@@ -109,9 +109,9 @@ HRESULT CEMF::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
+    ColliderDesc.vScale = _float3(0.5f, 1.2f, 0.3f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y*0.5f, ColliderDesc.vScale.z * -0.5f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 

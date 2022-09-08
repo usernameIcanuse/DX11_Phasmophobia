@@ -25,6 +25,8 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    m_bAbleInstall = true;
+
     return S_OK;
 }
 
@@ -62,7 +64,7 @@ HRESULT CVideo_Camera::Render()
     {
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+       /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
         m_pShaderCom->Begin(0);
@@ -109,7 +111,7 @@ HRESULT CVideo_Camera::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+    ColliderDesc.vScale = _float3(1.0f, 0.5f, 0.5f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;

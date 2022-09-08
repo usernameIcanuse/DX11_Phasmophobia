@@ -63,7 +63,7 @@ HRESULT CFlashLight::Render()
     {
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+       /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
         m_pShaderCom->Begin(0);
@@ -109,9 +109,9 @@ HRESULT CFlashLight::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 1.f, 2.5f);
+    ColliderDesc.vScale = _float3(0.7f, 0.7f, 1.4f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y*0.5f, 0.f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 

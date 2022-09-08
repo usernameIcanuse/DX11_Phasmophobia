@@ -142,6 +142,9 @@
     <ClInclude Include="..\Public\Object_Collider.h">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Wall_Collider.h">
+      <Filter>02.GameObject\Stage\Wall_Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Object_Collider.cpp">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wall_Collider.cpp">
+      <Filter>02.GameObject\Stage\Wall_Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -411,6 +417,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Object_Collider">
       <UniqueIdentifier>{994f7727-b98f-423a-9720-b833a20d2f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Wall_Collider">
+      <UniqueIdentifier>{6e3fd09a-681d-4167-a8a3-c2628654e3ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

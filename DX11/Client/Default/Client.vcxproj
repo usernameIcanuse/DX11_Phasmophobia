@@ -232,6 +232,7 @@
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\UVLight.h" />
     <ClInclude Include="..\Public\Video_Camera.h" />
+    <ClInclude Include="..\Public\Wall_Collider.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\UVLight.cpp" />
     <ClCompile Include="..\Private\Video_Camera.cpp" />
+    <ClCompile Include="..\Private\Wall_Collider.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

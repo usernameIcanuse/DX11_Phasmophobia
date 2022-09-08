@@ -140,6 +140,10 @@ void CImguiMgr::Set_Prototype()
 			return;
 		m_ColliderPrototype->Set_Enable(false);
 
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Wall"), &m_WallPrototype)))
+			return;
+		m_WallPrototype->Set_Enable(false);
+
 		
 		/* Object */
 		CGameObject* pTemp = nullptr;
@@ -549,16 +553,26 @@ void CImguiMgr::Tool_Collider()
 		m_pSelectedTransform->Set_State(CTransform::STATE_LOOK, XMVectorSet(0.f, 0.f, 1.f, 0.f));
 		m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
-		m_ColliderPrototype->Set_Enable(false);
+		m_pSelectedObject->Set_Enable(false);
 		m_pSelectedObject = nullptr;
 		m_pSelectedTransform = nullptr;
 	}
 
 	if (ImGui::Button("Collider"))
 	{
+		m_WallPrototype->Set_Enable(false);
 		m_ColliderPrototype->Set_Enable(true);
 		m_pSelectedObject = m_ColliderPrototype;
 		m_pSelectedTransform = (CTransform*)m_ColliderPrototype->Get_Component(CGameObject::m_pTransformTag);
+
+	}
+
+	if (ImGui::Button("Wall"))
+	{
+		m_ColliderPrototype->Set_Enable(false);
+		m_WallPrototype->Set_Enable(true);
+		m_pSelectedObject = m_WallPrototype;
+		m_pSelectedTransform = (CTransform*)m_WallPrototype->Get_Component(CGameObject::m_pTransformTag);
 
 	}
 
@@ -584,7 +598,7 @@ void CImguiMgr::Picking_Object()
 	_float4 fPosition;
 	if (-1 < m_iSelectedIndex || m_pSelectedObject)
 	{
-		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition));
+		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
 		{
 			//_float3 fScale = m_pSelectedTransform->Get_Scaled();
 			
@@ -921,9 +935,16 @@ void CImguiMgr::CollocateCollider()
 	{
 
 		CGameObject* pTemp = nullptr;
-
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Collider"), &pTemp)))
-			return;
+		if (m_ColliderPrototype->Get_Enable())
+		{
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Collider"), &pTemp)))
+				return;
+		}
+		else if (m_WallPrototype->Get_Enable())
+		{
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Wall"), &pTemp)))
+				return;
+		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 

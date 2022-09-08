@@ -24,8 +24,7 @@ private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
 
-private:
-	CLight*
+
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);

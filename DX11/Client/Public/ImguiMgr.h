@@ -77,6 +77,10 @@ private:
 	CGameObject*		m_ColliderPrototype = nullptr;
 	vector<CGameObject*> m_vecCollider;
 
+	CGameObject* m_WallPrototype = nullptr;
+	vector<CGameObject*> m_vecWall;
+
+
 	//선택한 오브젝트
 
 	CGameObject* m_pPlayer = nullptr;
