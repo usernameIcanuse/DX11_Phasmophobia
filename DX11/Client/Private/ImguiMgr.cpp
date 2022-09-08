@@ -596,7 +596,7 @@ void CImguiMgr::Picking_Object()
 			{
 				for (auto& elem : m_vecCollocatedObject[i])
 				{
-					CCollider* pObjCollider =   (CCollider*)elem->Get_Component(TEXT("Com_AABB"));
+					CCollider* pObjCollider =   (CCollider*)elem->Get_Component(TEXT("Com_OBB"));
 					if (m_pRayCom->Collision(pObjCollider))
 					{
 

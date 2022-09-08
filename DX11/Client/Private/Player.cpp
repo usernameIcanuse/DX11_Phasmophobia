@@ -51,6 +51,7 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+
 	if (pGameInstance->Is_KeyState(KEY::W, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
@@ -81,6 +82,11 @@ void CPlayer::Tick(_float fTimeDelta)
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::RBUTTON, KEY_STATE::TAP))
+	{
+		m_pInventory->Turn_Switch();
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::G, KEY_STATE::TAP))

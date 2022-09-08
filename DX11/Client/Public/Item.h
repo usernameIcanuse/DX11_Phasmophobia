@@ -27,9 +27,10 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void	Turn_Switch(_bool  bFlag)
+	void	Turn_Switch()
 	{
-		m_bSwitch = bFlag;
+		m_bSwitch = !m_bSwitch;
+		
 	}
 
 protected:
@@ -37,7 +38,7 @@ protected:
 	CTexture*   m_pTextureCom = nullptr;
 	CRenderer*  m_pRendererCom = nullptr;
 	CModel*     m_pModelCom = nullptr;
-	CCollider*  m_pAABBCom = nullptr;
+	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
 protected:

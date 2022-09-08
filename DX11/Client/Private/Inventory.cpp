@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Inventory.h"
 #include "GameInstance.h"
+#include "Item.h"
 
 
 CInventory::CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -34,7 +35,7 @@ HRESULT CInventory::Initialize(void* pArg)
 
 	for (int i = 0; i < 3; ++i)
 	{
-		CGameObject* pNull = nullptr;
+		CItem* pNull = nullptr;
 		m_vInventory.push_back(pNull);
 	}
 	CTransform::TRANSFORMDESC		TransformDesc;
@@ -87,7 +88,7 @@ void CInventory::Add_Item(CGameObject* pItem)
 		
 	Adjust_Item(pItem);
 
-	m_vInventory[iEmptyIndex] = pItem;
+	m_vInventory[iEmptyIndex] = (CItem*)pItem;
 
 	if (m_iIndex == iEmptyIndex)
 		m_vInventory[m_iIndex]->Set_Enable(true);
@@ -127,6 +128,13 @@ void CInventory::Change_Item()
 	{
 		Adjust_Item(m_vInventory[m_iIndex]);
 	}
+}
+
+void CInventory::Turn_Switch()
+{
+	if (m_vInventory[m_iIndex])
+		m_vInventory[m_iIndex]->Turn_Switch();
+
 }
 
 void	CInventory::Adjust_Item(CGameObject* pItem)

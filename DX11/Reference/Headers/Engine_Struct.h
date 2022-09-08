@@ -27,7 +27,7 @@ namespace Engine
 
 	typedef struct tagLightDesc
 	{
-		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END };
+		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_SPOTLIGHT,TYPE_END };
 
 		TYPE			eType = TYPE_END;
 

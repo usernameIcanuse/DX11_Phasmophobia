@@ -6,6 +6,7 @@
 BEGIN(Client)
 
 class Player;
+class CItem;
 
 class CInventory final : public CGameObject
 {
@@ -27,12 +28,13 @@ public:
 	void	Drop_Item();//아이템 버리기
 	void	Install_Item(_float3 _vInstallPos);//아이템 설치
 	void	Change_Item();
+	void	Turn_Switch();
 
 private:
 	void	Adjust_Item(CGameObject* pItem);
 
 private:
-	vector<CGameObject*>	m_vInventory;
+	vector<CItem*>	m_vInventory;
 	_uint					m_iIndex = 0;
 	CGameObject*			m_pPlayer = nullptr;
 
