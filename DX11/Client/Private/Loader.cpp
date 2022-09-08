@@ -509,9 +509,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더추가.  "));
 	/* For.Prototype_Component_Collider_AABB */
-	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	/* For.Prototype_Component_Collider_OBB */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"),
