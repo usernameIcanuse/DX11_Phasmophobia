@@ -379,10 +379,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 
-	/* For.Prototype_Component_Model_MapleTree*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/MapleTree/", "Maple.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_MapleTree*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/MapleTree/", "Maple.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 	/* For.Prototype_Component_Model_Truck*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck"),
@@ -406,112 +406,112 @@ HRESULT CLoader::Loading_ForStage1Level()
 	
 	
 	/* For.Prototype_Component_Model_Pier_house*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house/", "Pier_house.fbx", TransformMatrix))))
-		return E_FAIL;
-	
-	/* For.Prototype_Component_Model_Pier_house2*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house2"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house2/", "Pier_house2.fbx", TransformMatrix))))
-		return E_FAIL;
-	
-	/* For.Prototype_Component_Model_RoofTop*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop/", "RoofTop.fbx", TransformMatrix))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house/", "Pier_house.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	//
+	///* For.Prototype_Component_Model_Pier_house2*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Pier_house2"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Pier_house2/", "Pier_house2.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	//
+	///* For.Prototype_Component_Model_RoofTop*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop/", "RoofTop.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background1*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background1.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background1*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background1"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background1.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background2*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background2"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background2.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background2*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background2"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background2.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background3*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background3"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background3.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background3*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background3"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background3.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background4*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background4"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background1.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background4*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background4"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background1.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background5*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background5"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background5.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background5*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background5"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background5.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background6*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background6"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background6.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background6*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background6"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background6.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background7*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background7"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background7.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background7*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background7"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background7.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background8*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background8"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background8.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background8*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background8"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background8.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background9*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background9"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background9.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background9*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background9"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background9.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background10*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background10"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background10.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background10*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background10"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background10.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background11*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background11"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background11.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background11*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background11"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background11.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background12*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background12"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background12.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background12*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background12"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background12.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background13*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background13"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background13.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background13*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background13"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background13.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_RoofTop_Background14*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background14"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background14.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_RoofTop_Background14*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoofTop_Background14"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background14.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 
 
-	/* For.Prototype_Component_Model_Shelter*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Shelter"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Shelter/", "Shelter.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_Shelter*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Shelter"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Shelter/", "Shelter.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
-	/* For.Prototype_Component_Model_SlumHouse1*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SlumHouse1"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SlumHouse/", "SlumHouse1.fbx", TransformMatrix))))
-		return E_FAIL;
-	
-		/* For.Prototype_Component_Model_OldHouse*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_OldHouse"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/OldHouse/", "Well.fbx", TransformMatrix))))
-		return E_FAIL;
+	///* For.Prototype_Component_Model_SlumHouse1*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SlumHouse1"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SlumHouse/", "SlumHouse1.fbx", TransformMatrix))))
+	//	return E_FAIL;
+	//
+	//	/* For.Prototype_Component_Model_OldHouse*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_OldHouse"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/OldHouse/", "Well.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더추가.  "));
 	/* For.Prototype_Component_Collider_AABB */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
+	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	/* For.Prototype_Component_Collider_OBB */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"),

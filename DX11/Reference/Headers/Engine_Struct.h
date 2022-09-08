@@ -257,5 +257,24 @@ namespace Engine
 		MODEL_END
 	};
 
+	/*저장할때 같이 보내줄 데이터*/
+	typedef struct tagObjData
+	{
+		LAYER		tLayerTag;
+		OBJ_TAG			tObjTag;
+		_matrix		matWorld;
+	} OBJ_DATA;
+
+	typedef struct tagHouseData
+	{
+		MODEL_TAG	tModelTag;
+		_matrix		matWorld;
+	}MAP_DATA;//layer 무조건 house
+
+	typedef struct tagCollider
+	{
+		_matrix matWorld;
+	}COLLIDER_DATA;
+
 
 }

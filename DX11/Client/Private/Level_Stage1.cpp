@@ -2,6 +2,8 @@
 #include "..\Public\Level_Stage1.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
+#include "House.h"
+#include "Object_Collider.h"
 
 
 
@@ -26,12 +28,9 @@ HRESULT CLevel_Stage1::Initialize()
 	if(FAILED(Ready_Lights()))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-	//	return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;*/
-
+	if (FAILED(Load_Stage()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -112,6 +111,125 @@ HRESULT CLevel_Stage1::Ready_Layer_Player(const _tchar* pLayertag)
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
+}
+
+HRESULT CLevel_Stage1::Load_Stage()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/NormalHouse/House.dat";
+	
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	DWORD dwByteHouse = 0;
+	MAP_DATA tDataMap;
+	ZeroMemory(&tDataMap, sizeof(MAP_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataMap, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+			MODEL_TAG	 iModelTag = tDataMap.tModelTag;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_House"),
+				TEXT("Prototype_GameObject_House"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+			switch (iModelTag)
+			{
+			case MODEL_TAG::TRUCK:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
+
+				break;
+			case MODEL_TAG::FURNISHEDCABIN:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+
+				break;
+			}
+
+
+		}
+	}
+
+	CloseHandle(hFile);
+	MSG_BOX("Loaded Map");
+
+
+	char Filepath[255] = "../Bin/Resources/Map/NormalHouse/Object_Collider.dat";
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	DWORD dwByteHouse = 0;
+	COLLIDER_DATA tDataCollider;
+	ZeroMemory(&tDataCollider, sizeof(COLLIDER_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataCollider, sizeof(COLLIDER_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Collider"),
+				TEXT("Prototype_GameObject_Collider"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+		}
+	}
+
+	CloseHandle(hFile);
+	MSG_BOX("Loaded Collider");
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 HRESULT CLevel_Stage1::Ready_Lights()
