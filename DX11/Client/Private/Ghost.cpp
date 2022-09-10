@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "Ghost.h"
 #include "GameInstance.h"
-#include "Camera_FPS.h"
-#include "Inventory.h"
+#include "Ghost_SpawnPoint.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -29,7 +28,10 @@ HRESULT CGhost::Initialize(void* pArg)
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
+		return E_FAIL;
 
+	if (FAILED(Setup_Component()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -57,8 +59,6 @@ HRESULT CGhost::Setup_Component()
 
 	return S_OK;
 }
-
-
 
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {

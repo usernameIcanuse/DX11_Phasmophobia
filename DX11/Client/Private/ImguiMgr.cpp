@@ -685,16 +685,13 @@ void CImguiMgr::Translation()
 
 void CImguiMgr::Rotation()
 { // Sliders
-	static ImGuiSliderFlags flags_i = ImGuiSliderFlags_None;
+	static int Rotation= 0;
+	ImGui::InputInt("input int", &Rotation );
+	
 
-	static int slider_i = 0;
-	
-	ImGui::Text("Underlying int value: %d", slider_i);
-	ImGui::SliderInt("Rotation", &slider_i, 0, 360, "%d", flags_i);
-	
 	if (m_pSelectedObject)
 	{
-		m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(slider_i));
+		m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(Rotation));
 	}
 }
 

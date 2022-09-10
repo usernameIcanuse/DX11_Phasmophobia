@@ -11,7 +11,7 @@ BEGIN(Client)
 
 class CInventory;
 
-class CPlayer : public CGameObject
+class CPlayer final: public CGameObject
 {
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

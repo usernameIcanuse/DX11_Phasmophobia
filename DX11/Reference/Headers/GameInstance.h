@@ -12,6 +12,7 @@
 #include "Light_Manager.h"
 #include "ZFrustum.h"
 #include "Collision_Manager.h"
+#include "Font_Manager.h"
 
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
@@ -90,6 +91,11 @@ public:/* For.Collision_Manager*/
 	void Add_Collider(CCollider* pCollider);
 	void Erase_Collider(CCollider* pCollider);
 
+public:/* For.Font_Manager*/
+	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
+
+
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
 	CLevel_Manager*					m_pLevel_Manager = nullptr;
@@ -100,6 +106,7 @@ private:
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
 	CZFrustum*						m_pZFrustum = nullptr;
+	CFont_Manager*					m_pFont_Manager = nullptr;
 	CCollision_Manager*				m_pCollision_Manager = nullptr;
 
 	GRAPHICDESC						m_tagGraphicDesc;

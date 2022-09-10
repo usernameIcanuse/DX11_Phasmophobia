@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\Public\Atmosphere.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="..\Public\EMF.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
     <ClInclude Include="..\Public\Ghost.h" />
+    <ClInclude Include="..\Public\Ghost_SpawnPoint.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\Note.h" />
     <ClInclude Include="..\Public\House.h" />
@@ -239,9 +241,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\Atmosphere.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />
     <ClCompile Include="..\Private\DotsProjecter.cpp" />
     <ClCompile Include="..\Private\EMF.cpp" />

@@ -2,6 +2,7 @@
 #include "../Public/Thermometer.h"
 #include "GameInstance.h"
 
+
 CThermometer::CThermometer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice,pContext)
 {
@@ -32,6 +33,8 @@ void CThermometer::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+    m_fTimeAcc += fTimeDelta;
 
 }
 
@@ -69,6 +72,18 @@ HRESULT CThermometer::Render()
 
         m_pModelCom->Render(i);
     }
+
+    if (m_fTimeAcc >= 1.f)
+    {
+        wsprintf(m_szDegree,TEXT("에프피에스 : %lf"), m_fDegree);
+        m_fTimeAcc = 0.f;
+      
+    }
+    // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
+
+    if(m_bSwitch)
+        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
 
 #ifdef _DEBUG
       m_pOBBCom->Render();

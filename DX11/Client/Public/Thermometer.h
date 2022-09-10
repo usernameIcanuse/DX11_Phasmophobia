@@ -18,6 +18,10 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+private:
+	_float		m_fDegree = 0.f;
+	_tchar		m_szDegree[MAX_PATH] = TEXT("");//온도 출력
+	_float		m_fTimeAcc = 0.f;//온도 갱신
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

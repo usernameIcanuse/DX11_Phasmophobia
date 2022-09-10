@@ -87,6 +87,9 @@ HRESULT CCollider::Initialize(void * pArg)
 
 void CCollider::Update(_fmatrix TransformMatrix)
 {
+	if (false == m_bEnable)
+		return;
+
 	switch (m_eCollisionType)
 	{
 	case TYPE_AABB:

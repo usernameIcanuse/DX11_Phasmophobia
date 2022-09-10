@@ -28,6 +28,8 @@ HRESULT CLevel_Stage1::Initialize()
 	if(FAILED(Ready_Lights()))
 		return E_FAIL;
 
+	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Dream"), TEXT("../Bin/Resources/Fonts/128.spriteFont"))))
+		return E_FAIL;
 
 	if(FAILED(Load_Stage()))
 		return E_FAIL;

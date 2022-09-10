@@ -10,9 +10,10 @@ END
 
 BEGIN(Client)
 
+class CGhost_SpawnPoint;
 
 
-class CGhost : public CGameObject
+class CGhost final: public CGameObject
 {
 private:
 	CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,16 +26,14 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-
-public:
 	 
 
 private:
 	CCollider*		m_pOBBCom = nullptr;
-	CCollider*		m_pSphereCom = nullptr;
 	CModel*			m_pModelCom = nullptr;
 
 	_uint	   m_iAnger = 0;
+	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	
 	
 private:

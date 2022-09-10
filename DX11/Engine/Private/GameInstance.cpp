@@ -14,6 +14,7 @@ CGameInstance::CGameInstance()
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
 	, m_pZFrustum(CZFrustum::Get_Instance())
 	, m_pCollision_Manager(CCollision_Manager::Get_Instance())
+	, m_pFont_Manager(CFont_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -26,6 +27,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pZFrustum);
 	Safe_AddRef(m_pCollision_Manager);
+	Safe_AddRef(m_pFont_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -374,6 +376,24 @@ void CGameInstance::Erase_Collider(CCollider* pCollider)
 	m_pCollision_Manager->Erase_Collider(pCollider);
 }
 
+HRESULT CGameInstance::Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath)
+{
+	if(nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	
+	m_pFont_Manager->Add_Font(pDevice,  pContext, pFontTag, pFontFilePath);
+}
+
+HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+
+	m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor);
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -396,6 +416,8 @@ void CGameInstance::Release_Engine()
 
 	CCollision_Manager::Get_Instance()->Destroy_Instance();
 
+	CFont_Manager::Get_Instance()->Destroy_Instance();
+
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
 }
@@ -409,8 +431,10 @@ void CGameInstance::Free()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pZFrustum);
 	Safe_Release(m_pCollision_Manager);
+	
 
 }

@@ -190,6 +190,7 @@ namespace Engine
 		OBJECT,
 		WALL,
 		ITEM,
+		ATMOSPHERE,
 		TYPE_END
 	};
 
