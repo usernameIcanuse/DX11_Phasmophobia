@@ -30,6 +30,7 @@ private:
 
 private:
 	CCollider*		 m_pOBBCom = nullptr;//COLLISION_TYPE::ATMOSPHERE
+	CRenderer* m_pRendererCom = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

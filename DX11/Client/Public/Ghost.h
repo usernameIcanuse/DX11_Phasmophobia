@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CCollider;
 class CModel;
+class CRenderer;
 END
 
 
@@ -26,18 +27,22 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-	 
+
+	virtual void Set_Enable(_bool _bEnable);
+	
 
 private:
-	CCollider*		m_pOBBCom = nullptr;
+	CCollider*		m_pOBBCom = nullptr; // attack
+	CCollider*		m_pSphereCom = nullptr;  //ghost
 	CModel*			m_pModelCom = nullptr;
+	CRenderer*		m_pRendererCom = nullptr;
 
-	_uint	   m_iAnger = 0;
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	
 	
 private:
 	HRESULT	Setup_Component();
+	HRESULT Setup_SpawnPoint();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

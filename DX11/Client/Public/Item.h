@@ -38,6 +38,10 @@ public:
 		return m_bAbleInstall;
 	}
 
+	virtual void Turn_Switch() {};
+	virtual void Install(_float3 vPosition, COLLISION_TYPE eType) {};
+	virtual void Adjust_Item(CTransform* pPlayerTransform) {};
+
 	
 
 protected:

@@ -83,6 +83,35 @@ HRESULT CNote::Render()
 void CNote::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
+
+    if (COLLISION_TYPE::WALL == pCollider->Get_Type())
+    {
+        CTransform* pColliderTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
+        _vector vRight;
+        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+        _vector vLook = pColliderTransform->Get_State(CTransform::STATE_LOOK);
+
+        vRight = XMVector3Cross(vLook, vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    }
+
+    else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type())
+    {
+        CTransform* pColliderTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
+        _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+        _vector vUp;
+        _vector vLook = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+
+        vUp = XMVector3Cross(vLook, vRight);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+    }
 }
 
 void CNote::On_Collision_Stay(CCollider* pCollider)

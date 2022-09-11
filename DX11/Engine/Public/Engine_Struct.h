@@ -175,22 +175,23 @@ namespace Engine
 		LAST,
 	};
 
-	enum class COLLISION_TYPE
+	enum class COLLISION_TYPE//이순서대로 충돌
 	{
 		DEFAULT = 0,
 		PLAYER,
-		PLAYER_ATTACK,
-		MONSTER,
-		MONSTER_ATTACK,
+		GHOST,
+		GHOST_ATTACK,
 		EFFECTS,
 		SIGHT,
-		RANGE,
 		CAMERA,
 		MOUSE,
 		OBJECT,
 		WALL,
+		THERMOMETER,
 		ITEM,
 		ATMOSPHERE,
+		GHOST_AREA,
+		GHOST_SPAWNPOINT,
 		TYPE_END
 	};
 

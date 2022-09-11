@@ -213,7 +213,7 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
-	if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
+	if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 

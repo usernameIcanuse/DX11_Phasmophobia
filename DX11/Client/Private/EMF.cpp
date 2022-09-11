@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/EMF.h"
 #include "GameInstance.h"
+#include "Ghost_SpawnPoint.h"
 
 CEMF::CEMF(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -31,6 +32,9 @@ HRESULT CEMF::Initialize(void* pArg)
 void CEMF::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
+    if(m_bSwitch)
+        m_iEMFLevel = 1;
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
@@ -71,6 +75,13 @@ HRESULT CEMF::Render()
         m_pModelCom->Render(i);
     }
 
+
+    if (m_bSwitch)
+    {
+        wsprintf(m_szDegree, TEXT("EMF : %d"), m_iEMFLevel);
+        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+    }
+
 #ifdef _DEBUG
       m_pOBBCom->Render();
 #endif // _DEBUG
@@ -86,6 +97,10 @@ void CEMF::On_Collision_Enter(CCollider* pCollider)
 
 void CEMF::On_Collision_Stay(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+    {
+        m_iEMFLevel = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_Anger()/2 +1;
+    }
 }
 
 void CEMF::On_Collision_Exit(CCollider* pCollider)

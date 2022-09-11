@@ -27,10 +27,14 @@ HRESULT CGhost::Initialize(void* pArg)
 	TransformDesc.fSpeedPerSec = 10.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
+	
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
 	if (FAILED(Setup_Component()))
+		return E_FAIL;
+
+	if (FAILED(Setup_SpawnPoint()))
 		return E_FAIL;
 
 	return S_OK;
@@ -41,22 +45,78 @@ void CGhost::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
+	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+
+	m_pOBBCom->Update(matWorld);
+	m_pSphereCom->Update(matWorld);
+
+
 }
 
 void CGhost::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
 HRESULT CGhost::Render()
 {
+#ifdef _DEBUG
+	m_pOBBCom->Render();
+	m_pSphereCom->Render();
+
+#endif // _DEBUG
+
 	return S_OK;
 }
 
+void CGhost::Set_Enable(_bool _bEnable)
+{
+	__super::Set_Enable(_bEnable);
+
+	m_pSpawnPoint->Set_Enable(_bEnable);
+}
+
+
 HRESULT CGhost::Setup_Component()
 {
-	
+	/* For.Com_OBB*/
+	CCollider::COLLIDERDESC			ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
+	ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+	ColliderDesc.pOwner = this;
+	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST_ATTACK;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_Sphere*/
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.vScale = _float3(2.f, 2.f, 2.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+	ColliderDesc.pOwner = this;
+	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_Sphere"), (CComponent**)&m_pSphereCom, &ColliderDesc)))
+		return E_FAIL;
+
+	/* For.Com_Renderer*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CGhost::Setup_SpawnPoint()
+{
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost_SpawnPoint"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), (CGameObject**)&m_pSpawnPoint, this)))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -103,5 +163,10 @@ CGameObject* CGhost::Clone(void* pArg)
 void CGhost::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pOBBCom);
+	Safe_Release(m_pSphereCom);
+	Safe_Release(m_pModelCom);
+	Safe_Release(m_pRendererCom);
 
 }

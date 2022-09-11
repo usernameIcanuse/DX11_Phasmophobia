@@ -23,6 +23,15 @@ public:
 	virtual void On_Collision_Stay(CCollider* pCollider);
 	virtual void On_Collision_Exit(CCollider* pCollider);
 
+public:
+	void		Get_Ghost_Anger(_uint _iLevel)
+	{
+		m_iEMFLevel = _iLevel;
+	}
+private:
+	_uint		m_iEMFLevel = 1;
+	_tchar		m_szDegree[MAX_PATH] = TEXT("");//임시 emf레벨 출력
+
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;

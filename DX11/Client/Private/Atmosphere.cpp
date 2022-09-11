@@ -22,6 +22,8 @@ HRESULT CAtmosphere::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    if (FAILED(Setup_Component()))
+        return E_FAIL;
     //방마다 온도 랜덤 지정
 
     return S_OK;
@@ -31,15 +33,24 @@ void CAtmosphere::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
+#ifdef _DEBUG
+    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+#endif
+
 }
 
 void CAtmosphere::LateTick(_float fTimeDelta)
 {
-   
+    __super::LateTick(fTimeDelta);
+    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 }
 
 HRESULT CAtmosphere::Render()
 {
+
+#ifdef _DEBUG
+    m_pOBBCom->Render();
+#endif
     return S_OK;
 }
 
@@ -47,8 +58,23 @@ HRESULT CAtmosphere::Render()
 HRESULT CAtmosphere::Setup_Component()
 {
  
+    /*For.Com_OBB*/
+    CCollider::COLLIDERDESC  ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
- 
+    ColliderDesc.vScale=_float3(30.f, 30.f, 30.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f,1.f);
+    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.pOwner = this;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::ATMOSPHERE;
+
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+         return E_FAIL;
+
+    /* For.Com_Renderer*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -101,6 +127,7 @@ void CAtmosphere::Free()
 {
     __super::Free();
     
-
+    Safe_Release(m_pOBBCom);
+    Safe_Release(m_pRendererCom);
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

@@ -10,6 +10,11 @@
 #include "Object_Collider.h"
 #include "Wall_Collider.h"
 
+#include "Ghost.h"
+#include "Ghost_SpawnPoint.h"
+
+#include "Atmosphere.h"
+
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
 #include "Thermometer.h"
@@ -18,11 +23,9 @@
 #include "Note.h"
 #include "SpiritBox.h"
 #include "Video_Camera.h"
-//#include "Monster.h"
 #include "Terrain.h"
 #include "Player.h"
 #include "Inventory.h"
-//#include "Effect.h"
 #include "Sky.h"
 #include "DotsProjecter.h"
 #include "FlashLight.h"
@@ -239,6 +242,16 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Ghost*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
+		CGhost::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ghost_SpawnPoint*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
+		CGhost_SpawnPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),
 		CSky::Create(m_pDevice, m_pContext))))
@@ -289,9 +302,14 @@ HRESULT CLoader::Loading_ForStage1Level()
 		return E_FAIL;
 
 
-	/* For. Prototype_House*/
+	/* For. Prototype_GameObject_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
 		CHouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Atmosphere*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Atmosphere"),
+		CAtmosphere::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 
@@ -527,19 +545,19 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더추가.  "));
 	/* For.Prototype_Component_Collider_AABB */
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
-		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"),
+	//	CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+	//	return E_FAIL;
 
 	/* For.Prototype_Component_Collider_OBB */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"),
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
 		return E_FAIL;
 
-	///* For.Prototype_Component_Collider_SPHERE */	
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"),
-	//	CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
-	//	return E_FAIL;
+	/* For.Prototype_Component_Collider_SPHERE */	
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_Collider_Ray*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_Ray"),

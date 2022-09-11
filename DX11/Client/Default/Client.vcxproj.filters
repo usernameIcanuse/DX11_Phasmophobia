@@ -137,7 +137,7 @@
       <Filter>02.GameObject\Player\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ghost.h">
-      <Filter>02.GameObject\Ghost</Filter>
+      <Filter>02.GameObject\Ghost_SpawnPoint\Ghost</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Object_Collider.h">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
@@ -146,10 +146,10 @@
       <Filter>02.GameObject\Stage\Wall_Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ghost_SpawnPoint.h">
-      <Filter>02.GameObject\Ghost\Ghost_SpawnPoint</Filter>
+      <Filter>02.GameObject\Ghost_SpawnPoint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Atmosphere.h">
-      <Filter>02.GameObject\Item\Thermometer\Atmosphere</Filter>
+      <Filter>02.GameObject\Stage\Atmosphere</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,7 +274,7 @@
       <Filter>02.GameObject\Player\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ghost.cpp">
-      <Filter>02.GameObject\Ghost</Filter>
+      <Filter>02.GameObject\Ghost_SpawnPoint\Ghost</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Object_Collider.cpp">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
@@ -283,10 +283,10 @@
       <Filter>02.GameObject\Stage\Wall_Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp">
-      <Filter>02.GameObject\Ghost\Ghost_SpawnPoint</Filter>
+      <Filter>02.GameObject\Ghost_SpawnPoint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Atmosphere.cpp">
-      <Filter>02.GameObject\Item\Thermometer\Atmosphere</Filter>
+      <Filter>02.GameObject\Stage\Atmosphere</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,9 +385,6 @@
     <Filter Include="02.GameObject\Player">
       <UniqueIdentifier>{e66bc9f3-b9e1-4e47-b035-ed700e7051ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Ghost">
-      <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Item\Thermometer">
       <UniqueIdentifier>{da948321-6e4e-46f9-ad65-1d576b4a5779}</UniqueIdentifier>
     </Filter>
@@ -433,11 +430,14 @@
     <Filter Include="02.GameObject\Stage\Wall_Collider">
       <UniqueIdentifier>{6e3fd09a-681d-4167-a8a3-c2628654e3ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Ghost\Ghost_SpawnPoint">
+    <Filter Include="02.GameObject\Stage\Atmosphere">
+      <UniqueIdentifier>{29f59f0b-50f6-45fd-bebd-0b4d71c512cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost_SpawnPoint">
       <UniqueIdentifier>{6424de3b-0525-4377-a875-535e6a50960b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Item\Thermometer\Atmosphere">
-      <UniqueIdentifier>{29f59f0b-50f6-45fd-bebd-0b4d71c512cb}</UniqueIdentifier>
+    <Filter Include="02.GameObject\Ghost_SpawnPoint\Ghost">
+      <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

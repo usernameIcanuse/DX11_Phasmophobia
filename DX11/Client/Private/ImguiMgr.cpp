@@ -182,6 +182,16 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
 		/* House */
 		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
@@ -465,7 +475,7 @@ void CImguiMgr::Tool_Object()
 
 
 	const char* items[] = {"DotsProjecter", "FlashLight", "Thermometer","EMF",
-							"Note","SpiritBox","Video Camera"};
+							"Note","SpiritBox","Video Camera","Ghost","Atmosphere"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -908,6 +918,20 @@ void CImguiMgr::CollocateObject()
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::VIDEOCAMERA;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
+				return;
+			break;
+
+		case 7:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+				return;
+			break;
+
+		case 8:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
 				return;
 			break;
 		}

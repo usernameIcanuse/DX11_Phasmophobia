@@ -49,9 +49,13 @@ protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);
 public:
 
-	virtual void	Set_Enable(_bool _bEnable)
+	virtual  void	Set_Enable(_bool _bEnable)
 	{
 		m_bEnable = _bEnable;
+		for (auto& elem : m_Components)
+		{
+			elem.second->Set_Enable(m_bEnable);
+		}
 	}
 
 	_bool Get_Enable()

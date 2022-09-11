@@ -34,7 +34,8 @@ void CThermometer::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
-    m_fTimeAcc += fTimeDelta;
+    if(m_bSwitch)
+        m_fTimeAcc += fTimeDelta;
 
 }
 
@@ -73,18 +74,19 @@ HRESULT CThermometer::Render()
         m_pModelCom->Render(i);
     }
 
-    if (m_fTimeAcc >= 1.f)
-    {
-        wsprintf(m_szDegree,TEXT("에프피에스 : %lf"), m_fDegree);
-        m_fTimeAcc = 0.f;
-      
-    }
     // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
 
-    if(m_bSwitch)
+
+    if (m_bSwitch)
+    {
+         if (m_fTimeAcc >= 1.f)
+         {
+             wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
+             m_fTimeAcc = 0.f;
+
+         }
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-
-
+    }
 #ifdef _DEBUG
       m_pOBBCom->Render();
 #endif // _DEBUG
@@ -100,6 +102,24 @@ void CThermometer::On_Collision_Enter(CCollider* pCollider)
 
 void CThermometer::On_Collision_Stay(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::ATMOSPHERE == pCollider->Get_Type())
+    {
+       
+            m_iDegree = 20;
+        
+    }
+    else if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+    {
+       
+            m_iDegree = 10;
+        
+    }
+    else if (COLLISION_TYPE::GHOST_SPAWNPOINT == pCollider->Get_Type())
+    {
+        
+            m_iDegree = 5;
+        
+    }
 }
 
 void CThermometer::On_Collision_Exit(CCollider* pCollider)
@@ -129,7 +149,7 @@ HRESULT CThermometer::Setup_Component()
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::THERMOMETER;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
