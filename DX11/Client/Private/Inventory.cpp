@@ -45,8 +45,8 @@ HRESULT CInventory::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-
-
+	/* ax + by + cz + d =0*/
+	//(a,b,c,d) = XMPlaneFromPoints(p1,p2,p3)
 
 	return S_OK;
 }
