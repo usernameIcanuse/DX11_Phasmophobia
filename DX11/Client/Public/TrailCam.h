@@ -2,6 +2,10 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CCollider;
+END
+
 BEGIN(Client)
 
 class CTrailCam final : public CItem
@@ -19,12 +23,10 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook ) 
-	{ 
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
-		return true;
-	}
-
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook);
+	
+private:
+	CCollider* m_pAreaCom = nullptr; //모션 인식
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

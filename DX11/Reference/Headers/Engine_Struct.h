@@ -228,6 +228,7 @@ namespace Engine
 		NOTE,
 		SPIRITBOX,
 		VIDEOCAMERA,
+		TRAILCAM,
 		OBJ_END
 	};
 

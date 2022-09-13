@@ -63,6 +63,7 @@ private:
 
 	void Save_Collider(const char* strStageName, const char* strFileName);
 	void Load_Collider(const char* strStageName, const char* strFileName);
+	void Load_Wall(const char* strStageName, const char* strFileName);
 
 private:
 	vector<CGameObject*> m_vecPrototypeHouse;

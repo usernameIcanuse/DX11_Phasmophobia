@@ -33,10 +33,8 @@ public:
 		return false;
 
 	}
-	virtual _float3 Get_AdjustPos()
-	{
-		return m_vAdjustpos;
-	}
+	virtual _float3 Get_AdjustPos();
+	void	Update_Collider();
 	
 
 protected:

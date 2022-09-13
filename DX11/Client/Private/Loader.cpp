@@ -405,6 +405,8 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+
 	/* For.Prototype_Component_Model_TrailCam*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_TrailCam"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TrailCam/", "TrailCam.fbx", TransformMatrix))))

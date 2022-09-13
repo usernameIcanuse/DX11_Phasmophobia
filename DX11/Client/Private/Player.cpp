@@ -131,6 +131,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_fDist = FLT_MAX;
 	m_eColliderType = COLLISION_TYPE::TYPE_END;
+	m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -225,7 +226,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 			
 		}
 	}
-	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type())
+	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL== pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
@@ -234,7 +235,8 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 			m_fDist = fCollisionDist;
 			m_vColliderPos = m_pRayCom->Get_CollidePos();
 			m_eColliderType = pCollider->Get_Type();
-			XMStoreFloat4(&m_vColliderLook ,static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
+			if(COLLISION_TYPE::WALL == pCollider->Get_Type())
+				XMStoreFloat4(&m_vColliderLook ,static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
 		}
 	}
 }

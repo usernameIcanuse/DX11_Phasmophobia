@@ -33,8 +33,10 @@ HRESULT CTrailCam::Initialize(void* pArg)
 void CTrailCam::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
+    _matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+    m_pOBBCom->Update(matWorld);
+    m_pAreaCom->Update(matWorld);
 }
 
 void CTrailCam::LateTick(_float fTimeDelta)
@@ -74,6 +76,7 @@ HRESULT CTrailCam::Render()
 
 #ifdef _DEBUG
       m_pOBBCom->Render();
+      m_pAreaCom->Render();
 #endif // _DEBUG
 
 
@@ -91,6 +94,10 @@ void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 
 void CTrailCam::On_Collision_Stay(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    {
+
+    }
 }
 
 void CTrailCam::On_Collision_Exit(CCollider* pCollider)
@@ -115,13 +122,29 @@ HRESULT CTrailCam::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.6f, 2.4f, 0.2f);
+    ColliderDesc.vScale = _float3(1.f, 2.f, 0.5f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, 0.f,0.f);
+    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+        return E_FAIL;
+
+    /* For.Com_Area*/
+   
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+    ColliderDesc.vScale = _float3(5.f, 5.f, 5.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+
+    _vector     vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    XMStoreFloat3(&ColliderDesc.vTranslation, XMVectorSet(0.f, 0.f, 0.f, 0.f) + ColliderDesc.vScale.z*0.55f*vLook);
+    //ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.pOwner = this;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -170,6 +193,36 @@ HRESULT CTrailCam::SetUp_ShaderResource()
     return S_OK;
 }
 
+_bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+{
+    if (eType == COLLISION_TYPE::WALL)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook *  vScale.z);
+        _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+        _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
+
+        vUp = XMVector3Cross( XMLoadFloat4(&vLook),vRight);
+
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+        return true;
+    }
+
+    return false;
+}
+
 CTrailCam* CTrailCam::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CTrailCam* pInstance = new CTrailCam(pDevice, pContext);
@@ -199,4 +252,5 @@ CGameObject* CTrailCam::Clone(void* pArg)
 void CTrailCam::Free()
 {
     __super::Free();
+    Safe_Release(m_pAreaCom);
 }

@@ -80,6 +80,36 @@ HRESULT CNote::Render()
     return S_OK;
 }
 
+_bool CNote::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+{
+    if (eType == COLLISION_TYPE::OBJECT)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+        _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
+
+        vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
+
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+        return true;
+    }
+    return false;
+}
+
+
 void CNote::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);

@@ -171,6 +171,8 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
+
+		
 		
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
 			return;
@@ -188,6 +190,11 @@ void CImguiMgr::Set_Prototype()
 		m_vecPrototypeObject.push_back(pTemp);
 
 		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
@@ -475,7 +482,7 @@ void CImguiMgr::Tool_Object()
 
 
 	const char* items[] = {"DotsProjecter", "FlashLight", "Thermometer","EMF",
-							"Note","SpiritBox","Video Camera","Ghost","Atmosphere"};
+							"Note","SpiritBox","Video Camera","Ghost","Atmosphere","TrailCam"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -543,11 +550,16 @@ void CImguiMgr::Tool_Collider()
 		Save_Collider(Stage, str0);
 	}
 
-	ImGui::SameLine();
-	if (ImGui::Button("Load"))
+	if (ImGui::Button("Load_Object"))
 	{
 		Load_Collider(Stage, str0);
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load_Wall"))
+	{
+		Load_Wall(Stage, str0);
+	}
+
 
 	if (ImGui::Button("Clear"))
 	{
@@ -932,6 +944,14 @@ void CImguiMgr::CollocateObject()
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::DOTSPROJECTER;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+				return;
+			break;
+
+
+		case 9:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::TRAILCAM;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
 				return;
 			break;
 		}
@@ -1374,6 +1394,68 @@ void CImguiMgr::Load_Collider(const char* strStageName, const char* strFileName)
 				LEVEL_STAGE1,
 				TEXT("Layer_Collider"),
 				TEXT("Prototype_GameObject_Collider"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return;
+			}
+
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+
+			m_vecCollider.push_back(pTemp);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
+}
+
+void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse = 0;
+	COLLIDER_DATA tDataCollider;
+	ZeroMemory(&tDataCollider, sizeof(COLLIDER_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataCollider, sizeof(COLLIDER_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Collider"),
+				TEXT("Prototype_GameObject_Wall"),
 				&pTemp)))
 			{
 				MSG_BOX("Fail");

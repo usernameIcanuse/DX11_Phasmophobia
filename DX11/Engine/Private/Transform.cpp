@@ -122,9 +122,14 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
 
-	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * Get_Scaled().x;
+	/*_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * Get_Scaled().x;
 	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * Get_Scaled().y;
-	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * Get_Scaled().z;
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * Get_Scaled().z;*/
+
+	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
+	_vector		vUp = Get_State(CTransform::STATE_UP);
+	_vector		vLook = Get_State(CTransform::STATE_LOOK);
+
 
 	vRight = XMVector3TransformNormal(vRight, RotationMatrix);
 	vUp = XMVector3TransformNormal(vUp, RotationMatrix);

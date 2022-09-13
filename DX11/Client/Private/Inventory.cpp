@@ -158,6 +158,8 @@ void	CInventory::Adjust_Item(CItem* pItem)
 	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
 	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
 	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
+
+	pItem->Update_Collider();
 }
 
 
