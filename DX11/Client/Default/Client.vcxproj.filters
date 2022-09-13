@@ -154,6 +154,12 @@
     <ClInclude Include="..\Public\TrailCam.h">
       <Filter>02.GameObject\Item\TrailCam</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Photo_Camera.h">
+      <Filter>02.GameObject\Item\Camera\Photo_Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Tripod.h">
+      <Filter>02.GameObject\Item\Camera\Tripod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -293,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\TrailCam.cpp">
       <Filter>02.GameObject\Item\TrailCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tripod.cpp">
+      <Filter>02.GameObject\Item\Camera\Tripod</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Photo_Camera.cpp">
+      <Filter>02.GameObject\Item\Camera\Photo_Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

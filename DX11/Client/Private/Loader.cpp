@@ -19,6 +19,7 @@
 #include "Camera_FPS.h"
 #include "Thermometer.h"
 #include "TrailCam.h"
+#include "Tripod.h"
 #include "House.h"
 #include "EMF.h"
 #include "Note.h"
@@ -287,6 +288,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CTrailCam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Tripod*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tripod"),
+		CTripod::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_SpiritBox*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SpiritBox"),
@@ -426,7 +432,16 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
 		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	/* For.Prototype_Component_Model_Tripod*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Tripod"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
+		return E_FAIL;
+
+
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
 
 
 	/* For.Prototype_Component_Model_MapleTree*/

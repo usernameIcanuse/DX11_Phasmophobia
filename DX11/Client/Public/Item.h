@@ -33,6 +33,7 @@ public:
 		return false;
 
 	}
+
 	virtual _float3 Get_AdjustPos();
 	void	Update_Collider();
 	

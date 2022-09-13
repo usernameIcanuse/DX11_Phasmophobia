@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "../Public/Video_Camera.h"
+#include "../Public/Photo_Camera.h"
 #include "GameInstance.h"
 
-CVideo_Camera::CVideo_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPhoto_Camera::CPhoto_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
 {
 }
 
-CVideo_Camera::CVideo_Camera(const CVideo_Camera& rhs)
+CPhoto_Camera::CPhoto_Camera(const CPhoto_Camera& rhs)
     :CItem(rhs)
 {
 }
 
-HRESULT CVideo_Camera::Initialize_Prototype()
+HRESULT CPhoto_Camera::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CVideo_Camera::Initialize(void* pArg)
+HRESULT CPhoto_Camera::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -31,14 +31,14 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
     return S_OK;
 }
 
-void CVideo_Camera::Tick(_float fTimeDelta)
+void CPhoto_Camera::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
 
-void CVideo_Camera::LateTick(_float fTimeDelta)
+void CPhoto_Camera::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
@@ -46,7 +46,7 @@ void CVideo_Camera::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CVideo_Camera::Render()
+HRESULT CPhoto_Camera::Render()
 {
     if (nullptr == m_pShaderCom ||
         nullptr == m_pModelCom)
@@ -81,9 +81,9 @@ HRESULT CVideo_Camera::Render()
     return S_OK;
 }
 
-_bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+_bool CPhoto_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
 {
-    if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::TRIPOD)
+    if (eType == COLLISION_TYPE::OBJECT)
     {
         _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
         _vector vecLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK) * -1.f;
@@ -95,35 +95,26 @@ _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vL
         m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook);
 
         m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
-        
         return true;
     }
-
-    /*if (eType == COLLISION_TYPE::TRIPOD)
-    {
-        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
-
-    }*/
-
     return false;
 }
 
 
-void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
+void CPhoto_Camera::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
-
 }
 
-void CVideo_Camera::On_Collision_Stay(CCollider* pCollider)
+void CPhoto_Camera::On_Collision_Stay(CCollider* pCollider)
 {
 }
 
-void CVideo_Camera::On_Collision_Exit(CCollider* pCollider)
+void CPhoto_Camera::On_Collision_Exit(CCollider* pCollider)
 {
 }
 
-HRESULT CVideo_Camera::Setup_Component()
+HRESULT CPhoto_Camera::Setup_Component()
 {
 
     if (FAILED(__super::Setup_Component()))
@@ -154,7 +145,7 @@ HRESULT CVideo_Camera::Setup_Component()
     return S_OK;
 }
 
-HRESULT CVideo_Camera::SetUp_ShaderResource()
+HRESULT CPhoto_Camera::SetUp_ShaderResource()
 {
     if (nullptr == m_pShaderCom)
         return E_FAIL;
@@ -197,33 +188,33 @@ HRESULT CVideo_Camera::SetUp_ShaderResource()
     return S_OK;
 }
 
-CVideo_Camera* CVideo_Camera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CPhoto_Camera* CPhoto_Camera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CVideo_Camera* pInstance = new CVideo_Camera(pDevice, pContext);
+    CPhoto_Camera* pInstance = new CPhoto_Camera(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CVideo_Camera");
+        MSG_BOX("Failed to Created : CPhoto_Camera");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CVideo_Camera::Clone(void* pArg)
+CGameObject* CPhoto_Camera::Clone(void* pArg)
 {
-    CVideo_Camera* pInstance = new CVideo_Camera(*this);
+    CPhoto_Camera* pInstance = new CPhoto_Camera(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CVideo_Camera");
+        MSG_BOX("Failed to Cloned : CPhoto_Camera");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CVideo_Camera::Free()
+void CPhoto_Camera::Free()
 {
     __super::Free();
 }

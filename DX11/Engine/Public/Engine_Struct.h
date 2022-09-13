@@ -189,6 +189,7 @@ namespace Engine
 		WALL,
 		THERMOMETER,
 		ITEM,
+		TRIPOD,
 		ATMOSPHERE,
 		GHOST_AREA,
 		GHOST_SPAWNPOINT,
@@ -229,6 +230,7 @@ namespace Engine
 		SPIRITBOX,
 		VIDEOCAMERA,
 		TRAILCAM,
+		TRIPOD,
 		OBJ_END
 	};
 

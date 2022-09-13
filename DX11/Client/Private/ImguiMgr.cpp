@@ -199,6 +199,12 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+
 		/* House */
 		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
@@ -482,7 +488,7 @@ void CImguiMgr::Tool_Object()
 
 
 	const char* items[] = {"DotsProjecter", "FlashLight", "Thermometer","EMF",
-							"Note","SpiritBox","Video Camera","Ghost","Atmosphere","TrailCam"};
+							"Note","SpiritBox","Video Camera","Ghost","Atmosphere","TrailCam","Tripod"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -952,6 +958,13 @@ void CImguiMgr::CollocateObject()
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::TRAILCAM;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
+				return;
+			break;
+
+		case 10:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::TRIPOD;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
 				return;
 			break;
 		}

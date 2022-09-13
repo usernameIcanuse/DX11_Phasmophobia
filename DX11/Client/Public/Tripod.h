@@ -4,14 +4,14 @@
 
 BEGIN(Client)
 
-class CTripod;
+class CVideo_Camera;
 
-class CVideo_Camera final: public CItem
+class CTripod final : public CItem
 {
 private:
-	CVideo_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CVideo_Camera(const CVideo_Camera& rhs);
-	virtual ~CVideo_Camera() = default;
+	CTripod(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTripod(const CTripod& rhs);
+	virtual ~CTripod() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -20,10 +20,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook);
-	
-
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
@@ -31,10 +27,14 @@ public:
 	virtual void On_Collision_Exit(CCollider* pCollider);
 
 private:
+	CVideo_Camera* m_pConnectedCamera = nullptr;
+	CCollider*	   m_pTripodCom = nullptr;
+
+private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
 public:
-	static CVideo_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CTripod* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

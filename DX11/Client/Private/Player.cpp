@@ -239,6 +239,14 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 				XMStoreFloat4(&m_vColliderLook ,static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
 		}
 	}
+
+	else if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+	{
+		BoundingOrientedBox* Collider = (BoundingOrientedBox * )pCollider->Get_Collider();
+		m_vColliderPos = Collider->Center;
+		m_eColliderType = pCollider->Get_Type();
+		m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
+	}
 }
 
 void CPlayer::On_Collision_Exit(CCollider* pCollider)

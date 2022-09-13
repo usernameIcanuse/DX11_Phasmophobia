@@ -4,14 +4,12 @@
 
 BEGIN(Client)
 
-class CTripod;
-
-class CVideo_Camera final: public CItem
+class CPhoto_Camera final: public CItem
 {
 private:
-	CVideo_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CVideo_Camera(const CVideo_Camera& rhs);
-	virtual ~CVideo_Camera() = default;
+	CPhoto_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CPhoto_Camera(const CPhoto_Camera& rhs);
+	virtual ~CPhoto_Camera() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -34,7 +32,7 @@ private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
 public:
-	static CVideo_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CPhoto_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
