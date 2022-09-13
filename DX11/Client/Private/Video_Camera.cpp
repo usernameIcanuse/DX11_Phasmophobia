@@ -81,6 +81,24 @@ HRESULT CVideo_Camera::Render()
     return S_OK;
 }
 
+_bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+{
+    if (eType == COLLISION_TYPE::OBJECT)
+    {
+        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+        _vector vecLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK) * -1.f;
+        _vector vRight = XMVector3Cross(vUp, vecLook);
+        vecLook = XMVector3Cross(vRight, vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook);
+
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+        return true;
+    }
+    return false;
+}
 
 
 void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)

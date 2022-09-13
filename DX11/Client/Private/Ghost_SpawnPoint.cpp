@@ -36,6 +36,7 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
+	m_iAreaDefaultTemperature = rand() % 5+8;
 
 	return S_OK;
 }
@@ -50,6 +51,8 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 	m_pAreaCom->Update(matWorld);
 	m_pSpawnPointCom->Update(matWorld);
+
+	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
 
 
 }
@@ -81,9 +84,9 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	CCollider::COLLIDERDESC			ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(20.f, 20.f, 20.f);
+	ColliderDesc.vScale = _float3(40.f, 40.f, 40.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST_AREA;
 
@@ -93,7 +96,7 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	/* For.Com_Sphere*/
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(10.f, 10.f, 10.f);
+	ColliderDesc.vScale = _float3(15.f, 15.f, 15.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;

@@ -314,6 +314,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 	//MSG_BOX("Loaded Items");
 
 	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
 }
 
 HRESULT CLevel_Stage1::Ready_Lights()

@@ -193,5 +193,4 @@ void CInventory::Free()
 {
 	__super::Free();
 
-
 }

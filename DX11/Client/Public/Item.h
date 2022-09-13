@@ -39,7 +39,7 @@ public:
 
 protected:
 	CShader*    m_pShaderCom = nullptr;
-	CTexture*   m_pTextureCom = nullptr;
+	//CTexture*   m_pTextureCom = nullptr;
 	CRenderer*  m_pRendererCom = nullptr;
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pOBBCom = nullptr;

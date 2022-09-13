@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Thermometer.h"
+#include "Ghost_SpawnPoint.h"
+#include "Atmosphere.h"
 #include "GameInstance.h"
 
 
@@ -79,7 +81,7 @@ HRESULT CThermometer::Render()
 
     if (m_bSwitch)
     {
-         if (m_fTimeAcc >= 1.f)
+         if (m_fTimeAcc >= 1.5f)
          {
              wsprintf(m_szDegree, TEXT("¹æ¿Âµµ : %d"), m_iDegree);
              m_fTimeAcc = 0.f;
@@ -106,19 +108,21 @@ void CThermometer::On_Collision_Stay(CCollider* pCollider)
     if (COLLISION_TYPE::ATMOSPHERE == pCollider->Get_Type())
     {
        
-        m_iDegree = 20;
+        m_iDegree = static_cast<CAtmosphere*>(pCollider->Get_Owner())->Get_Temperature();
         
     }
     else if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
     {
        
-        m_iDegree = 10;
+        m_iDegree = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_AreaTemperature();
+        
         
     }
     else if (COLLISION_TYPE::GHOST_SPAWNPOINT == pCollider->Get_Type())
     {
         
-        m_iDegree = 5;
+        m_iDegree = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_SpawnPointTemperature();
+        ;
         
     }
 }

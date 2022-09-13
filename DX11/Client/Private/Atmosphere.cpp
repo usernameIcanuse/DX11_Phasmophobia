@@ -26,6 +26,8 @@ HRESULT CAtmosphere::Initialize(void* pArg)
         return E_FAIL;
     //방마다 온도 랜덤 지정
 
+    m_iRoomDefault = rand() % 5 + 15;
+
     return S_OK;
 }
 
@@ -33,16 +35,21 @@ void CAtmosphere::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
-#ifdef _DEBUG
+    m_iRoomTemperature = rand() % 5 + m_iRoomDefault;
+
+
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-#endif
+
 
 }
 
 void CAtmosphere::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+#ifdef _DEBUG
     m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+#endif
 }
 
 HRESULT CAtmosphere::Render()

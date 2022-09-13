@@ -276,5 +276,5 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pRayCom);
-	Safe_Release(m_pInventory);
+
 }

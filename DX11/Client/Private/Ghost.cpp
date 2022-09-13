@@ -85,7 +85,7 @@ HRESULT CGhost::Setup_Component()
 	CCollider::COLLIDERDESC			ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
+	ColliderDesc.vScale = _float3(4.f, 10.f, 4.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;
@@ -97,7 +97,7 @@ HRESULT CGhost::Setup_Component()
 	/* For.Com_Sphere*/
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(2.f, 2.f, 2.f);
+	ColliderDesc.vScale = _float3(10.f, 10.f, 10.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;

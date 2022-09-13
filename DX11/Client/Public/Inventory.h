@@ -10,7 +10,6 @@ class CItem;
 
 class CInventory final : public CGameObject
 {
-	friend class CPlayer;
 private:
 	CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CInventory(const CInventory& rhs);

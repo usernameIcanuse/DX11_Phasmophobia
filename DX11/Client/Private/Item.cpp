@@ -85,7 +85,7 @@ void CItem::Free()
     
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pRendererCom);
-    Safe_Release(m_pTextureCom);
+    //Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);
     //해당 클래스에 있는 변수들은 항상 safe_release해주기

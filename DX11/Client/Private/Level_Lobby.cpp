@@ -158,6 +158,8 @@ HRESULT CLevel_Lobby::Ready_Layer_Store(const _tchar* pLayerTag)
 	m_pStore->Set_Enable(false);
 
 	Safe_Release(pGameInstance);
+
+	return S_OK;
 }
 
 HRESULT CLevel_Lobby::Ready_Layer_AddItems(const _tchar* pLayerTag)
@@ -172,6 +174,7 @@ HRESULT CLevel_Lobby::Ready_Layer_AddItems(const _tchar* pLayerTag)
 	m_pAddItems->Set_Enable(false);
 
 	Safe_Release(pGameInstance);
+	return S_OK;
 }
 
 

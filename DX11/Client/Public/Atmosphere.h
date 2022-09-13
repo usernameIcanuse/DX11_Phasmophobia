@@ -23,6 +23,12 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	_int	Get_Temperature()
+	{
+		return m_iRoomTemperature;
+	}
+
 
 private:
 	virtual	HRESULT	Setup_Component();
@@ -31,6 +37,9 @@ private:
 private:
 	CCollider*		 m_pOBBCom = nullptr;//COLLISION_TYPE::ATMOSPHERE
 	CRenderer* m_pRendererCom = nullptr;
+
+	_int		m_iRoomDefault = 0;
+	_int		m_iRoomTemperature = 0;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

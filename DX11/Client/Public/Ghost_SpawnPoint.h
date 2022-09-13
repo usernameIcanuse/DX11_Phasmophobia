@@ -39,6 +39,16 @@ public:
 		return 6;//юс╫ц╥н
 	}
 
+	_int	Get_AreaTemperature()
+	{
+		return m_iAreaTemperature;
+	}
+
+	_int    Get_SpawnPointTemperature()
+	{
+		return m_iAreaTemperature - 4;
+	}
+
 private:
 	CCollider*		m_pAreaCom = nullptr;
 	CCollider*		m_pSpawnPointCom = nullptr;
@@ -47,6 +57,8 @@ private:
 	CGhost*			m_pGhost = nullptr;
 
 	_uint	   m_iAnger = 0;
+	_int	   m_iAreaDefaultTemperature = 0;
+	_int       m_iAreaTemperature = 0;
 	
 private:
 	HRESULT	Setup_Component();
