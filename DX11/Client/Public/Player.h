@@ -33,9 +33,11 @@ private:
 	CInventory* m_pInventory = nullptr;
 
 	_float			m_fDist = FLT_MAX;
-	_bool			m_bFlag = false;
 	CGameObject*	m_pItem = nullptr;
+
 	_float3			m_vColliderPos;
+	COLLISION_TYPE	m_eColliderType = COLLISION_TYPE::TYPE_END;
+	_float4			m_vColliderLook;
 
 
 private:

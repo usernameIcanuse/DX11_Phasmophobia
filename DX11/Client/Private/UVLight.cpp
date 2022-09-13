@@ -48,6 +48,8 @@ HRESULT CUVLight::SetUp_ShaderResource()
     return S_OK;
 }
 
+
+
 CUVLight* CUVLight::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CUVLight* pInstance = new CUVLight(pDevice, pContext);

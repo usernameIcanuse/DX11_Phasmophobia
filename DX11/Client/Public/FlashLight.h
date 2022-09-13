@@ -20,6 +20,14 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	virtual void Turn_Switch()
+	{
+		m_bSwitch = !m_bSwitch;
+	}
+
+	
+
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;

@@ -27,21 +27,15 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void	Turn_Switch()
-	{
-		m_bSwitch = !m_bSwitch;
-		
-	}
-
-	_bool	Able_To_Install()
-	{
-		return m_bAbleInstall;
-	}
-
 	virtual void Turn_Switch() {};
-	virtual void Install(_float3 vPosition, COLLISION_TYPE eType) {};
-	virtual void Adjust_Item(CTransform* pPlayerTransform) {};
-
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook) 
+	{
+		return false;
+	}
+	virtual _float3 Get_AdjustPos()
+	{
+		return m_vAdjustpos;
+	}
 	
 
 protected:
@@ -52,8 +46,7 @@ protected:
 	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
-	_bool		m_bAbleInstall = false;
-
+	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
 protected:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;

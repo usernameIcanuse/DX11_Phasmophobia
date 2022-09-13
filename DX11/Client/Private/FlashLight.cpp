@@ -79,6 +79,7 @@ HRESULT CFlashLight::Render()
     return S_OK;
 }
 
+
 void CFlashLight::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
@@ -163,6 +164,8 @@ HRESULT CFlashLight::SetUp_ShaderResource()
 
     return S_OK;
 }
+
+
 
 CFlashLight* CFlashLight::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

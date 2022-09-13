@@ -18,6 +18,13 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	virtual void Turn_Switch()
+	{
+		m_bSwitch = !m_bSwitch; 
+	}
+
+
 private:
 	_int		m_iDegree = 0;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//온도 출력

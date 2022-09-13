@@ -86,6 +86,7 @@ HRESULT CSpiritBox::Render()
     return S_OK;
 }
 
+
 void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);

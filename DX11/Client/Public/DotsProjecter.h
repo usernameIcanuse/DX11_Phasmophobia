@@ -22,6 +22,10 @@ public:
 	virtual HRESULT Render();
 
 public:
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook) { return true; };
+
+
+public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);
 	virtual void On_Collision_Exit(CCollider* pCollider);

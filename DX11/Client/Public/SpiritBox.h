@@ -19,6 +19,13 @@ public:
 	virtual HRESULT Render();
 
 public:
+	virtual void Turn_Switch() 
+	{
+		m_bSwitch = !m_bSwitch;
+	}
+	
+
+public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);
 	virtual void On_Collision_Exit(CCollider* pCollider);

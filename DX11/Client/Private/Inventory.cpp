@@ -28,7 +28,7 @@ HRESULT CInventory::Initialize(void* pArg)
 
 	if (pArg)
 	{
-		m_pPlayer = (CGameObject*)pArg;
+		m_pPlayerTransform = (CTransform*)pArg;
 	}
 
 	m_vInventory.reserve(3);
@@ -86,9 +86,10 @@ void CInventory::Add_Item(CGameObject* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 		
-	Adjust_Item(pItem);
+	
 
 	m_vInventory[iEmptyIndex] = (CItem*)pItem;
+	Adjust_Item(m_vInventory[m_iIndex]);
 
 	if (m_iIndex == iEmptyIndex)
 		m_vInventory[m_iIndex]->Set_Enable(true);
@@ -101,20 +102,24 @@ void CInventory::Drop_Item()
 	if (nullptr == m_vInventory[m_iIndex])
 		return;
 
+	/*던지는 물리*/
+	
 	m_vInventory[m_iIndex] = nullptr;
 }
 
-void CInventory::Install_Item(_float3 _vInstallPos)
+void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook = _float4(0.f, 1.f, 0.f, 0.f))
 {
-	if (nullptr == m_vInventory[m_iIndex] || !m_vInventory[m_iIndex]->Able_To_Install())
+	if (nullptr == m_vInventory[m_iIndex])
 		return;
 
-	CGameObject* pCurItem = m_vInventory[m_iIndex];
+	if(m_vInventory[m_iIndex]->Install(_vInstallPos,_eCollisionType,vLook))
+		m_vInventory[m_iIndex] = nullptr;
+
+	/*CGameObject* pCurItem = m_vInventory[m_iIndex];
 	CTransform* pItemTransform = (CTransform*)pCurItem->Get_Component(CGameObject::m_pTransformTag);
 
-	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&_vInstallPos), 1.f));
+	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&_vInstallPos), 1.f));*/
 
-	m_vInventory[m_iIndex] = nullptr;
 }
 
 void CInventory::Change_Item()
@@ -137,20 +142,21 @@ void CInventory::Turn_Switch()
 
 }
 
-void	CInventory::Adjust_Item(CGameObject* pItem)
+void	CInventory::Adjust_Item(CItem* pItem)
 {
 	pItem->Set_Enable(true);
 
-	CTransform* pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
-	_vector     vPlayerPos = pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
+	_vector     vPlayerPos = m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
 
-	_vector     vRight = pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
-	_vector		vUp = pPlayerTransform->Get_State(CTransform::STATE_UP);
-	_vector		vLook = pPlayerTransform->Get_State(CTransform::STATE_LOOK);
+	_vector     vRight = m_pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
+	_vector		vUp = m_pPlayerTransform->Get_State(CTransform::STATE_UP);
+	_vector		vLook = m_pPlayerTransform->Get_State(CTransform::STATE_LOOK);
 
-	vPlayerPos += XMVector3Normalize(vRight);
-	vPlayerPos -= XMVector3Normalize(vUp)*1.5f ;
-	vPlayerPos += vLook*2.f;
+	_float3		vAdjustPos = pItem->Get_AdjustPos();
+
+	vPlayerPos += XMVector3Normalize(vRight) * vAdjustPos.x;
+	vPlayerPos -= XMVector3Normalize(vUp)* vAdjustPos.y;
+	vPlayerPos += vLook* vAdjustPos.z;
 
 	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
 	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);

@@ -95,6 +95,7 @@ HRESULT CThermometer::Render()
     return S_OK;
 }
 
+
 void CThermometer::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
@@ -105,19 +106,19 @@ void CThermometer::On_Collision_Stay(CCollider* pCollider)
     if (COLLISION_TYPE::ATMOSPHERE == pCollider->Get_Type())
     {
        
-            m_iDegree = 20;
+        m_iDegree = 20;
         
     }
     else if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
     {
        
-            m_iDegree = 10;
+        m_iDegree = 10;
         
     }
     else if (COLLISION_TYPE::GHOST_SPAWNPOINT == pCollider->Get_Type())
     {
         
-            m_iDegree = 5;
+        m_iDegree = 5;
         
     }
 }

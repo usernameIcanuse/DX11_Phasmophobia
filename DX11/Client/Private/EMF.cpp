@@ -90,6 +90,7 @@ HRESULT CEMF::Render()
     return S_OK;
 }
 
+
 void CEMF::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);

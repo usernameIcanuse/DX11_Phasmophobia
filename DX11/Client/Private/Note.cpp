@@ -25,7 +25,7 @@ HRESULT CNote::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
-    m_bAbleInstall = true;
+
 
     return S_OK;
 }
@@ -113,6 +113,7 @@ void CNote::On_Collision_Enter(CCollider* pCollider)
         m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
     }
 }
+
 
 void CNote::On_Collision_Stay(CCollider* pCollider)
 {

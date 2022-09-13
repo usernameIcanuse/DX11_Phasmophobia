@@ -27,7 +27,7 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
-    m_bAbleInstall = true;
+
 
     return S_OK;
 }
@@ -90,6 +90,7 @@ HRESULT CDotsProjecter::Render()
 
     return S_OK;
 }
+
 
 void CDotsProjecter::On_Collision_Enter(CCollider* pCollider)
 {

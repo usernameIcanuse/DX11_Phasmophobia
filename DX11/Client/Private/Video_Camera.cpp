@@ -25,7 +25,7 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
-    m_bAbleInstall = true;
+
 
     return S_OK;
 }
@@ -79,6 +79,8 @@ HRESULT CVideo_Camera::Render()
 
     return S_OK;
 }
+
+
 
 void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
 {

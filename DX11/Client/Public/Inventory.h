@@ -26,17 +26,19 @@ public:
 public:
 	void	Add_Item(CGameObject* pItem);
 	void	Drop_Item();//아이템 버리기
-	void	Install_Item(_float3 _vInstallPos);//아이템 설치
 	void	Change_Item();
+
+	void	Install_Item(_float3 _vInstallPos,COLLISION_TYPE _eCollisionType, _float4 vLook);//아이템 설치
 	void	Turn_Switch();
 
 private:
-	void	Adjust_Item(CGameObject* pItem);
+	void	Adjust_Item(CItem* pItem);
 
 private:
 	vector<CItem*>	m_vInventory;
 	_uint					m_iIndex = 0;
-	CGameObject*			m_pPlayer = nullptr;
+
+	CTransform*			m_pPlayerTransform = nullptr;
 
 	
 public:
