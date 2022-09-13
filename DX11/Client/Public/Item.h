@@ -31,6 +31,7 @@ public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook) 
 	{
 		return false;
+
 	}
 	virtual _float3 Get_AdjustPos()
 	{

@@ -230,6 +230,7 @@
     <ClInclude Include="..\Public\SpiritBox.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Thermometer.h" />
+    <ClInclude Include="..\Public\TrailCam.h" />
     <ClInclude Include="..\Public\UIBackground.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\UVLight.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="..\Private\SpiritBox.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Thermometer.cpp" />
+    <ClCompile Include="..\Private\TrailCam.cpp" />
     <ClCompile Include="..\Private\UIBackground.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\UVLight.cpp" />

@@ -18,6 +18,7 @@
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
 #include "Thermometer.h"
+#include "TrailCam.h"
 #include "House.h"
 #include "EMF.h"
 #include "Note.h"
@@ -281,6 +282,12 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CNote::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_TrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TrailCam"),
+		CTrailCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_SpiritBox*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SpiritBox"),
 		CSpiritBox::Create(m_pDevice, m_pContext))))
@@ -396,6 +403,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Model_Note*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_TrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_TrailCam"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TrailCam/", "TrailCam.fbx", TransformMatrix))))
 		return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f);

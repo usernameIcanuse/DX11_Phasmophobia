@@ -101,7 +101,7 @@
       <Filter>02.GameObject\Item\UVLight</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Video_Camera.h">
-      <Filter>02.GameObject\Item\Video Camera</Filter>
+      <Filter>02.GameObject\Item\Camera\Video Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imconfig.h">
       <Filter>IMGUI</Filter>
@@ -150,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Atmosphere.h">
       <Filter>02.GameObject\Stage\Atmosphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TrailCam.h">
+      <Filter>02.GameObject\Item\TrailCam</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -241,7 +244,7 @@
       <Filter>02.GameObject\Item\UVLight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Video_Camera.cpp">
-      <Filter>02.GameObject\Item\Video Camera</Filter>
+      <Filter>02.GameObject\Item\Camera\Video Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui.cpp">
       <Filter>IMGUI</Filter>
@@ -287,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Atmosphere.cpp">
       <Filter>02.GameObject\Stage\Atmosphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TrailCam.cpp">
+      <Filter>02.GameObject\Item\TrailCam</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -373,9 +379,6 @@
     <Filter Include="02.GameObject\Item\UVLight">
       <UniqueIdentifier>{1c79b06b-d210-4fd9-bf09-05ce274ef6a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Item\Video Camera">
-      <UniqueIdentifier>{a61a971b-618d-4d4f-a4d6-519c91c48b25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Item\SpiritBox">
       <UniqueIdentifier>{2001f4b9-4342-48d2-879d-30448ceb0678}</UniqueIdentifier>
     </Filter>
@@ -421,9 +424,6 @@
     <Filter Include="02.GameObject\Player\Inventory">
       <UniqueIdentifier>{4f36e463-4da4-40d5-8baf-566b4f98c2ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Item\Photo_Camera">
-      <UniqueIdentifier>{db605888-1a45-44a4-8588-210117f933d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Stage\Object_Collider">
       <UniqueIdentifier>{994f7727-b98f-423a-9720-b833a20d2f43}</UniqueIdentifier>
     </Filter>
@@ -438,6 +438,21 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost_SpawnPoint\Ghost">
       <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\TrailCam">
+      <UniqueIdentifier>{b2d88a73-8cd6-4363-9b4d-d1b856b9b8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Camera">
+      <UniqueIdentifier>{8453dc39-3cf3-4f85-9b9b-c043835ec8cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Camera\Photo_Camera">
+      <UniqueIdentifier>{db605888-1a45-44a4-8588-210117f933d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Camera\Video Camera">
+      <UniqueIdentifier>{a61a971b-618d-4d4f-a4d6-519c91c48b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Camera\Tripod">
+      <UniqueIdentifier>{6775b466-1451-411f-92eb-313a51c26057}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

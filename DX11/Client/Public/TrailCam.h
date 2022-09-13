@@ -2,17 +2,14 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
-
-
-
 BEGIN(Client)
 
-class CDotsProjecter final : public CItem
+class CTrailCam final : public CItem
 {
 private:
-	CDotsProjecter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CDotsProjecter(const CDotsProjecter& rhs);
-	virtual ~CDotsProjecter() = default;
+	CTrailCam(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTrailCam(const CTrailCam& rhs);
+	virtual ~CTrailCam() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -22,11 +19,11 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook) 
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook ) 
 	{ 
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
-		return true; 
-	};
+		return true;
+	}
 
 
 public:
@@ -37,9 +34,8 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
-
 public:
-	static CDotsProjecter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CTrailCam* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };
