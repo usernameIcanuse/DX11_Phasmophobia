@@ -107,7 +107,7 @@ technique11 DefaultTechnique
 {
 	pass Default
 	{
-		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
