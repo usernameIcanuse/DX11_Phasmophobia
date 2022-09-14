@@ -20,6 +20,18 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void	Update_Collider();
+
+
+public:
+	void    Connect_Camera(CVideo_Camera* pCamera)
+	{
+		m_pConnectedCamera = pCamera;
+	}
+	void	Seperate_Camera()
+	{
+		m_pConnectedCamera = nullptr;
+	}
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

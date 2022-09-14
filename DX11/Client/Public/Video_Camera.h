@@ -20,10 +20,14 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook);
-	
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
+public:
+	void	Connect_Tripod(CTripod* pTripod);
+	void	Disconnect_Tripod();
+
+private:
+	CTripod* m_pTripod = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

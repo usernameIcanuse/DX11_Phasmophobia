@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Video_Camera.h"
 #include "GameInstance.h"
+#include "Tripod.h"
 
 CVideo_Camera::CVideo_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -81,31 +82,79 @@ HRESULT CVideo_Camera::Render()
     return S_OK;
 }
 
-_bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+_bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
-    if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::TRIPOD)
+    if (eType == COLLISION_TYPE::OBJECT )
     {
-        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+
+        _vector vUp = XMLoadFloat4(&vLook);
         _vector vecLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK) * -1.f;
         _vector vRight = XMVector3Cross(vUp, vecLook);
         vecLook = XMVector3Cross(vRight, vUp);
 
-        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
-        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
-        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook);
+        vecLook = XMVector3Normalize(vecLook);
+        vUp= XMVector3Normalize(vUp);
+        vRight= XMVector3Normalize(vRight);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight*vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook*vScale.z);
 
         m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
         
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+
         return true;
     }
 
-    /*if (eType == COLLISION_TYPE::TRIPOD)
+   if (eType == COLLISION_TYPE::TRIPOD)
     {
-        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+       CTransform* pTransform = (CTransform*)pConnectItem->Get_Component(CGameObject::m_pTransformTag);
+       
+       _float3 vScale = m_pTransformCom->Get_Scaled();
 
-    }*/
+       _vector vUp = XMLoadFloat4(&vLook);
+       _vector vecLook = pTransform->Get_State(CTransform::STATE_LOOK);
+       _vector vRight = pTransform->Get_State(CTransform::STATE_RIGHT);
+     
+
+       vecLook = XMVector3Normalize(vecLook);
+       vUp = XMVector3Normalize(vUp);
+       vRight = XMVector3Normalize(vRight);
+
+       m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+       m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+       m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+
+       m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+       m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+       
+       Connect_Tripod((CTripod*)pConnectItem);
+       
+
+       return true;
+    }
 
     return false;
+}
+
+void CVideo_Camera::Connect_Tripod(CTripod* pTripod)
+{
+    if (nullptr == pTripod)
+        return;
+
+    m_pTripod = pTripod;
+    m_pTripod->Connect_Camera(this);
+}
+
+void CVideo_Camera::Disconnect_Tripod()
+{
+    if(m_pTripod)
+        m_pTripod->Seperate_Camera();
+    m_pTripod = nullptr;
 }
 
 
@@ -145,7 +194,7 @@ HRESULT CVideo_Camera::Setup_Component()
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::CAMERA;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;

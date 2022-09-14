@@ -52,6 +52,7 @@ _float3 CItem::Get_AdjustPos()
 void CItem::Update_Collider()
 {
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 }
 
 

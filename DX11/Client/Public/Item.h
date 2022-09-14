@@ -28,14 +28,14 @@ public:
 
 public:
 	virtual void Turn_Switch() {};
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook) 
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) 
 	{
 		return false;
 
 	}
 
 	virtual _float3 Get_AdjustPos();
-	void	Update_Collider();
+	virtual void	Update_Collider();
 	
 
 protected:

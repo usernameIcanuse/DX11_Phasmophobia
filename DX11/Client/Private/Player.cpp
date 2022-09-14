@@ -124,14 +124,21 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
 	{
-		if(m_eColliderType != COLLISION_TYPE::TYPE_END)
-			m_pInventory->Install_Item(m_vColliderPos,m_eColliderType,m_vColliderLook);
+		if (m_eColliderType != COLLISION_TYPE::TYPE_END)
+		{
+			if(m_eColliderType == COLLISION_TYPE::TRIPOD)
+				m_pInventory->Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook,(CItem*)m_pTripod);
+			else
+				m_pInventory->Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook);
+		}
 	}
 
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_fDist = FLT_MAX;
 	m_eColliderType = COLLISION_TYPE::TYPE_END;
 	m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
+	m_pTripod = nullptr;
+	m_pItem = nullptr;
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -214,19 +221,19 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
-	if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
+	if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type() ||
+		COLLISION_TYPE::CAMERA== pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
 		if (DBL_EPSILON < fCollisionDist && m_fDist > fCollisionDist)
 		{
-			
 			m_fDist = fCollisionDist;
-			m_pItem = pCollider->Get_Owner();
-			
+			m_pItem = pCollider->Get_Owner();	
 		}
 	}
-	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL== pCollider->Get_Type())
+	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL== pCollider->Get_Type() ||
+		COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
@@ -237,16 +244,17 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 			m_eColliderType = pCollider->Get_Type();
 			if(COLLISION_TYPE::WALL == pCollider->Get_Type())
 				XMStoreFloat4(&m_vColliderLook ,static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
+			if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+			{
+				BoundingBox* pBoundingBox = nullptr;
+				pBoundingBox = (BoundingBox*)pCollider->Get_Collider();
+				m_vColliderPos = pBoundingBox->Center;
+				m_pTripod = pCollider->Get_Owner();
+				XMStoreFloat4(&m_vColliderLook, static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_UP));
+			}
 		}
 	}
 
-	else if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
-	{
-		BoundingOrientedBox* Collider = (BoundingOrientedBox * )pCollider->Get_Collider();
-		m_vColliderPos = Collider->Center;
-		m_eColliderType = pCollider->Get_Type();
-		m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
-	}
 }
 
 void CPlayer::On_Collision_Exit(CCollider* pCollider)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Inventory.h"
 #include "GameInstance.h"
-#include "Item.h"
+#include "Video_Camera.h"
 
 
 CInventory::CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -86,13 +86,22 @@ void CInventory::Add_Item(CGameObject* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 		
+	m_vInventory[iEmptyIndex] = (CItem*)pItem;
+
+
+	CCollider* pCollider = (CCollider*)m_vInventory[iEmptyIndex]->Get_Component(TEXT("Com_OBB"));
+	if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
+	{
+		static_cast<CVideo_Camera*>(m_vInventory[iEmptyIndex])->Disconnect_Tripod();
+	}
+
 	
 
-	m_vInventory[iEmptyIndex] = (CItem*)pItem;
-	Adjust_Item(m_vInventory[m_iIndex]);
-
 	if (m_iIndex == iEmptyIndex)
+	{
 		m_vInventory[m_iIndex]->Set_Enable(true);
+		Adjust_Item(m_vInventory[m_iIndex]);
+	}
 	else
 		m_vInventory[iEmptyIndex]->Set_Enable(false);
 }
@@ -107,12 +116,12 @@ void CInventory::Drop_Item()
 	m_vInventory[m_iIndex] = nullptr;
 }
 
-void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook = _float4(0.f, 1.f, 0.f, 0.f))
+void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject)
 {
 	if (nullptr == m_vInventory[m_iIndex])
 		return;
 
-	if(m_vInventory[m_iIndex]->Install(_vInstallPos,_eCollisionType,vLook))
+	if(m_vInventory[m_iIndex]->Install(_vInstallPos,_eCollisionType,vLook, pConnectObject))
 		m_vInventory[m_iIndex] = nullptr;
 
 }
@@ -120,8 +129,18 @@ void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionTy
 void CInventory::Change_Item()
 {
 	if (m_vInventory[m_iIndex])
-		m_vInventory[m_iIndex]->Set_Enable(false);
-
+	{
+		CCollider* pCollider = (CCollider*)m_vInventory[m_iIndex]->Get_Component(TEXT("Com_Tripod"));
+		if (nullptr != pCollider)
+		{
+			if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+			{
+				Drop_Item();
+			}
+		}
+		else
+			m_vInventory[m_iIndex]->Set_Enable(false);
+	}
 	m_iIndex = (++m_iIndex) % 3;
 
 	if (m_vInventory[m_iIndex])

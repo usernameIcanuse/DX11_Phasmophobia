@@ -19,7 +19,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook);
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	
 
 public:

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Tripod.h"
 #include "GameInstance.h"
+#include "Video_Camera.h"
 
 CTripod::CTripod(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -36,6 +37,16 @@ void CTripod::Tick(_float fTimeDelta)
 
 
     _matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+
+    if (m_pConnectedCamera)
+    {
+        BoundingOrientedBox* Tripod = nullptr;
+        Tripod = (BoundingOrientedBox*)m_pTripodCom->Get_Collider();
+        _float4     vLook;
+        XMStoreFloat4(&vLook, m_pTransformCom->Get_State(CTransform::STATE_UP));
+
+        m_pConnectedCamera -> Install(Tripod->Center, COLLISION_TYPE::TRIPOD, vLook,this);
+    }
     m_pOBBCom->Update(matWorld);
     m_pTripodCom->Update(matWorld);
 
@@ -46,7 +57,6 @@ void CTripod::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
     m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
 }
 
 HRESULT CTripod::Render()
@@ -92,6 +102,25 @@ HRESULT CTripod::Render()
 
     return S_OK;
 }
+
+void	CTripod::Update_Collider()
+{
+    __super::Update_Collider();
+
+    m_pTripodCom->Update(m_pTransformCom->Get_WorldMatrix());
+    if (m_pConnectedCamera)
+    {
+        BoundingOrientedBox* Tripod = nullptr;
+        Tripod = (BoundingOrientedBox*)m_pTripodCom->Get_Collider();
+        _float4     vLook;
+        XMStoreFloat4(&vLook, m_pTransformCom->Get_State(CTransform::STATE_UP));
+
+
+        m_pConnectedCamera->Install(Tripod->Center, COLLISION_TYPE::TRIPOD, vLook,this);
+
+    }
+}
+
 
 
 void CTripod::On_Collision_Enter(CCollider* pCollider)

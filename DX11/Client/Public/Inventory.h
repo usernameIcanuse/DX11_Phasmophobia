@@ -27,7 +27,7 @@ public:
 	void	Drop_Item();//아이템 버리기
 	void	Change_Item();
 
-	void	Install_Item(_float3 _vInstallPos,COLLISION_TYPE _eCollisionType, _float4 vLook);//아이템 설치
+	void	Install_Item(_float3 _vInstallPos,COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject = nullptr);//아이템 설치
 	void	Turn_Switch();
 
 private:

@@ -83,7 +83,7 @@ HRESULT CThermometer::Render()
     {
          if (m_fTimeAcc >= 1.5f)
          {
-             wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
+             wsprintf(m_szDegree, TEXT("방온도 : %d.%d"), m_iDegree,m_iDegree);
              m_fTimeAcc = 0.f;
 
          }
@@ -115,15 +115,13 @@ void CThermometer::On_Collision_Stay(CCollider* pCollider)
     {
        
         m_iDegree = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_AreaTemperature();
-        
-        
+         
     }
     else if (COLLISION_TYPE::GHOST_SPAWNPOINT == pCollider->Get_Type())
     {
         
         m_iDegree = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_SpawnPointTemperature();
-        ;
-        
+       
     }
 }
 
