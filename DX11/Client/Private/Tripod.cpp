@@ -35,7 +35,6 @@ void CTripod::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
     _matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 
     if (m_pConnectedCamera)
@@ -169,7 +168,7 @@ HRESULT CTripod::Setup_Component()
 
     ColliderDesc.vScale = _float3(1.f, 0.2f, 1.f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, 6.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, 5.9f, 0.f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::TRIPOD;
 
