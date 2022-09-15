@@ -23,7 +23,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void	Add_Item(CGameObject* pItem);
+	void	Add_Item(CItem* pItem);
 	void	Drop_Item();//아이템 버리기
 	void	Change_Item();
 

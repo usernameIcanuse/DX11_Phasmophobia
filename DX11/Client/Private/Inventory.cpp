@@ -71,8 +71,15 @@ HRESULT CInventory::Render()
 	return S_OK;
 }
 
-void CInventory::Add_Item(CGameObject* pItem)
+void CInventory::Add_Item(CItem* pItem)
 {
+	
+	if (!pItem->Keep_Item())
+	{
+		if(nullptr!=m_vInventory[m_iIndex])
+			return;
+	}
+	
 	_int	iEmptyIndex = -1;
 	for (int i = m_iIndex; i < 3; i=(++i)%3)
 	{

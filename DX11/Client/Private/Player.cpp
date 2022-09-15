@@ -119,9 +119,10 @@ void CPlayer::Tick(_float fTimeDelta)
 	if (pGameInstance->Is_KeyState(KEY::E, KEY_STATE::TAP))
 	{
 		if(m_pItem)
-			m_pInventory->Add_Item(m_pItem);
+			m_pInventory->Add_Item((CItem*)m_pItem);
 	}
 
+	
 	if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
 	{
 		if (m_eColliderType != COLLISION_TYPE::TYPE_END)
@@ -233,7 +234,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		}
 	}
 	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL== pCollider->Get_Type() ||
-		COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+			COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 

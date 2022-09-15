@@ -36,6 +36,10 @@ public:
 
 	virtual _float3 Get_AdjustPos();
 	virtual void	Update_Collider();
+	virtual _bool	Keep_Item()
+	{
+		return true;
+	}
 	
 
 protected:

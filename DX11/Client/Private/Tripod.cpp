@@ -121,7 +121,6 @@ void	CTripod::Update_Collider()
 }
 
 
-
 void CTripod::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
@@ -153,7 +152,7 @@ HRESULT CTripod::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 6.f, 1.f);
+    ColliderDesc.vScale = _float3(1.f, 5.8f, 1.f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;

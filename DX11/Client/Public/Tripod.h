@@ -21,7 +21,11 @@ public:
 	virtual HRESULT Render();
 
 	virtual void	Update_Collider();
-
+	virtual _bool   Keep_Item()
+	{
+		return false;
+	}
+	
 
 public:
 	void    Connect_Camera(CVideo_Camera* pCamera)
