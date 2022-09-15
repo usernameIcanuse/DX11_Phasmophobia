@@ -41,6 +41,8 @@ public:
 		return true;
 	}
 	
+	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) {}
+	
 
 protected:
 	CShader*    m_pShaderCom = nullptr;

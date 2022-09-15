@@ -163,6 +163,12 @@ void CInventory::Turn_Switch()
 
 }
 
+void CInventory::Item_TempModel(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject)
+{
+	if (m_vInventory[m_iIndex])
+		m_vInventory[m_iIndex]->Set_TempModel_Pos(_vInstallPos, _eCollisionType, vLook, pConnectObject);
+}
+
 void	CInventory::Adjust_Item(CItem* pItem)
 {
 	pItem->Set_Enable(true);

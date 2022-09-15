@@ -123,9 +123,14 @@ void CPlayer::Tick(_float fTimeDelta)
 	}
 
 	
-	if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+	if (m_eColliderType != COLLISION_TYPE::TYPE_END)
 	{
-		if (m_eColliderType != COLLISION_TYPE::TYPE_END)
+		if (m_eColliderType == COLLISION_TYPE::TRIPOD)
+			m_pInventory->Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
+		else
+			m_pInventory->Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook);
+
+		if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
 		{
 			if(m_eColliderType == COLLISION_TYPE::TRIPOD)
 				m_pInventory->Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook,(CItem*)m_pTripod);

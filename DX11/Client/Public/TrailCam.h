@@ -23,10 +23,12 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook);
-	
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
+	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
+
 private:
 	CCollider* m_pAreaCom = nullptr; //모션 인식
+	CItem* m_pTempTrailCamModel = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
@@ -36,6 +38,7 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
+	HRESULT			Setup_TempModel();
 public:
 	static CTrailCam* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

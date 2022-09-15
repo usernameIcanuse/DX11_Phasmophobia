@@ -24,7 +24,9 @@ HRESULT CNote::Initialize(void* pArg)
 
     if (FAILED(Setup_Component()))
         return E_FAIL;
-
+    
+    if (FAILED(Setup_TempModel()))
+        return E_FAIL;
 
 
     return S_OK;
@@ -76,6 +78,7 @@ HRESULT CNote::Render()
       m_pOBBCom->Render();
 #endif // _DEBUG
 
+      m_pTempNoteModel->Set_Enable(false);
 
     return S_OK;
 }
@@ -87,10 +90,8 @@ _bool CNote::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CIt
         _float3 vScale = m_pTransformCom->Get_Scaled();
         _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
         m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
-        _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
-        _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
-
-        vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
+        _vector vRight= m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+        _vector vUp= XMVector3Cross( XMLoadFloat4(&vLook),vRight);
 
 
         vRight = XMVector3Normalize(vRight);
@@ -107,6 +108,15 @@ _bool CNote::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CIt
         return true;
     }
     return false;
+}
+
+void CNote::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
+{
+    if (m_pTempNoteModel)
+    {
+        m_pTempNoteModel->Set_Enable(true);
+        m_pTempNoteModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+    }
 }
 
 
@@ -195,6 +205,17 @@ HRESULT CNote::SetUp_ShaderResource()
 
 
     RELEASE_INSTANCE(CGameInstance);
+
+    return S_OK;
+}
+
+HRESULT CNote::Setup_TempModel()
+{
+    /*For.TempModel*/
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempNote"), (CGameObject**)&m_pTempNoteModel)))
+        return E_FAIL;
+
+    m_pTempNoteModel->Set_Enable(false);
 
     return S_OK;
 }

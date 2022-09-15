@@ -20,13 +20,13 @@
       <Filter>99.Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Loading.h">
-      <Filter>01.Level\Loading</Filter>
+      <Filter>00.MainApp\01.Level\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Logo.h">
-      <Filter>01.Level\Logo</Filter>
+      <Filter>00.MainApp\01.Level\Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Loader.h">
-      <Filter>01.Level\Loading\Loader</Filter>
+      <Filter>00.MainApp\01.Level\Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObject\BackGround</Filter>
@@ -35,7 +35,7 @@
       <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage1.h">
-      <Filter>01.Level\Stage</Filter>
+      <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h">
       <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
@@ -50,7 +50,7 @@
       <Filter>02.GameObject\UI\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Lobby.h">
-      <Filter>01.Level\Lobby</Filter>
+      <Filter>00.MainApp\01.Level\Lobby</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_AddItems.h">
       <Filter>02.GameObject\BackGround\Lobby\Lobby_AddItems</Filter>
@@ -160,6 +160,15 @@
     <ClInclude Include="..\Public\Tripod.h">
       <Filter>02.GameObject\Item\Camera\Tripod</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Temp_Note.h">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_Note</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Temp_VideoCam.h">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_Video_Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Temp_TrailCam.h">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_TrailCam</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -172,16 +181,16 @@
       <Filter>00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Lobby.cpp">
-      <Filter>01.Level\Lobby</Filter>
+      <Filter>00.MainApp\01.Level\Lobby</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Loading.cpp">
-      <Filter>01.Level\Loading</Filter>
+      <Filter>00.MainApp\01.Level\Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Level\Logo</Filter>
+      <Filter>00.MainApp\01.Level\Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Loader.cpp">
-      <Filter>01.Level\Loading\Loader</Filter>
+      <Filter>00.MainApp\01.Level\Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObject\BackGround</Filter>
@@ -190,7 +199,7 @@
       <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage1.cpp">
-      <Filter>01.Level\Stage</Filter>
+      <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp">
       <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
@@ -306,6 +315,15 @@
     <ClCompile Include="..\Private\Photo_Camera.cpp">
       <Filter>02.GameObject\Item\Camera\Photo_Camera</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Temp_VideoCam.cpp">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_Video_Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Temp_TrailCam.cpp">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_TrailCam</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Temp_Note.cpp">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_Note</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -325,18 +343,6 @@
     <Filter Include="98.Default">
       <UniqueIdentifier>{65376df2-2a03-48c0-b9a4-e1bcd404fb50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Level">
-      <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Logo">
-      <UniqueIdentifier>{289b4d09-7c95-466b-9f74-173b2e22e40e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading">
-      <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Loading\Loader">
-      <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
     </Filter>
@@ -345,12 +351,6 @@
     </Filter>
     <Filter Include="03.ShaderFiles">
       <UniqueIdentifier>{d3a98933-0c07-4640-bc38-9a0b4f9abd9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Lobby">
-      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Level\Stage">
-      <UniqueIdentifier>{7ba9e35c-4673-4fbb-b5f8-631b9e9abe25}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\BackGround\Lobby">
       <UniqueIdentifier>{db9771c6-ed05-4149-bd7a-aa8a17d244aa}</UniqueIdentifier>
@@ -465,6 +465,39 @@
     </Filter>
     <Filter Include="02.GameObject\Item\Camera\Tripod">
       <UniqueIdentifier>{6775b466-1451-411f-92eb-313a51c26057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level">
+      <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level\Logo">
+      <UniqueIdentifier>{289b4d09-7c95-466b-9f74-173b2e22e40e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level\Loading">
+      <UniqueIdentifier>{807441ba-e54d-4b86-960a-e96a8505241f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level\Loading\Loader">
+      <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level\Lobby">
+      <UniqueIdentifier>{2c0cd078-e1ec-4276-a003-e7ec4d0edcf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp\01.Level\Stage">
+      <UniqueIdentifier>{7ba9e35c-4673-4fbb-b5f8-631b9e9abe25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Temp_Item">
+      <UniqueIdentifier>{ce193f15-d344-4bdd-8e75-862e3412e8a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Temp_Item\Temp_Note">
+      <UniqueIdentifier>{e7d073a7-7b84-45a0-abfa-db07d07403b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Temp_Item\Temp_TrailCam">
+      <UniqueIdentifier>{87bc3b0a-4452-43a9-8e43-9a501d3503ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Temp_Item\Temp_DotsProjecter">
+      <UniqueIdentifier>{5634f2d6-4ee8-4a8c-aa1c-0d45d6e0027d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Temp_Item\Temp_Video_Camera">
+      <UniqueIdentifier>{edb80a2b-05d9-4078-a547-002b0db89554}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

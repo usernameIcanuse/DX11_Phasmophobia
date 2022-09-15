@@ -30,6 +30,7 @@ public:
 	void	Install_Item(_float3 _vInstallPos,COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject = nullptr);//아이템 설치
 	void	Turn_Switch();
 
+	void	Item_TempModel(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject = nullptr);
 private:
 	void	Adjust_Item(CItem* pItem);
 

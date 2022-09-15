@@ -13,6 +13,10 @@
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 
+#include "Temp_Note.h"
+#include "Temp_TrailCam.h"
+#include "Temp_VideoCam.h"
+
 #include "Atmosphere.h"
 
 #include "Camera_Free.h"
@@ -325,6 +329,18 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CAtmosphere::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_TempNote*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempNote"),
+		CTempNote::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_TempVideoCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempVideoCam"),
+		CTempVideoCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_TempTrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempTrailCam"),
+		CTempTrailCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),

@@ -229,6 +229,9 @@
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SpiritBox.h" />
+    <ClInclude Include="..\Public\Temp_Note.h" />
+    <ClInclude Include="..\Public\Temp_TrailCam.h" />
+    <ClInclude Include="..\Public\Temp_VideoCam.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Thermometer.h" />
     <ClInclude Include="..\Public\TrailCam.h" />
@@ -297,6 +300,9 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\SpiritBox.cpp" />
+    <ClCompile Include="..\Private\Temp_Note.cpp" />
+    <ClCompile Include="..\Private\Temp_TrailCam.cpp" />
+    <ClCompile Include="..\Private\Temp_VideoCam.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Thermometer.cpp" />
     <ClCompile Include="..\Private\TrailCam.cpp" />

@@ -21,6 +21,7 @@ public:
 	virtual HRESULT Render();
 
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
+	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
 public:
 	void	Connect_Tripod(CTripod* pTripod);
@@ -28,7 +29,7 @@ public:
 
 private:
 	CTripod* m_pTripod = nullptr;
-
+	CItem* m_pTempCameraModel = nullptr;
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);
@@ -37,6 +38,7 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
+	HRESULT			Setup_TempModel();
 public:
 	static CVideo_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

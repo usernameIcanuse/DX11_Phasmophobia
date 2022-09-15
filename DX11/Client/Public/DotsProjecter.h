@@ -27,6 +27,7 @@ public:
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
 		return true; 
 	};
+	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
 
 public:
@@ -37,6 +38,7 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
+	HRESULT			Setup_TempModel();
 
 public:
 	static CDotsProjecter* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

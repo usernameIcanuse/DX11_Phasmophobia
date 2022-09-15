@@ -26,6 +26,9 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    if (FAILED(Setup_TempModel()))
+        return E_FAIL;
+
     m_vAdjustpos = _float3(1.f, 1.f, 1.9f);
 
 
@@ -78,6 +81,7 @@ HRESULT CVideo_Camera::Render()
     m_pOBBCom->Render();
 #endif // _DEBUG
 
+    m_pTempCameraModel->Set_Enable(false);
 
     return S_OK;
 }
@@ -139,6 +143,15 @@ _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vL
     }
 
     return false;
+}
+
+void CVideo_Camera::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
+{
+    if (m_pTempCameraModel)
+    {
+        m_pTempCameraModel->Set_Enable(true);
+        m_pTempCameraModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+    }
 }
 
 void CVideo_Camera::Connect_Tripod(CTripod* pTripod)
@@ -242,6 +255,17 @@ HRESULT CVideo_Camera::SetUp_ShaderResource()
 
 
     RELEASE_INSTANCE(CGameInstance);
+
+    return S_OK;
+}
+
+HRESULT CVideo_Camera::Setup_TempModel()
+{
+    /*For.TempModel*/
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempVideoCam"), (CGameObject**)&m_pTempCameraModel)))
+        return E_FAIL;
+
+    m_pTempCameraModel->Set_Enable(false);
 
     return S_OK;
 }

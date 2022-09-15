@@ -92,6 +92,10 @@ HRESULT CDotsProjecter::Render()
 }
 
 
+void CDotsProjecter::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
+{
+}
+
 void CDotsProjecter::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);
@@ -177,6 +181,11 @@ HRESULT CDotsProjecter::SetUp_ShaderResource()
 
     RELEASE_INSTANCE(CGameInstance);
 
+    return S_OK;
+}
+
+HRESULT CDotsProjecter::Setup_TempModel()
+{
     return S_OK;
 }
 

@@ -25,6 +25,8 @@ HRESULT CTrailCam::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    if (FAILED(Setup_TempModel()))
+        return E_FAIL;
 
 
     return S_OK;
@@ -79,6 +81,7 @@ HRESULT CTrailCam::Render()
       m_pAreaCom->Render();
 #endif // _DEBUG
 
+      m_pTempTrailCamModel->Set_Enable(false);
 
     return S_OK;
 }
@@ -192,7 +195,18 @@ HRESULT CTrailCam::SetUp_ShaderResource()
     return S_OK;
 }
 
-_bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
+HRESULT CTrailCam::Setup_TempModel()
+{
+    /*For.TempModel*/
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempTrailCam"), (CGameObject**)&m_pTempTrailCamModel)))
+        return E_FAIL;
+
+    m_pTempTrailCamModel->Set_Enable(false);
+
+    return S_OK;
+}
+
+_bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
     if (eType == COLLISION_TYPE::WALL)
     {
@@ -212,7 +226,7 @@ _bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
         m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
         m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
 
-        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+       // m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
 
         m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
@@ -220,6 +234,15 @@ _bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
     }
 
     return false;
+}
+
+void CTrailCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
+{
+    if (m_pTempTrailCamModel)
+    {
+        m_pTempTrailCamModel->Set_Enable(true);
+        m_pTempTrailCamModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+    }
 }
 
 CTrailCam* CTrailCam::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
