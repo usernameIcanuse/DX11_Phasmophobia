@@ -941,14 +941,14 @@ void CImguiMgr::CollocateObject()
 
 		case 7:
 			tLayerIndex = LAYER::OBJECT;
-			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			tObjIndex = OBJ_TAG::GHOST;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
 				return;
 			break;
 
 		case 8:
 			tLayerIndex = LAYER::OBJECT;
-			tObjIndex = OBJ_TAG::DOTSPROJECTER;
+			tObjIndex = OBJ_TAG::ATMOSPHERE;
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
 				return;
 			break;
@@ -1301,6 +1301,14 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 
 			case OBJ_TAG::VIDEOCAMERA:
 				strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
+				break;
+
+			case OBJ_TAG::GHOST:
+				strPrototypeTag = TEXT("Prototype_GameObject_Ghost");
+				break;
+				
+			case OBJ_TAG::ATMOSPHERE:
+				strPrototypeTag = TEXT("Prototype_GameObject_Atmosphere");
 				break;
 			}
 			

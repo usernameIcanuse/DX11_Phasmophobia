@@ -231,6 +231,8 @@ namespace Engine
 		VIDEOCAMERA,
 		TRAILCAM,
 		TRIPOD,
+		GHOST,
+		ATMOSPHERE,
 		OBJ_END
 	};
 

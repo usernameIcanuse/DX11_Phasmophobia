@@ -230,6 +230,53 @@ HRESULT CLevel_Stage1::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Collider");
 
+	char FileWall[255] = "../Bin/Resources/Map/NormalHouse/Wall";
+	hFile = CreateFileA(FileWall,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+	tDataCollider;
+	ZeroMemory(&tDataCollider, sizeof(COLLIDER_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataCollider, sizeof(COLLIDER_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Collider"),
+				TEXT("Prototype_GameObject_Wall"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+		}
+	}
+
+	CloseHandle(hFile);
+
 	char Filepath2[255] = "../Bin/Resources/Map/NormalHouse/Items";
 	hFile = CreateFileA(Filepath2,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -287,6 +334,22 @@ HRESULT CLevel_Stage1::Load_Stage()
 
 			case OBJ_TAG::VIDEOCAMERA:
 				strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
+				break;
+
+			case OBJ_TAG::TRAILCAM:
+				strPrototypeTag = TEXT("Prototype_GameObject_TrailCam");
+				break;
+
+			case OBJ_TAG::TRIPOD:
+				strPrototypeTag = TEXT("Prototype_GameObject_Tripod");
+				break;
+
+			case OBJ_TAG::GHOST:
+				strPrototypeTag = TEXT("Prototype_GameObject_Ghost");
+				break;
+
+			case OBJ_TAG::ATMOSPHERE:
+				strPrototypeTag = TEXT("Prototype_GameObject_Atmosphere");
 				break;
 			}
 

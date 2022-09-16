@@ -83,7 +83,7 @@ HRESULT CThermometer::Render()
     {
          if (m_fTimeAcc >= 1.5f)
          {
-             wsprintf(m_szDegree, TEXT("방온도 : %d.%d"), m_iDegree,m_iDegree);
+             wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
              m_fTimeAcc = 0.f;
 
          }
