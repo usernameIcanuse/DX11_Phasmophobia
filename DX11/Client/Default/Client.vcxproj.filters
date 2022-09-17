@@ -137,7 +137,7 @@
       <Filter>02.GameObject\Player\Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ghost.h">
-      <Filter>02.GameObject\Ghost_SpawnPoint\Ghost</Filter>
+      <Filter>02.GameObject\Ghost</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Object_Collider.h">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
@@ -146,7 +146,7 @@
       <Filter>02.GameObject\Stage\Wall_Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Ghost_SpawnPoint.h">
-      <Filter>02.GameObject\Ghost_SpawnPoint</Filter>
+      <Filter>02.GameObject\Ghost\Ghost_SpawnPoint</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Atmosphere.h">
       <Filter>02.GameObject\Stage\Atmosphere</Filter>
@@ -292,7 +292,7 @@
       <Filter>02.GameObject\Player\Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ghost.cpp">
-      <Filter>02.GameObject\Ghost_SpawnPoint\Ghost</Filter>
+      <Filter>02.GameObject\Ghost</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Object_Collider.cpp">
       <Filter>02.GameObject\Stage\Object_Collider</Filter>
@@ -301,7 +301,7 @@
       <Filter>02.GameObject\Stage\Wall_Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp">
-      <Filter>02.GameObject\Ghost_SpawnPoint</Filter>
+      <Filter>02.GameObject\Ghost\Ghost_SpawnPoint</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Atmosphere.cpp">
       <Filter>02.GameObject\Stage\Atmosphere</Filter>
@@ -445,12 +445,6 @@
     <Filter Include="02.GameObject\Stage\Atmosphere">
       <UniqueIdentifier>{29f59f0b-50f6-45fd-bebd-0b4d71c512cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Ghost_SpawnPoint">
-      <UniqueIdentifier>{6424de3b-0525-4377-a875-535e6a50960b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\Ghost_SpawnPoint\Ghost">
-      <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Item\TrailCam">
       <UniqueIdentifier>{b2d88a73-8cd6-4363-9b4d-d1b856b9b8c3}</UniqueIdentifier>
     </Filter>
@@ -498,6 +492,12 @@
     </Filter>
     <Filter Include="02.GameObject\Item\Temp_Item\Temp_Video_Camera">
       <UniqueIdentifier>{edb80a2b-05d9-4078-a547-002b0db89554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost">
+      <UniqueIdentifier>{f3ca7636-25be-490a-b698-f91da4e9de1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Ghost_SpawnPoint">
+      <UniqueIdentifier>{6424de3b-0525-4377-a875-535e6a50960b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

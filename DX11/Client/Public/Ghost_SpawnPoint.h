@@ -15,6 +15,7 @@ class CGhost;
 
 class CGhost_SpawnPoint final: public CGameObject
 {
+	friend class CGhost;
 private:
 	CGhost_SpawnPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGhost_SpawnPoint(const CGhost_SpawnPoint& rhs);
@@ -35,8 +36,12 @@ public:
 public:
 	_uint	Get_Anger()
 	{
-		//return m_iAnger;
-		return 6;//юс╫ц╥н
+		return m_iAnger;
+	}
+
+	_uint Get_EMFLevel()
+	{
+		return m_iEMF;
 	}
 
 	_int	Get_AreaTemperature()
@@ -49,6 +54,8 @@ public:
 		return m_iAreaTemperature - 4;
 	}
 
+
+
 private:
 	CCollider*		m_pAreaCom = nullptr;
 	CCollider*		m_pSpawnPointCom = nullptr;
@@ -57,12 +64,12 @@ private:
 	CGhost*			m_pGhost = nullptr;
 
 	_uint	   m_iAnger = 0;
+	_uint	   m_iEMF = 1;
 	_int	   m_iAreaDefaultTemperature = 0;
 	_int       m_iAreaTemperature = 0;
 	
 private:
 	HRESULT	Setup_Component();
-	HRESULT Setup_Ghost();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

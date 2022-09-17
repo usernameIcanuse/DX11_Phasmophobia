@@ -16,6 +16,7 @@ class CGhost_SpawnPoint;
 
 class CGhost final: public CGameObject
 {
+	friend class CGhost_SpawnPoint;
 private:
 	CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGhost(const CGhost& rhs);
@@ -29,6 +30,12 @@ public:
 	virtual HRESULT Render();
 
 	virtual void Set_Enable(_bool _bEnable);
+
+public: /*기본 귀신 상호작용, 기능*/
+	void Whispering(); //내귀에 캔디
+	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
+	void Light_Attack(); //이벤트
+	void Attack(); //헌팅
 	
 
 private:

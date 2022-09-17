@@ -36,7 +36,7 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	m_iAreaDefaultTemperature = rand() % 5+8;
+	m_iAreaDefaultTemperature = rand() % 7+3;
 
 	return S_OK;
 }
@@ -44,9 +44,11 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	CTransform* matGhostTransform = (CTransform*)m_pGhost->Get_Component(CGameObject::m_pTransformTag);
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matGhostTransform->Get_State(CTransform::STATE_TRANSLATION));
-
+	if (nullptr != m_pGhost)
+	{
+		CTransform* matGhostTransform = (CTransform*)m_pGhost->Get_Component(CGameObject::m_pTransformTag);
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matGhostTransform->Get_State(CTransform::STATE_TRANSLATION));
+	}
 
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 	m_pAreaCom->Update(matWorld);

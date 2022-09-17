@@ -78,6 +78,25 @@ void CGhost::Set_Enable(_bool _bEnable)
 	m_pSpawnPoint->Set_Enable(_bEnable);
 }
 
+void CGhost::Whispering()
+{
+}
+
+void CGhost::Stop_Updating_SpawnPoint()
+{
+	m_pSpawnPoint->m_pGhost = nullptr;
+}
+
+void CGhost::Light_Attack()
+{
+	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
+}
+
+void CGhost::Attack()
+{
+	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
+}
+
 
 HRESULT CGhost::Setup_Component()
 {
