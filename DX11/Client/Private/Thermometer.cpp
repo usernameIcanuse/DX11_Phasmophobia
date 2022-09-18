@@ -97,6 +97,10 @@ HRESULT CThermometer::Render()
     return S_OK;
 }
 
+void CThermometer::OnEventMessage(const _tchar* pMessage)
+{
+}
+
 
 void CThermometer::On_Collision_Enter(CCollider* pCollider)
 {

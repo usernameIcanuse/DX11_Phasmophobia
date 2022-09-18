@@ -66,6 +66,7 @@ HRESULT CGhost::Render()
 	m_pOBBCom->Render();
 	m_pSphereCom->Render();
 
+
 #endif // _DEBUG
 
 	return S_OK;
@@ -80,6 +81,7 @@ void CGhost::Set_Enable(_bool _bEnable)
 
 void CGhost::Whispering()
 {
+	
 }
 
 void CGhost::Stop_Updating_SpawnPoint()
@@ -95,6 +97,10 @@ void CGhost::Light_Attack()
 void CGhost::Attack()
 {
 	/*√‚±∏ ¥›»˚&¿·±Ë, ±ÕΩ≈ attack collider set enable, ¿¸¿⁄ ¿Â∫ÒµÈ ∞Ì¿Â*/
+}
+
+void CGhost::Moving()
+{
 }
 
 

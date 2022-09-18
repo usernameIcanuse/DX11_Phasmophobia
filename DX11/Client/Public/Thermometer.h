@@ -18,6 +18,9 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void OnEventMessage(const _tchar* pMessage);
+
+
 public:
 	virtual void Turn_Switch()
 	{

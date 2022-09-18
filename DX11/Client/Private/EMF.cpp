@@ -90,6 +90,10 @@ HRESULT CEMF::Render()
     return S_OK;
 }
 
+void CEMF::OnEventMessage(const _tchar* pMessage)
+{
+}
+
 
 void CEMF::On_Collision_Enter(CCollider* pCollider)
 {

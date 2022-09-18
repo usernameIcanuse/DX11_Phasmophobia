@@ -22,6 +22,8 @@ HRESULT CItem::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+
     return S_OK;
 }
 

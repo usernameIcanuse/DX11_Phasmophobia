@@ -83,6 +83,10 @@ HRESULT CNote::Render()
     return S_OK;
 }
 
+void CNote::OnEventMessage(const _tchar* pMessage)
+{
+}
+
 _bool CNote::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem )
 {
     if (eType == COLLISION_TYPE::OBJECT)

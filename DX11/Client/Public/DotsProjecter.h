@@ -21,6 +21,9 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+
+	virtual void OnEventMessage(const _tchar* pMessage);
+
 public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr)
 	{ 

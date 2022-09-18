@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Ghost_SpawnPoint.h"
+#include "Ghost_Status.h"
 #include "GameInstance.h"
 #include "Ghost.h"
 
@@ -80,6 +81,16 @@ HRESULT CGhost_SpawnPoint::Render()
 	return S_OK;
 }
 
+_uint CGhost_SpawnPoint::Get_Anger()
+{
+	return m_pGhost_Status->m_iAggression;
+}
+
+_uint CGhost_SpawnPoint::Get_EMFLevel()
+{
+	return m_pGhost_Status->m_iEMF;
+}
+
 HRESULT CGhost_SpawnPoint::Setup_Component()
 {
 	/* For.Com_Sphere*/
@@ -114,6 +125,11 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	return S_OK;
 }
 
+HRESULT CGhost_SpawnPoint::Setup_GhostStatus()
+{
+	return S_OK;
+}
+
 
 
 void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
@@ -123,7 +139,6 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
-	
 }
 
 void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)

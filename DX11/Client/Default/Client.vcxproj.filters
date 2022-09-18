@@ -169,6 +169,9 @@
     <ClInclude Include="..\Public\Temp_TrailCam.h">
       <Filter>02.GameObject\Item\Temp_Item\Temp_TrailCam</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ghost_Status.h">
+      <Filter>02.GameObject\Ghost\Ghost_Status</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Temp_Note.cpp">
       <Filter>02.GameObject\Item\Temp_Item\Temp_Note</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ghost_Status.cpp">
+      <Filter>02.GameObject\Ghost\Ghost_Status</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -498,6 +504,9 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost\Ghost_SpawnPoint">
       <UniqueIdentifier>{6424de3b-0525-4377-a875-535e6a50960b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Ghost_Status">
+      <UniqueIdentifier>{5ffb6bed-cc69-47ec-8f76-94f3d914fb4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

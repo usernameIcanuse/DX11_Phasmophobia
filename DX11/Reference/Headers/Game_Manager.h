@@ -12,7 +12,7 @@ class CGame_Manager final : public CBase
 	DECLARE_SINGLETON(CGame_Manager)
 
 public:
-	enum EVENT {EVENT_GHOST, EVENT_END};
+	enum EVENT {EVENT_ITEM,EVENT_GHOST, EVENT_END};
 
 private:
 	CGame_Manager();

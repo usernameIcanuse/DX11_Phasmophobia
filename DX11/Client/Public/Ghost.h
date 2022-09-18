@@ -31,12 +31,14 @@ public:
 
 	virtual void Set_Enable(_bool _bEnable);
 
-public: /*기본 귀신 상호작용, 기능*/
-	void Whispering(); //내귀에 캔디
+public:
 	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
+
+private: /*기본 귀신 상호작용, 기능*/
+	void Whispering(); //내귀에 캔디
 	void Light_Attack(); //이벤트
 	void Attack(); //헌팅
-	
+	void Moving();
 
 private:
 	CCollider*		m_pOBBCom = nullptr; // attack

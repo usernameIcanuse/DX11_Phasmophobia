@@ -11,6 +11,7 @@ END
 BEGIN(Client)
 
 class CGhost;
+class CGhost_Status;
 /*main*/
 
 class CGhost_SpawnPoint final: public CGameObject
@@ -34,16 +35,9 @@ public:
 
 
 public:
-	_uint	Get_Anger()
-	{
-		return m_iAnger;
-	}
-
-	_uint Get_EMFLevel()
-	{
-		return m_iEMF;
-	}
-
+	_uint	Get_Anger();
+	_uint   Get_EMFLevel();
+	
 	_int	Get_AreaTemperature()
 	{
 		return m_iAreaTemperature;
@@ -62,14 +56,14 @@ private:
 	CRenderer*		m_pRendererCom = nullptr;
 
 	CGhost*			m_pGhost = nullptr;
+	CGhost_Status* m_pGhost_Status = nullptr;
 
-	_uint	   m_iAnger = 0;
-	_uint	   m_iEMF = 1;
 	_int	   m_iAreaDefaultTemperature = 0;
 	_int       m_iAreaTemperature = 0;
 	
 private:
 	HRESULT	Setup_Component();
+	HRESULT Setup_GhostStatus();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

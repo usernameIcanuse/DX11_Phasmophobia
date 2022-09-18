@@ -86,6 +86,10 @@ HRESULT CSpiritBox::Render()
     return S_OK;
 }
 
+void CSpiritBox::OnEventMessage(const _tchar* pMessage)
+{
+}
+
 
 void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
 {
