@@ -27,6 +27,10 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(); 
 	
+
+public:
+	virtual void OnEventMessage(const _tchar* pMessage) {}
+
 public:
 	static const _tchar*		m_pTransformTag;
 

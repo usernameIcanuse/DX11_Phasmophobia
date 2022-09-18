@@ -15,6 +15,7 @@ CGameInstance::CGameInstance()
 	, m_pZFrustum(CZFrustum::Get_Instance())
 	, m_pCollision_Manager(CCollision_Manager::Get_Instance())
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
+	, m_pGame_Manager(CGame_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -28,6 +29,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pZFrustum);
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pFont_Manager);
+	Safe_AddRef(m_pGame_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -394,6 +396,37 @@ HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString
 	m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor);
 }
 
+HRESULT CGameInstance::Add_EventObject(_int iIndex, CGameObject* pObject)
+{
+	if (nullptr == m_pGame_Manager)
+		return E_FAIL;
+	return m_pGame_Manager->Add_EventObject(iIndex,pObject);
+}
+
+void CGameInstance::Broadcast_Message(_int iIndex, const _tchar* pMessage)
+{
+	if (nullptr == m_pGame_Manager)
+		return;
+
+	m_pGame_Manager->Broadcast_Message(iIndex, pMessage);
+}
+
+void CGameInstance::Clear_Layer(_int iIndex)
+{
+	if (nullptr == m_pGame_Manager)
+		return;
+
+	m_pGame_Manager->Clear_Layer(iIndex);
+}
+
+void CGameInstance::Clear_List()
+{
+	if (nullptr == m_pGame_Manager)
+		return;
+
+	m_pGame_Manager->Clear_List();
+}
+
 
 
 void CGameInstance::Release_Engine()
@@ -418,7 +451,11 @@ void CGameInstance::Release_Engine()
 
 	CFont_Manager::Get_Instance()->Destroy_Instance();
 
+	CGame_Manager::Get_Instance()->Destroy_Instance();
+	
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
+
+	
 
 }
 
@@ -435,6 +472,6 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pZFrustum);
 	Safe_Release(m_pCollision_Manager);
-	
+	Safe_Release(m_pGame_Manager);
 
 }

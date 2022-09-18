@@ -13,7 +13,7 @@
 #include "ZFrustum.h"
 #include "Collision_Manager.h"
 #include "Font_Manager.h"
-
+#include "Game_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -95,6 +95,13 @@ public:/* For.Font_Manager*/
 	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
 
+public:/*For.Game_Manager*/
+	HRESULT Add_EventObject(_int iIndex, class CGameObject* pObject);
+	void Broadcast_Message(_int iIndex, const _tchar* pMessage);
+	void Clear_Layer(_int iIndex);
+	void Clear_List();
+
+
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -108,6 +115,7 @@ private:
 	CZFrustum*						m_pZFrustum = nullptr;
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CCollision_Manager*				m_pCollision_Manager = nullptr;
+	CGame_Manager*					m_pGame_Manager = nullptr;
 
 	GRAPHICDESC						m_tagGraphicDesc;
 

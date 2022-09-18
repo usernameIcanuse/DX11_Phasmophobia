@@ -133,6 +133,9 @@
     <ClInclude Include="..\Public\CustomFont.h">
       <Filter>01.Utility\06. Font</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Game_Manager.h">
+      <Filter>01.Utility\02.GameObject\Manager\Game_Mgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -251,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CustomFont.cpp">
       <Filter>01.Utility\06. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Game_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Manager\Game_Mgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +388,9 @@
     </Filter>
     <Filter Include="01.Utility\06. Font\Manager">
       <UniqueIdentifier>{ace5c30b-d20d-432f-9dd1-092b3269a26c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Game_Mgr">
+      <UniqueIdentifier>{ad228a9c-39d7-42da-b99a-965f21886141}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
