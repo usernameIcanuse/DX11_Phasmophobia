@@ -7,6 +7,7 @@
 
 BEGIN(Engine)
 
+
 class CGame_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CGame_Manager)
@@ -19,7 +20,8 @@ private:
 	virtual ~CGame_Manager() = default;
 
 public:
-	/* 원형객체르ㅏㅣㄹ 복사하여 사본객체를 추가한다. */
+	void Tick(_float fTimeDelta);
+
 	HRESULT Add_EventObject(_int iIndex, class CGameObject* pObject);
 	void Broadcast_Message(_int iIndex, const _tchar* pMessage);
 
@@ -30,6 +32,7 @@ public:
 
 private:
 	list<class CGameObject*>			m_ObjectList[EVENT_END];
+		
 
 
 public:

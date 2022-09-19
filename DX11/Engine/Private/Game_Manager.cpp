@@ -8,6 +8,17 @@ CGame_Manager::CGame_Manager()
 }
 
 
+void CGame_Manager::Tick(_float fTimeDelta)
+{
+	for(int i = 0 ; i<EVENT_END ; ++i)
+	{
+		for (auto& elem : m_ObjectList[i])
+		{
+			elem->Call_EventFunc(fTimeDelta);
+		}
+	}
+}
+
 HRESULT CGame_Manager::Add_EventObject(_int iIndex,  CGameObject* pObject)
 {
 	if (EVENT_END <= iIndex)

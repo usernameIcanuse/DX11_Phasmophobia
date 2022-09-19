@@ -91,9 +91,6 @@
     <ClInclude Include="..\Public\Note.h">
       <Filter>02.GameObject\Item\Note</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\SpiritBox.h">
-      <Filter>02.GameObject\Item\SpiritBox</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Thermometer.h">
       <Filter>02.GameObject\Item\Thermometer</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Ghost_Status.h">
       <Filter>02.GameObject\Ghost\Ghost_Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SpiritBox.h">
+      <Filter>02.GameObject\Item\SpiritBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@
 
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
+#include "Ghost_Status.h"
 
 #include "Temp_Note.h"
 #include "Temp_TrailCam.h"
@@ -257,6 +258,13 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
 		CGhost_SpawnPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ghost_Status*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_Status"),
+		CGhost_Status::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 
 	/* For.Prototype_GameObject_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Sky"),

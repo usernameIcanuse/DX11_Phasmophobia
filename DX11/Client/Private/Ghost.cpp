@@ -24,7 +24,7 @@ HRESULT CGhost::Initialize_Prototype()
 HRESULT CGhost::Initialize(void* pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
+	TransformDesc.fSpeedPerSec = 5.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	
@@ -37,6 +37,9 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(Setup_SpawnPoint()))
 		return E_FAIL;
 
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
+	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Moving"));
+
 	return S_OK;
 }
 
@@ -44,6 +47,7 @@ void CGhost::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_fTime += fTimeDelta;
 
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 
@@ -79,6 +83,30 @@ void CGhost::Set_Enable(_bool _bEnable)
 	m_pSpawnPoint->Set_Enable(_bEnable);
 }
 
+void CGhost::OnEventMessage(const _tchar* pMessage)
+{
+	if (0 == lstrcmp(TEXT("Event"), pMessage))
+	{
+		m_EventFunc = std::bind(&CGhost::Light_Attack, std::placeholders::_1, std::placeholders::_2);
+	}
+
+	else if (0 == lstrcmp(TEXT("Attack"), pMessage))
+	{
+		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
+	}
+
+	else if (0 == lstrcmp(TEXT("Moving"), pMessage))
+	{
+		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
+	}
+
+}
+
+void CGhost::Call_EventFunc(_float fTimeDelta)
+{
+	m_EventFunc(this,fTimeDelta);
+}
+
 void CGhost::Whispering()
 {
 	
@@ -89,18 +117,24 @@ void CGhost::Stop_Updating_SpawnPoint()
 	m_pSpawnPoint->m_pGhost = nullptr;
 }
 
-void CGhost::Light_Attack()
+void CGhost::Light_Attack(_float fTimeDelta)
 {
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
 }
 
-void CGhost::Attack()
+void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
 }
 
-void CGhost::Moving()
+void CGhost::Moving(_float fTimeDelta)
 {
+	m_pTransformCom->Go_Backward(fTimeDelta);
+
+	if (m_fTime > 5.f)
+	{
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Stop"));
+	}
 }
 
 

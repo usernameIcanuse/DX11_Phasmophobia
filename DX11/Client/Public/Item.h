@@ -43,16 +43,19 @@ public:
 	
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) {}
 	
+	virtual void MalFunction() {}
+	virtual void Normal_Operation() {}
 
 protected:
 	CShader*    m_pShaderCom = nullptr;
-	//CTexture*   m_pTextureCom = nullptr;
 	CRenderer*  m_pRendererCom = nullptr;
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
+
+	function<void(CItem*)> m_pEventFunc;
 protected:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;

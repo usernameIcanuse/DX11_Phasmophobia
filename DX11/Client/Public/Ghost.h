@@ -30,15 +30,20 @@ public:
 	virtual HRESULT Render();
 
 	virtual void Set_Enable(_bool _bEnable);
+	virtual void OnEventMessage(const _tchar* pMessage);
+	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
+	
 
 public:
 	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
 
 private: /*기본 귀신 상호작용, 기능*/
 	void Whispering(); //내귀에 캔디
-	void Light_Attack(); //이벤트
-	void Attack(); //헌팅
-	void Moving();
+	void Light_Attack(_float fTimeDelta =0.f); //이벤트
+	void Attack(_float fTimeDelta = 0.f); //헌팅
+	void Moving(_float fTimeDelta = 0.f);
+
+
 
 private:
 	CCollider*		m_pOBBCom = nullptr; // attack
@@ -48,6 +53,9 @@ private:
 
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	
+	function<void(CGhost*,_float)>	m_EventFunc;
+
+	_float				m_fTime = 0.f;
 	
 private:
 	HRESULT	Setup_Component();

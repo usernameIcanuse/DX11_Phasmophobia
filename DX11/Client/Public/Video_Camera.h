@@ -27,6 +27,9 @@ public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
+	virtual void MalFunction() {}
+	virtual void Normal_Operation() {}
+
 public:
 	void	Connect_Tripod(CTripod* pTripod);
 	void	Disconnect_Tripod();

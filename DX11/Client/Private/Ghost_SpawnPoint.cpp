@@ -37,6 +37,9 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
+	if (FAILED(Setup_GhostStatus()))
+		return E_FAIL;
+
 	m_iAreaDefaultTemperature = rand() % 7+3;
 
 	return S_OK;
@@ -127,22 +130,35 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 
 HRESULT CGhost_SpawnPoint::Setup_GhostStatus()
 {
+	/*For. Ghost_Status*/
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost_Status"), TEXT("Prototype_GameObject_Ghost_Status"), (CGameObject**)&m_pGhost_Status, this)))
+		return E_FAIL;
 	return S_OK;
+
 }
 
 
 
 void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 {
-	
+	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Increase_BaseLine();
+	}
+
 }
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
+	
 }
 
 void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)
 {
+	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Decrease_BaseLine();
+	}
 }
 
 CGhost_SpawnPoint* CGhost_SpawnPoint::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

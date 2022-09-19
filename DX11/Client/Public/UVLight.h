@@ -26,6 +26,8 @@ public:
 	{
 		m_bSwitch = !m_bSwitch;
 	}
+	virtual void MalFunction() {}
+	virtual void Normal_Operation() {}
 
 	
 private:
