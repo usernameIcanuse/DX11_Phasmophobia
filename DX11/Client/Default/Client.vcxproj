@@ -178,6 +178,7 @@
     <ClInclude Include="..\Public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Door.h" />
     <ClInclude Include="..\Public\DotsProjecter.h" />
     <ClInclude Include="..\Public\EMF.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Door.cpp" />
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />

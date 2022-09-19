@@ -119,10 +119,10 @@
       <Filter>01.Utility\02.GameObject\Manager\Collider_Mgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Navigation.h">
-      <Filter>01.Utility\03.Component\Navigation</Filter>
+      <Filter>01.Utility\03.Component\06.Navigation</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Cell.h">
-      <Filter>01.Utility\03.Component\Navigation\Cell</Filter>
+      <Filter>01.Utility\03.Component\06.Navigation\Cell</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cell</Filter>
@@ -241,10 +241,10 @@
       <Filter>01.Utility\02.GameObject\Manager\Collider_Mgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Navigation.cpp">
-      <Filter>01.Utility\03.Component\Navigation</Filter>
+      <Filter>01.Utility\03.Component\06.Navigation</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Cell.cpp">
-      <Filter>01.Utility\03.Component\Navigation\Cell</Filter>
+      <Filter>01.Utility\03.Component\06.Navigation\Cell</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Cell</Filter>
@@ -374,12 +374,6 @@
     <Filter Include="01.Utility\02.GameObject\Manager\Collider_Mgr">
       <UniqueIdentifier>{3df63192-7481-4bc6-8bc1-3d5780f54ad7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03.Component\Navigation">
-      <UniqueIdentifier>{b6819a32-a496-45f1-9743-e2cbcfb565db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Component\Navigation\Cell">
-      <UniqueIdentifier>{0f826e44-12ca-45c9-b67f-1e21d4e61418}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Component\00.VIBuffer\Cell">
       <UniqueIdentifier>{899af558-0df4-429d-9232-b3fc2bcb368e}</UniqueIdentifier>
     </Filter>
@@ -391,6 +385,12 @@
     </Filter>
     <Filter Include="01.Utility\02.GameObject\Manager\Game_Mgr">
       <UniqueIdentifier>{ad228a9c-39d7-42da-b99a-965f21886141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\06.Navigation">
+      <UniqueIdentifier>{b6819a32-a496-45f1-9743-e2cbcfb565db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\06.Navigation\Cell">
+      <UniqueIdentifier>{0f826e44-12ca-45c9-b67f-1e21d4e61418}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

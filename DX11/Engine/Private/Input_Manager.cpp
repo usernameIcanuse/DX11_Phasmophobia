@@ -118,5 +118,4 @@ void CInput_Manager::Free()
 
 	m_pMouse->Release();
 
-	delete this;
 }

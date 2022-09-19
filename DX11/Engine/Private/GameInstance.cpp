@@ -445,7 +445,9 @@ void CGameInstance::Release_Engine()
 
 	CTimer_Manager::Get_Instance()->Destroy_Instance();
 
-	//CInput_Manager::Get_Instance()->Destroy_Instance();
+	CInput_Manager::Get_Instance()->Destroy_Instance();
+
+	CPipeLine::Get_Instance()->Destroy_Instance();
 
 	CZFrustum::Get_Instance()->Destroy_Instance();
 
@@ -474,6 +476,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pZFrustum);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pGame_Manager);
 
 }

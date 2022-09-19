@@ -172,6 +172,9 @@
     <ClInclude Include="..\Public\SpiritBox.h">
       <Filter>02.GameObject\Item\SpiritBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Door.h">
+      <Filter>02.GameObject\Stage\House\Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -329,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ghost_Status.cpp">
       <Filter>02.GameObject\Ghost\Ghost_Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Door.cpp">
+      <Filter>02.GameObject\Stage\House\Door</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,6 +513,9 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost\Ghost_Status">
       <UniqueIdentifier>{5ffb6bed-cc69-47ec-8f76-94f3d914fb4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\House\Door">
+      <UniqueIdentifier>{c180371c-cf24-4c1d-b03a-26805e76f9fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
