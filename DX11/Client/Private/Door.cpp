@@ -92,12 +92,6 @@ HRESULT CDoor::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
    
-
-    /*For.Com_Model*/
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-    //    return E_FAIL;
-
-
     return S_OK;
 }
 
