@@ -69,17 +69,17 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pLevel_Manager->Tick(fTimeDelta);	
 
-	m_pGame_Manager->Tick(fTimeDelta);
+	m_pInput_Manager->Tick(fTimeDelta);
 
 	m_pObject_Manager->Tick(fTimeDelta);
 
-	m_pInput_Manager->Tick(fTimeDelta);
+	m_pGame_Manager->Tick(fTimeDelta);
+
+	m_pCollision_Manager->Tick();
 
 	m_pPipeLine->Tick();
 
 	m_pZFrustum->Update_Frustum();
-
-	m_pCollision_Manager->Tick();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
