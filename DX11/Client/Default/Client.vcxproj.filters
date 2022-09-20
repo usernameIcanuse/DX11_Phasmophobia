@@ -175,6 +175,9 @@
     <ClInclude Include="..\Public\Door.h">
       <Filter>02.GameObject\Stage\House\Door</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\LightSwitch.h">
+      <Filter>02.GameObject\Stage\House\LightSwitch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -335,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Door.cpp">
       <Filter>02.GameObject\Stage\House\Door</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightSwitch.cpp">
+      <Filter>02.GameObject\Stage\House\LightSwitch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +522,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\House\Door">
       <UniqueIdentifier>{c180371c-cf24-4c1d-b03a-26805e76f9fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\House\LightSwitch">
+      <UniqueIdentifier>{5ce219e9-827a-4e64-be6d-3b75380c900d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

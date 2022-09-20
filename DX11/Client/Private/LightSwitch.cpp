@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "../Public/Door.h"
+#include "../Public/LightSwitch.h"
 #include "GameInstance.h"
 
-CDoor::CDoor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLightSwitch::CLightSwitch(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
 {
 }
 
-CDoor::CDoor(const CDoor& rhs)
+CLightSwitch::CLightSwitch(const CLightSwitch& rhs)
     :CGameObject(rhs)
 {
 }
 
-HRESULT CDoor::Initialize_Prototype()
+HRESULT CLightSwitch::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CDoor::Initialize(void* pArg)
+HRESULT CLightSwitch::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -28,7 +28,7 @@ HRESULT CDoor::Initialize(void* pArg)
     return S_OK;
 }
 
-void CDoor::Tick(_float fTimeDelta)
+void CLightSwitch::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
@@ -36,7 +36,7 @@ void CDoor::Tick(_float fTimeDelta)
 
 }
 
-void CDoor::LateTick(_float fTimeDelta)
+void CLightSwitch::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
    /* _float4 vPosition;
@@ -49,7 +49,7 @@ void CDoor::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CDoor::Render()
+HRESULT CLightSwitch::Render()
 {
     if (nullptr == m_pShaderCom ||
         nullptr == m_pModelCom)
@@ -83,7 +83,7 @@ HRESULT CDoor::Render()
     return S_OK;
 }
 
-HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
+HRESULT CLightSwitch::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
     //if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -93,7 +93,7 @@ HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 }
 
 
-HRESULT CDoor::Setup_Component()
+HRESULT CLightSwitch::Setup_Component()
 {
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -106,7 +106,7 @@ HRESULT CDoor::Setup_Component()
     /* For.Com_Renderer*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
-   
+
     /* For.Com_OBB*/
     CCollider::COLLIDERDESC  ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
@@ -115,15 +115,15 @@ HRESULT CDoor::Setup_Component()
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::DOOR;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::LIGHTSWITCH;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
-
+   
     return S_OK;
 }
 
-HRESULT CDoor::SetUp_ShaderResource()
+HRESULT CLightSwitch::SetUp_ShaderResource()
 {
     if (nullptr == m_pShaderCom)
         return E_FAIL;
@@ -166,39 +166,39 @@ HRESULT CDoor::SetUp_ShaderResource()
     return S_OK;
 }
 
-CDoor* CDoor::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLightSwitch* CLightSwitch::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CDoor* pInstance = new CDoor(pDevice, pContext);
+    CLightSwitch* pInstance = new CLightSwitch(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CDoor");
+        MSG_BOX("Failed to Created : CLightSwitch");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CDoor::Clone(void* pArg)
+CGameObject* CLightSwitch::Clone(void* pArg)
 {
-    CDoor* pInstance = new CDoor(*this);
+    CLightSwitch* pInstance = new CLightSwitch(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CDoor");
+        MSG_BOX("Failed to Cloned : CLightSwitch");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CDoor::Free()
+void CLightSwitch::Free()
 {
     __super::Free();
     
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pRendererCom);
-    //Safe_Release(m_pTextureCom);
+   // Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기

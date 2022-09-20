@@ -5,20 +5,20 @@
 BEGIN(Engine)
 class CShader;
 class CTexture;
-class CCollider;
 class CRenderer;
 class CModel;
+class CCollider;
 
 END
 
 BEGIN(Client)
 
-class CDoor final : public CGameObject
+class CLightSwitch final : public CGameObject
 {
 private:
-	CDoor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CDoor(const CDoor& rhs);
-	virtual ~CDoor() = default;
+	CLightSwitch(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CLightSwitch(const CLightSwitch& rhs);
+	virtual ~CLightSwitch() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -26,6 +26,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+
 
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag);
@@ -35,11 +36,7 @@ private:
 	//CTexture* m_pTextureCom = nullptr;
 	CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
-
 	CCollider* m_pOBBCom = nullptr;
-
-
-
 
 private:
 	virtual	HRESULT	Setup_Component();
@@ -47,7 +44,7 @@ private:
 
 
 public:
-	static CDoor* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLightSwitch* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };

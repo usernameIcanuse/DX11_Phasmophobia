@@ -588,8 +588,6 @@ HRESULT CLoader::Loading_ForStage1Level()
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/RoofTop_Background/", "RoofTop_Background14.fbx", TransformMatrix))))
 	//	return E_FAIL;
 
-
-
 	///* For.Prototype_Component_Model_Shelter*/
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Shelter"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Shelter/", "Shelter.fbx", TransformMatrix))))

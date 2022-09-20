@@ -180,6 +180,8 @@ namespace Engine
 		DEFAULT = 0,
 		PLAYER,
 		GHOST,
+		DOOR,
+		LIGHTSWITCH,
 		GHOST_ATTACK,
 		EFFECTS,
 		SIGHT,
