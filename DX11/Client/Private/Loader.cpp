@@ -26,6 +26,8 @@
 #include "TrailCam.h"
 #include "Tripod.h"
 #include "House.h"
+#include "Door.h"
+//#include "LightSwitch.h"
 #include "EMF.h"
 #include "Note.h"
 #include "SpiritBox.h"
@@ -326,6 +328,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CWall_Collider::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Door*/
+	if(FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Door"),
+		CDoor::Create(m_pDevice,m_pContext))))
+		return E_FAIL;
 
 	/* For. Prototype_GameObject_House*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
@@ -462,11 +468,21 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Tripod"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
 		return E_FAIL;
+	
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	/* For.Prototype_Component_Model_RoomDoor*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoomDoor"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "RoomDoor.fbx", TransformMatrix))))
+		return E_FAIL;
+	TransformMatrix = XMMatrixScaling(0.07f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(180.0f))*XMMatrixTranslation(0.f,6.f,0.f);
+	/* For.Prototype_Component_Model_MainDoor*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MainDoor"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "MainDoor.fbx", TransformMatrix))))
+		return E_FAIL;
+
 
 
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-
-
 
 	/* For.Prototype_Component_Model_MapleTree*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"),

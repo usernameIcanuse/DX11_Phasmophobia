@@ -22,6 +22,7 @@ public:
 		_float3			vTranslation;
 		CGameObject*    pOwner;
 		COLLISION_TYPE				m_eObjID;
+		_float			fRayLength= 10000.f;
 
 	}COLLIDERDESC;
 

@@ -104,6 +104,7 @@ void CCollider::Update(_fmatrix TransformMatrix)
 		
 	case TYPE_RAY:
 		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		m_tRay.fLength = m_ColliderDesc.fRayLength;
 		m_fDist = FLT_MAX;
 		break;
 	}

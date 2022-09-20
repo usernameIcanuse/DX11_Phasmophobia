@@ -235,6 +235,8 @@ namespace Engine
 		TRIPOD,
 		GHOST,
 		ATMOSPHERE,
+		DOOR,
+		LIGHTSWITCH,
 		OBJ_END
 	};
 
@@ -264,6 +266,9 @@ namespace Engine
 		OLDHOUSE,
 		SHELTER,
 		TRUCK,
+		MAINDOOR,
+		ROOMDOOR,
+		LIGHTSWITCH,
 		MODEL_END
 	};
 
@@ -271,7 +276,7 @@ namespace Engine
 	typedef struct tagObjData
 	{
 		LAYER		tLayerTag;
-		OBJ_TAG			tObjTag;
+		OBJ_TAG		tObjTag;
 		_matrix		matWorld;
 	} OBJ_DATA;
 

@@ -32,6 +32,10 @@ void CDoor::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
+    if (m_pPlayer)
+    {
+        /* 플레이어 레이를 받아와서 이동값 구해주고 각도 범위 내에 있다면 그대로 가주기 */
+    }
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
@@ -86,8 +90,21 @@ HRESULT CDoor::Render()
 HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
-    //if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-    //    return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+       return E_FAIL;
+
+    /* For.Com_OBB*/
+    CCollider::COLLIDERDESC  ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+    ColliderDesc.vScale = _float3(6.f, 12.f, 1.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(ColliderDesc.vScale.x * 0.5f, ColliderDesc.vScale.y * 0.5f, 0.f);
+    ColliderDesc.pOwner = this;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::DOOR;
+
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -107,18 +124,7 @@ HRESULT CDoor::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
    
-    /* For.Com_OBB*/
-    CCollider::COLLIDERDESC  ColliderDesc;
-    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-    ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
-    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-    ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::DOOR;
-
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
-        return E_FAIL;
+  
 
     return S_OK;
 }
@@ -200,6 +206,7 @@ void CDoor::Free()
     Safe_Release(m_pRendererCom);
     //Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
+    Safe_Release(m_pOBBCom);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

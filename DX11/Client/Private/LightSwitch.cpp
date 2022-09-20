@@ -86,8 +86,8 @@ HRESULT CLightSwitch::Render()
 HRESULT CLightSwitch::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
-    //if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-    //    return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -200,6 +200,7 @@ void CLightSwitch::Free()
     Safe_Release(m_pRendererCom);
    // Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
+    Safe_Release(m_pOBBCom);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

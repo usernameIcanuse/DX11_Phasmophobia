@@ -5,6 +5,7 @@
 #include "imgui_impl_win32.h"
 #include "GameObject.h"
 #include "House.h"
+#include "Door.h"
 
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -204,9 +205,10 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		
 
 		/* House */
-		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
@@ -216,7 +218,19 @@ void CImguiMgr::Set_Prototype()
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-		m_vecPrototypeHouse.push_back(pTemp);*/
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+		m_vecPrototypeHouse.push_back(pTemp);
 
 		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 		//	return;
@@ -390,14 +404,14 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "Truck","FurnishedCabin",/*"Garage",*/
-							"Pier_house","Pier_house2","RoofTop","RoofTop_Background1",
+	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor" };
+							/*"Pier_house","Pier_house2","RoofTop","RoofTop_Background1",
 							"RoofTop_Background2","RoofTop_Background3",
 		"RoofTop_Background4","RoofTop_Background5","RoofTop_Background6",
 		"RoofTop_Background7","RoofTop_Background8","RoofTop_Background9",
 		"RoofTop_Background10","RoofTop_Background11","RoofTop_Background12",
 		"RoofTop_Background13","RoofTop_Background14","SlumHouse1",
-							"OldHouse","Shelter"};
+							"OldHouse","Shelter",*/
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -768,7 +782,7 @@ void CImguiMgr::CollocateHouse()
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
 			tIndex = MODEL_TAG::FURNISHEDCABIN;
 			break;
-		case 2:
+		/*case 2:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
 			tIndex = MODEL_TAG::GARAGE;
 			break;
@@ -864,7 +878,17 @@ void CImguiMgr::CollocateHouse()
 		case 22:
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
 			tIndex = MODEL_TAG::SHELTER;
+			break;*/
+		case 2:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+			tIndex = MODEL_TAG::ROOMDOOR;
 			break;
+
+		case 3:
+			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+			tIndex = MODEL_TAG::MAINDOOR;
+			break;
+
 		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
@@ -1180,7 +1204,14 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				break;
 			case MODEL_TAG::SLUMHOUSE1:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
+				break;
 
+			case MODEL_TAG::ROOMDOOR:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+				break;
+
+			case MODEL_TAG::MAINDOOR:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
 				break;
 
 			}

@@ -38,7 +38,9 @@ private:
 	_float3			m_vColliderPos;
 	COLLISION_TYPE	m_eColliderType = COLLISION_TYPE::TYPE_END;
 	_float4			m_vColliderLook;
-	CGameObject* m_pTripod = nullptr;
+	
+	
+	CGameObject*	 m_pTripod = nullptr;
 
 
 private:

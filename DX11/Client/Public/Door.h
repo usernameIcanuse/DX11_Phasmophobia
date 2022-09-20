@@ -28,6 +28,12 @@ public:
 	virtual HRESULT Render();
 
 public:
+	void Grab_Door(CGameObject* _pPlayer)
+	{
+		m_pPlayer = _pPlayer;
+	}
+
+public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag);
 
 private:
@@ -38,7 +44,8 @@ private:
 
 	CCollider* m_pOBBCom = nullptr;
 
-
+private:
+	CGameObject*	m_pPlayer = nullptr;
 
 
 private:
