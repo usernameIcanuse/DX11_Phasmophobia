@@ -71,6 +71,7 @@ void CImguiMgr::Tick(_float fTimeDelta)
 		ImGui::Checkbox("Map Tool", &show_Map_Tool);
 		ImGui::Checkbox("Object Tool", &show_Object_Tool);
 		ImGui::Checkbox("Collider Tool", &show_Collider_Tool);
+		ImGui::Checkbox("Navigation Tool", &show_Navigation_Tool);
 
 
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
@@ -98,14 +99,17 @@ void CImguiMgr::Tick(_float fTimeDelta)
 	if (CURRENT_LEVEL == LEVEL_STAGE1)
 	{
 		Set_Prototype();
-		if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)
+		if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool && !show_Navigation_Tool)
 			Tool_Map();
-		else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool)
+		else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool && !show_Navigation_Tool)
 			Tool_Object();
-		else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
+		else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool && !show_Navigation_Tool)
 			Tool_Collider();
+		else if (!show_Map_Tool && !show_Object_Tool && !show_Collider_Tool && show_Navigation_Tool)
+			Tool_Navigation();
 
-		Picking_Object();
+		if(!show_Navigation_Tool)
+			Picking_Object();
 	}
 }
 
@@ -632,6 +636,41 @@ void CImguiMgr::Tool_Collider()
 
 	ImGui::End();
 
+}
+
+void CImguiMgr::Tool_Navigation()
+{
+	ImGui::Begin("Tool_Navigation");
+
+	if (ImGui::Button("Close Me"))
+	{
+		show_Navigation_Tool = false;
+	}
+	/* Save/Load Map*/
+	static char Stage[256] = "";
+	ImGui::InputText("Stage Name", Stage, IM_ARRAYSIZE(Stage));
+
+	static char str0[256] = "";
+	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
+
+
+	if (ImGui::Button("Save"))
+	{
+		Save_Navigation(Stage, str0);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load_Navigation(Stage, str0);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		m_vNavigationPoints.clear();
+	}
+
+	ImGui::End();
 }
 
 void CImguiMgr::Picking_Object()
@@ -1538,4 +1577,14 @@ void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
 	RELEASE_INSTANCE(CGameInstance);
 	CloseHandle(hFile);
 	MSG_BOX("Loaded file");
+}
+
+void CImguiMgr::Save_Navigation(const char* strStageName, const char* strFileName)
+{
+
+}
+
+void CImguiMgr::Load_Navigation(const char* strStageName, const char* strFileName)
+{
+
 }

@@ -34,6 +34,7 @@ void CDoor::Tick(_float fTimeDelta)
  
     if (m_pPlayer)
     {
+        /*¹® È¸Àü*/
         CCollider* pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
         
         RAY tRay = *(RAY*)pRayCom->Get_Collider();
@@ -53,7 +54,7 @@ void CDoor::Tick(_float fTimeDelta)
 
         _vector vCrossValue = XMVector3Cross(vRight, XMLoadFloat3(&vMovingVector));
         
-        _float fRadian = XMVectorGetX(XMVector3Length(vCrossValue)) * 0.5f;
+        _float fRadian = XMVectorGetX(XMVector3Length(vCrossValue)) * 0.4f;
 
         if (0.f > XMVectorGetX(XMVector3Dot(XMVectorSet(0.f, 1.f, 0.f, 0.f), vCrossValue)))
             fRadian *= -1.f;

@@ -36,6 +36,7 @@ private:
 	bool show_Map_Tool = false;
 	bool show_Object_Tool = false;
 	bool show_Collider_Tool = false;
+	bool show_Navigation_Tool = false;
 
 private:
 	void Set_Prototype();
@@ -44,6 +45,7 @@ private:
 	void Tool_Map();
 	void Tool_Object();
 	void Tool_Collider();
+	void Tool_Navigation();
 
 	void Translation();
 	void Rotation();
@@ -65,7 +67,13 @@ private:
 	void Load_Collider(const char* strStageName, const char* strFileName);
 	void Load_Wall(const char* strStageName, const char* strFileName);
 
+	void Save_Navigation(const char* strStageName, const char* strFileName);
+	void Load_Navigation(const char* strStageName, const char* strFileName);
+
 private:
+
+	vector<_float3>		m_vNavigationPoints;
+
 	vector<CGameObject*> m_vecPrototypeHouse;
 	vector<CGameObject*> m_vecPrototypeObject;
 

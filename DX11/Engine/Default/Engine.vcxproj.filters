@@ -392,5 +392,13 @@
     <Filter Include="01.Utility\03.Component\06.Navigation\Cell">
       <UniqueIdentifier>{0f826e44-12ca-45c9-b67f-1e21d4e61418}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Component\06.Navigation\Cell\Shader">
+      <UniqueIdentifier>{765a6377-5ff6-4955-b2cf-616eb00f217e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Client\Bin\ShaderFiles\Shader_Cell.hlsl">
+      <Filter>01.Utility\03.Component\06.Navigation\Cell\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
