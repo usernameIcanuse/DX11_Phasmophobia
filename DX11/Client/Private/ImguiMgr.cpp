@@ -126,85 +126,95 @@ void CImguiMgr::Set_Prototype()
 	static _bool	bFirst = false;
 	if (!bFirst)
 	{
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
 			return;
 
 		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
 		
+
+		CNavigation::NAVIDESC	NaviDesc;
+		ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+		NaviDesc.m_iCurrentIndex = 0;
+
+		//m_pNavigationCom = (CNavigation*)pGameInstance->Clone_Component(LEVEL_STAGE1, TEXT("Protototype_Component_Navigation"), &NaviDesc);
+		//플레이어 한테 넣어두고 임구이에서 받아오기
+
 		bFirst = true;
 		m_iSelectedIndex = -1;
 
 		CGameObject* pTerrain = nullptr;
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
 			return;
 
 		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
 		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
 		
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Collider"), &m_ColliderPrototype)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Collider"), &m_ColliderPrototype)))
 			return;
 		m_ColliderPrototype->Set_Enable(false);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Wall"), &m_WallPrototype)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Wall"), &m_WallPrototype)))
 			return;
 		m_WallPrototype->Set_Enable(false);
 
 		
 		/* Object */
 		CGameObject* pTemp = nullptr;
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Note"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Note"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
 		
 		
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 		
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
@@ -212,156 +222,157 @@ void CImguiMgr::Set_Prototype()
 		
 
 		/* House */
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 		//	return;
 		//pTemp->Set_Enable(false);
 		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Garage"));
 		//m_vecPrototypeHouse.push_back(pTemp);
 
-		/*if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		/*if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Pier_house2"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background1"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background2"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background3"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background4"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background5"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background6"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background7"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background8"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background9"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background10"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background11"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background12"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background13"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoofTop_Background14"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_SlumHouse1"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_OldHouse"));
 		m_vecPrototypeHouse.push_back(pTemp);
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Shelter"));
 		m_vecPrototypeHouse.push_back(pTemp);*/
 
+		RELEASE_INSTANCE(CGameInstance);
 
 	}
 }

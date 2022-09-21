@@ -187,6 +187,7 @@
     <ClInclude Include="..\Public\Ghost_Status.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\LightSwitch.h" />
+    <ClInclude Include="..\Public\Navigation_Point.h" />
     <ClInclude Include="..\Public\Note.h" />
     <ClInclude Include="..\Public\House.h" />
     <ClInclude Include="..\Public\imconfig.h">
@@ -259,6 +260,7 @@
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\LightSwitch.cpp" />
+    <ClCompile Include="..\Private\Navigation_Point.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />
     <ClCompile Include="..\Private\DotsProjecter.cpp" />
     <ClCompile Include="..\Private\EMF.cpp" />

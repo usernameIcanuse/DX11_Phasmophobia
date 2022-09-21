@@ -136,6 +136,9 @@
     <ClInclude Include="..\Public\Game_Manager.h">
       <Filter>01.Utility\02.GameObject\Manager\Game_Mgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Point_Instance.h">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Instance\Point</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -257,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Game_Manager.cpp">
       <Filter>01.Utility\02.GameObject\Manager\Game_Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Point_Instance.cpp">
+      <Filter>01.Utility\03.Component\00.VIBuffer\Instance\Point</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +400,12 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\06.Navigation\Cell\Shader">
       <UniqueIdentifier>{765a6377-5ff6-4955-b2cf-616eb00f217e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Instance">
+      <UniqueIdentifier>{5e81bb4b-982b-4471-a96f-82d125e9935d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.VIBuffer\Instance\Point">
+      <UniqueIdentifier>{30907794-6a4d-4628-aba6-168a35e875b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CCollider;
+class CNavigation;
 END
 
 class CImguiMgr final : public CBase
@@ -73,6 +74,8 @@ private:
 private:
 
 	vector<_float3>		m_vNavigationPoints;
+	CNavigation*		m_pNavigationCom;
+
 
 	vector<CGameObject*> m_vecPrototypeHouse;
 	vector<CGameObject*> m_vecPrototypeObject;

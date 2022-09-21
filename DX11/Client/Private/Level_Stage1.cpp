@@ -118,7 +118,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 
-	/*char Filepath[255] = "../Bin/Resources/Map/NormalHouse/House"; 
+	char Filepath[255] = "../Bin/Resources/Map/NormalHouse/House"; 
 	
 	HANDLE hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -178,12 +178,12 @@ HRESULT CLevel_Stage1::Load_Stage()
 		}
 	}
 
-	CloseHandle(hFile);*/
+	CloseHandle(hFile);
 	//MSG_BOX("Loaded Map");
 
 
 	char Filepath1[255] = "../Bin/Resources/Map/NormalHouse/Object_Collider";
-	HANDLE hFile = CreateFileA(Filepath1,
+	hFile = CreateFileA(Filepath1,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (INVALID_HANDLE_VALUE == hFile)
@@ -193,7 +193,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 		return E_FAIL;
 	}
 	
-	DWORD dwByteHouse = 0;
+	dwByteHouse = 0;
 	COLLIDER_DATA tDataCollider;
 	ZeroMemory(&tDataCollider, sizeof(COLLIDER_DATA));
 	while (true)

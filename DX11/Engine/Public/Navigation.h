@@ -25,6 +25,7 @@ public:
 
 #ifdef _DEBUG
 public:
+	HRESULT Add_Cell(_float3 vPointA, _float3 vPointB, _float3 vPointC);
 	HRESULT Render();
 #endif // _DEBUG
 

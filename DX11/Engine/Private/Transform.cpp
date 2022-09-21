@@ -51,7 +51,7 @@ HRESULT CTransform::Set_ShaderResource(CShader * pShader, const char * pConstant
 	return S_OK;
 }
 
-HRESULT CTransform::Go_Straight(_float fTimeDelta)
+HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNaviCom)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
@@ -63,7 +63,7 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CTransform::Go_Backward(_float fTimeDelta)
+HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNaviCom)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
@@ -75,7 +75,7 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CTransform::Go_Left(_float fTimeDelta)
+HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNaviCom)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
@@ -87,7 +87,7 @@ HRESULT CTransform::Go_Left(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CTransform::Go_Right(_float fTimeDelta)
+HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNaviCom)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);

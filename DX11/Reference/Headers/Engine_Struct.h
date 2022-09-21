@@ -90,6 +90,27 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXTEX_DECLARATION;
 
+	typedef struct tagVertex_Point
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT2	vPSize;
+	}VTXPOINT;
+
+	typedef struct tagVertex_Instance
+	{
+		XMFLOAT4	vRight;
+		XMFLOAT4	vUp;
+		XMFLOAT4	vLook;
+		XMFLOAT4	vTranslation;
+	}VTXINSTANCE;
+
+	typedef struct ENGINE_DLL tagVertex_Point_Instance_Declaration
+	{
+		static const unsigned int iNumElement = 6;
+		static const D3D11_INPUT_ELEMENT_DESC Element[iNumElement];
+	}VTXPOINT_INSTANCE_DECLARATION;
+
+
 	typedef struct tagVertex_Normal_Texture
 	{
 		XMFLOAT3		vPosition;

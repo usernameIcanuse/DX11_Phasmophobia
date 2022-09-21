@@ -12,6 +12,8 @@
 #include "VIBuffer_Terrain.h"
 #include "Model.h"
 #include "Collider.h"
+#include "Navigation.h"
+#include "VIBuffer_Point_Instance.h"
 
 BEGIN(Engine)
 

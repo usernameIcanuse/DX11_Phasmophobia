@@ -52,10 +52,10 @@ public:
 	HRESULT Set_ShaderResource(class CShader* pShader, const char* pConstantName);
 
 public:
-	HRESULT Go_Straight(_float fTimeDelta);
-	HRESULT Go_Backward(_float fTimeDelta);
-	HRESULT Go_Left(_float fTimeDelta);
-	HRESULT Go_Right(_float fTimeDelta);
+	HRESULT Go_Straight(_float fTimeDelta, class CNavigation* pNaviCom = nullptr);
+	HRESULT Go_Backward(_float fTimeDelta, class CNavigation* pNaviCom = nullptr);
+	HRESULT Go_Left(_float fTimeDelta, class CNavigation* pNaviCom = nullptr);
+	HRESULT Go_Right(_float fTimeDelta, class CNavigation* pNaviCom = nullptr);
 
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void Rotation(_fvector vAxis, _float fRadian);

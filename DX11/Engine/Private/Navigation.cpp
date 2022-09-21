@@ -114,6 +114,44 @@ _bool CNavigation::isMove(_fvector vPosition)
 
 #ifdef _DEBUG
 
+HRESULT CNavigation::Add_Cell(_float3 vPointA, _float3 vPointB, _float3 vPointC)
+{
+	_float3 vPoints[3] = { vPointA,vPointB,vPointC };
+
+	CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size());
+	if (nullptr == pCell)
+		return E_FAIL;
+
+	m_Cells.push_back(pCell);
+
+	for (auto& elem : m_Cells)
+	{
+		if (true == elem->Compare_Points(
+			pCell->Get_Point(CCell::POINT_A),
+			pCell->Get_Point(CCell::POINT_B)))
+		{
+			pCell->Set_Neighbor(CCell::LINE_AB, elem->Get_Index());
+			continue;
+		}
+
+		if (true == elem->Compare_Points(
+			pCell->Get_Point(CCell::POINT_B),
+			pCell->Get_Point(CCell::POINT_C)))
+		{
+			pCell->Set_Neighbor(CCell::LINE_BC, elem->Get_Index());
+			continue;
+		}
+
+		if (true == elem->Compare_Points(
+			pCell->Get_Point(CCell::POINT_C),
+			pCell->Get_Point(CCell::POINT_A)))
+		{
+			pCell->Set_Neighbor(CCell::LINE_CA, elem->Get_Index());
+			continue;
+		}
+	}
+}
+
 HRESULT CNavigation::Render()
 {
 	if (nullptr == m_pShader)
