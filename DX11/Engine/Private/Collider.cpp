@@ -76,6 +76,7 @@ HRESULT CCollider::Initialize(void * pArg)
 
 	case TYPE_RAY:
 		m_tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		m_tRay.fLength = m_ColliderDesc.fRayLength;
 		m_fDist = FLT_MAX;
 		break;
 	}
@@ -114,35 +115,8 @@ void CCollider::Update(_fmatrix TransformMatrix)
 
 _bool CCollider::Collision(CCollider * pTargetCollider)
 {
-	if (TYPE_AABB == m_eCollisionType)
-	{
-		switch (pTargetCollider->Get_Collision_Type())
-		{
-		case TYPE_AABB:
-			return m_pAABB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
-		
-		case TYPE_OBB:
-			return m_pAABB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
-
-		case TYPE_SPHERE:
-			return m_pAABB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
-
-
-		case TYPE_RAY:
-			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
-			_float fDist = 0;
-			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
-			if (m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
-			{
-				XMStoreFloat3(&m_vCollidePos,XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
-			}
-			
-		}
-	}
-
-	else if (TYPE_OBB == m_eCollisionType)
+	
+	if (TYPE_OBB == m_eCollisionType)
 	{
 		switch (pTargetCollider->Get_Collision_Type())
 		{
@@ -162,9 +136,12 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
 			if (m_pOBB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
 			{
-				XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
+				if (fDist <= m_tRay.fLength)
+				{
+					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
+					m_fDist = fDist;
+					return true;
+				}
 			}
 
 		}
@@ -190,9 +167,12 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
 			if (m_pSphere->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
 			{
-				XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
+				if (fDist <= m_tRay.fLength)
+				{
+					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
+					m_fDist = fDist;
+					return true;
+				}
 			}
 
 		}
@@ -206,23 +186,17 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		XMStoreFloat3(&m_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&m_tRay.vDir)));
 		switch (pTargetCollider->Get_Collision_Type())
 		{
-		case TYPE_AABB:
-			pCollider = (BoundingBox*)pTargetCollider->Get_Collider();
-			if (((BoundingBox*)pCollider)->Intersects(XMVectorSetW(XMLoadFloat3(&m_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&m_tRay.vDir), 0.f), fDist))
-			{
-				XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
-			}
-			break;
-
+	
 		case TYPE_OBB:
 			 pCollider = (BoundingOrientedBox*)pTargetCollider->Get_Collider();
 			if (((BoundingOrientedBox*)pCollider)->Intersects(XMVectorSetW(XMLoadFloat3(&m_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&m_tRay.vDir), 0.f), fDist))
 			{
-				XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
+				if (fDist <= m_tRay.fLength)
+				{
+					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
+					m_fDist = fDist;
+					return true;
+				}
 			}
 			break;
 
@@ -230,9 +204,12 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 			 pCollider = (BoundingSphere*)pTargetCollider->Get_Collider();
 			if (((BoundingSphere*)pCollider)->Intersects(XMVectorSetW(XMLoadFloat3(&m_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&m_tRay.vDir), 0.f), fDist))
 			{
-				XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
-				m_fDist = fDist;
-				return true;
+				if (fDist <= m_tRay.fLength)
+				{
+					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
+					m_fDist = fDist;
+					return true;
+				}
 			}
 			break;
 

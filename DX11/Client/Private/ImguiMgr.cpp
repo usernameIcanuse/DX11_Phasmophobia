@@ -768,17 +768,19 @@ void CImguiMgr::CollocateHouse()
 		CGameObject* pTemp = nullptr;
 		MODEL_TAG	tIndex = MODEL_TAG::MODEL_END;
 	
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
-			return;
 
 		switch (m_iSelectedIndex)
 		{
 		
 		case 0:
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
+				return;
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck"));
 			tIndex = MODEL_TAG::TRUCK;
 			break;
 		case 1:
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
+				return;
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
 			tIndex = MODEL_TAG::FURNISHEDCABIN;
 			break;
@@ -880,12 +882,16 @@ void CImguiMgr::CollocateHouse()
 			tIndex = MODEL_TAG::SHELTER;
 			break;*/
 		case 2:
-			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+				return;
+			static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
 			tIndex = MODEL_TAG::ROOMDOOR;
 			break;
 
 		case 3:
-			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+				return;
+			static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
 			tIndex = MODEL_TAG::MAINDOOR;
 			break;
 

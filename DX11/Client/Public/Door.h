@@ -47,6 +47,8 @@ private:
 private:
 	CGameObject*	m_pPlayer = nullptr;
 
+	_float			m_fRadian = 0.f;
+
 
 private:
 	virtual	HRESULT	Setup_Component();

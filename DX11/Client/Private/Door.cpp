@@ -34,8 +34,37 @@ void CDoor::Tick(_float fTimeDelta)
  
     if (m_pPlayer)
     {
-        /* 플레이어 레이를 받아와서 이동값 구해주고 각도 범위 내에 있다면 그대로 가주기 */
+        CCollider* pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
+        
+        RAY tRay = *(RAY*)pRayCom->Get_Collider();
+        _vector vRayDir = XMVector3Normalize(XMLoadFloat3(&tRay.vDir));
+        
+        _float3 vRayPos;
+        XMStoreFloat3(&vRayPos, XMLoadFloat3(&tRay.vPos) + vRayDir * tRay.fLength);
+
+        vRayPos.y = 0.f;
+
+        _float3 vPosition;
+        XMStoreFloat3(&vPosition,m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+        
+        _float3 vMovingVector;
+        XMStoreFloat3(&vMovingVector,XMVector3Normalize(XMLoadFloat3(&vRayPos) - XMLoadFloat3(&vPosition)));
+        _vector vRight = -1.f*m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+
+        _vector vCrossValue = XMVector3Cross(vRight, XMLoadFloat3(&vMovingVector));
+        
+        _float fRadian = XMVectorGetX(XMVector3Length(vCrossValue)) * 0.5f;
+
+        if (0.f > XMVectorGetX(XMVector3Dot(XMVectorSet(0.f, 1.f, 0.f, 0.f), vCrossValue)))
+            fRadian *= -1.f;
+
+        if (XMConvertToRadians(90.f) > m_fRadian + fRadian && 0.f < m_fRadian + fRadian)
+        {
+            m_fRadian += fRadian ;
+            m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fRadian);
+        }
     }
+
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
@@ -99,7 +128,7 @@ HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 
     ColliderDesc.vScale = _float3(6.f, 12.f, 1.f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(ColliderDesc.vScale.x * 0.5f, ColliderDesc.vScale.y * 0.5f, 0.f);
+    ColliderDesc.vTranslation = _float3(ColliderDesc.vScale.x * -0.5f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::DOOR;
 

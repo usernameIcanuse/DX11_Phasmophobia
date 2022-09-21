@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_FPS.h"
 #include "Inventory.h"
+#include "Door.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -101,6 +102,25 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}*/
 
+	if (pGameInstance->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		if (nullptr != m_pDoor)
+		{
+			m_bGrab = true;
+			m_pDoor->Grab_Door(this);
+		}
+	}
+	else if (pGameInstance->Is_KeyState(KEY::LBUTTON, KEY_STATE::AWAY))
+	{
+		if (nullptr != m_pDoor)
+		{
+			m_bGrab = false;
+			m_pDoor->Grab_Door(nullptr);
+			m_pDoor = nullptr;
+		}
+
+	}
+
 	if (pGameInstance->Is_KeyState(KEY::RBUTTON, KEY_STATE::TAP))
 	{
 		m_pInventory->Turn_Switch();
@@ -123,7 +143,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}
 
 	
-	if (m_eColliderType != COLLISION_TYPE::TYPE_END)
+	if (m_eColliderType != COLLISION_TYPE::TYPE_END )
 	{
 		if (m_eColliderType == COLLISION_TYPE::TRIPOD)
 			m_pInventory->Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
@@ -145,6 +165,8 @@ void CPlayer::Tick(_float fTimeDelta)
 	m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
 	m_pTripod = nullptr;
 	m_pItem = nullptr;
+	if(!m_bGrab)
+		m_pDoor = nullptr;
 
 	RELEASE_INSTANCE(CGameInstance);
 }
@@ -265,7 +287,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 			m_eColliderType = pCollider->Get_Type();
 			if(COLLISION_TYPE::WALL == pCollider->Get_Type())
 				XMStoreFloat4(&m_vColliderLook ,static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
-			if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+			else if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
 			{
 				BoundingBox* pBoundingBox = nullptr;
 				pBoundingBox = (BoundingBox*)pCollider->Get_Collider();
@@ -275,6 +297,11 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 			}
 		}
 	}
+	else if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
+	{
+		m_pDoor = (CDoor*)pCollider->Get_Owner();
+	}
+	
 
 }
 
