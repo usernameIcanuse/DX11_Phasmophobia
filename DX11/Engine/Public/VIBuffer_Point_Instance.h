@@ -20,6 +20,7 @@ public:
 
 public:
 	void Update(_float fTimeDelta);
+	void Update(vector<_float3>& vecPosition);
 
 private:
 	ID3D11Buffer*				m_pVBInstance = nullptr;

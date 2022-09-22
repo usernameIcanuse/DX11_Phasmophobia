@@ -10,6 +10,8 @@
 #include "Object_Collider.h"
 #include "Wall_Collider.h"
 
+#include "Point.h"
+
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
@@ -361,6 +363,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
+	/* For.Prototype_GameObject_Point*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point"),
+		CPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 #pragma endregion
 
@@ -404,6 +411,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_Point_Instance*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Point_Instance"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, 200))))
+		return E_FAIL;
 
 	_matrix			TransformMatrix;
 
@@ -640,7 +651,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_RAY))))
 		return E_FAIL;
 
-
+	/* For. Prototype_Component_Navigation*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"),
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Resource/Map/NormalHouse/Navigation.dat")))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
 	/* For.Prototype_Component_Shader_VtxNorTex */
@@ -657,6 +671,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Shader_VtxModel */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPointInstance*/
+	if(FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1,TEXT("Prototype_Component_Shader_VtxPointInstance"),
+		CShader::Create(m_pDevice,m_pContext,TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"),VTXPOINT_INSTANCE_DECLARATION::Element, VTXPOINT_INSTANCE_DECLARATION::iNumElement))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));

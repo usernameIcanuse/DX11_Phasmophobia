@@ -52,6 +52,8 @@ private:
 	void Rotation();
 	void Scaling();
 
+	void Sort_Points_ClockWise();
+
 	void Picking_Object();
 	void MoveObject(_float4 _fPosition);
 	void CollocateHouse();
@@ -74,7 +76,9 @@ private:
 private:
 
 	vector<_float3>		m_vNavigationPoints;
-	CNavigation*		m_pNavigationCom;
+	vector<_float3>				m_vCellPoints;
+	CNavigation*		m_pNavigationCom = nullptr;
+	CVIBuffer_Point_Instance* m_pVIBufferPoint = nullptr;
 
 
 	vector<CGameObject*> m_vecPrototypeHouse;

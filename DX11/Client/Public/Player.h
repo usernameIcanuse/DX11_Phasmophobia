@@ -29,6 +29,7 @@ public:
 private:
 	CCollider* m_pRayCom = nullptr;
 	//CCollider* m_pOBBCom = nullptr;
+	CCollider* m_pNavigationCom = nullptr;
 
 	CInventory* m_pInventory = nullptr;
 

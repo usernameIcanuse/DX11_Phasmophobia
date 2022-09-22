@@ -33,7 +33,7 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(_uint iNumInstance)
 	VTXPOINT*			pVertices = new VTXPOINT;
 
 	pVertices->vPosition = _float3(0.f, 0.f, 0.f);
-	pVertices->vPSize = _float2(1.0f, 1.f);
+	pVertices->vPSize = _float2(0.2f, 0.2f);
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pVertices;
@@ -177,6 +177,38 @@ void CVIBuffer_Point_Instance::Update(_float fTimeDelta)
 
 	}
 
+	m_pContext->Unmap(m_pVBInstance, 0);
+
+}
+
+
+void CVIBuffer_Point_Instance::Update(vector<_float3>& vecPosition)
+{
+	if (nullptr == m_pContext ||
+		nullptr == m_pVBInstance)
+		return;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
+	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
+	
+	if (0 == vecPosition.size())
+		return;
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	_int iIndex = 0;
+
+	for (auto& elem : vecPosition)
+	{
+		XMStoreFloat4(&((VTXINSTANCE*)SubResource.pData)[iIndex].vTranslation,  XMVectorSetW(XMLoadFloat3(&elem),1.f));
+		++iIndex;
+
+		if (iIndex >= m_iNumInstance)
+			break;
+	}
+
+	
 	m_pContext->Unmap(m_pVBInstance, 0);
 
 }

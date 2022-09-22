@@ -132,14 +132,14 @@ void CImguiMgr::Set_Prototype()
 			return;
 
 		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
-		
+		m_pNavigationCom = (CNavigation*)m_pPlayer->Get_Component(TEXT("Com_Navigation"));
 
-		CNavigation::NAVIDESC	NaviDesc;
-		ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
-		NaviDesc.m_iCurrentIndex = 0;
+		CGameObject* pPoints = nullptr;
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
+			return;
 
-		//m_pNavigationCom = (CNavigation*)pGameInstance->Clone_Component(LEVEL_STAGE1, TEXT("Protototype_Component_Navigation"), &NaviDesc);
-		//플레이어 한테 넣어두고 임구이에서 받아오기
+		m_pVIBufferPoint = (CVIBuffer_Point_Instance*)pPoints->Get_Component(TEXT("Com_VIBuffer"));
+		m_vNavigationPoints.push_back(_float3(0.f, 0.f, 0.f));
 
 		bFirst = true;
 		m_iSelectedIndex = -1;
@@ -681,7 +681,75 @@ void CImguiMgr::Tool_Navigation()
 		m_vNavigationPoints.clear();
 	}
 
+	_float4 fPosition = _float4(0.f,0.f,0.f,0.f);
+	//_bool bFlag = false;
+	/*RAY tagRay = CMath_Utility::Get_MouseRayInWorldSpace();
+	XMStoreFloat3(&tagRay.vDir, XMVector3Normalize(XMLoadFloat3(&tagRay.vDir)));*/
+
+	/*for (auto& elem : m_vNavigationPoints)
+	{
+
+	}
+
+	if (!bFlag)
+	{*/
+		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
+		{
+
+		}
+	//}
+	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition));
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		m_vNavigationPoints.push_back(m_vNavigationPoints[0]);
+		m_vCellPoints.push_back(m_vNavigationPoints[0]);
+	}
+
+	m_pVIBufferPoint->Update(m_vNavigationPoints);
+
+	if (m_vCellPoints.size() == 3)
+	{
+		Sort_Points_ClockWise();
+		m_vCellPoints.clear();
+	}
+
 	ImGui::End();
+}
+
+void CImguiMgr::Sort_Points_ClockWise()
+{
+	sort(m_vCellPoints.begin(), m_vCellPoints.end(), [](_float3 p1, _float3 p2) {
+		if (p1.x < p2.x)
+			return true;
+		else if (p1.x == p2.x)
+			if (p1.z < p2.z)
+				return true;
+
+		return false;
+
+		}
+	);
+
+	_vector vecAB = XMLoadFloat3(&m_vCellPoints[1]) - XMLoadFloat3(&m_vCellPoints[0]);
+	_vector vecAC = XMLoadFloat3(&m_vCellPoints[2]) - XMLoadFloat3(&m_vCellPoints[0]);
+
+	_float3 vPoints[3];
+	vPoints[0] = m_vCellPoints[0];
+
+	if (0.f < XMVectorGetX(XMVector3Dot(XMVector3Cross(vecAB, vecAC), XMVectorSet(0.f, 1.f, 0.f, 0.f))))
+	{
+		vPoints[1] = m_vCellPoints[1];
+		vPoints[2] = m_vCellPoints[2];
+	}
+	else
+	{
+		vPoints[1] = m_vCellPoints[2];
+		vPoints[2] = m_vCellPoints[1];
+	}
+
+	m_pNavigationCom->Add_Cell(vPoints[0], vPoints[1], vPoints[2]);
+
 }
 
 void CImguiMgr::Picking_Object()
@@ -1592,10 +1660,76 @@ void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
 
 void CImguiMgr::Save_Navigation(const char* strStageName, const char* strFileName)
 {
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
 
+	HANDLE hFileBrix = CreateFileA(Filepath,
+		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFileBrix)
+	{
+		MSG_BOX("Failed to save file");
+		return;
+	}
+
+	DWORD dwByteBrix = 0;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_float3 vPosition;
+
+	for (auto& elem : m_vNavigationPoints)
+	{
+		ZeroMemory(&vPosition, sizeof(_float3));
+		vPosition = elem;
+		WriteFile(hFileBrix, &vPosition, sizeof(_float3), &dwByteBrix, nullptr);
+
+	}
+
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFileBrix);
+	MSG_BOX("Saved file");
 }
 
 void CImguiMgr::Load_Navigation(const char* strStageName, const char* strFileName)
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse = 0;
+	_float3 vPosition;
+	ZeroMemory(&vPosition, sizeof(_float3));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &vPosition, sizeof(_float3), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+	
+			m_vNavigationPoints.push_back(vPosition);
+
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
 }

@@ -178,7 +178,7 @@
     <ClInclude Include="..\Public\LightSwitch.h">
       <Filter>02.GameObject\Stage\House\LightSwitch</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Navigation_Point.h">
+    <ClInclude Include="..\Public\Point.h">
       <Filter>IMGUI\Manager\Navigation_Point</Filter>
     </ClInclude>
   </ItemGroup>
@@ -345,7 +345,7 @@
     <ClCompile Include="..\Private\LightSwitch.cpp">
       <Filter>02.GameObject\Stage\House\LightSwitch</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Navigation_Point.cpp">
+    <ClCompile Include="..\Private\Point.cpp">
       <Filter>IMGUI\Manager\Navigation_Point</Filter>
     </ClCompile>
   </ItemGroup>
@@ -533,7 +533,7 @@
       <UniqueIdentifier>{5ce219e9-827a-4e64-be6d-3b75380c900d}</UniqueIdentifier>
     </Filter>
     <Filter Include="IMGUI\Manager\Navigation_Point">
-      <UniqueIdentifier>{67efca47-eaec-4004-870f-e5e71ec079f8}</UniqueIdentifier>
+      <UniqueIdentifier>{dc356d4b-8268-4a94-879c-a5b096c5aba4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -557,6 +557,12 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

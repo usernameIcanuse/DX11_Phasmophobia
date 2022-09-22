@@ -187,7 +187,6 @@
     <ClInclude Include="..\Public\Ghost_Status.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\LightSwitch.h" />
-    <ClInclude Include="..\Public\Navigation_Point.h" />
     <ClInclude Include="..\Public\Note.h" />
     <ClInclude Include="..\Public\House.h" />
     <ClInclude Include="..\Public\imconfig.h">
@@ -232,6 +231,7 @@
     <ClInclude Include="..\Public\Object_Collider.h" />
     <ClInclude Include="..\Public\Photo_Camera.h" />
     <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\Point.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SpiritBox.h" />
     <ClInclude Include="..\Public\Temp_Note.h" />
@@ -260,7 +260,6 @@
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\LightSwitch.cpp" />
-    <ClCompile Include="..\Private\Navigation_Point.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />
     <ClCompile Include="..\Private\DotsProjecter.cpp" />
     <ClCompile Include="..\Private\EMF.cpp" />
@@ -307,6 +306,7 @@
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\Photo_Camera.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\Point.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\SpiritBox.cpp" />
     <ClCompile Include="..\Private\Temp_Note.cpp" />
@@ -338,8 +338,10 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

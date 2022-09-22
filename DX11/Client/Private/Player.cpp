@@ -212,6 +212,13 @@ HRESULT CPlayer::Setup_Component()
 		return E_FAIL;
 	*/
 
+	/* For.Com_Navigation*/
+	CNavigation::NAVIDESC	NaviDesc;
+	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+	NaviDesc.m_iCurrentIndex = 0;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -340,5 +347,6 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pRayCom);
+	Safe_Release(m_pNavigationCom);
 
 }
