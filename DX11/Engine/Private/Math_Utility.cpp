@@ -96,10 +96,12 @@ RAY CMath_Utility::Get_MouseRayInWorldSpace()
 	_matrix ViewMatrixInv = XMMatrixInverse(nullptr, pGameInstance->Get_Transform(CPipeLine::D3DTS_VIEW));
 
 	RAY MouseRay;
-
+		
 	XMStoreFloat3(&MouseRay.vDir  , XMVector3TransformNormal( vRayDir, ViewMatrixInv));
 	XMStoreFloat3(&MouseRay.vPos , XMVector3TransformCoord( vRayPos, ViewMatrixInv));
 	MouseRay.fLength = 10000.0f; //¹«ÇÑ
+
+	XMStoreFloat3(&MouseRay.vDir, XMVector3Normalize(XMLoadFloat3(&MouseRay.vDir)));
 	
 	RELEASE_INSTANCE(CGameInstance);
 

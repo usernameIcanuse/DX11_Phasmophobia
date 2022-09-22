@@ -28,7 +28,10 @@ public:
 
 public:
 	HRESULT Initialize(const _float3* pPoints, _int iIndex);
-	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint);	
+	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
+#ifdef _DEBUG
+	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iIndex);	
+#endif
 	_bool isIn(_fvector vPosition, _int* pNeighborIndex);
 
 #ifdef _DEBUG

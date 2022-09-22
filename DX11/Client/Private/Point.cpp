@@ -60,6 +60,8 @@ HRESULT CPoint::Render()
 
 	m_pVIBufferCom->Render();
 
+
+
 	return S_OK;
 }
 
@@ -76,6 +78,7 @@ HRESULT CPoint::SetUp_Components()
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Point_Instance"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -134,6 +137,5 @@ void CPoint::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
-
 
 }

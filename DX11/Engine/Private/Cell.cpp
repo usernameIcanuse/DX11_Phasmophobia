@@ -67,6 +67,58 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint)
 
 	return false;	
 }
+#ifdef _DEBUG
+_bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iIndex)
+{
+	if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_A]), vSourPoint))
+	{
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_B]), vDestPoint))
+		{
+			Set_Neighbor(LINE_AB, iIndex);
+			return true;
+		}
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_C]), vDestPoint))
+		{
+			Set_Neighbor(LINE_CA, iIndex);
+			return true;
+		}
+	}
+
+
+	if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_B]), vSourPoint))
+	{
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_A]), vDestPoint))
+		{
+			Set_Neighbor(LINE_AB, iIndex);
+			return true;
+		}
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_C]), vDestPoint))
+		{
+			Set_Neighbor(LINE_BC, iIndex);
+			return true;
+		}
+	}
+
+	if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_C]), vSourPoint))
+	{
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_A]), vDestPoint))
+		{
+			Set_Neighbor(LINE_CA, iIndex);
+			return true;
+		}
+		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_B]), vDestPoint))
+		{
+			Set_Neighbor(LINE_BC, iIndex);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+#endif
+
 
 _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex)
 {

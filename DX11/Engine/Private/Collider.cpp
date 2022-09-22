@@ -184,6 +184,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		void* pCollider = nullptr;
 		_float	fDist=0;
 		XMStoreFloat3(&m_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&m_tRay.vDir)));
+		
 		switch (pTargetCollider->Get_Collision_Type())
 		{
 	

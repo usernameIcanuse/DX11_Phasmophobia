@@ -75,9 +75,10 @@ private:
 
 private:
 
-	vector<_float3>		m_vNavigationPoints;
+	vector<_float3>				m_vNavigationPoints;
+	vector<_float3>				m_vSavePoints;
 	vector<_float3>				m_vCellPoints;
-	CNavigation*		m_pNavigationCom = nullptr;
+	CNavigation*				m_pNavigationCom = nullptr;
 	CVIBuffer_Point_Instance* m_pVIBufferPoint = nullptr;
 
 

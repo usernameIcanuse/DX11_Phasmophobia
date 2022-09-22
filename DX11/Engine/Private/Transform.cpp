@@ -1,5 +1,6 @@
 #include "..\Public\Transform.h"
 #include "Shader.h"
+#include "Navigation.h"
 
 CTransform::CTransform(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CComponent(pDevice, pContext)
@@ -58,6 +59,13 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNaviCom)
 
 	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;	
 
+	if (nullptr != pNaviCom)
+	{
+		/*if (false == pNaviCom->isMove(vPosition))
+			return S_OK;*/
+		pNaviCom->isMove(vPosition);
+	}
+
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 	
 	return S_OK;
@@ -69,6 +77,14 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
 	vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+
+	if (nullptr != pNaviCom)
+	{
+		/*if (false == pNaviCom->isMove(vPosition))
+			return S_OK;*/
+		pNaviCom->isMove(vPosition);
+	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 
@@ -82,6 +98,14 @@ HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNaviCom)
 
 	vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
+
+	if (nullptr != pNaviCom)
+	{
+		/*if (false == pNaviCom->isMove(vPosition))
+			return S_OK;*/
+		pNaviCom->isMove(vPosition);
+	}
+
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 
 	return S_OK;
@@ -93,6 +117,14 @@ HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
 
 	vPosition += XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
+
+	if (nullptr != pNaviCom)
+	{
+		/*if (false == pNaviCom->isMove(vPosition))
+			return S_OK;*/
+		pNaviCom->isMove(vPosition);
+	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 

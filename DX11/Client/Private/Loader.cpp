@@ -653,7 +653,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	/* For. Prototype_Component_Navigation*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"),
-		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Resource/Map/NormalHouse/Navigation.dat")))))
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation.dat"))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));

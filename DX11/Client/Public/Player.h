@@ -4,6 +4,9 @@
 
 BEGIN(Engine)
 class CCollider;
+class CNavigation;
+class CRenderer;
+
 END
 
 
@@ -29,7 +32,11 @@ public:
 private:
 	CCollider* m_pRayCom = nullptr;
 	//CCollider* m_pOBBCom = nullptr;
-	CCollider* m_pNavigationCom = nullptr;
+	CNavigation* m_pNavigationCom = nullptr;
+
+#ifdef _DEBUG
+	CRenderer*   m_pRendererCom = nullptr;
+#endif
 
 	CInventory* m_pInventory = nullptr;
 

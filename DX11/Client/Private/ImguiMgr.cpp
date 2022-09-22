@@ -682,25 +682,33 @@ void CImguiMgr::Tool_Navigation()
 	}
 
 	_float4 fPosition = _float4(0.f,0.f,0.f,0.f);
-	//_bool bFlag = false;
-	/*RAY tagRay = CMath_Utility::Get_MouseRayInWorldSpace();
-	XMStoreFloat3(&tagRay.vDir, XMVector3Normalize(XMLoadFloat3(&tagRay.vDir)));*/
+	_bool bFlag = false;
+	RAY tagRay = CMath_Utility::Get_MouseRayInWorldSpace();
+	XMStoreFloat3(&tagRay.vDir, XMVector3Normalize(XMLoadFloat3(&tagRay.vDir)));
 
-	/*for (auto& elem : m_vNavigationPoints)
+	for (auto& elem : m_vNavigationPoints)
 	{
+		_vector vProjection = XMLoadFloat3(&elem) - XMLoadFloat3(&tagRay.vPos);
+		_vector vProjPos = XMLoadFloat3(&tagRay.vDir) * XMVector3Dot(XMLoadFloat3(&tagRay.vDir), vProjection) + XMLoadFloat3(&tagRay.vPos);
+		
+		_vector fLength = XMLoadFloat3(&elem) - vProjPos;
 
+		if (0.15f > XMVectorGetX(XMVector3Length(fLength)))
+		{
+			XMStoreFloat4(&fPosition, XMLoadFloat3(&elem));
+			bFlag = true;
+		}
 	}
 
 	if (!bFlag)
-	{*/
+	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
-		{
+			bFlag = true;
+	}
 
-		}
-	//}
 	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition));
 
-	if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+	if (bFlag && GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{
 		m_vNavigationPoints.push_back(m_vNavigationPoints[0]);
 		m_vCellPoints.push_back(m_vNavigationPoints[0]);
@@ -749,6 +757,9 @@ void CImguiMgr::Sort_Points_ClockWise()
 	}
 
 	m_pNavigationCom->Add_Cell(vPoints[0], vPoints[1], vPoints[2]);
+	m_vSavePoints.push_back(vPoints[0]);
+	m_vSavePoints.push_back(vPoints[1]);
+	m_vSavePoints.push_back(vPoints[2]);
 
 }
 
@@ -1661,9 +1672,10 @@ void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
 void CImguiMgr::Save_Navigation(const char* strStageName, const char* strFileName)
 {
 	char Filepath[255] = "../Bin/Resources/Map/";
-	strcat_s(Filepath, sizeof(Filepath), strStageName);
-	strcat_s(Filepath, sizeof(Filepath), "/");
-	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	strcat_s(Filepath,  strStageName);
+	strcat_s(Filepath, "/");
+	strcat_s(Filepath, strFileName);
+	strcat_s(Filepath, ".dat");
 
 	HANDLE hFileBrix = CreateFileA(Filepath,
 		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -1674,17 +1686,12 @@ void CImguiMgr::Save_Navigation(const char* strStageName, const char* strFileNam
 		return;
 	}
 
-	DWORD dwByteBrix = 0;
+	_ulong dwByteBrix = 0;
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	_float3 vPosition;
-
-	for (auto& elem : m_vNavigationPoints)
-	{
-		ZeroMemory(&vPosition, sizeof(_float3));
-		vPosition = elem;
-		WriteFile(hFileBrix, &vPosition, sizeof(_float3), &dwByteBrix, nullptr);
-
+	for(auto& elem: m_vSavePoints)
+	{	
+		WriteFile(hFileBrix, &elem, sizeof(_float3), &dwByteBrix, nullptr);
 	}
 
 
@@ -1699,9 +1706,11 @@ void CImguiMgr::Load_Navigation(const char* strStageName, const char* strFileNam
 
 
 	char Filepath[255] = "../Bin/Resources/Map/";
-	strcat_s(Filepath, sizeof(Filepath), strStageName);
-	strcat_s(Filepath, sizeof(Filepath), "/");
-	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	strcat_s(Filepath,  strStageName);
+	strcat_s(Filepath, "/");
+	strcat_s(Filepath, strFileName);
+	strcat_s(Filepath, ".dat");
+
 	HANDLE hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -1712,11 +1721,11 @@ void CImguiMgr::Load_Navigation(const char* strStageName, const char* strFileNam
 		return;
 	}
 	DWORD dwByteHouse = 0;
-	_float3 vPosition;
-	ZeroMemory(&vPosition, sizeof(_float3));
+	_float3 vPosition[3];
+	ZeroMemory(&vPosition, sizeof(_float3)*3);
 	while (true)
 	{
-		if (TRUE == ReadFile(hFile, &vPosition, sizeof(_float3), &dwByteHouse, nullptr))
+		if (TRUE == ReadFile(hFile, &vPosition, sizeof(_float3)*3, &dwByteHouse, nullptr))
 		{
 			if (0 == dwByteHouse)
 			{
@@ -1724,7 +1733,20 @@ void CImguiMgr::Load_Navigation(const char* strStageName, const char* strFileNam
 			}
 
 	
-			m_vNavigationPoints.push_back(vPosition);
+			m_vNavigationPoints.push_back(vPosition[0]);
+			m_vSavePoints.push_back(vPosition[0]);
+			m_vCellPoints.push_back(vPosition[0]);
+
+			m_vNavigationPoints.push_back(vPosition[1]);
+			m_vSavePoints.push_back(vPosition[1]);
+			m_vCellPoints.push_back(vPosition[1]);
+
+			m_vNavigationPoints.push_back(vPosition[2]);
+			m_vSavePoints.push_back(vPosition[2]);
+			m_vCellPoints.push_back(vPosition[2]);
+
+			Sort_Points_ClockWise();
+			m_vCellPoints.clear();
 
 		}
 	}

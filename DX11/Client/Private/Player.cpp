@@ -55,22 +55,22 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (pGameInstance->Is_KeyState(KEY::W, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
+		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::S, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
+		m_pTransformCom->Go_Backward(fTimeDelta, m_pNavigationCom);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::A, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Left(fTimeDelta);
+		m_pTransformCom->Go_Left(fTimeDelta, m_pNavigationCom);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::D, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Right(fTimeDelta);
+		m_pTransformCom->Go_Right(fTimeDelta, m_pNavigationCom);
 	}
 	if (pGameInstance->Is_KeyState(KEY::LEFT, KEY_STATE::HOLD))
 	{
@@ -174,10 +174,16 @@ void CPlayer::Tick(_float fTimeDelta)
 void CPlayer::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+#ifdef _DEBUG
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+#endif
+	
 }
 
 HRESULT CPlayer::Render()
 {
+	m_pNavigationCom->Render();
+
 	return S_OK;
 }
 
@@ -219,7 +225,11 @@ HRESULT CPlayer::Setup_Component()
 
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
-
+#ifdef _DEBUG
+	/*For.Com_Renderer*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+#endif
 	return S_OK;
 }
 
@@ -348,5 +358,9 @@ void CPlayer::Free()
 
 	Safe_Release(m_pRayCom);
 	Safe_Release(m_pNavigationCom);
+
+#ifdef _DEBUG
+	Safe_Release(m_pRendererCom);
+#endif
 
 }

@@ -17,7 +17,7 @@ private:
 	virtual ~CNavigation() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const _tchar* pNavigationData);
+	virtual HRESULT Initialize_Prototype(const char* pNavigationData);
 	virtual HRESULT Initialize(void* pArg);
 
 public:
@@ -46,7 +46,7 @@ private:
 #endif // _DEBUG
 
 public:
-	static CNavigation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pNavigationData);
+	static CNavigation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const char* pNavigationData);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };
