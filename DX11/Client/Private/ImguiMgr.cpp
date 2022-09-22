@@ -706,8 +706,24 @@ void CImguiMgr::Tool_Navigation()
 			bFlag = true;
 	}
 
-	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition));
+	ImGui::Text("[ P ] : y+");
+	ImGui::Text("[ O ] : y-");
 
+	static _float4	fOffset = _float4(0.f, 0.f, 0.f, 0.f);
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
+	{
+		XMStoreFloat4(&fOffset,XMLoadFloat4(&fOffset) + XMVectorSet(0.f, 0.05f, 0.f, 0.f));
+	}
+	else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+	{
+		XMStoreFloat4(&fOffset, XMLoadFloat4(&fOffset) - XMVectorSet(0.f, 0.05f, 0.f, 0.f));
+	}
+
+	
+
+	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition)+XMLoadFloat4(&fOffset));
+	
 	if (bFlag && GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{
 		m_vNavigationPoints.push_back(m_vNavigationPoints[0]);
