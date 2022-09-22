@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "House.h"
+#include "Door.h"
 #include "Object_Collider.h"
 
 
@@ -181,6 +182,69 @@ HRESULT CLevel_Stage1::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Map");
 
+	char FilepathDoor[255] = "../Bin/Resources/Map/NormalHouse/Door";
+
+	hFile = CreateFileA(FilepathDoor,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	ZeroMemory(&tDataMap, sizeof(MAP_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataMap, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+			MODEL_TAG	 iModelTag = tDataMap.tModelTag;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_House"),
+				TEXT("Prototype_GameObject_Door"),
+				&pTemp)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
+			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
+			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
+			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
+
+
+
+			switch (iModelTag)
+			{
+			case MODEL_TAG::ROOMDOOR:
+				static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+
+				break;
+			case MODEL_TAG::MAINDOOR:
+				static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+
+				break;
+			}
+
+
+		}
+	}
+
+	CloseHandle(hFile);
+
+	//Load Collider
+	///////////////////////////////////////////////////////////////////////////////
 
 	char Filepath1[255] = "../Bin/Resources/Map/NormalHouse/Object_Collider";
 	hFile = CreateFileA(Filepath1,

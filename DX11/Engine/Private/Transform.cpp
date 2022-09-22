@@ -163,9 +163,15 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	vUp = XMVector3TransformNormal(vUp, RotationMatrix);
 	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
 
-	Set_State(CTransform::STATE_RIGHT, vRight);
-	Set_State(CTransform::STATE_UP, vUp);
-	Set_State(CTransform::STATE_LOOK, vLook);
+	vRight = XMVector3Normalize(vRight);
+	vUp = XMVector3Normalize(vUp);
+	vLook = XMVector3Normalize(vLook);
+
+	_float3 vScale = Get_Scaled();
+
+	Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+	Set_State(CTransform::STATE_UP, vUp * vScale.y);
+	Set_State(CTransform::STATE_LOOK, vLook * vScale.z);
 
 }
 

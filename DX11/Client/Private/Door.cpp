@@ -54,15 +54,23 @@ void CDoor::Tick(_float fTimeDelta)
 
         _vector vCrossValue = XMVector3Cross(vRight, XMLoadFloat3(&vMovingVector));
         
-        _float fRadian = XMVectorGetX(XMVector3Length(vCrossValue)) * 0.4f;
-
-        if (0.f > XMVectorGetX(XMVector3Dot(XMVectorSet(0.f, 1.f, 0.f, 0.f), vCrossValue)))
-            fRadian *= -1.f;
-
-        if (XMConvertToRadians(90.f) > m_fRadian + fRadian && 0.f < m_fRadian + fRadian)
+        _float fRadian = XMVectorGetX(XMVector3Length(vCrossValue));
+        if (0.1 < fabs(fRadian))
         {
-            m_fRadian += fRadian ;
-            m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fRadian);
+            fRadian *= 0.4f;
+
+            if (0.f > XMVectorGetX(XMVector3Dot(XMVectorSet(0.f, 1.f, 0.f, 0.f), vCrossValue)))
+                fRadian *= -1.f;
+
+
+            if (XMConvertToRadians(90.f) > m_fRadian + fRadian && DBL_EPSILON < m_fRadian + fRadian)
+            {
+                if (0.f != fRadian)
+                    int a = 0;
+
+                m_fRadian += fRadian;
+                m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fRadian);
+            }
         }
     }
 
