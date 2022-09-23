@@ -31,7 +31,7 @@ public:
 
 private:
 	CCollider* m_pRayCom = nullptr;
-	CCollider* m_pOBBCom = nullptr;
+	CCollider* m_pSphereCom = nullptr;
 	CNavigation* m_pNavigationCom = nullptr;
 
 #ifdef _DEBUG

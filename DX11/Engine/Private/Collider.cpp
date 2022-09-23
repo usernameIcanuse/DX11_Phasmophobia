@@ -121,14 +121,14 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		switch (pTargetCollider->Get_Collision_Type())
 		{
 		case TYPE_AABB:
-			return m_bColl = m_pOBB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pOBB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+			break;
 		case TYPE_OBB:
-			return m_bColl = m_pOBB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pOBB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
+			break;
 		case TYPE_SPHERE:
-			return m_bColl = m_pOBB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pOBB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
+			break;
 
 		case TYPE_RAY:
 			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
@@ -140,10 +140,10 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return m_bColl = true;
+					m_bColl = true;
 				}
 			}
-
+			break;
 		}
 	}
 
@@ -152,14 +152,14 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		switch (pTargetCollider->Get_Collision_Type())
 		{
 		case TYPE_AABB:
-			return m_bColl = m_pSphere->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pSphere->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+			break;
 		case TYPE_OBB:
-			return m_bColl = m_pSphere->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pSphere->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
+			break;
 		case TYPE_SPHERE:
-			return m_bColl = m_pSphere->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
-
+			m_bColl = m_pSphere->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
+			break;
 
 		case TYPE_RAY:
 			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
@@ -171,10 +171,10 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return m_bColl = true;
+					m_bColl = true;
 				}
 			}
-
+			break;
 		}
 	}
 
@@ -196,7 +196,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return m_bColl = true;
+					m_bColl = true;
 				}
 			}
 			break;
@@ -209,7 +209,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return m_bColl = true;
+					m_bColl = true;
 				}
 			}
 			break;
@@ -218,7 +218,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 	}
 
 
-	return m_bColl = false;
+	return m_bColl;
 }
 
 _bool CCollider::Collision(RAY _tRay, _float& fDist)
