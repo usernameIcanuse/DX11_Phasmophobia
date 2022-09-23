@@ -121,26 +121,26 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		switch (pTargetCollider->Get_Collision_Type())
 		{
 		case TYPE_AABB:
-			return m_pOBB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pOBB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
 
 		case TYPE_OBB:
-			return m_pOBB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pOBB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
 
 		case TYPE_SPHERE:
-			return m_pOBB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pOBB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
 
 
 		case TYPE_RAY:
 			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
 			_float fDist = 0;
 			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
-			if (m_pOBB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
+			if ( m_pOBB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
 			{
 				if (fDist <= m_tRay.fLength)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return true;
+					return m_bColl = true;
 				}
 			}
 
@@ -152,26 +152,26 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		switch (pTargetCollider->Get_Collision_Type())
 		{
 		case TYPE_AABB:
-			return m_pSphere->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pSphere->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
 
 		case TYPE_OBB:
-			return m_pSphere->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pSphere->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
 
 		case TYPE_SPHERE:
-			return m_pSphere->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
+			return m_bColl = m_pSphere->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
 
 
 		case TYPE_RAY:
 			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
 			_float fDist = 0;
 			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
-			if (m_pSphere->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
+			if ( m_pSphere->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
 			{
 				if (fDist <= m_tRay.fLength)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return true;
+					return m_bColl = true;
 				}
 			}
 
@@ -196,7 +196,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return true;
+					return m_bColl = true;
 				}
 			}
 			break;
@@ -209,7 +209,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 				{
 					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&m_tRay.vPos) + XMLoadFloat3(&m_tRay.vDir) * fDist);
 					m_fDist = fDist;
-					return true;
+					return m_bColl = true;
 				}
 			}
 			break;
@@ -218,7 +218,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 	}
 
 
-	return false;
+	return m_bColl = false;
 }
 
 _bool CCollider::Collision(RAY _tRay, _float& fDist)
@@ -226,7 +226,7 @@ _bool CCollider::Collision(RAY _tRay, _float& fDist)
 	XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
 	if (m_pAABB)
 	{
-		return m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist);
+		return  m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist);
 	}
 	if (m_pOBB)
 	{
@@ -265,18 +265,21 @@ HRESULT CCollider::Render()
 
 	m_pEffect->Apply(m_pContext);
 
+	_vector		vColor = m_bColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f);
+
+
 	m_pBatch->Begin();
 
 	switch (m_eCollisionType)
 	{
 	case TYPE_AABB:
-		DX::Draw(m_pBatch, *m_pAABB);
+		DX::Draw(m_pBatch, *m_pAABB, vColor);
 		break;
 	case TYPE_OBB:
-		DX::Draw(m_pBatch, *m_pOBB);
+		DX::Draw(m_pBatch, *m_pOBB, vColor);
 		break;
 	case TYPE_SPHERE:
-		DX::Draw(m_pBatch, *m_pSphere);
+		DX::Draw(m_pBatch, *m_pSphere, vColor);
 		break;
 	}
 

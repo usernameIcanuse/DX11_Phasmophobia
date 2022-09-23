@@ -116,6 +116,8 @@ private:
 	static _ulong				g_iNextID;
 	_ulong						m_iID;
 
+	_bool						m_bColl = false;
+
 #ifdef _DEBUG
 private:
 	BasicEffect*									m_pEffect = nullptr;	

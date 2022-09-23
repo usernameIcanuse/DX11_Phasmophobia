@@ -2,6 +2,10 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CRenderer;
+END
+
 
 BEGIN(Client)
 
@@ -28,11 +32,16 @@ public:
 	void	Decrease_BaseLine();
 
 private:
+#ifdef _DEBUG
+	_tchar		m_szAgression[MAX_PATH] = TEXT("");//공격성 등 여러개 출력
+	CRenderer* m_pRenderercom = nullptr;
+	_float		m_fTimeAcc = 0.f;
+#endif
+
 	_uint	   m_iAggression = 0;
 	_uint	   m_iEMF = 1;
 
-	_float 	    m_fAggressionWeight = 0.f;//올림
-	_float	    m_fCalmWeight= 0.f;//내림 & 1-올림-내림 == 유지
+	_float 	    m_iAggressionWeight = 0.f;//올림
 
 	_float	    m_fEventWeight = 0.f;//이벤트 발생 & 1-이벤트 발생 == 안 발생
 	_float		m_fAttackWeight = 0.f;//헌팅 & 1-헌팅 == 안 헌팅

@@ -48,6 +48,8 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	
 	if (nullptr != m_pGhost)
 	{
 		CTransform* matGhostTransform = (CTransform*)m_pGhost->Get_Component(CGameObject::m_pTransformTag);
@@ -150,6 +152,10 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
+	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+	{
+		int a = 10;
+	}
 	
 }
 

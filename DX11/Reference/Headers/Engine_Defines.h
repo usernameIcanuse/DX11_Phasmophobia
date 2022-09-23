@@ -43,6 +43,7 @@ using namespace DirectX;
 #include <map>
 #include <unordered_map>
 #include <algorithm>
+#include <random>
 
 #include "Engine_Typedef.h"
 #include "Engine_Function.h"
@@ -56,6 +57,7 @@ using namespace DirectX;
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+
 
 //#ifndef DBG_NEW 
 //

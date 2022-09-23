@@ -60,7 +60,8 @@ private:
 
 	_int	   m_iAreaDefaultTemperature = 0;
 	_int       m_iAreaTemperature = 0;
-	
+
+
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

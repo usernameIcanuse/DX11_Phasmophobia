@@ -92,6 +92,7 @@ void CTempNote::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _floa
         m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
 
         m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+        m_pTransformCom->Rotation(vecLook, XMConvertToRadians(180.f));
     }
 
 }

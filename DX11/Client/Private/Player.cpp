@@ -160,6 +160,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}
 
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	m_fDist = FLT_MAX;
 	m_eColliderType = COLLISION_TYPE::TYPE_END;
 	m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
@@ -182,8 +183,10 @@ void CPlayer::LateTick(_float fTimeDelta)
 
 HRESULT CPlayer::Render()
 {
+#ifdef _DEBUG
 	m_pNavigationCom->Render();
 
+#endif
 	return S_OK;
 }
 
@@ -204,10 +207,10 @@ HRESULT CPlayer::Setup_Component()
 		return E_FAIL;
 
 	/* For.Com_OBB*/
-	/*
-		ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+	
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(5.f, 10.f, 5.f);
+	ColliderDesc.vScale = _float3(5.f, 12.f, 5.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;
@@ -216,7 +219,7 @@ HRESULT CPlayer::Setup_Component()
 
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
-	*/
+	
 
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
@@ -358,6 +361,7 @@ void CPlayer::Free()
 
 	Safe_Release(m_pRayCom);
 	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pOBBCom);
 
 #ifdef _DEBUG
 	Safe_Release(m_pRendererCom);
