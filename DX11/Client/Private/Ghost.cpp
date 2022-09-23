@@ -129,12 +129,12 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Moving(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Backward(fTimeDelta);
+	//m_pTransformCom->Go_Backward(fTimeDelta);
 
-	if (m_fTime > 5.f)
-	{
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Stop"));
-	}
+	//if (m_fTime > 5.f)
+	//{
+	//	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Stop"));
+	//}
 }
 
 

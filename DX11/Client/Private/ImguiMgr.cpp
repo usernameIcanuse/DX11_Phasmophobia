@@ -700,25 +700,29 @@ void CImguiMgr::Tool_Navigation()
 		}
 	}
 
+	static _float4	fOffset = _float4(0.f, 0.f, 0.f, 0.f);
 	if (!bFlag)
 	{
 		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
+		{
 			bFlag = true;
+
+			if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
+			{
+				XMStoreFloat4(&fOffset, XMLoadFloat4(&fOffset) + XMVectorSet(0.f, 0.05f, 0.f, 0.f));
+			}
+			else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+			{
+				XMStoreFloat4(&fOffset, XMLoadFloat4(&fOffset) - XMVectorSet(0.f, 0.05f, 0.f, 0.f));
+			}
+		}
 	}
 
 	ImGui::Text("[ P ] : y+");
 	ImGui::Text("[ O ] : y-");
 
-	static _float4	fOffset = _float4(0.f, 0.f, 0.f, 0.f);
 
-	if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
-	{
-		XMStoreFloat4(&fOffset,XMLoadFloat4(&fOffset) + XMVectorSet(0.f, 0.05f, 0.f, 0.f));
-	}
-	else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
-	{
-		XMStoreFloat4(&fOffset, XMLoadFloat4(&fOffset) - XMVectorSet(0.f, 0.05f, 0.f, 0.f));
-	}
+	
 
 	
 
