@@ -722,10 +722,6 @@ void CImguiMgr::Tool_Navigation()
 	ImGui::Text("[ O ] : y-");
 
 
-	
-
-	
-
 	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition)+XMLoadFloat4(&fOffset));
 	
 	if (bFlag && GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))

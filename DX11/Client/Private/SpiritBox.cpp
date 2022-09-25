@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/SpiritBox.h"
 #include "GameInstance.h"
+#include "Ghost_SpawnPoint.h"
 
 CSpiritBox::CSpiritBox(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -91,13 +92,27 @@ void CSpiritBox::OnEventMessage(const _tchar* pMessage)
 }
 
 
+void CSpiritBox::Frequency_Control(_long lMouseMove)
+{
+    m_lFrequency += lMouseMove;
+}
+
 void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
 {
-    __super::On_Collision_Enter(pCollider);
+    
 }
 
 void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
 {
+    if (m_bSwitch)
+    {
+        if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+        {
+            CGhost_SpawnPoint* pGhost = (CGhost_SpawnPoint*)pCollider->Get_Owner();
+            //응답하는 함수
+        }
+    }
+        
 }
 
 void CSpiritBox::On_Collision_Exit(CCollider* pCollider)

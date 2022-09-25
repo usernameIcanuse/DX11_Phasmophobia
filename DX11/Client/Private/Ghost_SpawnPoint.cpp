@@ -152,10 +152,6 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
-	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
-	{
-		int a = 10;
-	}
 	
 }
 

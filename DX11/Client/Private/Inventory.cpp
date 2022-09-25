@@ -169,6 +169,11 @@ void CInventory::Item_TempModel(_float3 _vInstallPos, COLLISION_TYPE _eCollision
 		m_vInventory[m_iIndex]->Set_TempModel_Pos(_vInstallPos, _eCollisionType, vLook, pConnectObject);
 }
 
+void CInventory::Frequency_Control(_long _lMouseMove)
+{
+	m_vInventory[m_iIndex]->Frequency_Control(_lMouseMove);
+}
+
 void	CInventory::Adjust_Item(CItem* pItem)
 {
 	pItem->Set_Enable(true);

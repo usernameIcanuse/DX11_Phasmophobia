@@ -128,6 +128,8 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		}
 	}
 
+	m_iEMF = m_iAggression / 2+1;
+	/*만약 5가 됐는데 emf 5단계 조건 있으면 그냥 대입*/
 
 }
 

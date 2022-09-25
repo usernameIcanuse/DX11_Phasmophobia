@@ -28,6 +28,12 @@ public:
 	}
 	virtual void MalFunction() {}
 	virtual void Normal_Operation() {}
+	virtual void Frequency_Control(_long lMouseMove);
+
+
+private:
+	_long		m_lFrequency = 100;
+
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

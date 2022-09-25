@@ -49,19 +49,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar * pTextureFilePath, _uint iN
 
 		if (FAILED(hr))
 		{
-			wsprintf(szTextureFilePath, TEXT("..\\Bin\\Resources\\Textures\\Default_Texture.png"));
-
-			_wsplitpath_s(szTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, MAX_PATH);
-			HRESULT		hr = 0;
-
-			if (!lstrcmp(szExt, TEXT(".dds")))
-				hr = DirectX::CreateDDSTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
-
-			else
-				hr = DirectX::CreateWICTextureFromFile(m_pDevice, szTextureFilePath, nullptr, &pSRV);
-
-			
-			//return E_FAIL;
+			return E_FAIL;
 		}
 		m_SRVs.push_back(pSRV);
 		
