@@ -86,7 +86,7 @@ void CGhost_Status::Tick(_float fTimeDelta)
 
 	if (100.f < m_fEventCoolTime)
 	{
-		if (5 < m_iAggression && 10 > m_iAggression)
+		if (4 < m_iAggression && 10 > m_iAggression)
 		{
 
 			_float fRandomValue = rand() % 101 * m_fEventWeight;
@@ -156,14 +156,14 @@ HRESULT CGhost_Status::Render()
 	return S_OK;
 }
 
-void CGhost_Status::Increase_BaseLine()
+void CGhost_Status::Increase_BaseLine(WEIGHT eWeightType)
 {
-	m_iAggressionWeight += 5.f;
+	m_iAggressionWeight += eWeightType;
 }
 
-void CGhost_Status::Decrease_BaseLine()
+void CGhost_Status::Decrease_BaseLine(WEIGHT eWeightType)
 {
-	m_iAggressionWeight -= 5.f;
+	m_iAggressionWeight -= eWeightType;
 }
 
 CGhost_Status* CGhost_Status::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

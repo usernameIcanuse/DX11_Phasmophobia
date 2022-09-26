@@ -213,7 +213,7 @@ _bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook,
         _float3 vScale = m_pTransformCom->Get_Scaled();
         _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
         m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook *  vScale.z);
-        _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
         _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
 
         vUp = XMVector3Cross( XMLoadFloat4(&vLook),vRight);

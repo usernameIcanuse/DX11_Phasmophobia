@@ -792,20 +792,7 @@ void CImguiMgr::Picking_Object()
 			
 			XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
 
-			
-			for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
-			{
-				for (auto& elem : m_vecCollocatedObject[i])
-				{
-					CCollider* pObjCollider =   (CCollider*)elem->Get_Component(TEXT("Com_OBB"));
-					if (m_pRayCom->Collision(pObjCollider))
-					{
-
-						XMStoreFloat4(&fPosition, XMVectorSetW(XMLoadFloat3( &m_pRayCom->Get_CollidePos()),1.f));
-
-					}
-				}
-			}
+		
 			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 
 			if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)

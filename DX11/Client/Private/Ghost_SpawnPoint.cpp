@@ -145,9 +145,17 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Increase_BaseLine();
+		m_pGhost_Status->Increase_BaseLine(CGhost_Status::PLAYER_IN_AREA);
+	}
+	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Increase_BaseLine(CGhost_Status::ITEM_IN_AREA);
 	}
 
+	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Increase_BaseLine(CGhost_Status::SPIRITBOX);
+	}
 }
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
@@ -159,7 +167,17 @@ void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Decrease_BaseLine();
+		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::PLAYER_IN_AREA);
+	}
+
+	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::ITEM_IN_AREA);
+	}
+
+	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::SPIRITBOX);
 	}
 }
 

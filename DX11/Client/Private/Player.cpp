@@ -123,7 +123,7 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_WHEEL))
 	{
-		m_pInventory->Frequency_Control(MouseMove);
+		m_pInventory->Frequency_Control(MouseMove/10);
 	}
 
 
@@ -191,7 +191,7 @@ HRESULT CPlayer::Render()
 {
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
-	m_pOBBCom->Render();
+	//m_pOBBCom->Render();
 #endif
 	return S_OK;
 }
@@ -291,7 +291,7 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type() ||
-		COLLISION_TYPE::CAMERA== pCollider->Get_Type())
+		COLLISION_TYPE::CAMERA== pCollider->Get_Type()|| COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 

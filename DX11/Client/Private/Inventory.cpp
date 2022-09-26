@@ -171,7 +171,8 @@ void CInventory::Item_TempModel(_float3 _vInstallPos, COLLISION_TYPE _eCollision
 
 void CInventory::Frequency_Control(_long _lMouseMove)
 {
-	m_vInventory[m_iIndex]->Frequency_Control(_lMouseMove);
+	if(m_vInventory[m_iIndex])
+		m_vInventory[m_iIndex]->Frequency_Control(_lMouseMove);
 }
 
 void	CInventory::Adjust_Item(CItem* pItem)
@@ -191,7 +192,7 @@ void	CInventory::Adjust_Item(CItem* pItem)
 	vPlayerPos += vLook* vAdjustPos.z;
 
 	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
-	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos);
+	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos + XMVectorSet(0.f, 10.f, 0.f, 0.f));
 	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
 	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
 	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);

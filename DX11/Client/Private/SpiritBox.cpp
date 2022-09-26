@@ -63,21 +63,22 @@ HRESULT CSpiritBox::Render()
     {
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;*/
+        
 
-        if (m_bSwitch)
-        {
-            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
-                return E_FAIL;
+        /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
+              return E_FAIL;*/
 
-            m_pShaderCom->Begin(1);
-        }
-        else
-         m_pShaderCom->Begin(0);
+        m_pShaderCom->Begin(0);
 
         m_pModelCom->Render(i);
     }
+
+    if (m_bSwitch)
+    {
+        wsprintf(m_szDegree, TEXT("Frequency : %d"), m_lFrequency);
+        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+    }
+
 
 #ifdef _DEBUG
       m_pOBBCom->Render();
@@ -137,11 +138,11 @@ HRESULT CSpiritBox::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(0.6f, 1.3f, 0.25f);
+    ColliderDesc.vScale = _float3(0.75f, 1.4f, 0.25f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::SPIRITBOX;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;

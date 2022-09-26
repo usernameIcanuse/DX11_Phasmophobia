@@ -212,6 +212,7 @@ namespace Engine
 		WALL,
 		THERMOMETER,
 		ITEM,
+		SPIRITBOX,
 		TRIPOD,
 		ATMOSPHERE,
 		GHOST_AREA,

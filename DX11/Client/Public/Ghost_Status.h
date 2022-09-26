@@ -14,6 +14,7 @@ class CGhost_SpawnPoint;
 
 class CGhost_Status final: public CGameObject
 {
+	enum WEIGHT {PLAYER_IN_HOUSE = 5, PLAYER_IN_AREA = 5, ITEM_IN_AREA=1, SPIRITBOX=2};
 	friend class CGhost_SpawnPoint;
 private:
 	CGhost_Status(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -28,8 +29,8 @@ public:
 	virtual HRESULT Render();
 
 public:
-	void	Increase_BaseLine();
-	void	Decrease_BaseLine();
+	void	Increase_BaseLine(WEIGHT eWeightType);
+	void	Decrease_BaseLine(WEIGHT eWeightType);
 
 private:
 #ifdef _DEBUG

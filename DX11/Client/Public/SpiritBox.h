@@ -33,6 +33,7 @@ public:
 
 private:
 	_long		m_lFrequency = 100;
+	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력
 
 
 public:
