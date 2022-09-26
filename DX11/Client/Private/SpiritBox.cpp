@@ -33,7 +33,7 @@ void CSpiritBox::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+    m_fTimeAcc += fTimeDelta;
 }
 
 void CSpiritBox::LateTick(_float fTimeDelta)
@@ -75,7 +75,6 @@ HRESULT CSpiritBox::Render()
 
     if (m_bSwitch)
     {
-        wsprintf(m_szDegree, TEXT("Frequency : %d"), m_lFrequency);
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
     }
 
@@ -88,10 +87,25 @@ HRESULT CSpiritBox::Render()
     return S_OK;
 }
 
-void CSpiritBox::OnEventMessage(const _tchar* pMessage)
+
+void CSpiritBox::MalFunction(_float fTimeDelta)
 {
+    /*랜덤한 값을 넣어줌*/
+    if (0.1f <= m_fTimeAcc)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> dis(10, 90);
+
+        wsprintf(m_szDegree, TEXT("Frequency : %03d"), dis(gen));
+        m_fTimeAcc = 0.f;
+    }
 }
 
+void CSpiritBox::Normal_Operation(_float fTimeDelta)
+{
+    wsprintf(m_szDegree, TEXT("Frequency : %03d"), m_lFrequency);
+}
 
 void CSpiritBox::Frequency_Control(_long lMouseMove)
 {
@@ -109,7 +123,7 @@ void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
     {
         if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
         {
-            CGhost_SpawnPoint* pGhost = (CGhost_SpawnPoint*)pCollider->Get_Owner();
+           CGhost_SpawnPoint* pGhost = (CGhost_SpawnPoint*)pCollider->Get_Owner();
             //응답하는 함수
         }
     }

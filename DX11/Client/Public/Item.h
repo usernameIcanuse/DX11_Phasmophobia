@@ -26,6 +26,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void OnEventMessage(const _tchar* pMessage);
+
 public:
 	virtual void Turn_Switch() {};
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) 
@@ -44,8 +46,11 @@ public:
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) {}
 	virtual void Frequency_Control(_long lMouseMove) {}
 
-	virtual void MalFunction() {}
-	virtual void Normal_Operation() {}
+	virtual void MalFunction(_float fTimeDelta = 0.f) {}
+	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+
+	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
+
 
 protected:
 	CShader*    m_pShaderCom = nullptr;
@@ -56,7 +61,7 @@ protected:
 	_bool		m_bSwitch = false;
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
 
-	function<void(CItem*)> m_pEventFunc;
+	function<void(CItem*,_float)> m_pEventFunc;
 protected:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource()PURE;

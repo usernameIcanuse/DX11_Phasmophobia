@@ -25,14 +25,20 @@ HRESULT CDoor::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+
     return S_OK;
 }
 
 void CDoor::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
- 
-    if (m_pPlayer)
+    if (m_bLock)
+    {
+        Close_Door();
+    }
+
+    else if (m_pPlayer)
     {
         /*¹® È¸Àü*/
         CCollider* pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
@@ -119,6 +125,44 @@ HRESULT CDoor::Render()
 #endif
 
     return S_OK;
+}
+
+void CDoor::OnEventMessage(const _tchar* pMessage)
+{
+    if (0 == lstrcmp(TEXT("Event"), pMessage))
+    {
+        
+        m_bLock = true;
+
+    }
+
+    else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
+    {
+        m_bLock = false;
+    }
+}
+
+void CDoor::Close_Door(_float fTimeDelta)
+{
+    if (DBL_EPSILON < m_fRadian)
+    {
+        _float fAmount = m_fRadian * 0.9f - m_fRadian;
+        
+        if (m_fRadian + m_fRadian > DBL_EPSILON)
+        {
+            m_fRadian += fAmount;
+            m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fAmount);
+            if (m_fRadian < 0.f)
+            {
+                fAmount = 0.f - m_fRadian;
+                m_fRadian = 0.f;
+                m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fAmount);
+
+            }
+        }
+
+        
+    }
 }
 
 HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)

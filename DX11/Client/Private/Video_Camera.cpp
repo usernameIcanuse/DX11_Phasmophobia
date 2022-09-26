@@ -86,9 +86,6 @@ HRESULT CVideo_Camera::Render()
     return S_OK;
 }
 
-void CVideo_Camera::OnEventMessage(const _tchar* pMessage)
-{
-}
 
 _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {

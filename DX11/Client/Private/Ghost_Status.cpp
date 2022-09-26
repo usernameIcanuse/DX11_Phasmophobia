@@ -61,12 +61,14 @@ void CGhost_Status::Tick(_float fTimeDelta)
 	m_fTime += fTimeDelta;
 	m_fEventCoolTime += fTimeDelta;
 
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(0, m_iAggressionLine + (_int)m_iAggressionWeight);
+
+
 	if (m_fTime >= 1.f)
 	{
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(0, m_iAggressionLine+ (_int)m_iAggressionWeight);
-
+		
 		_float fValue = dis(gen);
 		fValue *= (1.f + m_iAggressionWeight * 0.01f);
 		
@@ -84,13 +86,11 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		m_fTime = 0.f;
 	}
 
-	if (100.f < m_fEventCoolTime)
+	if (4 < m_iAggression && 10 > m_iAggression)
 	{
-		if (4 < m_iAggression && 10 > m_iAggression)
-		{
 
-			_float fRandomValue = rand() % 101 * m_fEventWeight;
-			fRandomValue += rand() % 101 * (1.f - m_fEventWeight);
+			_float fRandomValue = dis(gen) * m_fEventWeight;
+			fRandomValue += dis(gen) * (1.f - m_fEventWeight);
 			if (20.f > fRandomValue)
 			{
 				m_fEventTime -= fTimeDelta;
@@ -109,8 +109,8 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		else if (10 == m_iAggression)
 		{
 
-			_float fRandomValue = rand() % 101 * m_fEventWeight;
-			fRandomValue += rand() % 101 * (1.f - m_fEventWeight);
+			_float fRandomValue = dis(gen) * m_fEventWeight;
+			fRandomValue += dis(gen) * (1.f - m_fEventWeight);
 			if (20.f > fRandomValue)
 			{
 				m_fEventTime -= fTimeDelta;
@@ -126,7 +126,7 @@ void CGhost_Status::Tick(_float fTimeDelta)
 			}
 
 		}
-	}
+	
 
 	m_iEMF = m_iAggression / 2+1;
 	/*만약 5가 됐는데 emf 5단계 조건 있으면 그냥 대입*/

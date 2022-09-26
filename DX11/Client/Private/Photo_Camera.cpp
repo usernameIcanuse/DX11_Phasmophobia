@@ -81,10 +81,6 @@ HRESULT CPhoto_Camera::Render()
     return S_OK;
 }
 
-void CPhoto_Camera::OnEventMessage(const _tchar* pMessage)
-{
-}
-
 _bool CPhoto_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook)
 {
     if (eType == COLLISION_TYPE::OBJECT)

@@ -23,6 +23,7 @@ HRESULT CItem::Initialize(void* pArg)
         return E_FAIL;
 
     GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+    m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
 
     return S_OK;
 }
@@ -43,18 +44,33 @@ HRESULT CItem::Render()
     return S_OK;
 }
 
+void CItem::OnEventMessage(const _tchar* pMessage)
+{
+    if ( 0 == lstrcmp(TEXT("Event"),pMessage))
+    {
+        m_pEventFunc = std::bind(&CItem::MalFunction, std::placeholders::_1, std::placeholders::_2);
+
+    }
+    else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
+    {
+        m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+    }
+}
+
 _float3 CItem::Get_AdjustPos()
 {
-    
     return m_vAdjustpos;
-    
-    
 }
 
 void CItem::Update_Collider()
 {
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
+}
+
+void CItem::Call_EventFunc(_float fTimeDelta)
+{
+    m_pEventFunc(this, fTimeDelta);
 }
 
 

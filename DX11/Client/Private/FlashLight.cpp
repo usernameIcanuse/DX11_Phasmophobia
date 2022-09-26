@@ -79,10 +79,6 @@ HRESULT CFlashLight::Render()
     return S_OK;
 }
 
-void CFlashLight::OnEventMessage(const _tchar* pMessage)
-{
-}
-
 
 void CFlashLight::On_Collision_Enter(CCollider* pCollider)
 {

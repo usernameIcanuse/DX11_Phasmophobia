@@ -81,12 +81,6 @@ HRESULT CThermometer::Render()
 
     if (m_bSwitch)
     {
-         if (m_fTimeAcc >= 1.5f)
-         {
-             wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
-             m_fTimeAcc = 0.f;
-
-         }
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
     }
 #ifdef _DEBUG
@@ -97,10 +91,30 @@ HRESULT CThermometer::Render()
     return S_OK;
 }
 
-void CThermometer::OnEventMessage(const _tchar* pMessage)
+
+void CThermometer::MalFunction(_float fTimeDelta)
 {
+    if (m_fTimeAcc >= 0.1f)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<int> dis(10, 99);
+
+        wsprintf(m_szDegree, TEXT("방온도 : %d"), dis(gen));
+        m_fTimeAcc = 0.f;
+
+    }
 }
 
+void CThermometer::Normal_Operation(_float fTimeDelta)
+{
+    if (m_fTimeAcc >= 1.5f)
+    {
+        wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
+        m_fTimeAcc = 0.f;
+
+    }
+}
 
 void CThermometer::On_Collision_Enter(CCollider* pCollider)
 {

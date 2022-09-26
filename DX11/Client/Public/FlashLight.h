@@ -20,7 +20,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	virtual void OnEventMessage(const _tchar* pMessage);
+	//virtual void OnEventMessage(const _tchar* pMessage);
 
 
 public:
@@ -29,8 +29,8 @@ public:
 		m_bSwitch = !m_bSwitch;
 	}
 
-	virtual void MalFunction() {}
-	virtual void Normal_Operation() {}
+	virtual void MalFunction(_float fTimeDelta = 0.f) {}
+	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 	
 
 private:

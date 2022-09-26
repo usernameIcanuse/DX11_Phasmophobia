@@ -20,15 +20,15 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	virtual void OnEventMessage(const _tchar* pMessage);
+	//virtual void OnEventMessage(const _tchar* pMessage);
 
 public:
 
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
-	virtual void MalFunction() {}
-	virtual void Normal_Operation() {}
+	virtual void MalFunction(_float fTimeDelta = 0.f) {}
+	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 public:
 	void	Connect_Tripod(CTripod* pTripod);

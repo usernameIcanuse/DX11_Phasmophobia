@@ -18,7 +18,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	virtual void OnEventMessage(const _tchar* pMessage);
+	//virtual void OnEventMessage(const _tchar* pMessage);
 
 
 public:
@@ -26,14 +26,16 @@ public:
 	{
 		m_bSwitch = !m_bSwitch;
 	}
-	virtual void MalFunction() {}
-	virtual void Normal_Operation() {}
+	virtual void MalFunction(_float fTimeDelta = 0.f);
+	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 	virtual void Frequency_Control(_long lMouseMove);
 
 
 private:
 	_long		m_lFrequency = 100;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력
+
+	_float		m_fTimeAcc = 0.f;
 
 
 public:

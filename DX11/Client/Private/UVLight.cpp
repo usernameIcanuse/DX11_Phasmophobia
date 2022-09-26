@@ -38,10 +38,6 @@ HRESULT CUVLight::Render()
     return S_OK;
 }
 
-void CUVLight::OnEventMessage(const _tchar* pMessage)
-{
-}
-
 HRESULT CUVLight::Setup_Component()
 {
     return E_NOTIMPL;

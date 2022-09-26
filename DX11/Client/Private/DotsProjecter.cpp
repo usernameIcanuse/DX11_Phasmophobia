@@ -91,10 +91,6 @@ HRESULT CDotsProjecter::Render()
     return S_OK;
 }
 
-void CDotsProjecter::OnEventMessage(const _tchar* pMessage)
-{
-}
-
 
 void CDotsProjecter::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
