@@ -106,9 +106,6 @@
     <ClInclude Include="..\Public\Light.h">
       <Filter>01.Utility\05. Light</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ZFrustum.h">
-      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Collider.h">
       <Filter>01.Utility\03.Component\05.Collider</Filter>
     </ClInclude>
@@ -138,6 +135,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Point_Instance.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Instance\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Renderer_Manager.h">
+      <Filter>01.Utility\03.Component\00.Renderer\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Renderer.h">
+      <Filter>01.Utility\03.Component\00.Renderer\Camera_Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Frustum.h">
+      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +237,6 @@
     <ClCompile Include="..\Private\Light_Manager.cpp">
       <Filter>01.Utility\05. Light\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ZFrustum.cpp">
-      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Collider.cpp">
       <Filter>01.Utility\03.Component\05.Collider</Filter>
     </ClCompile>
@@ -263,6 +266,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Point_Instance.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Instance\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Renderer_Manager.cpp">
+      <Filter>01.Utility\03.Component\00.Renderer\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Renderer.cpp">
+      <Filter>01.Utility\03.Component\00.Renderer\Camera_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Frustum.cpp">
+      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +418,12 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.VIBuffer\Instance\Point">
       <UniqueIdentifier>{30907794-6a4d-4628-aba6-168a35e875b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.Renderer\Manager">
+      <UniqueIdentifier>{109594ae-0438-4e36-b2a8-d39ba752f4e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.Component\00.Renderer\Camera_Renderer">
+      <UniqueIdentifier>{4ed2bfff-83ed-4bbb-9573-10fc9a8fc06d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

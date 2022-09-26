@@ -1,5 +1,6 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
+#include "GameInstance.h"
 
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -22,6 +23,9 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eGroup, CGameObject * pGameObject
 
 HRESULT CRenderer::Initialize_Prototype()
 {
+	if (GAMEINSTANCE->Add_Renderer(CRenderer_Manager::RENDERER_TYPE::RENDERER_STATIC, this))
+		return E_FAIL;
+
 	return S_OK;
 }
 

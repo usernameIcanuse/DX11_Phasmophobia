@@ -7,12 +7,12 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CRenderer final : public CComponent
+class ENGINE_DLL CRenderer : public CComponent
 {
 public:
 	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN,RENDER_NONALPHABLEND, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
 
-private:
+protected:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CRenderer() = default;
 	 
@@ -26,14 +26,14 @@ public:
 public:
 	HRESULT Draw_RenderGroup();
 
-private:
+protected:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];
 	typedef list<class CGameObject*>		RENDEROBJECTS;
 
 public:
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	virtual CComponent* Clone(void* pArg);
+	virtual void Free();
 };
 
 END

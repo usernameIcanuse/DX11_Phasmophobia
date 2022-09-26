@@ -26,7 +26,6 @@ private:
 	CImguiMgr*				m_pImguiMgr = nullptr;
 	ID3D11Device*			m_pDevice = nullptr;
 	ID3D11DeviceContext*	m_pContext = nullptr;
-	CRenderer*				m_pRenderer = nullptr;
 
 private:
 	HRESULT Open_Level(LEVEL eLevelID);

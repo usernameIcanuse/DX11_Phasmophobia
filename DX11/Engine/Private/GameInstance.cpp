@@ -12,10 +12,11 @@ CGameInstance::CGameInstance()
 	, m_pInput_Manager(CInput_Manager::Get_Instance())
 	, m_pPipeLine(CPipeLine::Get_Instance())
 	, m_pLight_Manager(CLight_Manager::Get_Instance())
-	, m_pZFrustum(CZFrustum::Get_Instance())
+	, m_pFrustum(CFrustum::Get_Instance())
 	, m_pCollision_Manager(CCollision_Manager::Get_Instance())
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pGame_Manager(CGame_Manager::Get_Instance())
+	, m_pRenderer_Manager(CRenderer_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -26,10 +27,11 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pInput_Manager);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pLight_Manager);
-	Safe_AddRef(m_pZFrustum);
+	Safe_AddRef(m_pFrustum);
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pGame_Manager);
+	Safe_AddRef(m_pRenderer_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -79,7 +81,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pPipeLine->Tick();
 
-	m_pZFrustum->Update_Frustum();
+	m_pFrustum->Update();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
 
@@ -89,6 +91,11 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 HRESULT CGameInstance::Render_Engine()
 {
 	
+	if (nullptr == m_pRenderer_Manager)
+		return E_FAIL;
+
+	m_pRenderer_Manager->Draw_RenderGroup();
+
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
@@ -96,6 +103,30 @@ HRESULT CGameInstance::Render_Engine()
 
 
 	return S_OK;
+}
+
+HRESULT CGameInstance::Add_Renderer(_uint eListIndex, CRenderer* pRenderer)
+{
+	if (nullptr == m_pRenderer_Manager)
+		return E_FAIL;
+
+	return m_pRenderer_Manager->Add_Renderer(eListIndex,pRenderer);
+}
+
+HRESULT CGameInstance::Draw_RenderGroup()
+{
+	if (nullptr == m_pRenderer_Manager)
+		return E_FAIL;
+
+	return m_pRenderer_Manager->Draw_RenderGroup();
+}
+
+void CGameInstance::Clear_RendererIndex(_uint eListIndex)
+{
+	if (nullptr == m_pRenderer_Manager)
+		return;
+
+	m_pRenderer_Manager->Clear_RendererIndex(eListIndex);
 }
 
 HRESULT CGameInstance::Clear(_uint iLevelID)
@@ -336,39 +367,32 @@ void CGameInstance::Clear_Light()
 	m_pLight_Manager->Clear_Light();
 }
 
-
-void CGameInstance::Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix)
+_bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)
 {
-	if (nullptr == m_pZFrustum)
-		return;
-
-	m_pZFrustum->Make(screenDepth, projectionMatrix, viewMatrix);
-}
-
-BOOL CGameInstance::CheckPoint(float x, float y, float z)
-{
-	if (nullptr == m_pZFrustum)
+	if (nullptr == m_pFrustum)
 		return false;
 
-	return	m_pZFrustum->CheckPoint(x, y, z);
+	return m_pFrustum->isIn_Frustum_InWorldSpace(vWorldPoint,fRange);
 }
 
-
-BOOL CGameInstance::CheckSphere(float xCenter, float yCenter, float zCenter, float radius)
+_bool CGameInstance::isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange)
 {
-	if (nullptr == m_pZFrustum)
+	if (nullptr == m_pFrustum)
 		return false;
 
-	return m_pZFrustum->CheckSphere(xCenter, yCenter, zCenter, radius);
+	return m_pFrustum->isIn_Frustum_InLocalSpace(vLocalPoint, fRange);
+
 }
 
-BOOL CGameInstance::CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize)
+void CGameInstance::Transform_ToLocalSpace(_fmatrix WorldMatrixInv)
 {
-	if (nullptr == m_pZFrustum)
-		return false;
+	if (nullptr == m_pFrustum)
+		return ;
 
-	return	m_pZFrustum->CheckRectangle(xCenter, yCenter, zCenter, xSize, ySize, zSize);
+	m_pFrustum->Transform_ToLocalSpace(WorldMatrixInv);
+
 }
+
 
 void CGameInstance::Add_Collider(CCollider* pCollider)
 {
@@ -435,6 +459,8 @@ void CGameInstance::Release_Engine()
 {
 	CGameInstance::Get_Instance()->Destroy_Instance();		
 
+	CRenderer_Manager::Get_Instance()->Destroy_Instance();
+
 	CObject_Manager::Get_Instance()->Destroy_Instance();
 
 	CComponent_Manager::Get_Instance()->Destroy_Instance();
@@ -449,7 +475,7 @@ void CGameInstance::Release_Engine()
 
 	CPipeLine::Get_Instance()->Destroy_Instance();
 
-	CZFrustum::Get_Instance()->Destroy_Instance();
+	CFrustum::Get_Instance()->Destroy_Instance();
 
 	CCollision_Manager::Get_Instance()->Destroy_Instance();
 
@@ -468,15 +494,17 @@ void CGameInstance::Free()
 
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);
+	Safe_Release(m_pRenderer_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pGraphic_Device);
-	Safe_Release(m_pZFrustum);
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pGame_Manager);
+
 
 }

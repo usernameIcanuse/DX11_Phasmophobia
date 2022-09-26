@@ -56,15 +56,12 @@ void CMainApp::Tick(float fTimeDelta)
 
 HRESULT CMainApp::Render()
 {
-	if (nullptr == m_pGameInstance || 
-		nullptr == m_pRenderer)
+	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 	
-	m_pRenderer->Draw_RenderGroup();
-
 	m_pGameInstance->Render_Engine();
 
 	m_pImguiMgr->Render();
@@ -99,7 +96,7 @@ HRESULT CMainApp::Ready_Prototype_Component()
 
 	/* For.Prototype_Component_Renderer */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
-		m_pRenderer = CRenderer::Create(m_pDevice, m_pContext))))
+		CRenderer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Rect*/
@@ -117,7 +114,6 @@ HRESULT CMainApp::Ready_Prototype_Component()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxTex.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
-	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
 }
@@ -149,7 +145,6 @@ CMainApp * CMainApp::Create()
 void CMainApp::Free()
 {
 
-	Safe_Release(m_pRenderer);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);		

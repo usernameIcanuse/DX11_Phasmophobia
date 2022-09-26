@@ -9,10 +9,11 @@
 #include "PipeLine.h"
 #include "Math_Utility.h"
 #include "Light_Manager.h"
-#include "ZFrustum.h"
+#include "Frustum.h"
 #include "Collision_Manager.h"
 #include "Font_Manager.h"
 #include "Game_Manager.h"
+#include "Renderer_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -79,12 +80,11 @@ public: /* For.Light_Manager */
 	LIGHTDESC* Get_LightDesc(_uint iIndex);
 	void	Clear_Light();
 
-public:/* For.ZFrustum*/
-	void	Make(float screenDepth, XMMATRIX projectionMatrix, XMMATRIX viewMatrix);
-	BOOL	CheckPoint(float x, float y, float z);
-	//BOOL	CheckCube(float, float, float, float);
-	BOOL	CheckSphere(float xCenter, float yCenter, float zCenter, float radius);
-	BOOL	CheckRectangle(float xCenter, float yCenter, float zCenter, float xSize, float ySize, float zSize);
+public:/* For.Frustum*/
+	_bool isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0.f);
+	_bool isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange = 0.f);
+	void Transform_ToLocalSpace(_fmatrix WorldMatrixInv);
+
 
 public:/* For.Collision_Manager*/
 	void Add_Collider(CCollider* pCollider);
@@ -100,6 +100,10 @@ public:/*For.Game_Manager*/
 	void Clear_Layer(_int iIndex);
 	void Clear_List();
 
+public:/* For.Renderer_Manager*/
+	HRESULT Add_Renderer(_uint eListIndex, CRenderer* pRenderer);
+	HRESULT Draw_RenderGroup();
+	void Clear_RendererIndex(_uint eListIndex);
 
 
 private:
@@ -111,10 +115,12 @@ private:
 	CInput_Manager*					m_pInput_Manager = nullptr;
 	CPipeLine*						m_pPipeLine = nullptr;
 	CLight_Manager*					m_pLight_Manager = nullptr;
-	CZFrustum*						m_pZFrustum = nullptr;
+	CFrustum*						m_pFrustum = nullptr;
 	CFont_Manager*					m_pFont_Manager = nullptr;
 	CCollision_Manager*				m_pCollision_Manager = nullptr;
 	CGame_Manager*					m_pGame_Manager = nullptr;
+	CRenderer_Manager*				m_pRenderer_Manager = nullptr;
+
 
 	GRAPHICDESC						m_tagGraphicDesc;
 
