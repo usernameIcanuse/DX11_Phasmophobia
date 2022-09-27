@@ -123,7 +123,7 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_WHEEL))
 	{
-		m_pInventory->Frequency_Control(MouseMove/10);
+		m_pInventory->Frequency_Control(MouseMove/100);
 	}
 
 

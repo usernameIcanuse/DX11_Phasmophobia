@@ -40,7 +40,14 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	if (FAILED(Setup_GhostStatus()))
 		return E_FAIL;
 
-	m_iAreaDefaultTemperature = rand() % 7+3;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(80, 120);
+
+
+	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
+
+	//m_lAnswerFrequency = dis(gen);
 
 	return S_OK;
 }
@@ -86,6 +93,13 @@ HRESULT CGhost_SpawnPoint::Render()
 	return S_OK;
 }
 
+void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
+{
+	__super::Set_Enable(_bEnable);
+
+	m_pGhost_Status->Set_Enable(_bEnable);
+}
+
 _uint CGhost_SpawnPoint::Get_Anger()
 {
 	return m_pGhost_Status->m_iAggression;
@@ -94,6 +108,28 @@ _uint CGhost_SpawnPoint::Get_Anger()
 _uint CGhost_SpawnPoint::Get_EMFLevel()
 {
 	return m_pGhost_Status->m_iEMF;
+}
+
+void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
+{
+	if (_lFrequency == m_lAnswerFrequency || DBL_EPSILON >= _fTime)
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(80, 120);
+
+		_fTime = dis(gen) % 5 + 30;
+
+		if (m_bSpiritBox)
+		{
+			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Answer"));
+			m_lAnswerFrequency = dis(gen);
+		}
+		else
+			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Not_Respone"));
+
+	}
+	
 }
 
 HRESULT CGhost_SpawnPoint::Setup_Component()

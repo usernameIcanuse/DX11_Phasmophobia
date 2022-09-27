@@ -18,7 +18,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-	//virtual void OnEventMessage(const _tchar* pMessage);
+	virtual void OnEventMessage(const _tchar* pMessage);
 
 
 public:
@@ -37,6 +37,8 @@ private:
 
 	_float		m_fTimeAcc = 0.f;
 
+	_float		m_fAnswerTimeLasting = 0.f;
+	_bool		m_bInGhostArea = false;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

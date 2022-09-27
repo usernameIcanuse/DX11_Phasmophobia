@@ -29,9 +29,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	/*area에서 받아와야 할 귀신 상호작용
-	emf/dots/spiritbox*/
+	virtual void Set_Enable(_bool _bEnable);
 
 
 public:
@@ -48,6 +46,7 @@ public:
 		return m_iAreaTemperature - 4;
 	}
 
+	void	Get_Answer(_long _lFrequency, _float& _fTime);
 
 
 private:
@@ -61,7 +60,9 @@ private:
 	_int	   m_iAreaDefaultTemperature = 0;
 	_int       m_iAreaTemperature = 0;
 
+	_long	   m_lAnswerFrequency = -1;
 
+	_bool	   m_bSpiritBox = true;
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

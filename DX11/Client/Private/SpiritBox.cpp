@@ -26,6 +26,12 @@ HRESULT CSpiritBox::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(10, 90);
+
+    m_fAnswerTimeLasting = dis(gen) % 5 + 30;
+
     return S_OK;
 }
 
@@ -33,7 +39,12 @@ void CSpiritBox::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-    m_fTimeAcc += fTimeDelta;
+
+    if (m_bSwitch)
+    {
+        m_fTimeAcc += fTimeDelta;
+    
+    }
 }
 
 void CSpiritBox::LateTick(_float fTimeDelta)
@@ -87,6 +98,22 @@ HRESULT CSpiritBox::Render()
     return S_OK;
 }
 
+void CSpiritBox::OnEventMessage(const _tchar* pMessage)
+{
+    __super::OnEventMessage(pMessage);
+
+    if (0 == lstrcmp(TEXT("Answer"), pMessage))
+    {
+       /*Ghost Icon*/
+        int a = 0;
+    }
+    else if (0 ==lstrcmp(TEXT("Not_Respone"), pMessage))
+    {
+        /*X Icon*/
+        int a = 0;
+    }
+}
+
 
 void CSpiritBox::MalFunction(_float fTimeDelta)
 {
@@ -104,6 +131,9 @@ void CSpiritBox::MalFunction(_float fTimeDelta)
 
 void CSpiritBox::Normal_Operation(_float fTimeDelta)
 {
+    if (m_bInGhostArea)
+        m_fAnswerTimeLasting -= fTimeDelta;
+
     wsprintf(m_szDegree, TEXT("Frequency : %03d"), m_lFrequency);
 }
 
@@ -114,7 +144,13 @@ void CSpiritBox::Frequency_Control(_long lMouseMove)
 
 void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
 {
-    
+    if (m_bSwitch)
+    {
+        if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+        {
+            m_bInGhostArea = true;
+        }
+    }
 }
 
 void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
@@ -124,7 +160,7 @@ void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
         if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
         {
            CGhost_SpawnPoint* pGhost = (CGhost_SpawnPoint*)pCollider->Get_Owner();
-            //응답하는 함수
+           pGhost->Get_Answer(m_lFrequency, m_fAnswerTimeLasting);
         }
     }
         
@@ -132,6 +168,13 @@ void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
 
 void CSpiritBox::On_Collision_Exit(CCollider* pCollider)
 {
+    if (m_bSwitch)
+    {
+        if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+        {
+            m_bInGhostArea = false;
+        }
+    }
 }
 
 HRESULT CSpiritBox::Setup_Component()
