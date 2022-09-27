@@ -81,10 +81,10 @@ public: /* For.Light_Manager */
 	void	Clear_Light();
 
 public:/* For.Frustum*/
-	_bool isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0.f);
-	_bool isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange = 0.f);
+	void Add_ItemFrustum(_uint eFrustumType, CRenderer* _pRenderer, CTransform* _pTransform);
+	void Add_Object_For_Culling(CGameObject* pGameObject, CRenderer::RENDERGROUP eRenderGroup);
+	_bool isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange, CRenderer::RENDERGROUP eRenderGroup, CGameObject* pGameObject);
 	void Transform_ToLocalSpace(_fmatrix WorldMatrixInv);
-
 
 public:/* For.Collision_Manager*/
 	void Add_Collider(CCollider* pCollider);

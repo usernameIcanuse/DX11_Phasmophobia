@@ -50,6 +50,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, cons
 
 	m_pCollision_Manager->Initialize();
 		
+	m_pFrustum->Initialize();
 
 	/* 오브젝트 매니져의 예약. */
 	if (FAILED(m_pObject_Manager->Reserve_Container(iNumLevels)))
@@ -73,6 +74,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pInput_Manager->Tick(fTimeDelta);
 
+	m_pFrustum->Clear_Frustum();
+
 	m_pObject_Manager->Tick(fTimeDelta);
 
 	m_pGame_Manager->Tick(fTimeDelta);
@@ -84,6 +87,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pFrustum->Update();
 
 	m_pObject_Manager->LateTick(fTimeDelta);
+
+	m_pFrustum->Late_Update();
 
 	return S_OK;
 }
@@ -367,20 +372,29 @@ void CGameInstance::Clear_Light()
 	m_pLight_Manager->Clear_Light();
 }
 
-_bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)
+void CGameInstance::Add_ItemFrustum(_uint eFrustumType, CRenderer* _pRenderer, CTransform* _pTransform)
 {
 	if (nullptr == m_pFrustum)
-		return false;
+		return;
 
-	return m_pFrustum->isIn_Frustum_InWorldSpace(vWorldPoint,fRange);
+	m_pFrustum->Add_ItemFrustum((CFrustum::FRUSTUM_TYPE)eFrustumType, _pRenderer, _pTransform);
 }
 
-_bool CGameInstance::isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange)
+void CGameInstance::Add_Object_For_Culling(CGameObject* pGameObject, CRenderer::RENDERGROUP eRenderGroup)
+{
+	if (nullptr == m_pFrustum)
+		return;
+
+	m_pFrustum->Add_Object_For_Culling(pGameObject, eRenderGroup);
+}
+
+
+_bool CGameInstance::isIn_Frustum_InLocalSpace(_fvector vLocalPoint, _float fRange, CRenderer::RENDERGROUP eRenderGroup, CGameObject* pGameObject)
 {
 	if (nullptr == m_pFrustum)
 		return false;
 
-	return m_pFrustum->isIn_Frustum_InLocalSpace(vLocalPoint, fRange);
+	return m_pFrustum->isIn_Frustum_InLocalSpace(vLocalPoint, fRange, eRenderGroup, pGameObject);
 
 }
 
@@ -392,7 +406,6 @@ void CGameInstance::Transform_ToLocalSpace(_fmatrix WorldMatrixInv)
 	m_pFrustum->Transform_ToLocalSpace(WorldMatrixInv);
 
 }
-
 
 void CGameInstance::Add_Collider(CCollider* pCollider)
 {

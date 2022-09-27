@@ -143,7 +143,7 @@
       <Filter>01.Utility\03.Component\00.Renderer\Camera_Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Frustum.h">
-      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\ZFrustum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,7 +274,7 @@
       <Filter>01.Utility\03.Component\00.Renderer\Camera_Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Frustum.cpp">
-      <Filter>01.Utility\99.SuperClass\ZFrustum</Filter>
+      <Filter>01.Utility\02.GameObject\Manager\ZFrustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,9 +380,6 @@
     <Filter Include="01.Utility\05. Light\Manager">
       <UniqueIdentifier>{755c56bc-af20-4d4e-922c-ced9b7cb1dcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\99.SuperClass\ZFrustum">
-      <UniqueIdentifier>{761d41c5-0207-4f9d-a557-19166cc30a02}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Component\05.Collider">
       <UniqueIdentifier>{a38efd28-1475-4580-8365-a4630f000c41}</UniqueIdentifier>
     </Filter>
@@ -424,6 +421,9 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.Renderer\Camera_Renderer">
       <UniqueIdentifier>{4ed2bfff-83ed-4bbb-9573-10fc9a8fc06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\ZFrustum">
+      <UniqueIdentifier>{761d41c5-0207-4f9d-a557-19166cc30a02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

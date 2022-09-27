@@ -45,8 +45,8 @@ void CTrailCam::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
+   // m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 }
 
 HRESULT CTrailCam::Render()

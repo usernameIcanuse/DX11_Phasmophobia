@@ -26,6 +26,9 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (GAMEINSTANCE->Add_Renderer(CRenderer_Manager::RENDERER_TYPE::RENDERER_STATIC, this))
 		return E_FAIL;
 
+	GAMEINSTANCE->Add_ItemFrustum(CFrustum::FRUSTUM_STATIC, this, nullptr);
+	
+
 	return S_OK;
 }
 
