@@ -7,12 +7,12 @@ FBXHeaderExtension:  {
 	CreationTimeStamp:  {
 		Version: 1000
 		Year: 2022
-		Month: 8
-		Day: 17
-		Hour: 21
-		Minute: 44
-		Second: 12
-		Millisecond: 460
+		Month: 9
+		Day: 28
+		Hour: 17
+		Minute: 21
+		Second: 45
+		Millisecond: 704
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.2"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -28,8 +28,8 @@ FBXHeaderExtension:  {
 			Comment: ""
 		}
 		Properties70:  {
-			P: "DocumentUrl", "KString", "Url", "", "C:\Users\dhgld\Desktop\Game\DX11\Client\Bin\Resources\Meshes\FlashLight\wbrud1qf_Flashlight.fbx"
-			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\dhgld\Desktop\Game\DX11\Client\Bin\Resources\Meshes\FlashLight\wbrud1qf_Flashlight.fbx"
+			P: "DocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\FlashLight Edited\wrechzwa_Flashlight.fbx"
+			P: "SrcDocumentUrl", "KString", "Url", "", "C:\Users\dhgld\My project\Assets\FlashLight Edited\wrechzwa_Flashlight.fbx"
 			P: "Original", "Compound", "", ""
 			P: "Original|ApplicationVendor", "KString", "", "", ""
 			P: "Original|ApplicationName", "KString", "", "", "Unity FBX Exporter"
@@ -75,7 +75,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 1608094188800, "Scene", "Scene" {
+	Document: 3128462023200, "Scene", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -95,7 +95,7 @@ References:  {
 
 Definitions:  {
 	Version: 100
-	Count: 13
+	Count: 15
 	ObjectType: "GlobalSettings" {
 		Count: 1
 	}
@@ -220,7 +220,7 @@ Definitions:  {
 		}
 	}
 	ObjectType: "Texture" {
-		Count: 3
+		Count: 4
 		PropertyTemplate: "FbxFileTexture" {
 			Properties70:  {
 				P: "TextureTypeUse", "enum", "", "",0
@@ -243,7 +243,7 @@ Definitions:  {
 		}
 	}
 	ObjectType: "Video" {
-		Count: 3
+		Count: 4
 		PropertyTemplate: "FbxVideo" {
 			Properties70:  {
 				P: "Path", "KString", "XRefUrl", "", ""
@@ -275,7 +275,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 1613550386016, "Geometry::Scene", "Mesh" {
+	Geometry: 3128466404032, "Geometry::Scene", "Mesh" {
 		Vertices: *870 {
 			a: -0.925043690949678,11.5285895764828,2.54154000431299,-0.0018487360648578,10.3961810469627,2.77796499431133,1.48639491825975e-06,11.5285895764828,2.70465090870857,-0.951968785375357,10.3961810469627,2.61043328791857,-1.73851456493139,11.5285910665989,2.07188259810209,-1.78749021142721,10.3961810469627,2.12804451584816,-2.34229490160942,11.5285910665989,1.35232517495751,-2.4076372385025,10.3961810469627,1.38898231089115,-2.66355965286493,11.5285910665989,0.469657313078642,-2.73761078715324,10.3961810469627,0.482388259842992,-2.66355909407139,11.5285910665989,-0.46965810470283,-2.73760985583067,10.3961810469627,-0.482389191165566,-2.34229434281588,11.5285910665989,-1.3523256406188,-2.40763667970896,10.3961810469627,-1.38898231089115,-1.73851381987333,11.5285910665989,-2.07188371568918,-1.78748909384012,10.3961810469627,-2.12804544717073,-0.925042852759361,11.5285895764828,-2.54154056310654,-0.951968133449554,10.3961810469627,-2.61043310165405,2.14302726675442e-06,11.5285895764828,-2.70465090870857,-0.00184818745765369,10.3961810469627,-2.77796499431133,0.925047602504492,11.5285895764828,-2.54154056310654,0.948272459208965,10.3961810469627,-2.61043310165405,1.73851773142815,11.5285888314247,-2.07188259810209,1.78379341959953,10.3961810469627,-2.12804451584816,2.34229825437069,11.5285888314247,-1.35232489556074,2.40394063293934,10.3961810469627,-1.38898203149438,2.6635630056262,11.5285888314247,-0.469657406210899,2.73391343653202,10.3961810469627,-0.482388027012348,2.66356244683266,11.5285888314247,0.469659082591534,2.73391287773848,10.3961810469627,0.482389936223626,2.34229806810617,11.5285888314247,1.35232517495751,2.40393951535225,10.3961810469627,1.38898231089115,1.73851698637009,11.5285888314247,2.07188334316015,1.78379286080599,10.3961810469627,2.12804526090622,0.925047043710947,11.5285895764828,2.54154056310654,0.948271993547678,10.3961810469627,2.61043310165405,-1.25101506710052,11.5285895764828,-3.43714244663715,1.11699591798242e-06,8.22947025299072,-3.51110249757767,2.15439257544858e-06,11.5285895764828,-3.65772992372513,
 -1.20086641982198,8.22947025299072,-3.29935774207115,-2.35114134848118,11.5285910665989,-2.80198473483324,-2.25689243525267,8.22947099804878,-2.68966145813465,-3.16768512129784,11.5285910665989,-1.82886533439159,-3.04070319980383,8.22947099804878,-1.75555124878883,-3.60215902328491,11.5285910665989,-0.635158782824874,-3.45776043832302,8.22947099804878,-0.609696842730045,-3.60215902328491,11.5285910665989,0.635157711803913,-3.45776043832302,8.22947099804878,0.609696377068758,-3.1676858663559,11.5285910665989,1.82886477559805,-3.04070338606834,8.22947099804878,1.75555124878883,-2.35114209353924,11.5285910665989,2.80198380351067,-2.25689262151718,8.22947099804878,2.68966071307659,-1.25101571902633,11.5285895764828,3.43714170157909,-1.20086679235101,8.22947025299072,3.29935699701309,1.55835042647823e-06,11.5285895764828,3.65772992372513,1.00978549966158e-06,8.22947025299072,3.51110249757767,1.2510197237134,11.5285895764828,3.43714170157909,1.20086967945099,8.22947025299072,3.29935699701309,2.35114432871342,11.5285888314247,2.80198454856873,2.25689336657524,8.2294687628746,2.68966089934111,3.16768884658813,11.5285888314247,1.82886477559805,3.04070487618446,8.2294687628746,1.7555508762598,3.60216237604618,11.5285888314247,0.635159946978092,3.45776192843914,8.2294687628746,0.609698053449392,3.60216312110424,11.5285888314247,-0.635157804936171,3.45776230096817,8.2294687628746,-0.609696377068758,3.16768884658813,11.5285888314247,-1.82886458933353,3.04070487618446,8.2294687628746,-1.75555106252432,2.35114488750696,11.5285888314247,-2.80198380351067,2.25689355283976,8.2294687628746,-2.68966089934111,1.25102000311017,11.5285895764828,-3.43714170157909,1.20086967945099,8.22947025299072,-3.29935736954212,1.01172643596215e-06,5.40179163217545,-2.52149440348148,-0.862400606274605,5.40179163217545,-2.36943010240793,-1.6207842156291,5.40179163217545,-1.93157661706209,-2.18367669731379,5.40179200470448,-1.2607466429472,-2.4831859394908,5.40179200470448,-0.437853066250682,-2.48318612575531,5.40179200470448,0.437852740287781,-2.18367706984282,5.40179200470448,1.26074692234397,
@@ -501,7 +501,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 1607507253312, "Model::Flashlight", "Mesh" {
+	Model: 3123986806832, "Model::Flashlight", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -514,7 +514,7 @@ Objects:  {
 		Shading: W
 		Culling: "CullingOff"
 	}
-	Material: 1608108885856, "Material::FlashlightBaseMaterial", "" {
+	Material: 3128463754336, "Material::FlashlightBaseMaterial", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -531,7 +531,7 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Material: 1600970872832, "Material::FlashlightLensMaterial", "" {
+	Material: 3128463737056, "Material::FlashlightLensMaterial", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -548,7 +548,7 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Material: 1600970876672, "Material::FlashlightReflectorMaterial", "" {
+	Material: 3128463740416, "Material::FlashlightReflectorMaterial", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -565,7 +565,7 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Material: 1600970874272, "Material::FlashlightBulbMaterial", "" {
+	Material: 3128463747136, "Material::FlashlightBulbMaterial", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -583,67 +583,89 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Video: 1600970861312, "Video::DiffuseColor_Texture", "Clip" {
+	Video: 3128463738016, "Video::DiffuseColor_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
-			P: "RelPath", "KString", "XRefUrl", "", "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
+			P: "RelPath", "KString", "XRefUrl", "", "..\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
 		}
 		UseMipMap: 0
-		Filename: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
+		Filename: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
 	}
-	Video: 1600970861792, "Video::NormalMap_Texture", "Clip" {
+	Video: 3128463747616, "Video::NormalMap_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
 			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
-			P: "RelPath", "KString", "XRefUrl", "", "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
+			P: "RelPath", "KString", "XRefUrl", "", "..\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
 		}
 		UseMipMap: 0
 		Filename: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
 	}
-	Video: 1600970862272, "Video::SpecularColor_Texture", "Clip" {
+	Video: 3128463754816, "Video::SpecularColor_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
-			P: "RelPath", "KString", "XRefUrl", "", "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
+			P: "RelPath", "KString", "XRefUrl", "", "..\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
 		}
 		UseMipMap: 0
-		Filename: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
+		Filename: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
 	}
-	Texture: 1608108886816, "Texture::DiffuseColor_Texture", "" {
+	Video: 3128463752416, "Video::DiffuseColor_Texture_1", "Clip" {
+		Type: "Clip"
+		Properties70:  {
+			P: "Path", "KString", "XRefUrl", "", "C:\Users\dhgld\My project\Assets\Suburban Structure Kit\Textures\White_Texture.png"
+			P: "RelPath", "KString", "XRefUrl", "", "..\Suburban Structure Kit\Textures\White_Texture.png"
+		}
+		UseMipMap: 0
+		Filename: "C:\Users\dhgld\My project\Assets\Suburban Structure Kit\Textures\White_Texture.png"
+		RelativeFilename: "..\Suburban Structure Kit\Textures\White_Texture.png"
+	}
+	Texture: 3128463761056, "Texture::DiffuseColor_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::DiffuseColor_Texture"
 		Media: "Video::DiffuseColor_Texture"
-		FileName: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.tga"
+		FileName: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_DFopac.png"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	Texture: 1600970876192, "Texture::NormalMap_Texture", "" {
+	Texture: 3128463763936, "Texture::NormalMap_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::NormalMap_Texture"
 		Media: "Video::NormalMap_Texture"
 		FileName: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_NM.png"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
 		Cropping: 0,0,0,0
 	}
-	Texture: 1600970872352, "Texture::SpecularColor_Texture", "" {
+	Texture: 3128463739936, "Texture::SpecularColor_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::SpecularColor_Texture"
 		Media: "Video::SpecularColor_Texture"
-		FileName: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
-		RelativeFilename: "..\..\..\..\..\..\..\..\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.tga"
+		FileName: "C:\Users\dhgld\My project\Assets\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
+		RelativeFilename: "..\Flashlight\Flashlight_Gold\Textures\FlashLight_SpecGlossA.png"
+		ModelUVTranslation: 0,0
+		ModelUVScaling: 1,1
+		Texture_Alpha_Source: "None"
+		Cropping: 0,0,0,0
+	}
+	Texture: 3128463759136, "Texture::DiffuseColor_Texture_1", "" {
+		Type: "TextureVideoClip"
+		Version: 202
+		TextureName: "Texture::DiffuseColor_Texture_1"
+		Media: "Video::DiffuseColor_Texture_1"
+		FileName: "C:\Users\dhgld\My project\Assets\Suburban Structure Kit\Textures\White_Texture.png"
+		RelativeFilename: "..\Suburban Structure Kit\Textures\White_Texture.png"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
@@ -657,55 +679,67 @@ Objects:  {
 Connections:  {
 	
 	;Model::Flashlight, Model::RootNode
-	C: "OO",1607507253312,0
+	C: "OO",3123986806832,0
 	
 	;Material::FlashlightBaseMaterial, Model::Flashlight
-	C: "OO",1608108885856,1607507253312
+	C: "OO",3128463754336,3123986806832
 	
 	;Material::FlashlightLensMaterial, Model::Flashlight
-	C: "OO",1600970872832,1607507253312
+	C: "OO",3128463737056,3123986806832
 	
 	;Material::FlashlightReflectorMaterial, Model::Flashlight
-	C: "OO",1600970876672,1607507253312
+	C: "OO",3128463740416,3123986806832
 	
 	;Material::FlashlightBulbMaterial, Model::Flashlight
-	C: "OO",1600970874272,1607507253312
+	C: "OO",3128463747136,3123986806832
 	
 	;Geometry::Scene, Model::Flashlight
-	C: "OO",1613550386016,1607507253312
+	C: "OO",3128466404032,3123986806832
 	
 	;Texture::DiffuseColor_Texture, Material::FlashlightBaseMaterial
-	C: "OO",1608108886816,1608108885856
+	C: "OO",3128463761056,3128463754336
 	
 	;Texture::NormalMap_Texture, Material::FlashlightBaseMaterial
-	C: "OO",1600970876192,1608108885856
+	C: "OO",3128463763936,3128463754336
 	
 	;Texture::SpecularColor_Texture, Material::FlashlightBaseMaterial
-	C: "OO",1600970872352,1608108885856
+	C: "OO",3128463739936,3128463754336
 	
 	;Texture::DiffuseColor_Texture, Material::FlashlightBaseMaterial
-	C: "OP",1608108886816,1608108885856, "DiffuseColor"
+	C: "OP",3128463761056,3128463754336, "DiffuseColor"
 	
 	;Texture::NormalMap_Texture, Material::FlashlightBaseMaterial
-	C: "OP",1600970876192,1608108885856, "NormalMap"
+	C: "OP",3128463763936,3128463754336, "NormalMap"
 	
 	;Texture::SpecularColor_Texture, Material::FlashlightBaseMaterial
-	C: "OP",1600970872352,1608108885856, "SpecularColor"
+	C: "OP",3128463739936,3128463754336, "SpecularColor"
 	
 	;Video::DiffuseColor_Texture, Texture::DiffuseColor_Texture
-	C: "OO",1600970861312,1608108886816
+	C: "OO",3128463738016,3128463761056
 	
 	;Video::NormalMap_Texture, Texture::NormalMap_Texture
-	C: "OO",1600970861792,1600970876192
+	C: "OO",3128463747616,3128463763936
 	
 	;Video::SpecularColor_Texture, Texture::SpecularColor_Texture
-	C: "OO",1600970862272,1600970872352
+	C: "OO",3128463754816,3128463739936
 	
 	;Texture::DiffuseColor_Texture, Material::FlashlightLensMaterial
-	C: "OP",1608108886816,1600970872832, "DiffuseColor"
+	C: "OP",3128463761056,3128463737056, "DiffuseColor"
 	
 	;Texture::SpecularColor_Texture, Material::FlashlightLensMaterial
-	C: "OP",1600970872352,1600970872832, "SpecularColor"
+	C: "OP",3128463739936,3128463737056, "SpecularColor"
+	
+	;Texture::DiffuseColor_Texture_1, Material::FlashlightReflectorMaterial
+	C: "OO",3128463759136,3128463740416
+	
+	;Texture::DiffuseColor_Texture_1, Material::FlashlightReflectorMaterial
+	C: "OP",3128463759136,3128463740416, "DiffuseColor"
+	
+	;Video::DiffuseColor_Texture_1, Texture::DiffuseColor_Texture_1
+	C: "OO",3128463752416,3128463759136
+	
+	;Texture::DiffuseColor_Texture_1, Material::FlashlightBulbMaterial
+	C: "OP",3128463759136,3128463747136, "DiffuseColor"
 }
 ;Takes section
 ;----------------------------------------------------

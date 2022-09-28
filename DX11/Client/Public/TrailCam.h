@@ -37,7 +37,6 @@ public:
 
 private:
 	virtual	HRESULT	Setup_Component() override;
-	virtual HRESULT SetUp_ShaderResource() override;
 	HRESULT			Setup_TempModel();
 public:
 	static CTrailCam* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

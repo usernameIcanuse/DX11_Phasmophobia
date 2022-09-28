@@ -47,6 +47,9 @@ void CThermometer::LateTick(_float fTimeDelta)
 
     m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
+#ifdef _DEBUG
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+#endif
 }
 
 HRESULT CThermometer::Render()
@@ -73,7 +76,7 @@ HRESULT CThermometer::Render()
 
         m_pShaderCom->Begin(0);
 
-        m_pModelCom->Render(i);
+        m_pModelCom->Render(i, m_pShaderCom);
     }
 
     // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
@@ -83,9 +86,9 @@ HRESULT CThermometer::Render()
     {
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
     }
-#ifdef _DEBUG
-      m_pOBBCom->Render();
-#endif // _DEBUG
+//#ifdef _DEBUG
+//      m_pOBBCom->Render();
+//#endif // _DEBUG
 
 
     return S_OK;
@@ -153,9 +156,6 @@ HRESULT CThermometer::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
-    /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-        return E_FAIL;
 
     
     /* For.Com_Model */
@@ -178,48 +178,6 @@ HRESULT CThermometer::Setup_Component()
     return S_OK;
 }
 
-HRESULT CThermometer::SetUp_ShaderResource()
-{
-    if (nullptr == m_pShaderCom)
-        return E_FAIL;
-
-
-    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-    if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-        return E_FAIL;
-
-
-    LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
-
-    if (nullptr == pLightDesc)
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-        return E_FAIL;
-
-
-    RELEASE_INSTANCE(CGameInstance);
-
-    return S_OK;
-}
 
 CThermometer* CThermometer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

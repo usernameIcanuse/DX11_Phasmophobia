@@ -49,7 +49,7 @@ public:
 	{
 		return m_pVerticesPos;
 	}
-	virtual _uint3	Get_Indices(_uint iIndex)const = 0;
+	virtual _uint3	Get_Indices(_uint iIndex)const  =0;
 
 
 protected:

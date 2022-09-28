@@ -57,6 +57,8 @@ private:
 	_float		m_fEventCoolTime = 100.f;//이벤트와 헌팅
 	_float		m_fEventTime = 10.f;
 	_float		m_fAttackTime = 10.f;
+
+	_bool		m_bEMFLevel5 = false;
 	
 
 public:

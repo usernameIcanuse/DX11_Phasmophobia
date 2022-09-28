@@ -35,7 +35,7 @@ public:
 
 private:
 	virtual	HRESULT	Setup_Component() override;
-	virtual HRESULT SetUp_ShaderResource() override;
+
 
 
 public:

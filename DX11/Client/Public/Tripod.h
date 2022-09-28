@@ -48,7 +48,7 @@ private:
 
 private:
 	virtual	HRESULT	Setup_Component() override;
-	virtual HRESULT SetUp_ShaderResource() override;
+
 public:
 	static CTripod* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

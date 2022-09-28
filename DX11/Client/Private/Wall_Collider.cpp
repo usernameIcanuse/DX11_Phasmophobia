@@ -41,17 +41,20 @@ void CWall_Collider::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
    
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+   // m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
-
+#ifdef _DEBUG
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBDirCom);
+#endif
 }
 
 HRESULT CWall_Collider::Render()
 {
-#ifdef _DEBUG
-    m_pOBBCom->Render();
-    m_pOBBDirCom->Render();
-#endif // _DEBUG
+//#ifdef _DEBUG
+//    m_pOBBCom->Render();
+//    m_pOBBDirCom->Render();
+//#endif // _DEBUG
 
     return S_OK;
 }

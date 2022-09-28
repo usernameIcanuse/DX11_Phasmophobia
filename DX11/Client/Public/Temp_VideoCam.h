@@ -25,7 +25,7 @@ public:
 
 private:
 	virtual	HRESULT	Setup_Component() override;
-	virtual HRESULT SetUp_ShaderResource() override;
+
 public:
 	static CTempVideoCam* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

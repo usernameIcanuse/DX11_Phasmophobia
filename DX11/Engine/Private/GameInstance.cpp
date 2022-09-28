@@ -17,6 +17,7 @@ CGameInstance::CGameInstance()
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pGame_Manager(CGame_Manager::Get_Instance())
 	, m_pRenderer_Manager(CRenderer_Manager::Get_Instance())
+	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -32,6 +33,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pGame_Manager);
 	Safe_AddRef(m_pRenderer_Manager);
+	Safe_AddRef(m_pTarget_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -474,6 +476,8 @@ void CGameInstance::Release_Engine()
 
 	CRenderer_Manager::Get_Instance()->Destroy_Instance();
 
+	CTarget_Manager::Get_Instance()->Destroy_Instance();
+
 	CObject_Manager::Get_Instance()->Destroy_Instance();
 
 	CComponent_Manager::Get_Instance()->Destroy_Instance();
@@ -516,6 +520,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pCollision_Manager);
+	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pGame_Manager);
 

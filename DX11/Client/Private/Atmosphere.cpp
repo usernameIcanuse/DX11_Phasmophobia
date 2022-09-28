@@ -48,16 +48,16 @@ void CAtmosphere::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 }
 
 HRESULT CAtmosphere::Render()
 {
 
-#ifdef _DEBUG
-    m_pOBBCom->Render();
-#endif
+//#ifdef _DEBUG
+//    m_pOBBCom->Render();
+//#endif
     return S_OK;
 }
 

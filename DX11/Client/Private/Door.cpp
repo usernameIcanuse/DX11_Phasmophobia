@@ -91,6 +91,10 @@ void CDoor::LateTick(_float fTimeDelta)
 
     //}
 
+#ifdef _DEBUG
+        m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+#endif
+
 }
 
 HRESULT CDoor::Render()
@@ -117,12 +121,12 @@ HRESULT CDoor::Render()
 
         m_pShaderCom->Begin(0);
 
-        m_pModelCom->Render(i);
+        m_pModelCom->Render(i, m_pShaderCom);
     }
 
-#ifdef _DEBUG
-    m_pOBBCom->Render();
-#endif
+//#ifdef _DEBUG
+//    m_pOBBCom->Render();
+//#endif
 
     return S_OK;
 }
@@ -221,29 +225,6 @@ HRESULT CDoor::SetUp_ShaderResource()
         return E_FAIL;
     if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
         return E_FAIL;
-
-
-    LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
-
-    if (nullptr == pLightDesc)
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-        return E_FAIL;
-
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-        return E_FAIL;
-
 
     RELEASE_INSTANCE(CGameInstance);
 

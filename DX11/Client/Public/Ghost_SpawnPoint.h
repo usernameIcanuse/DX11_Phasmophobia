@@ -62,7 +62,10 @@ private:
 
 	_long	   m_lAnswerFrequency = -1;
 
-	_bool	   m_bSpiritBox = true;
+	_bool		m_bSpiritBox = true;
+	_bool		m_bDotsProjecter = false;
+	_bool		m_bFreeze = false;
+	_bool		m_bGhostOrb = false;
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

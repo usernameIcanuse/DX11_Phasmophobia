@@ -73,7 +73,7 @@ HRESULT CLightSwitch::Render()
 
         m_pShaderCom->Begin(0);
 
-        m_pModelCom->Render(i);
+        m_pModelCom->Render(i,m_pShaderCom);
     }
 
 #ifdef _DEBUG

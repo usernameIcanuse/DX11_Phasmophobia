@@ -61,7 +61,7 @@ void CUIIcon::Tick(_float fTimeDelta)
 
 void CUIIcon::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CUIIcon::Render()

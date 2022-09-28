@@ -66,7 +66,7 @@ HRESULT CTempVideoCam::Render()
 
         m_pShaderCom->Begin(1);
 
-        m_pModelCom->Render(i);
+        m_pModelCom->Render(i, m_pShaderCom);
     }
 
 
@@ -129,10 +129,6 @@ HRESULT CTempVideoCam::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
-    /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-        return E_FAIL;
-
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
@@ -142,27 +138,6 @@ HRESULT CTempVideoCam::Setup_Component()
     return S_OK;
 }
 
-HRESULT CTempVideoCam::SetUp_ShaderResource()
-{
-    if (nullptr == m_pShaderCom)
-        return E_FAIL;
-
-
-    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
-    if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-        return E_FAIL;
-
-
-
-    RELEASE_INSTANCE(CGameInstance);
-
-    return S_OK;
-}
 
 CTempVideoCam* CTempVideoCam::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

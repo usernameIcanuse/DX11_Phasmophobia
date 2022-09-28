@@ -64,7 +64,7 @@ protected:
 	function<void(CItem*,_float)> m_pEventFunc;
 protected:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource()PURE;
+	virtual HRESULT SetUp_ShaderResource();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

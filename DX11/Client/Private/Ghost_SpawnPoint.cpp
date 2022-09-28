@@ -77,18 +77,20 @@ void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom); 
+	m_pRendererCom->Add_DebugRenderGroup(m_pSpawnPointCom);
+
 #endif
 }
 
 HRESULT CGhost_SpawnPoint::Render()
 {
-#ifdef _DEBUG
-
-	m_pAreaCom->Render();
-	m_pSpawnPointCom->Render();
-
-#endif // _DEBUG
+//#ifdef _DEBUG
+//
+//	m_pAreaCom->Render();
+//	m_pSpawnPointCom->Render();
+//
+//#endif // _DEBUG
 
 	return S_OK;
 }

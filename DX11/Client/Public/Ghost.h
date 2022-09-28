@@ -56,6 +56,9 @@ private:
 	function<void(CGhost*,_float)>	m_EventFunc;
 
 	_float				m_fTime = 0.f;
+
+	_bool				m_bGhostWriting = false;
+	_bool				m_bHandPrint = false;
 	
 private:
 	HRESULT	Setup_Component();

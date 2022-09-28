@@ -77,6 +77,13 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXANIM_DECLARATION;
 
+	typedef struct tagKeyFrame
+	{
+		XMFLOAT3		vScale;
+		XMFLOAT4		vRotation;
+		XMFLOAT3		vPosition;
+		float			fTime;
+	} KEYFRAME;
 
 	typedef struct tagVertex_Texture
 	{
