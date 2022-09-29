@@ -63,9 +63,8 @@ HRESULT CTempTrailCam::Render()
     {
      
 
-        m_pShaderCom->Begin(1);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,1);
     }
 
 
@@ -94,11 +93,11 @@ void CTempTrailCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
     {
         _float3 vScale = m_pTransformCom->Get_Scaled();
         _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
-        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook *  vScale.z);
-        _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_UP);
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
         _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
 
-        vUp = XMVector3Cross( XMLoadFloat4(&vLook),vRight);
+        vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
 
 
         vRight = XMVector3Normalize(vRight);

@@ -234,6 +234,7 @@
     <ClInclude Include="..\Public\Point.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SpiritBox.h" />
+    <ClInclude Include="..\Public\Temp_DotsProjecter.h" />
     <ClInclude Include="..\Public\Temp_Note.h" />
     <ClInclude Include="..\Public\Temp_TrailCam.h" />
     <ClInclude Include="..\Public\Temp_VideoCam.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="..\Public\Thermometer.h" />
     <ClInclude Include="..\Public\TrailCam.h" />
     <ClInclude Include="..\Public\Tripod.h" />
+    <ClInclude Include="..\Public\Truck.h" />
     <ClInclude Include="..\Public\UIBackground.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\UVLight.h" />
@@ -309,6 +311,7 @@
     <ClCompile Include="..\Private\Point.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\SpiritBox.cpp" />
+    <ClCompile Include="..\Private\Temp_DotsProjecter.cpp" />
     <ClCompile Include="..\Private\Temp_Note.cpp" />
     <ClCompile Include="..\Private\Temp_TrailCam.cpp" />
     <ClCompile Include="..\Private\Temp_VideoCam.cpp" />
@@ -316,6 +319,7 @@
     <ClCompile Include="..\Private\Thermometer.cpp" />
     <ClCompile Include="..\Private\TrailCam.cpp" />
     <ClCompile Include="..\Private\Tripod.cpp" />
+    <ClCompile Include="..\Private\Truck.cpp" />
     <ClCompile Include="..\Private\UIBackground.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\UVLight.cpp" />

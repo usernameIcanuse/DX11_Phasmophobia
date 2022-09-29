@@ -27,6 +27,8 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    if (FAILED(Setup_TempModel()))
+        return E_FAIL;
 
 
     return S_OK;
@@ -52,10 +54,11 @@ void CDotsProjecter::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+
 #endif
 
 }
@@ -82,22 +85,80 @@ HRESULT CDotsProjecter::Render()
        /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 //
 //#ifdef _DEBUG
 //    m_pOBBCom->Render();
 //#endif // _DEBUG
-
+    m_pTempDotsModel->Set_Enable(false);
 
     return S_OK;
 }
 
 
+_bool CDotsProjecter::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
+{
+    if (COLLISION_TYPE::OBJECT == eType)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+        _vector vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
+
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+        m_pTransformCom->Rotation(vecLook, XMConvertToRadians(180.f));
+       
+       // m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+        return true;
+    }
+    else if (COLLISION_TYPE::WALL == eType)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+        _vector vRight = XMVector3Cross(vUp, XMLoadFloat4(&vLook));
+
+        vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
+
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+        return true;
+    }
+
+    return false;
+}
+
 void CDotsProjecter::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
+    if (m_pTempDotsModel)
+    {
+        m_pTempDotsModel->Set_Enable(true);
+        m_pTempDotsModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+    }
 }
 
 void CDotsProjecter::On_Collision_Enter(CCollider* pCollider)
@@ -120,18 +181,18 @@ HRESULT CDotsProjecter::Setup_Component()
         return E_FAIL;
  
     /* For.Com_Model */
-  /*  if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_MapleTree"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-        return E_FAIL;*/
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_DotsProjecter"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
 
     /* For.Com_OBB*/
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 2.f, 1.f);
+    ColliderDesc.vScale = _float3(0.5f, 1.f, 0.5f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, ColliderDesc.vScale.z * -0.5f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::DOTSPROJECTER;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
@@ -143,7 +204,11 @@ HRESULT CDotsProjecter::Setup_Component()
 
 HRESULT CDotsProjecter::Setup_TempModel()
 {
-    return S_OK;
+    /*For.TempModel*/
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempDotsProjecter"), (CGameObject**)&m_pTempDotsModel)))
+        return E_FAIL;
+
+    m_pTempDotsModel->Set_Enable(false);
 }
 
 CDotsProjecter* CDotsProjecter::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

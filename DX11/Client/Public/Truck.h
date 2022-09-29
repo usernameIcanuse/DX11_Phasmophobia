@@ -12,12 +12,12 @@ END
 
 BEGIN(Client)
 
-class CHouse final : public CGameObject
+class CTruck final : public CGameObject
 {
 private:
-	CHouse(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CHouse(const CHouse& rhs);
-	virtual ~CHouse() = default;
+	CTruck(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CTruck(const CTruck& rhs);
+	virtual ~CTruck() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -26,8 +26,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag );
 
 private:
 	CShader* m_pShaderCom = nullptr;
@@ -41,7 +39,7 @@ private:
 
 
 public:
-	static CHouse* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CTruck* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };

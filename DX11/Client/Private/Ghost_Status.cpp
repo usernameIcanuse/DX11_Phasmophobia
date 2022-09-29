@@ -33,21 +33,20 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
+
 #ifdef _DEBUG
 	if (__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRenderercom))
 		return E_FAIL;
 #endif
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 10);
+	std::uniform_int_distribution<int> dis(0, 60);
 
-	m_iCalmLine = dis(gen) + 15;
-	m_iAggressionLine = dis(gen) + 70;
+	Add_Score(PLAYER_IN_HOUSE);
+	
+	/*m_fAttackCoolTime = */m_fEventCoolTime = dis(gen) + 20;
 
-	m_iAggressionWeight = 5.f;//집에들어갈 때 5를 더해주는 걸로 지금은 미리 5를 더해주고 감
-
-	m_fEventWeight = 0.6f;
-	m_fAttackWeight = 0.4f;
 
 	return S_OK;
 }
@@ -56,81 +55,80 @@ void CGhost_Status::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
 	m_fTimeAcc += fTimeDelta;
 
 	m_fTime += fTimeDelta;
-	m_fEventCoolTime += fTimeDelta;
-
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, m_iAggressionLine + (_int)m_iAggressionWeight);
-
-
-	if (m_fTime >= 1.f)
+	if (m_iCnt < 10 && 60.f < m_fTime)
 	{
-		
-		_float fValue = dis(gen);
-		fValue *= (1.f + m_iAggressionWeight * 0.01f);
-		
-		if (fValue >= (_float)m_iAggressionLine)
-		{
-			if (10 > m_iAggression)
-				++m_iAggression;
-			
-		}
-		else if (fValue <= (_float)m_iCalmLine - m_iAggressionWeight)
-		{
-			if (0 < m_iAggression)
-				--m_iAggression;
-		}
+		Add_Score(TIME_ATTACK);
 		m_fTime = 0.f;
+		++m_iCnt;
 	}
 
-	if (4 < m_iAggression && 10 > m_iAggression)
+	if(!m_bEvent)
+		m_fEventCoolTime -= fTimeDelta;
+	/*if(!m_bAttack)
+		m_fAttackCoolTime -= fTimeDelta;*/
+
+	if (m_iScore > 30)
 	{
+		/*5단계*/
+		m_iEventWeight = 50;
+		//m_iAttackWeight = 45;
+	}
+	else if (m_iScore > 24)
+	{
+		/*4단계*/
+		m_iEventWeight = 40;
+		//m_iAttackWeight = 35;
+	}
+	else if (m_iScore > 16)
+	{
+		/*3단계*/
+		m_iEventWeight = 30;
+		//m_iAttackWeight = 25;
+	}
+	else if (m_iScore > 8)
+	{
+		/*2단계*/
+		m_iEventWeight = 15;
+		//m_iAttackWeight = 15;
+	}
+	else
+	{
+		/*1단계*/
+		m_iEventWeight = 5;
+		//m_iAttackWeight = 5;
+	}
 
-			_float fRandomValue = dis(gen) * m_fEventWeight;
-			fRandomValue += dis(gen) * (1.f - m_fEventWeight);
-			if (20.f > fRandomValue)
-			{
-				m_fEventTime -= fTimeDelta;
-				/*event OnMessage호출*/
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Event"));
-				if (m_fEventTime < 0.f)
-				{
-					m_fEventTime = 10.f;
-					m_fEventCoolTime = 0.f;
-				}
-			}
-
-
-		}
-		else if (10 == m_iAggression)
+	if (0.f > m_fEventCoolTime)
+	{
+		if (false == m_bEvent)
 		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dis(0, 100);
 
-			_float fRandomValue = dis(gen) * m_fEventWeight;
-			fRandomValue += dis(gen) * (1.f - m_fEventWeight);
-			if (20.f > fRandomValue)
-			{
-				m_fEventTime -= fTimeDelta;
-				/*Attack*/
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Attack"));
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+			_int iValue = dis(gen);
+			if(m_iEventWeight > iValue)
+				wsprintf(m_szEventMessage, TEXT("Event"));
+			else
+				wsprintf(m_szEventMessage, TEXT("Attack"));
 
-				if (m_fAttackTime < 0.f)
-				{
-					m_fAttackTime = 10.f;
-					m_fEventCoolTime = 0.f;
-				}
-			}
+			m_bEvent = true;
 
 		}
-	
-
-	m_iEMF = m_iAggression / 2+1;
-	/*만약 5가 됐는데 emf 5단계 조건 있으면 그냥 대입*/
-
+		else
+		{
+			m_fTermBeforeEvent -= fTimeDelta;
+			if (0.f < m_fTermBeforeEvent)
+			{
+				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, m_szEventMessage);
+				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, m_szEventMessage);
+			}
+		}
+	}
 }
 
 void CGhost_Status::LateTick(_float fTimeDelta)
@@ -147,7 +145,7 @@ HRESULT CGhost_Status::Render()
 #ifdef _DEBUG
 	if (m_fTimeAcc >= 1.f)
 	{
-		wsprintf(m_szAgression, TEXT("공격성 : %d"), m_iAggression);
+		wsprintf(m_szAgression, TEXT("공격성 : %d"), m_iScore);
 		m_fTimeAcc = 0.f;
 	}
 	GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szAgression, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
@@ -156,15 +154,29 @@ HRESULT CGhost_Status::Render()
 	return S_OK;
 }
 
-void CGhost_Status::Increase_BaseLine(WEIGHT eWeightType)
+void CGhost_Status::OnEventMessage(const _tchar* pMessage)
 {
-	m_iAggressionWeight += eWeightType;
+	if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(0, 100);
+
+			m_bEvent = false;
+			m_fEventCoolTime = dis(gen) + 40 - m_iEventWeight;
+		
+		
+	}
+	//else if (0 == lstrcmp(TEXT("Event"), pMessage))
+	//{
+	//	m_bEvent = true;
+	//}
+	//else if (0 == lstrcmp(TEXT("Attack"), pMessage))
+	//{
+	//	m_bEvent = true;
+	//}
 }
 
-void CGhost_Status::Decrease_BaseLine(WEIGHT eWeightType)
-{
-	m_iAggressionWeight -= eWeightType;
-}
 
 CGhost_Status* CGhost_Status::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

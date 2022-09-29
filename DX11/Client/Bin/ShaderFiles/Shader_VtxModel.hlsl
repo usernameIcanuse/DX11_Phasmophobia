@@ -87,7 +87,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 struct PS_TempModelOut
 {
-	vector		vDiffuse : SV_TARGET0;
+	vector		vColor: SV_TARGET0;
 };
 
 
@@ -95,9 +95,9 @@ PS_TempModelOut PS_TempModel(PS_IN In)
 {
 	PS_TempModelOut		Out = (PS_TempModelOut)0;
 
-	Out.vDiffuse = vector(1.f,1.f,1.f,0.6f);
+	Out.vColor = vector(1.f,1.f,1.f,0.6f);
 	
-	if (Out.vDiffuse.a < 0.1f)
+	if (Out.vColor.a < 0.1f)
 		discard;
 
 	return Out;

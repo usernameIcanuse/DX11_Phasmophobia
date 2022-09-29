@@ -2,8 +2,9 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
-
-
+BEGIN(Engint)
+class CCollider;
+END
 
 BEGIN(Client)
 
@@ -25,15 +26,16 @@ public:
 	//virtual void OnEventMessage(const _tchar* pMessage);
 
 public:
-	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr)
-	{ 
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
-		return true; 
-	};
+	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
+	
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+
+private:
+
+	CItem* m_pTempDotsModel = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

@@ -39,6 +39,11 @@ void CTrailCam::Tick(_float fTimeDelta)
     _matrix matWorld = m_pTransformCom->Get_WorldMatrix();
     m_pOBBCom->Update(matWorld);
     m_pAreaCom->Update(matWorld);
+
+   // if (m_bSwitch)
+   // {
+   //     /*ºÒºû ÄÑÁü*/
+   // }
 }
 
 void CTrailCam::LateTick(_float fTimeDelta)
@@ -76,8 +81,7 @@ HRESULT CTrailCam::Render()
       /*  if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
-
+        
         m_pModelCom->Render(i, m_pShaderCom);
     }
 
@@ -93,23 +97,26 @@ HRESULT CTrailCam::Render()
 
 void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 {
-    __super::On_Collision_Enter(pCollider);
-
-
+   
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    {
+        m_bSwitch = true;
+    }
   
 }
 
 
 void CTrailCam::On_Collision_Stay(CCollider* pCollider)
 {
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
-    {
-
-    }
+ 
 }
 
 void CTrailCam::On_Collision_Exit(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    {
+        m_bSwitch = false;
+    }
 }
 
 HRESULT CTrailCam::Setup_Component()
@@ -146,7 +153,7 @@ HRESULT CTrailCam::Setup_Component()
     XMStoreFloat3(&ColliderDesc.vTranslation, XMVectorSet(0.f, 0.f, 0.f, 0.f) + ColliderDesc.vScale.z*0.55f*vLook);
     //ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM_AREA;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
         return E_FAIL;

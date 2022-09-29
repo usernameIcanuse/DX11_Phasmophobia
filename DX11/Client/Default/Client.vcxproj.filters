@@ -181,6 +181,12 @@
     <ClInclude Include="..\Public\Point.h">
       <Filter>IMGUI\Manager\Navigation_Point</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Temp_DotsProjecter.h">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_DotsProjecter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Truck.h">
+      <Filter>02.GameObject\Stage\Truck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -347,6 +353,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Point.cpp">
       <Filter>IMGUI\Manager\Navigation_Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Temp_DotsProjecter.cpp">
+      <Filter>02.GameObject\Item\Temp_Item\Temp_DotsProjecter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Truck.cpp">
+      <Filter>02.GameObject\Stage\Truck</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +546,9 @@
     </Filter>
     <Filter Include="IMGUI\Manager\Navigation_Point">
       <UniqueIdentifier>{dc356d4b-8268-4a94-879c-a5b096c5aba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck">
+      <UniqueIdentifier>{2fb5f542-963b-4351-9a48-c5dd602dd6b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

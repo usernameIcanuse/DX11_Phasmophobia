@@ -38,7 +38,7 @@ HRESULT CGhost::Initialize(void* pArg)
 		return E_FAIL;
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
-	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Moving"));
+	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 
 	return S_OK;
 }
@@ -48,7 +48,12 @@ void CGhost::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_fTime += fTimeDelta;
+	m_fUpdatePointTime -= fTimeDelta;
 
+	if (0.f > m_fUpdatePointTime)
+	{
+		Stop_Updating_SpawnPoint();
+	}
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 
 	m_pOBBCom->Update(matWorld);
@@ -80,6 +85,10 @@ HRESULT CGhost::Render()
 //
 //#endif // _DEBUG
 
+#ifdef _DEBUG
+	GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szEvent, _float2(0.f, 200.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+#endif
+
 	return S_OK;
 }
 
@@ -94,15 +103,17 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 {
 	if (0 == lstrcmp(TEXT("Event"), pMessage))
 	{
+		m_fEventTime = 10.f + m_pSpawnPoint->Get_Anger() / 6;
 		m_EventFunc = std::bind(&CGhost::Light_Attack, std::placeholders::_1, std::placeholders::_2);
 	}
-
+	 
 	else if (0 == lstrcmp(TEXT("Attack"), pMessage))
 	{
+		m_fAttackTime = 10.f + m_pSpawnPoint->Get_Anger() / 6;
 		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
 	}
 
-	else if (0 == lstrcmp(TEXT("Moving"), pMessage))
+	else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
 	{
 		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
 	}
@@ -121,23 +132,46 @@ void CGhost::Whispering()
 
 void CGhost::Stop_Updating_SpawnPoint()
 {
-	m_pSpawnPoint->m_pGhost = nullptr;
+	m_pSpawnPoint->Set_Ghost(nullptr);
 }
 
 void CGhost::Light_Attack(_float fTimeDelta)
 {
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
+#ifdef _DEBUG
+	wsprintf(m_szEvent, TEXT("±ð²á~"));
+#endif
+	m_fEventTime -= fTimeDelta;
+	if (0.f > m_fEventTime)
+	{
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
+		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
+
+	}
+	
 }
 
 void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
+#ifdef _DEBUG
+	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
+#endif
+	m_fAttackTime -= fTimeDelta;
+	if (0.f > m_fAttackTime)
+	{
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
+		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
+
+	}
 }
 
 void CGhost::Moving(_float fTimeDelta)
 {
+#ifdef _DEBUG
+	wsprintf(m_szEvent, TEXT(""));
 	//m_pTransformCom->Go_Backward(fTimeDelta);
-
+#endif
 	//if (m_fTime > 5.f)
 	//{
 	//	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Stop"));

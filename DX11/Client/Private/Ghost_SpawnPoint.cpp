@@ -47,7 +47,7 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
 
-	//m_lAnswerFrequency = dis(gen);
+	m_lAnswerFrequency = dis(gen);
 
 	return S_OK;
 }
@@ -69,6 +69,9 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 
 	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
 
+#ifdef _DEBUG
+	m_fWhisperingTime -= fTimeDelta;
+#endif
 
 }
 
@@ -91,6 +94,11 @@ HRESULT CGhost_SpawnPoint::Render()
 //	m_pSpawnPointCom->Render();
 //
 //#endif // _DEBUG
+	if (m_fWhisperingTime > 0.f)
+	{
+		GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szWhispering, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	}
 
 	return S_OK;
 }
@@ -102,14 +110,24 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 	m_pGhost_Status->Set_Enable(_bEnable);
 }
 
-_uint CGhost_SpawnPoint::Get_Anger()
+_int CGhost_SpawnPoint::Get_Anger()
 {
-	return m_pGhost_Status->m_iAggression;
+	return m_pGhost_Status->m_iScore;
 }
 
 _uint CGhost_SpawnPoint::Get_EMFLevel()
 {
 	return m_pGhost_Status->m_iEMF;
+}
+
+_int   CGhost_SpawnPoint::Get_SpawnPointTemperature()
+{
+	if (m_bCheckFreeze)
+	{
+		m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
+		m_bCheckFreeze = false;
+	}
+	return m_iAreaTemperature - 4;
 }
 
 void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
@@ -126,6 +144,11 @@ void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 		{
 			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Answer"));
 			m_lAnswerFrequency = dis(gen);
+			if (m_bCheckSpiritBox)
+			{
+				m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
+				m_bCheckSpiritBox = false;
+			}
 		}
 		else
 			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Not_Respone"));
@@ -183,39 +206,67 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Increase_BaseLine(CGhost_Status::PLAYER_IN_AREA);
+		m_pGhost_Status->Add_Score(CGhost_Status::PLAYER_IN_AREA);
 	}
-	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
+	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Increase_BaseLine(CGhost_Status::ITEM_IN_AREA);
+		m_pGhost_Status->Add_Score(CGhost_Status::ITEM_IN_AREA);
 	}
 
 	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Increase_BaseLine(CGhost_Status::SPIRITBOX);
+		m_pGhost_Status->Add_Score(CGhost_Status::SPIRITBOX);
 	}
+	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Add_Score(CGhost_Status::DOTSPROJECTER);
+	}
+	else if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Add_Score(CGhost_Status::CAMERA);
+	}
+	
 }
 
 void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
-	
+	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(0, 100);
+		if (dis(gen) > 90)
+		{
+#ifdef _DEBUG
+			wsprintf(m_szWhispering, TEXT("À¯ÈÄ"));
+			m_fWhisperingTime = 2.f;
+#endif
+		}
+	}
 }
 
 void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::PLAYER_IN_AREA);
+		m_pGhost_Status->Subtract_Score(CGhost_Status::PLAYER_IN_AREA);
 	}
-
-	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type())
+	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::ITEM_IN_AREA);
+		m_pGhost_Status->Subtract_Score(CGhost_Status::ITEM_IN_AREA);
 	}
 
 	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Decrease_BaseLine(CGhost_Status::SPIRITBOX);
+		m_pGhost_Status->Subtract_Score(CGhost_Status::SPIRITBOX);
+	}
+	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Subtract_Score(CGhost_Status::DOTSPROJECTER);
+	}
+	else if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
+	{
+		m_pGhost_Status->Subtract_Score(CGhost_Status::CAMERA);
 	}
 }
 

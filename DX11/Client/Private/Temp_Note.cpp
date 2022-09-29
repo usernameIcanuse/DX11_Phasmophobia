@@ -40,7 +40,7 @@ void CTempNote::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 }
 
@@ -62,9 +62,8 @@ HRESULT CTempNote::Render()
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
       
-        m_pShaderCom->Begin(1);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,1);
     }
 
 

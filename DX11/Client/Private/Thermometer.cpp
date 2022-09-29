@@ -45,7 +45,7 @@ void CThermometer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
@@ -74,9 +74,8 @@ HRESULT CThermometer::Render()
         /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
 
-        m_pModelCom->Render(i, m_pShaderCom);
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 
     // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont

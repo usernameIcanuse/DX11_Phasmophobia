@@ -39,13 +39,8 @@ void CLightSwitch::Tick(_float fTimeDelta)
 void CLightSwitch::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
-        m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
-    //}
+ 
+    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 }
 
@@ -68,11 +63,7 @@ HRESULT CLightSwitch::Render()
     {
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;*/
-
-        m_pShaderCom->Begin(0);
-
+    
         m_pModelCom->Render(i,m_pShaderCom);
     }
 

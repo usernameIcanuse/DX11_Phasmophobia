@@ -16,11 +16,13 @@
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
 
+#include "Temp_DotsProjecter.h"
 #include "Temp_Note.h"
 #include "Temp_TrailCam.h"
 #include "Temp_VideoCam.h"
 
 #include "Atmosphere.h"
+#include "Truck.h"
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
@@ -345,6 +347,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CAtmosphere::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_TempDotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempDotsProjecter"),
+		CTempDotsProjecter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 	/* For. Prototype_GameObject_TempNote*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempNote"),
 		CTempNote::Create(m_pDevice, m_pContext))))
@@ -358,16 +364,23 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CTempTrailCam::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_Truck*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Truck"),
+		CTruck::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
+#ifdef _DEBUG
+
 	/* For.Prototype_GameObject_Point*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Point"),
 		CPoint::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
+#endif
 
 #pragma endregion
 
@@ -424,6 +437,14 @@ HRESULT CLoader::Loading_ForStage1Level()
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Lighter"),
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 	//	return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)  * XMMatrixRotationX(XMConvertToRadians(270.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.5f, 0.f);
+
+	/*For. Prototype_Component_Model_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_DotsProjecter"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/DotsProjecter/", "DotsProjecter.fbx", TransformMatrix))))
+		return E_FAIL;
+
 	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f)* XMMatrixTranslation(0.f, 0.35f, 0.f);
 
 	/* For.Prototype_Component_Model_FlashLight*/
@@ -446,7 +467,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
 		return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
+	TransformMatrix = XMMatrixScaling(0.065f, 0.065f, 0.065f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
 	/* For.Prototype_Component_Model_Note*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))

@@ -44,6 +44,9 @@ void CSpiritBox::Tick(_float fTimeDelta)
     {
         m_fTimeAcc += fTimeDelta;
     
+#ifdef _DEBUG
+        m_fAnswerTime -= fTimeDelta;
+#endif
     }
 }
 
@@ -51,7 +54,7 @@ void CSpiritBox::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
@@ -82,9 +85,8 @@ HRESULT CSpiritBox::Render()
         /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
               return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 
     if (m_bSwitch)
@@ -92,7 +94,11 @@ HRESULT CSpiritBox::Render()
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
     }
 
+    if (m_fAnswerTime > 0.f)
+    {
+        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szAnswer, _float2(1100.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
+    }
 //#ifdef _DEBUG
 //      m_pOBBCom->Render();
 //#endif // _DEBUG
@@ -108,12 +114,18 @@ void CSpiritBox::OnEventMessage(const _tchar* pMessage)
     if (0 == lstrcmp(TEXT("Answer"), pMessage))
     {
        /*Ghost Icon*/
-        int a = 0;
+#ifdef _DEBUG
+        wsprintf(m_szAnswer, TEXT("응답"));
+        m_fAnswerTime = 3.f;
+#endif
     }
     else if (0 ==lstrcmp(TEXT("Not_Respone"), pMessage))
     {
         /*X Icon*/
-        int a = 0;
+#ifdef _DEBUG
+        wsprintf(m_szAnswer, TEXT("무응답"));
+        m_fAnswerTime = 3.f;
+#endif
     }
 }
 

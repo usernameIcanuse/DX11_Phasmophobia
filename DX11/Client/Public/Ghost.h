@@ -34,7 +34,7 @@ public:
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
 	
 
-public:
+private:
 	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
 
 private: /*기본 귀신 상호작용, 기능*/
@@ -51,11 +51,19 @@ private:
 	CModel*			m_pModelCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 
+#ifdef _DEBUG
+	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력
+#endif
+
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
+	_float				m_fUpdatePointTime = 0.f;
 	
 	function<void(CGhost*,_float)>	m_EventFunc;
 
 	_float				m_fTime = 0.f;
+
+	_float				m_fEventTime = 10.f;
+	_float				m_fAttackTime = 10.f;
 
 	_bool				m_bGhostWriting = false;
 	_bool				m_bHandPrint = false;

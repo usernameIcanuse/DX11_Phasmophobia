@@ -33,7 +33,7 @@ public:
 
 
 public:
-	_uint	Get_Anger();
+	_int	Get_Anger();
 	_uint   Get_EMFLevel();
 	
 	_int	Get_AreaTemperature()
@@ -41,18 +41,25 @@ public:
 		return m_iAreaTemperature;
 	}
 
-	_int    Get_SpawnPointTemperature()
-	{
-		return m_iAreaTemperature - 4;
-	}
-
+	_int    Get_SpawnPointTemperature();
+	
 	void	Get_Answer(_long _lFrequency, _float& _fTime);
+	void	Set_Ghost(CGhost* _pGhost)
+	{
+		m_pGhost = _pGhost;
+	}
 
 
 private:
 	CCollider*		m_pAreaCom = nullptr;
 	CCollider*		m_pSpawnPointCom = nullptr;
+
+#ifdef _DEBUG
 	CRenderer*		m_pRendererCom = nullptr;
+	_tchar		m_szWhispering[MAX_PATH] = TEXT("");
+	_float		m_fWhisperingTime = 0.f;
+#endif // _DEBUG
+
 
 	CGhost*			m_pGhost = nullptr;
 	CGhost_Status* m_pGhost_Status = nullptr;
@@ -63,9 +70,14 @@ private:
 	_long	   m_lAnswerFrequency = -1;
 
 	_bool		m_bSpiritBox = true;
-	_bool		m_bDotsProjecter = false;
-	_bool		m_bFreeze = false;
-	_bool		m_bGhostOrb = false;
+	_bool		m_bDotsProjecter = true;
+	_bool		m_bFreeze = true;
+	_bool		m_bGhostOrb = true;
+
+	_bool		m_bCheckSpiritBox = true;
+	_bool		m_bCheckDotsProjecter = true;
+	_bool		m_bCheckFreeze = true;
+	_bool		m_bCheckGhostOrb = true;
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

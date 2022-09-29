@@ -37,7 +37,7 @@ HRESULT CRenderer::Initialize_Prototype()
 
 	/* ·»´õÅ¸°ÙµéÀ» Ãß°¡ÇÑ´Ù. */
 	GAMEINSTANCE->Add_Renderer(CRenderer_Manager::RENDERER_STATIC, this);
-	//GAMEINSTANCE->Add_ItemFrustum(CFrustum::FRUSTUM_STATIC, this, nullptr);
+	GAMEINSTANCE->Add_ItemFrustum(CFrustum::FRUSTUM_STATIC, this, nullptr);
 
 	D3D11_VIEWPORT			ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
@@ -311,17 +311,17 @@ HRESULT CRenderer::Render_Debug()
 
 	m_DebugComponents.clear();
 
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
+	//if (nullptr == m_pTarget_Manager)
+	//	return E_FAIL;
 
-	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+	//	return E_FAIL;
 
-	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	//	return E_FAIL;
 
-	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
-	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
 
 
 

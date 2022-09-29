@@ -42,8 +42,7 @@ void CPhoto_Camera::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -71,9 +70,8 @@ HRESULT CPhoto_Camera::Render()
        /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
 
-        m_pModelCom->Render(i,m_pShaderCom);
+        m_pModelCom->Render(i,m_pShaderCom,0);
     }
 
 //#ifdef _DEBUG

@@ -33,7 +33,7 @@ void CFrustum::Update()
 
 void CFrustum::Late_Update()
 {
-	if (m_vecObjectList.empty())
+	if (m_vecObjectList.empty() || m_listFrustumDesc[FRUSTUM_STATIC].empty())
 		return;
 
 	for (auto& elem : m_vecObjectList)
@@ -41,7 +41,7 @@ void CFrustum::Late_Update()
 		/*충돌체로 절두체 컬링*/
 		CTransform* pTransform = (CTransform*)elem.first->Get_Component(CGameObject::m_pTransformTag);
 		_vector vWorldPoint = pTransform->Get_State(CTransform::STATE_TRANSLATION);
-		if (View_Frustum_Culling(vWorldPoint, 1.f))
+		if (View_Frustum_Culling(vWorldPoint, 5.f))
 		{
 			m_listFrustumDesc[FRUSTUM_STATIC].front().second->Add_RenderGroup(elem.second, elem.first);
 		}

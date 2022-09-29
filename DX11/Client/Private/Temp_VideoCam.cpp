@@ -64,9 +64,7 @@ HRESULT CTempVideoCam::Render()
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
 
-        m_pShaderCom->Begin(1);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        m_pModelCom->Render(i, m_pShaderCom,1);
     }
 
 
@@ -77,10 +75,12 @@ void CTempVideoCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
 {
     if (eType == COLLISION_TYPE::OBJECT )
     {
+        CTransform* pTransform = (CTransform*)pConnectItem->Get_Component(CGameObject::m_pTransformTag);
+
         _float3 vScale = m_pTransformCom->Get_Scaled();
 
         _vector vUp = XMLoadFloat4(&vLook);
-        _vector vecLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK) * -1.f;
+        _vector vecLook = pTransform->Get_State(CTransform::STATE_LOOK) * -1.f;
         _vector vRight = XMVector3Cross(vUp, vecLook);
         vecLook = XMVector3Cross(vRight, vUp);
 
@@ -96,7 +96,7 @@ void CTempVideoCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
 
     }
 
-   if (eType == COLLISION_TYPE::TRIPOD)
+   else if (eType == COLLISION_TYPE::TRIPOD)
     {
        CTransform* pTransform = (CTransform*)pConnectItem->Get_Component(CGameObject::m_pTransformTag);
        

@@ -161,12 +161,12 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	if (iMaterialIndex >= m_iNumMaterials)
 		return E_FAIL;
 
-	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+	/*if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
 	{
 		m_Materials[iMaterialIndex].pTextures[eType] = CTexture::Create(m_pDevice, m_pContext,
 			TEXT("..\\Bin\\Resources\\Textures\\Default_Texture.png"));
 
-	}
+	}*/
 
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);	
 }

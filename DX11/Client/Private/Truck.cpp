@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "../Public/House.h"
+#include "../Public/Truck.h"
 #include "GameInstance.h"
 
-CHouse::CHouse(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTruck::CTruck(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
 {
 }
 
-CHouse::CHouse(const CHouse& rhs)
+CTruck::CTruck(const CTruck& rhs)
     :CGameObject(rhs)
 {
 }
 
-HRESULT CHouse::Initialize_Prototype()
+HRESULT CTruck::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CHouse::Initialize(void* pArg)
+HRESULT CTruck::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
@@ -28,26 +28,26 @@ HRESULT CHouse::Initialize(void* pArg)
     return S_OK;
 }
 
-void CHouse::Tick(_float fTimeDelta)
+void CTruck::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
 }
 
-void CHouse::LateTick(_float fTimeDelta)
+void CTruck::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
    /* _float4 vPosition;
     XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
     {*/
-        m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+        GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
     //}
 
 }
 
-HRESULT CHouse::Render()
+HRESULT CTruck::Render()
 {
     if (nullptr == m_pShaderCom ||
         nullptr == m_pModelCom)
@@ -76,17 +76,9 @@ HRESULT CHouse::Render()
     return S_OK;
 }
 
-HRESULT CHouse::SetUp_ModelCom(const _tchar* pPrototypeTag)
-{
-    /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-        return E_FAIL;
-
-    return S_OK;
-}
 
 
-HRESULT CHouse::Setup_Component()
+HRESULT CTruck::Setup_Component()
 {
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -96,11 +88,15 @@ HRESULT CHouse::Setup_Component()
     /* For.Com_Renderer*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
+
+    /* For.Com_Model*/
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
    
     return S_OK;
 }
 
-HRESULT CHouse::SetUp_ShaderResource()
+HRESULT CTruck::SetUp_ShaderResource()
 {
     if (nullptr == m_pShaderCom)
         return E_FAIL;
@@ -121,33 +117,33 @@ HRESULT CHouse::SetUp_ShaderResource()
     return S_OK;
 }
 
-CHouse* CHouse::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CTruck* CTruck::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CHouse* pInstance = new CHouse(pDevice, pContext);
+    CTruck* pInstance = new CTruck(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CHouse");
+        MSG_BOX("Failed to Created : CTruck");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CHouse::Clone(void* pArg)
+CGameObject* CTruck::Clone(void* pArg)
 {
-    CHouse* pInstance = new CHouse(*this);
+    CTruck* pInstance = new CTruck(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CHouse");
+        MSG_BOX("Failed to Cloned : CTruck");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CHouse::Free()
+void CTruck::Free()
 {
     __super::Free();
     

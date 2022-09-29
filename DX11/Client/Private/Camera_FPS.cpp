@@ -24,6 +24,8 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 
@@ -54,6 +56,22 @@ void CCamera_FPS::LateTick(_float fTimeDelta)
 HRESULT CCamera_FPS::Render()
 {
 	return S_OK;
+}
+
+void CCamera_FPS::Set_Target(CTransform* _pTarget)
+{
+	m_pTarget = _pTarget;
+
+	_matrix matTarget = m_pTarget->Get_WorldMatrix();
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, matTarget.r[0]);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, matTarget.r[1]);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, matTarget.r[2]);
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matTarget.r[3] + XMVectorSet(0.f, 10.f, 0.f, 0.f));
+
+
+	if (FAILED(Bind_PipeLine()))
+		return;
 }
 
 

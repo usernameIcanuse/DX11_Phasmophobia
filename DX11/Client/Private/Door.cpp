@@ -87,7 +87,7 @@ void CDoor::LateTick(_float fTimeDelta)
     XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
     {*/
-        m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
     //}
 
@@ -119,7 +119,6 @@ HRESULT CDoor::Render()
         /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
 
         m_pModelCom->Render(i, m_pShaderCom);
     }
@@ -133,7 +132,7 @@ HRESULT CDoor::Render()
 
 void CDoor::OnEventMessage(const _tchar* pMessage)
 {
-    if (0 == lstrcmp(TEXT("Event"), pMessage))
+    if (0 == lstrcmp(TEXT("Attack"), pMessage))
     {
         
         m_bLock = true;

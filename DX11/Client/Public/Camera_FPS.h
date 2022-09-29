@@ -20,10 +20,8 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	void	Set_Target(CTransform* _pTarget)
-	{
-		m_pTarget = _pTarget;
-	}
+	void	Set_Target(CTransform* _pTarget);
+	
 
 	void	Get_SettingPos(_float4 _vPos)
 	{

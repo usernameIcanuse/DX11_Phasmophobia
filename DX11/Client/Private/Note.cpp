@@ -28,6 +28,7 @@ HRESULT CNote::Initialize(void* pArg)
     if (FAILED(Setup_TempModel()))
         return E_FAIL;
 
+    m_vAdjustpos = _float3(1.f, 1.f, 2.f);
 
     return S_OK;
 }
@@ -43,7 +44,7 @@ void CNote::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
@@ -72,9 +73,8 @@ HRESULT CNote::Render()
       /*  if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 
 //#ifdef _DEBUG
@@ -154,7 +154,7 @@ HRESULT CNote::Setup_Component()
     CCollider::COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.6f, 2.4f, 0.2f);
+    ColliderDesc.vScale = _float3(1.4f, 2.2f, 0.2f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, 0.f, -0.1f);
     ColliderDesc.pOwner = this;

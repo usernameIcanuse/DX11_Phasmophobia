@@ -148,7 +148,7 @@ _bool CCollider::Collision(CCollider * pTargetCollider)
 		}
 	}
 
-	else if (TYPE_SPHERE== m_eCollisionType)
+	else if (TYPE_SPHERE == m_eCollisionType)
 	{
 		switch (pTargetCollider->Get_Collision_Type())
 		{
@@ -252,6 +252,7 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 
 HRESULT CCollider::Render()
 {
+	
 #ifdef _DEBUG
 	m_pContext->IASetInputLayout(m_pInputLayout);
 

@@ -46,7 +46,7 @@ void CVideo_Camera::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -74,9 +74,8 @@ HRESULT CVideo_Camera::Render()
        /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-        m_pShaderCom->Begin(0);
-
-        m_pModelCom->Render(i, m_pShaderCom);
+        
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 
 //#ifdef _DEBUG
@@ -116,7 +115,7 @@ _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vL
         return true;
     }
 
-   if (eType == COLLISION_TYPE::TRIPOD)
+   else if (eType == COLLISION_TYPE::TRIPOD)
     {
        CTransform* pTransform = (CTransform*)pConnectItem->Get_Component(CGameObject::m_pTransformTag);
        
@@ -153,7 +152,10 @@ void CVideo_Camera::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
     if (m_pTempCameraModel)
     {
         m_pTempCameraModel->Set_Enable(true);
-        m_pTempCameraModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+        if (COLLISION_TYPE::TRIPOD == eType)
+            m_pTempCameraModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
+        else
+            m_pTempCameraModel->Set_TempModel_Pos(vPosition, eType, vLook, this);
     }
 }
 

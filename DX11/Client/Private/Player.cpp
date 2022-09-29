@@ -34,14 +34,15 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(20.f, 0.f, 0.f, 1.f));
 
+	if (FAILED(Setup_Camera()))
+		return E_FAIL;
+
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
 	if (FAILED(Setup_Inventory()))
 		return E_FAIL;
 
-	if (FAILED(Setup_Camera()))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -292,7 +293,8 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::ITEM == pCollider->Get_Type() || COLLISION_TYPE::THERMOMETER == pCollider->Get_Type() ||
-		COLLISION_TYPE::CAMERA== pCollider->Get_Type()|| COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
+		COLLISION_TYPE::CAMERA== pCollider->Get_Type()|| COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type()||
+		COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
@@ -303,7 +305,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		}
 	}
 	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL== pCollider->Get_Type() ||
-			COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
+			COLLISION_TYPE::TRIPOD == pCollider->Get_Type()|| COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
 	{
 		_float fCollisionDist = m_pRayCom->Get_Collision_Dist();
 
