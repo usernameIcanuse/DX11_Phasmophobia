@@ -32,7 +32,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(20.f, 0.f, 0.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(70.f, 0.f, 52.f, 1.f));
 
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;

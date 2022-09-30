@@ -678,7 +678,9 @@ void CImguiMgr::Tool_Navigation()
 
 	if (ImGui::Button("Clear"))
 	{
+		_float3 pTemp = m_vNavigationPoints[0];
 		m_vNavigationPoints.clear();
+		m_vNavigationPoints.push_back(pTemp);
 	}
 
 	_float4 fPosition = _float4(0.f,0.f,0.f,0.f);
