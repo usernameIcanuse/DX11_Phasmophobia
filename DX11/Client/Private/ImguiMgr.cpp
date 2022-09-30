@@ -696,6 +696,8 @@ void CImguiMgr::Tool_Navigation()
 		if (0.15f > XMVectorGetX(XMVector3Length(fLength)))
 		{
 			XMStoreFloat4(&fPosition, XMLoadFloat3(&elem));
+			XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition));
+
 			bFlag = true;
 		}
 	}
@@ -715,6 +717,8 @@ void CImguiMgr::Tool_Navigation()
 			{
 				XMStoreFloat4(&fOffset, XMLoadFloat4(&fOffset) - XMVectorSet(0.f, 0.05f, 0.f, 0.f));
 			}
+			XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition) + XMLoadFloat4(&fOffset));
+
 		}
 	}
 
@@ -722,7 +726,6 @@ void CImguiMgr::Tool_Navigation()
 	ImGui::Text("[ O ] : y-");
 
 
-	XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition)+XMLoadFloat4(&fOffset));
 	
 	if (bFlag && GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{

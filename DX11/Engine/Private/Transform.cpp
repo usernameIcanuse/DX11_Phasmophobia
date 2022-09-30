@@ -63,11 +63,14 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
-		_float fPositionY = 0.f;
+		/*_float fPositionY = 0.f;
 		if (pNaviCom->isMove(vPosition, fPositionY))
 		{
 			int a = 0; 
-		}
+		}*/
+		_float fPositionY = 0.f;
+		pNaviCom->isMove(vPosition, fPositionY);
+
 	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
@@ -87,11 +90,14 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
-		_float fPositionY = 0.f;
+		/*_float fPositionY = 0.f;
 		if (pNaviCom->isMove(vPosition, fPositionY))
 		{
 			int a = 0;
-		}
+		}*/
+		_float fPositionY = 0.f;
+		pNaviCom->isMove(vPosition, fPositionY);
+
 	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
@@ -111,11 +117,14 @@ HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
-		_float fPositionY = 0.f;
+		/*_float fPositionY = 0.f;
 		if (pNaviCom->isMove(vPosition, fPositionY))
 		{
 			int a = 0;
-		}
+		}*/
+		_float fPositionY = 0.f;
+		pNaviCom->isMove(vPosition, fPositionY);
+
 	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
@@ -135,11 +144,13 @@ HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
-		_float fPositionY = 0.f;
+		/*_float fPositionY = 0.f;
 		if (pNaviCom->isMove(vPosition, fPositionY))
 		{
 			int a = 0;
-		}
+		}*/
+		_float fPositionY = 0.f;
+		pNaviCom->isMove(vPosition, fPositionY);
 	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
