@@ -128,7 +128,7 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iInde
 #endif
 
 
-_bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY)
+_bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, _int& iPrevIndex)
 {
 	/* 이 쎌의 세변에 대해서 나갔는지 안낙ㅆ다ㅣ;ㅓ 판단한다. */
 	for (_uint i = 0; i < LINE_END; ++i)
@@ -138,9 +138,14 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY)
 		/* 바깥으로 낙ㅆ아어 */
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
 		{
-			*pNeighborIndex = m_iNeighbor[i];
+		
+			if (iPrevIndex != m_iNeighbor[i])
+			{
+				*pNeighborIndex = m_iNeighbor[i];
+				iPrevIndex = m_iIndex;
 
-			return false;
+				return false;
+			}
 		}
 	}
 

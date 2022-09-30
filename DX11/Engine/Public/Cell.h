@@ -32,7 +32,7 @@ public:
 #ifdef _DEBUG
 	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iIndex);	
 #endif
-	_bool isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY);
+	_bool isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, _int& iPrevIndex);
 
 #ifdef _DEBUG
 public:
