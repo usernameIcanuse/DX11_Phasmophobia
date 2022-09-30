@@ -41,7 +41,7 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 #endif
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 60);
+	std::uniform_int_distribution<int> dis(0, 20);
 
 	Add_Score(PLAYER_IN_HOUSE);
 	
@@ -55,7 +55,6 @@ void CGhost_Status::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
 	m_fTimeAcc += fTimeDelta;
 
 	m_fTime += fTimeDelta;
@@ -65,9 +64,9 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		m_fTime = 0.f;
 		++m_iCnt;
 	}
+	m_iEMF = 1; 
 
-	if(!m_bEvent)
-		m_fEventCoolTime -= fTimeDelta;
+	
 	/*if(!m_bAttack)
 		m_fAttackCoolTime -= fTimeDelta;*/
 
@@ -101,31 +100,50 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		m_iEventWeight = 5;
 		//m_iAttackWeight = 5;
 	}
-
-	if (0.f > m_fEventCoolTime)
+	if (m_iScore > 4)
 	{
-		if (false == m_bEvent)
+		if (!m_bEvent)
+			m_fEventCoolTime -= fTimeDelta;
+		if (0.f > m_fEventCoolTime)
 		{
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_int_distribution<int> dis(0, 100);
-
-			_int iValue = dis(gen);
-			if(m_iEventWeight > iValue)
-				wsprintf(m_szEventMessage, TEXT("Event"));
-			else
-				wsprintf(m_szEventMessage, TEXT("Attack"));
-
-			m_bEvent = true;
-
-		}
-		else
-		{
-			m_fTermBeforeEvent -= fTimeDelta;
-			if (0.f < m_fTermBeforeEvent)
+			if (false == m_bEvent)
 			{
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, m_szEventMessage);
-				GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, m_szEventMessage);
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<int> dis(0, 100);
+
+				_int iValue = dis(gen);
+				if (m_iEventWeight < iValue)
+					wsprintf(m_szEventMessage, TEXT("Event"));
+				else
+				{
+					wsprintf(m_szEventMessage, TEXT("Attack"));
+					m_bAttack = true;
+				}
+				m_bEvent = true;
+				m_bTerm = true;
+			}
+			else
+			{
+				m_iEMF = m_iScore / 6;
+				if (m_iEMF > 4)
+					m_iEMF = 4;
+
+				if (m_bAttack && m_iScore > 24)
+				{
+					if (m_bEMFLevel5)
+						m_iEMF = 5;
+				}
+				if (m_bTerm)
+				{
+					m_fTermBeforeEvent -= fTimeDelta;
+					if (0.f > m_fTermBeforeEvent)
+					{
+						GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, m_szEventMessage);
+						GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+						m_bTerm = false;
+					}
+				}
 			}
 		}
 	}
@@ -162,9 +180,10 @@ void CGhost_Status::OnEventMessage(const _tchar* pMessage)
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(0, 100);
 
-			m_bEvent = false;
-			m_fEventCoolTime = dis(gen) + 40 - m_iEventWeight;
-		
+		m_bEvent = false;
+		m_bAttack = false;
+		m_fEventCoolTime = dis(gen) + 40 - m_iEventWeight;
+		m_fTermBeforeEvent = dis(gen) % 3 + 2;
 		
 	}
 	//else if (0 == lstrcmp(TEXT("Event"), pMessage))

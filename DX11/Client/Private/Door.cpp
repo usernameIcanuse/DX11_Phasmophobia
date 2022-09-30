@@ -87,8 +87,8 @@ void CDoor::LateTick(_float fTimeDelta)
     XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
     {*/
-    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-
+    //GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
     //}
 
 #ifdef _DEBUG

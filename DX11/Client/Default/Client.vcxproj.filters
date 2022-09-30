@@ -187,6 +187,9 @@
     <ClInclude Include="..\Public\Truck.h">
       <Filter>02.GameObject\Stage\Truck</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Navigation_Mesh.h">
+      <Filter>02.GameObject\Stage\Navigation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -359,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Truck.cpp">
       <Filter>02.GameObject\Stage\Truck</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation_Mesh.cpp">
+      <Filter>02.GameObject\Stage\Navigation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -549,6 +555,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Truck">
       <UniqueIdentifier>{2fb5f542-963b-4351-9a48-c5dd602dd6b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Navigation">
+      <UniqueIdentifier>{107cb61b-c173-4b3f-b5fa-9c2124239ec5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

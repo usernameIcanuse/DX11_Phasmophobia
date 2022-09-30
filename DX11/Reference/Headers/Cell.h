@@ -32,7 +32,7 @@ public:
 #ifdef _DEBUG
 	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iIndex);	
 #endif
-	_bool isIn(_fvector vPosition, _int* pNeighborIndex);
+	_bool isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY);
 
 #ifdef _DEBUG
 public:
@@ -49,6 +49,7 @@ private:
 	_float3						m_vNormal[LINE_END];
 	_int						m_iNeighbor[LINE_END] = { -1, -1, -1 };
 
+	_float4						m_vCellPlane;
 #ifdef _DEBUG
 	class CVIBuffer_Cell*		m_pVIBuffer = nullptr;
 #endif

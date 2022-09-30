@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Note.h"
 #include "GameInstance.h"
-
+#include "Ghost.h"
 CNote::CNote(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
 {
@@ -123,12 +123,28 @@ void CNote::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 v
     }
 }
 
+void CNote::Ghost_Writing()
+{
+    /**/
+   /*
+   * if( m_bFirst)
+   * 그리는 모션
+   */
+}
+
 
 void CNote::On_Collision_Enter(CCollider* pCollider)
 {
-    __super::On_Collision_Enter(pCollider);
+    if (COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    {
+        if (m_bInstalled)
+        {
+            CGhost* pGhost = (CGhost*)pCollider->Get_Owner();
+            if(pGhost->Check_GhostWriting())
+                Ghost_Writing();
+        }
+    }
 
-  
 }
 
 

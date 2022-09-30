@@ -201,7 +201,6 @@ _bool CFrustum::View_Frustum_Culling(_fvector vWorldPoint, _float fRange)
 		}
 	
 	}
-
 	return true;
 }
 

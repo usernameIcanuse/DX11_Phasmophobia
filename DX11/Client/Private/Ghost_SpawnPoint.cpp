@@ -46,6 +46,11 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 
 	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
+	if (m_bFreeze && m_iAreaDefaultTemperature - 4 > 0)
+	{
+		m_iAreaDefaultTemperature -=7;
+	}
+
 
 	m_lAnswerFrequency = dis(gen);
 
@@ -72,7 +77,7 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 #ifdef _DEBUG
 	m_fWhisperingTime -= fTimeDelta;
 #endif
-
+	m_fWhisperCoolTime -= fTimeDelta;
 }
 
 void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
@@ -80,6 +85,7 @@ void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 	m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom); 
 	m_pRendererCom->Add_DebugRenderGroup(m_pSpawnPointCom);
 
@@ -94,12 +100,13 @@ HRESULT CGhost_SpawnPoint::Render()
 //	m_pSpawnPointCom->Render();
 //
 //#endif // _DEBUG
+#ifdef _DEBUG
 	if (m_fWhisperingTime > 0.f)
 	{
-		GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szWhispering, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+		GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szWhispering, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
 	}
-
+#endif // _DEBUG
 	return S_OK;
 }
 
@@ -108,6 +115,11 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 	__super::Set_Enable(_bEnable);
 
 	m_pGhost_Status->Set_Enable(_bEnable);
+}
+
+void CGhost_SpawnPoint::Add_Score(_int _iScoreIndex)
+{
+	m_pGhost_Status->Add_Score(_iScoreIndex);
 }
 
 _int CGhost_SpawnPoint::Get_Anger()
@@ -163,7 +175,7 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	CCollider::COLLIDERDESC			ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(40.f, 40.f, 40.f);
+	ColliderDesc.vScale = _float3(50.f, 50.f, 50.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
 	ColliderDesc.pOwner = this;
@@ -232,15 +244,22 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(0, 100);
-		if (dis(gen) > 90)
+		if (0.f > m_fWhisperCoolTime)
 		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dis(0, 100);
+
+			_int	iValue = dis(gen);
+
+			if (iValue > 98)
+			{
 #ifdef _DEBUG
-			wsprintf(m_szWhispering, TEXT("유후"));
-			m_fWhisperingTime = 2.f;
+				wsprintf(m_szWhispering, TEXT("유후"));
+				m_fWhisperingTime = 2.f;
 #endif
+				m_fWhisperCoolTime = 100.f;
+			}
 		}
 	}
 }

@@ -28,6 +28,13 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+#ifdef _DEBUG
+	CNavigation* Get_Navigation()
+	{
+		return m_pNavigationCom;
+	}
+#endif
 
 private:
 	CCollider* m_pRayCom = nullptr;

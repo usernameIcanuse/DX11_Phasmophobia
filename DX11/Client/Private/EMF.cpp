@@ -107,7 +107,7 @@ void CEMF::On_Collision_Stay(CCollider* pCollider)
 {
     if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
     {
-        m_iEMFLevel = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_Anger()/2 +1;
+        m_iEMFLevel = static_cast<CGhost_SpawnPoint*>(pCollider->Get_Owner())->Get_EMFLevel();
     }
 }
 

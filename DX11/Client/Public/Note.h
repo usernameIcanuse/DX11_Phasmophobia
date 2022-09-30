@@ -24,7 +24,12 @@ public:
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
 private:
+	void	Ghost_Writing();
+private:
 	CItem* m_pTempNoteModel = nullptr;
+
+	_bool	m_bInstalled = false;
+	_bool	m_bFirst = true;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

@@ -33,6 +33,7 @@ public:
 
 
 public:
+	void	Add_Score(_int _iScoreIndex);
 	_int	Get_Anger();
 	_uint   Get_EMFLevel();
 	
@@ -60,6 +61,7 @@ private:
 	_float		m_fWhisperingTime = 0.f;
 #endif // _DEBUG
 
+	_float		m_fWhisperCoolTime = 100.f;
 
 	CGhost*			m_pGhost = nullptr;
 	CGhost_Status* m_pGhost_Status = nullptr;

@@ -75,7 +75,7 @@ HRESULT CNavigation::Initialize(void * pArg)
 
 /* 객체가 움직이는데 있어 네비게이션 상에서 움직일 수 있는가? 아닌가? : return  */
 /* vPosition : 객체의 현재위치?!(x), 객체가 움직이고 난 이후의 위치. */
-_bool CNavigation::isMove(_fvector vPosition)
+_bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
 {
 	/* m_NaviDesc.m_iCurrentIndex : 현재 객체가 존재하는 쎌의 인덱스. */
 	_int		iNeighborIndex = -1;
@@ -84,7 +84,7 @@ _bool CNavigation::isMove(_fvector vPosition)
 		return true;
 
 	/*1. 현재 존재하는 셀 안에서만 움직였을때  */
-	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vPosition, &iNeighborIndex))
+	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vPosition, &iNeighborIndex, fPositionY))
 		return true;
 
 	/* 현재 존재하고 있는 쎌 바깥으로 나갔다. */
@@ -95,7 +95,7 @@ _bool CNavigation::isMove(_fvector vPosition)
 		{
 			while (1)
 			{
-				if (true == m_Cells[iNeighborIndex]->isIn(vPosition, &iNeighborIndex))
+				if (true == m_Cells[iNeighborIndex]->isIn(vPosition, &iNeighborIndex, fPositionY))
 					break;
 
 				if (0 > iNeighborIndex)

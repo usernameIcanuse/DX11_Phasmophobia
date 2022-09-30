@@ -9,6 +9,7 @@
 #include "Lobby_Store.h"
 #include "Object_Collider.h"
 #include "Wall_Collider.h"
+#include "Navigation_Mesh.h"
 
 #include "Point.h"
 
@@ -254,6 +255,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Inventory"),
 		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	/*For. Prototype_GameObject_Navigation_Mesh*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
+		CNavigation_Mesh::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Ghost*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),

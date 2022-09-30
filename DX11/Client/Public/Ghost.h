@@ -33,7 +33,9 @@ public:
 	virtual void OnEventMessage(const _tchar* pMessage);
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
 	
-
+public:
+	_bool	Check_GhostWriting();
+	
 private:
 	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
 
@@ -67,6 +69,9 @@ private:
 
 	_bool				m_bGhostWriting = false;
 	_bool				m_bHandPrint = false;
+
+	_bool				m_bCheckGhostWriting = false;
+	_bool				m_bCheckHandPrint = false;
 	
 private:
 	HRESULT	Setup_Component();

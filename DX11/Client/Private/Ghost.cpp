@@ -2,6 +2,7 @@
 #include "Ghost.h"
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
+#include "Ghost_Status.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -123,6 +124,18 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 void CGhost::Call_EventFunc(_float fTimeDelta)
 {
 	m_EventFunc(this,fTimeDelta);
+}
+
+_bool CGhost::Check_GhostWriting()
+{
+	if (m_bCheckGhostWriting)
+	{
+		m_pSpawnPoint->Add_Score(CGhost_Status::FIND_EVIDENCE);
+		m_bCheckGhostWriting = false;
+	}
+
+
+	return m_bGhostWriting;
 }
 
 void CGhost::Whispering()

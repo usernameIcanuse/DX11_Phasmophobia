@@ -14,6 +14,8 @@ class CGhost_SpawnPoint;
 
 class CGhost_Status final: public CGameObject
 {
+public:
+
 	enum WEIGHT {PLAYER_IN_HOUSE = 2, PLAYER_IN_AREA = 2, ITEM_IN_AREA=1/*total 6*/, SPIRITBOX = 2, DOTSPROJECTER = 1,
 				CAMERA = 1/*total 2*/, FIND_EVIDENCE = 5/*total 3*/,TIME_ATTACK = 1/*1 per minute*/ };
 				//=>Total Score 40
@@ -67,7 +69,9 @@ private:
 	//_uint		m_iAttackWeight = 0;
 
 	_bool		m_bEvent = true;
-	//_bool		m_bAttack = true;
+	_bool		m_bAttack = true;
+	_bool		m_bTerm = false;
+
 
 	_bool		m_bEMFLevel5 = false;
 	

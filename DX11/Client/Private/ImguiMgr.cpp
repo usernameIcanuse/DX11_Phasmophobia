@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "House.h"
 #include "Door.h"
+#include "Player.h"
 
 
 IMPLEMENT_SINGLETON(CImguiMgr)
@@ -132,7 +133,7 @@ void CImguiMgr::Set_Prototype()
 			return;
 
 		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
-		m_pNavigationCom = (CNavigation*)m_pPlayer->Get_Component(TEXT("Com_Navigation"));
+		m_pNavigationCom = static_cast<CPlayer*>(m_pPlayer)->Get_Navigation();
 
 		CGameObject* pPoints = nullptr;
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
