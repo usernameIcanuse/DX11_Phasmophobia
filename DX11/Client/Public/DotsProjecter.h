@@ -34,7 +34,7 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 private:
-
+	CLight* m_pLight = nullptr;//설치 시 불 켜짐
 	CItem* m_pTempDotsModel = nullptr;
 
 public:

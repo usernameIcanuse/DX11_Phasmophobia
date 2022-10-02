@@ -28,6 +28,7 @@ public:
 
 private:
 	CCollider* m_pAreaCom = nullptr; //모션 인식
+	CLight* m_pLight = nullptr;//인식시 불 켜짐
 	CItem* m_pTempTrailCamModel = nullptr;
 
 public:

@@ -122,6 +122,8 @@ _bool CDotsProjecter::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 v
        // m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
 
         m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+
         return true;
     }
     else if (COLLISION_TYPE::WALL == eType)
