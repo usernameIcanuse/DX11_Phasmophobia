@@ -93,7 +93,7 @@ void CInventory::Add_Item(CItem* pItem)
 	if (-1 == iEmptyIndex)
 		return;
 		
-	m_vInventory[iEmptyIndex] = (CItem*)pItem;
+	m_vInventory[iEmptyIndex] = pItem;
 	m_vInventory[iEmptyIndex]->Set_Install(false);
 
 	CCollider* pCollider = (CCollider*)m_vInventory[iEmptyIndex]->Get_Component(TEXT("Com_OBB"));
@@ -111,6 +111,11 @@ void CInventory::Add_Item(CItem* pItem)
 	}
 	else
 		m_vInventory[iEmptyIndex]->Set_Enable(false);
+
+	if (CItem::FLASHLIGHT == pItem->Get_ItemType())
+	{
+		m_pSpotLight = pItem;
+	}
 }
 
 void CInventory::Drop_Item()
@@ -119,7 +124,9 @@ void CInventory::Drop_Item()
 		return;
 
 	/*던지는 물리*/
-	
+	if (m_pSpotLight == m_vInventory[m_iIndex])
+		m_pSpotLight = nullptr;
+
 	m_vInventory[m_iIndex] = nullptr;
 }
 
@@ -149,11 +156,22 @@ void CInventory::Change_Item()
 		}
 		else
 			m_vInventory[m_iIndex]->Change_Item();
+		
 	}
 	m_iIndex = (++m_iIndex) % 3;
 
 	if (m_vInventory[m_iIndex])
 	{
+		if (nullptr != m_pSpotLight)
+		{
+			if (CItem::UVLIGHT == m_vInventory[m_iIndex]->Get_ItemType())
+			{
+				m_pSpotLight->Set_Enable(false);
+			}
+			else
+				m_pSpotLight->Set_Enable(true);
+		}
+
 		m_vInventory[m_iIndex]->Change_Item();
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}

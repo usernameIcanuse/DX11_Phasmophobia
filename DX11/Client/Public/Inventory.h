@@ -35,10 +35,11 @@ public:
 
 
 private:
-	vector<CItem*>	m_vInventory;
+	vector					<CItem*>	m_vInventory;
 	_uint					m_iIndex = 0;
+	CItem*					m_pSpotLight = nullptr;
 
-	CTransform*			m_pPlayerTransform = nullptr;
+	CTransform*				m_pPlayerTransform = nullptr;
 
 	
 public:

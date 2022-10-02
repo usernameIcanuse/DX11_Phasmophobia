@@ -28,6 +28,8 @@ HRESULT CUVLight::Initialize(void* pArg)
     if (FAILED(Setup_Light()))
         return E_FAIL;
 
+    m_eType = UVLIGHT;
+
     return S_OK;
 }
 
@@ -151,11 +153,11 @@ HRESULT CUVLight::Setup_Light()
 
     XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook);
     XMStoreFloat4(&LightDesc.vDirection, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-    LightDesc.fRange = 160.f;
+    LightDesc.fRange = 65.f;
 
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.027f;
-    LightDesc.fAttenuation2 = 0.0028f;
+    LightDesc.fAttenuation1 = 0.07f;
+    LightDesc.fAttenuation2 = 0.017;
 
     LightDesc.fFallOff = 2.f;
     LightDesc.fTheta = XMConvertToRadians(45.f);

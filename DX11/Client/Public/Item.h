@@ -14,6 +14,9 @@ BEGIN(Client)
 
 class CItem : public CGameObject
 {
+public:
+	enum ITEM {FLASHLIGHT,UVLIGHT, ITEM_END};
+	
 protected:
 	CItem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CItem(const CItem& rhs);
@@ -56,12 +59,17 @@ public:
 		Set_Enable(m_bEnable);
 	}
 	
+	virtual void Adjust_Item(CTransform* _pPlayerTransform);
 public:
 	void	Set_Install(_bool _bInstall)
 	{
 		m_bInstalled = _bInstall;
 	}
-	virtual void Adjust_Item(CTransform* _pPlayerTransform);
+	_int		Get_ItemType()
+	{
+		return m_eType;
+	}
+
 
 protected:
 	CShader*    m_pShaderCom = nullptr;
@@ -72,6 +80,8 @@ protected:
 	_bool		m_bSwitch = false;
 	_bool		m_bInstalled = false;
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
+
+	ITEM		m_eType = ITEM_END;
 
 	function<void(CItem*,_float)> m_pEventFunc;
 protected:

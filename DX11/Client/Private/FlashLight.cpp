@@ -28,6 +28,8 @@ HRESULT CFlashLight::Initialize(void* pArg)
     if (FAILED(Setup_Light()))
         return E_FAIL;
 
+    m_eType = FLASHLIGHT;
+
     return S_OK;
 }
 
