@@ -94,7 +94,7 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
 		/*2. 나간쪽 쎌에 이웃이 존재할때 */
 		if(0 <= iNeighborIndex)
 		{
-			iPrevIndex = iNeighborIndex;
+			
 			while (1)
 			{
 				
@@ -104,11 +104,6 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
 
 				if (0 > iNeighborIndex)
 					return false;
-
-				else
-				{
-
-				}
 
 			}
 

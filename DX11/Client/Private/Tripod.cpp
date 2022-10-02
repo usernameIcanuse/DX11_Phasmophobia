@@ -85,20 +85,11 @@ HRESULT CTripod::Render()
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;*/
+        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+            return E_FAIL;
 
-        if (m_bSwitch)
-        {
-            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
-                return E_FAIL;
 
-            iPassIndex = 1;
-        }
-        else
-            iPassIndex = 0;
-
-        m_pModelCom->Render(i, m_pShaderCom,iPassIndex);
+        m_pModelCom->Render(i, m_pShaderCom,2);
     }
 
 //#ifdef _DEBUG

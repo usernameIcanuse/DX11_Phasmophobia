@@ -695,7 +695,7 @@ void CImguiMgr::Tool_Navigation()
 		
 		_vector fLength = XMLoadFloat3(&elem) - vProjPos;
 
-		if (0.15f > XMVectorGetX(XMVector3Length(fLength)))
+		if (0.3f > XMVectorGetX(XMVector3Length(fLength)))
 		{
 			XMStoreFloat4(&fPosition, XMLoadFloat3(&elem));
 			XMStoreFloat3(&m_vNavigationPoints[0], XMLoadFloat4(&fPosition));

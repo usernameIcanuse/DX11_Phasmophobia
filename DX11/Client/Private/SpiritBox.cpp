@@ -82,11 +82,11 @@ HRESULT CSpiritBox::Render()
             return E_FAIL;
         
 
-        /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
-              return E_FAIL;*/
+         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_EMISSIVE)))
+              return E_FAIL;
 
         
-        m_pModelCom->Render(i, m_pShaderCom,0);
+        m_pModelCom->Render(i, m_pShaderCom,2);
     }
 
     if (m_bSwitch)

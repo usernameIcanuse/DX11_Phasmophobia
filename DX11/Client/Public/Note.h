@@ -28,7 +28,8 @@ private:
 private:
 	CItem* m_pTempNoteModel = nullptr;
 
-	_bool	m_bInstalled = false;
+	CModel* m_pNoteOpenModel = nullptr;
+
 	_bool	m_bFirst = true;
 
 public:

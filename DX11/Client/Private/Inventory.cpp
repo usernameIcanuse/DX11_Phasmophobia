@@ -94,7 +94,7 @@ void CInventory::Add_Item(CItem* pItem)
 		return;
 		
 	m_vInventory[iEmptyIndex] = (CItem*)pItem;
-
+	m_vInventory[iEmptyIndex]->Set_Install(false);
 
 	CCollider* pCollider = (CCollider*)m_vInventory[iEmptyIndex]->Get_Component(TEXT("Com_OBB"));
 	if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
@@ -128,9 +128,11 @@ void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionTy
 	if (nullptr == m_vInventory[m_iIndex])
 		return;
 
-	if(m_vInventory[m_iIndex]->Install(_vInstallPos,_eCollisionType,vLook, pConnectObject))
+	if (m_vInventory[m_iIndex]->Install(_vInstallPos, _eCollisionType, vLook, pConnectObject))
+	{
+		m_vInventory[m_iIndex]->Set_Install(true);
 		m_vInventory[m_iIndex] = nullptr;
-
+	}
 }
 
 void CInventory::Change_Item()

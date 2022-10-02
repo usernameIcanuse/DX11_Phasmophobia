@@ -50,6 +50,12 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
+	
+public:
+	void	Set_Install(_bool _bInstall)
+	{
+		m_bInstalled = _bInstall;
+	}
 
 
 protected:
@@ -59,6 +65,7 @@ protected:
 	CCollider*  m_pOBBCom = nullptr;
 
 	_bool		m_bSwitch = false;
+	_bool		m_bInstalled = false;
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
 
 	function<void(CItem*,_float)> m_pEventFunc;

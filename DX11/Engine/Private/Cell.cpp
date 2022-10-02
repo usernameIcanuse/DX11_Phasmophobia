@@ -133,13 +133,21 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, 
 	/* 이 쎌의 세변에 대해서 나갔는지 안낙ㅆ다ㅣ;ㅓ 판단한다. */
 	for (_uint i = 0; i < LINE_END; ++i)
 	{
-		_vector	vDir = vPosition - XMLoadFloat3(&m_vPoints[i]);
+		_float3 vPlayerPos;
+		_float3 vPointPos= m_vPoints[i];
+
+		XMStoreFloat3(&vPlayerPos, vPosition);
+		
+		vPlayerPos.y = 0.f;
+		vPointPos.y = 0.f;
+
+		_vector	vDir = XMLoadFloat3(&vPlayerPos) - XMLoadFloat3(&m_vPoints[i]);
 
 		/* 바깥으로 낙ㅆ아어 */
-		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
+		if (DBL_EPSILON < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
 		{
 		
-			if (iPrevIndex != m_iNeighbor[i])
+			if (-1 == m_iNeighbor[i] || iPrevIndex != m_iNeighbor[i])
 			{
 				*pNeighborIndex = m_iNeighbor[i];
 				iPrevIndex = m_iIndex;

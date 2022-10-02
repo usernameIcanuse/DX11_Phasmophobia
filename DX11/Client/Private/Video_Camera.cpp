@@ -69,13 +69,15 @@ HRESULT CVideo_Camera::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
+        _int    iPassIndex = 2;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-       /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;*/
-
+        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            iPassIndex = 0;
+        }
         
-        m_pModelCom->Render(i, m_pShaderCom,0);
+        m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
 
 //#ifdef _DEBUG

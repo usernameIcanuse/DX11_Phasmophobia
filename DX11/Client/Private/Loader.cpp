@@ -473,10 +473,15 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
 		return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(0.065f, 0.065f, 0.065f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixTranslation(-0.7f, 0.f, 0.f)* XMMatrixRotationX(XMConvertToRadians(270.0f));
 	/* For.Prototype_Component_Model_Note*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Note.fbx", TransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Note_Open*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
 		return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f))*XMMatrixTranslation(0.f,0.f,0.25f);
@@ -680,7 +685,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	/* For. Prototype_Component_Navigation*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"),
-		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation.dat"))))
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation2.dat"))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));

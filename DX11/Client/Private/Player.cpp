@@ -26,7 +26,7 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 20.f;
+	TransformDesc.fSpeedPerSec = 10.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))

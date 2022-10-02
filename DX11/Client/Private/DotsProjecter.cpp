@@ -82,11 +82,11 @@ HRESULT CDotsProjecter::Render()
     {
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-       /* if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;*/
+        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+            return E_FAIL;
 
         
-        m_pModelCom->Render(i, m_pShaderCom,0);
+        m_pModelCom->Render(i, m_pShaderCom,2);
     }
 //
 //#ifdef _DEBUG
