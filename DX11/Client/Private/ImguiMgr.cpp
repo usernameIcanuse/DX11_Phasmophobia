@@ -220,6 +220,12 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeObject.push_back(pTemp);
+
+
 		
 
 		/* House */
@@ -517,7 +523,7 @@ void CImguiMgr::Tool_Object()
 
 
 	const char* items[] = {"DotsProjecter", "FlashLight", "Thermometer","EMF",
-							"Note","SpiritBox","Video Camera","Ghost","Atmosphere","TrailCam","Tripod"};
+							"Note","SpiritBox","Video Camera","Ghost","Atmosphere","TrailCam","Tripod","UVLight"};
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -1133,6 +1139,13 @@ void CImguiMgr::CollocateObject()
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
 				return;
 			break;
+
+		case 11:
+			tLayerIndex = LAYER::OBJECT;
+			tObjIndex = OBJ_TAG::UVLIGHT;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
+				return;
+			break;
 		}
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
@@ -1482,6 +1495,9 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 				
 			case OBJ_TAG::ATMOSPHERE:
 				strPrototypeTag = TEXT("Prototype_GameObject_Atmosphere");
+				break;
+			case OBJ_TAG::UVLIGHT:
+				strPrototypeTag = TEXT("Prototype_GameObject_UVLight");
 				break;
 			}
 			

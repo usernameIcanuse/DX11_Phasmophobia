@@ -50,13 +50,18 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
+	virtual void Change_Item()
+	{
+		m_bEnable = !m_bEnable;
+		Set_Enable(m_bEnable);
+	}
 	
 public:
 	void	Set_Install(_bool _bInstall)
 	{
 		m_bInstalled = _bInstall;
 	}
-
+	virtual void Adjust_Item(CTransform* _pPlayerTransform);
 
 protected:
 	CShader*    m_pShaderCom = nullptr;

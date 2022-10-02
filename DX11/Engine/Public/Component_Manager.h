@@ -15,6 +15,7 @@
 #include "Navigation.h"
 #include "VIBuffer_Point_Instance.h"
 
+
 BEGIN(Engine)
 
 class CComponent_Manager final : public CBase

@@ -158,7 +158,7 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, 
 	}
 
 	;
-	if(DBL_EPSILON < fabs( m_vCellPlane.y));
+	if(DBL_EPSILON < fabs( m_vCellPlane.y))
 	{
 		_float4		vPos;
 		XMStoreFloat4(&vPos, vPosition);

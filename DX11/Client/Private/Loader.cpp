@@ -43,6 +43,7 @@
 #include "Sky.h"
 #include "DotsProjecter.h"
 #include "FlashLight.h"
+#include "UVLight.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
@@ -291,6 +292,12 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FlashLight"),
 		CFlashLight::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+	
+	/* For.Prototype_GameObject_UVLight*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UVLight"),
+		CUVLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 	/* For.Prototype_GameObject_Thermometer*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thermometer"),
@@ -456,6 +463,13 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Model_FlashLight*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FlashLight"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.07f) * XMMatrixTranslation(0.f, 0.35f, 0.f);
+
+	/* For.Prototype_Component_Model_UVLight*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_UVLight"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "UVLight.fbx", TransformMatrix))))
 		return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.07f, 0.07f, 0.07f);

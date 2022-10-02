@@ -120,6 +120,30 @@ void CItem::On_Collision_Exit(CCollider* pCollider)
 {
 }
 
+void	CItem::Adjust_Item(CTransform* _pPlayerTransform)
+{
+    Set_Enable(true);
+
+    _vector     vPlayerPos = _pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+    _vector     vRight = _pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
+    _vector		vUp = _pPlayerTransform->Get_State(CTransform::STATE_UP);
+    _vector		vLook = _pPlayerTransform->Get_State(CTransform::STATE_LOOK);
+
+    vPlayerPos += XMVector3Normalize(vRight) * m_vAdjustpos.x;
+    vPlayerPos -= XMVector3Normalize(vUp) * m_vAdjustpos.y;
+    vPlayerPos += vLook * m_vAdjustpos.z;
+
+
+    m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos + XMVectorSet(0.f, 10.f, 0.f, 0.f));
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    Update_Collider();
+}
+
+
 void CItem::Free()
 {
     __super::Free();

@@ -33,8 +33,6 @@ public:
 	void	Item_TempModel(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject = nullptr);
 	void	Frequency_Control(_long _lMouseMove);
 
-private:
-	void	Adjust_Item(CItem* pItem);
 
 private:
 	vector<CItem*>	m_vInventory;

@@ -25,12 +25,18 @@ HRESULT CFlashLight::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    if (FAILED(Setup_Light()))
+        return E_FAIL;
+
     return S_OK;
 }
 
 void CFlashLight::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
+    if (m_bOnlyLight)
+        Adjust_Item(nullptr);
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
@@ -39,6 +45,21 @@ void CFlashLight::Tick(_float fTimeDelta)
 void CFlashLight::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+    if (m_bSwitch)
+    {   //Update Lightdesc;
+        LIGHTDESC* pLightDesc = m_pSpotLight->Get_LightDesc();
+
+        _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+
+        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook);
+        XMStoreFloat4(&pLightDesc->vDirection, vLook);
+
+
+        GAMEINSTANCE->Add_Light(m_pSpotLight);
+    }
+    if (m_bOnlyLight)
+        return;
 
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
@@ -94,6 +115,14 @@ void CFlashLight::On_Collision_Exit(CCollider* pCollider)
 {
 }
 
+void CFlashLight::Adjust_Item(CTransform* _pPlayerTransform)
+{
+    if (nullptr == m_pAdjustTransform && nullptr != _pPlayerTransform)
+        m_pAdjustTransform = _pPlayerTransform;
+
+    __super::Adjust_Item(m_pAdjustTransform);
+}
+
 HRESULT CFlashLight::Setup_Component()
 {
     if (FAILED(__super::Setup_Component()))
@@ -117,6 +146,41 @@ HRESULT CFlashLight::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
+    return S_OK;
+}
+
+HRESULT CFlashLight::Setup_Light()
+{
+    LIGHTDESC			LightDesc;
+    ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+    LightDesc.eType = tagLightDesc::TYPE_SPOTLIGHT;
+    
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+    LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 0.3f);
+    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+   
+
+    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook);
+    XMStoreFloat4(&LightDesc.vDirection, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+    LightDesc.fRange = 325.f;
+
+    LightDesc.fAttenuation0 = 1.f;
+    LightDesc.fAttenuation1 = 0.014f;
+    LightDesc.fAttenuation2 = 0.0007f;
+
+    LightDesc.fFallOff = 2.f;
+    LightDesc.fTheta= XMConvertToRadians(45.f);
+    LightDesc.fPhi= XMConvertToRadians(90.f);
+
+
+    m_pSpotLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+    if (nullptr == m_pSpotLight)
+    {
+        return E_FAIL;
+    }
     return S_OK;
 }
 
@@ -151,4 +215,6 @@ CGameObject* CFlashLight::Clone(void* pArg)
 void CFlashLight::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pSpotLight);
 }

@@ -197,7 +197,9 @@ HRESULT CRenderer::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
 		return E_FAIL;
-	
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
+		return E_FAIL;
+
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -243,7 +245,7 @@ HRESULT CRenderer::Render_Blend()
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pShader->Begin(3);
+	m_pShader->Begin(4);
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
 	m_pVIBuffer->Render();
@@ -303,25 +305,25 @@ HRESULT CRenderer::Render_Debug()
 {
 	for (auto& pComponent : m_DebugComponents)
 	{
-		if (nullptr != pComponent)
-			pComponent->Render();
+	/*	if (nullptr != pComponent)
+			pComponent->Render();*/
 
 		Safe_Release(pComponent);
 	}
 
 	m_DebugComponents.clear();
 
-	//if (nullptr == m_pTarget_Manager)
-	//	return E_FAIL;
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
 
-	//if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-	//	return E_FAIL;
+	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
 
-	//if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-	//	return E_FAIL;
+	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
 
-	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
-	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
 
 
 

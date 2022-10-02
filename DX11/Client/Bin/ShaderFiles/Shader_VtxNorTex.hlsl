@@ -4,6 +4,7 @@
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D	g_DiffuseTexture;
+float g_fFar = 300.f;
 
 sampler DefaultSampler = sampler_state 
 {		
@@ -23,7 +24,9 @@ struct VS_IN
 struct VS_OUT
 {
 	float4		vPosition : SV_POSITION;
+	float3		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD2;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -36,7 +39,9 @@ VS_OUT VS_MAIN(VS_IN In)
 	matWVP = mul(matWV, g_ProjMatrix);
 
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix)).xyz;
 	Out.vTexUV = In.vTexUV;
+	Out.vProjPos = Out.vPosition;
 
 	return Out;	
 }
@@ -49,20 +54,27 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
+	float3		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
+	float4		vProjPos : TEXCOORD2;
 };
 
 struct PS_OUT
-{	
-	vector		vColor : SV_TARGET0;	
+{
+	vector		vDiffuse : SV_TARGET0;
+	vector		vNormal : SV_TARGET1;
+	vector		vDepth : SV_TARGET2;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor.a = 1.f;
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vDiffuse.a = 1.f;
+
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
 
 	return Out;	
 }

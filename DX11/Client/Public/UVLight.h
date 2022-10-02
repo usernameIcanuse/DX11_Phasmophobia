@@ -2,6 +2,11 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CLight;
+END
+
+
 BEGIN(Client)
 
 class CUVLight final : public CItem
@@ -26,13 +31,25 @@ public:
 	{
 		m_bSwitch = !m_bSwitch;
 	}
+
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
-	
+
+private:
+	CLight* m_pSpotLight;
+
 private:
 	virtual	HRESULT	Setup_Component() override;
-	virtual HRESULT SetUp_ShaderResource() override;
+	HRESULT	Setup_Light();
+
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider);
+	virtual void On_Collision_Stay(CCollider* pCollider);
+	virtual void On_Collision_Exit(CCollider* pCollider);
+
+
 public:
 	static CUVLight* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

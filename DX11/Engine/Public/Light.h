@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CLight final : public CBase
+class ENGINE_DLL CLight final : public CBase
 {
 private:
 	CLight(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

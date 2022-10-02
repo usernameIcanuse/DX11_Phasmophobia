@@ -2,6 +2,9 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CLight;
+END
 
 
 BEGIN(Client)
@@ -31,11 +34,18 @@ public:
 
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
-	
-
+	virtual void Change_Item() 
+	{
+		m_bOnlyLight = !m_bOnlyLight;
+	} 
+	virtual void Adjust_Item(CTransform* _pPlayerTransform);
+private:
+	CLight* m_pSpotLight = nullptr;;
+	CTransform* m_pAdjustTransform = nullptr;
+	_bool	m_bOnlyLight = false;
 private:
 	virtual	HRESULT	Setup_Component() override;
-
+	HRESULT	Setup_Light();
 
 
 public:

@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+BEGIN(Engine)
+class CLight;
+END
+
 BEGIN(Client)
 
 class CLevel_Stage1 final : public CLevel
@@ -23,6 +27,9 @@ private:
 	HRESULT Load_Stage();
 	HRESULT Ready_Lights();
 	HRESULT Ready_Layer_Terrain(const _tchar* pLayertag);
+
+private:
+	CLight* m_pBaseLight = nullptr;
 
 public:
 	static CLevel_Stage1* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

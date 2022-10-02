@@ -40,6 +40,14 @@ namespace Engine
 		XMFLOAT4		vAmbient;
 		XMFLOAT4		vSpecular;
 
+		float			fFallOff;
+		float			fAttenuation0;
+		float			fAttenuation1;
+		float			fAttenuation2;
+
+		float			fTheta;
+		float			fPhi;
+
 	}LIGHTDESC;
 
 	typedef struct tagModelMaterial
@@ -268,6 +276,7 @@ namespace Engine
 		ATMOSPHERE,
 		DOOR,
 		LIGHTSWITCH,
+		UVLIGHT,
 		OBJ_END
 	};
 

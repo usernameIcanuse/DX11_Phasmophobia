@@ -77,7 +77,7 @@ public: /* For.PipeLine*/
 	_float4 Get_CamPosition();
 
 public: /* For.Light_Manager */
-	HRESULT Add_Light(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const LIGHTDESC& LightDesc);
+	HRESULT Add_Light(CLight* pLight);
 	LIGHTDESC* Get_LightDesc(_uint iIndex);
 	void	Clear_Light();
 

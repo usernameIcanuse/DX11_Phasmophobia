@@ -57,7 +57,7 @@ void CInventory::Tick(_float fTimeDelta)
 	
 	if (m_vInventory[m_iIndex])
 	{
-		Adjust_Item(m_vInventory[m_iIndex]);
+		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
 }
 
@@ -107,7 +107,7 @@ void CInventory::Add_Item(CItem* pItem)
 	if (m_iIndex == iEmptyIndex)
 	{
 		m_vInventory[m_iIndex]->Set_Enable(true);
-		Adjust_Item(m_vInventory[m_iIndex]);
+		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
 	else
 		m_vInventory[iEmptyIndex]->Set_Enable(false);
@@ -148,13 +148,14 @@ void CInventory::Change_Item()
 			}
 		}
 		else
-			m_vInventory[m_iIndex]->Set_Enable(false);
+			m_vInventory[m_iIndex]->Change_Item();
 	}
 	m_iIndex = (++m_iIndex) % 3;
 
 	if (m_vInventory[m_iIndex])
 	{
-		Adjust_Item(m_vInventory[m_iIndex]);
+		m_vInventory[m_iIndex]->Change_Item();
+		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
 }
 
@@ -177,30 +178,6 @@ void CInventory::Frequency_Control(_long _lMouseMove)
 		m_vInventory[m_iIndex]->Frequency_Control(_lMouseMove);
 }
 
-void	CInventory::Adjust_Item(CItem* pItem)
-{
-	pItem->Set_Enable(true);
-
-	_vector     vPlayerPos = m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION);
-
-	_vector     vRight = m_pPlayerTransform->Get_State(CTransform::STATE_RIGHT);
-	_vector		vUp = m_pPlayerTransform->Get_State(CTransform::STATE_UP);
-	_vector		vLook = m_pPlayerTransform->Get_State(CTransform::STATE_LOOK);
-
-	_float3		vAdjustPos = pItem->Get_AdjustPos();
-
-	vPlayerPos += XMVector3Normalize(vRight) * vAdjustPos.x;
-	vPlayerPos -= XMVector3Normalize(vUp)* vAdjustPos.y;
-	vPlayerPos += vLook* vAdjustPos.z;
-
-	CTransform* pItemTransform = (CTransform*)pItem->Get_Component(CGameObject::m_pTransformTag);
-	pItemTransform->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos + XMVectorSet(0.f, 10.f, 0.f, 0.f));
-	pItemTransform->Set_State(CTransform::STATE_RIGHT, vRight);
-	pItemTransform->Set_State(CTransform::STATE_UP, vUp);
-	pItemTransform->Set_State(CTransform::STATE_LOOK, vLook);
-
-	pItem->Update_Collider();
-}
 
 
 CInventory* CInventory::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

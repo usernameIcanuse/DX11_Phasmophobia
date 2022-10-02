@@ -52,6 +52,8 @@ void CLevel_Stage1::Tick(_float fTimeDelta)
 		return;
 
 	Safe_Release(pGameInstance);*/
+	GAMEINSTANCE->Add_Light(m_pBaseLight);
+
 }
 
 HRESULT CLevel_Stage1::Render()
@@ -449,8 +451,6 @@ HRESULT CLevel_Stage1::Load_Stage()
 
 HRESULT CLevel_Stage1::Ready_Lights()
 {
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -458,10 +458,13 @@ HRESULT CLevel_Stage1::Ready_Lights()
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vSpecular = _float4(0.05f, 0.05f, 0.05f, 1.f);
+	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
-	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
+	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+	if (nullptr == m_pBaseLight)
 		return E_FAIL;
+
+
 
 	/*ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -475,7 +478,6 @@ HRESULT CLevel_Stage1::Ready_Lights()
 	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
 		return E_FAIL;*/
 
-	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
@@ -514,7 +516,7 @@ void CLevel_Stage1::Free()
 {
 	__super::Free();
 
-
+	Safe_Release(m_pBaseLight);
 
 }
 
