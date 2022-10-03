@@ -42,6 +42,9 @@ protected:
 	class CShader*				m_pShader = nullptr;
 	class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
 
+	/*카메라, 아이템카메라를 위한 정보*/
+	_float4x4					m_CamViewMat, m_CamProjMat;
+
 protected:
 	vector<class CComponent*>	m_DebugComponents;
 #endif // _DEBUG

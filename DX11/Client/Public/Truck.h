@@ -26,6 +26,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* matViewMatrix, _float4x4* matProjMatrix);
 
 private:
 	CShader* m_pShaderCom = nullptr;
@@ -35,8 +36,6 @@ private:
 
 private:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource();
-
 
 public:
 	static CTruck* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

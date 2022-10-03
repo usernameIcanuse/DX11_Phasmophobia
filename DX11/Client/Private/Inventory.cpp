@@ -124,7 +124,7 @@ void CInventory::Drop_Item()
 		return;
 
 	/*던지는 물리*/
-	if (m_pSpotLight == m_vInventory[m_iIndex])
+	if (CItem::FLASHLIGHT == m_vInventory[m_iIndex]->Get_ItemType())
 		m_pSpotLight = nullptr;
 
 	m_vInventory[m_iIndex] = nullptr;

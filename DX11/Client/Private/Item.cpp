@@ -88,22 +88,20 @@ HRESULT CItem::Setup_Component()
     return S_OK;
 }
 
-HRESULT CItem::SetUp_ShaderResource()
+HRESULT CItem::SetUp_ShaderResource(_float4x4* matViewMatrix, _float4x4* matProjMatrix)
 {
-    if (nullptr == m_pShaderCom)
+    if (nullptr == m_pShaderCom ||
+        nullptr == m_pModelCom)
         return E_FAIL;
 
-
-    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
     if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", matViewMatrix, sizeof(_float4x4))))
         return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", matProjMatrix, sizeof(_float4x4))))
         return E_FAIL;
 
-    RELEASE_INSTANCE(CGameInstance);
 }
 
 void CItem::On_Collision_Enter(CCollider* pCollider)

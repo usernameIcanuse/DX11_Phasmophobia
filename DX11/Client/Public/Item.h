@@ -29,6 +29,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* matViewMatrix, _float4x4* matProjMatrix);
+
 	virtual void OnEventMessage(const _tchar* pMessage);
 
 public:
@@ -86,8 +88,7 @@ protected:
 	function<void(CItem*,_float)> m_pEventFunc;
 protected:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource();
-
+	
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);

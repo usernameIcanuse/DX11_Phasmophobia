@@ -74,16 +74,6 @@ void CTrailCam::LateTick(_float fTimeDelta)
 
 HRESULT CTrailCam::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
-
-
 
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
@@ -102,9 +92,9 @@ HRESULT CTrailCam::Render()
 //      m_pOBBCom->Render();
 //      m_pAreaCom->Render();
 //#endif // _DEBUG
-
-      m_pTempTrailCamModel->Set_Enable(false);
-
+    if(m_pTempTrailCamModel)
+         m_pTempTrailCamModel->Set_Enable(false);
+        
     return S_OK;
 }
 

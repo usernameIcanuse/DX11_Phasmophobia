@@ -8,6 +8,7 @@
 BEGIN(Engine)
 
 class CRenderTarget;
+class CTransform;
 
 class ENGINE_DLL CCamera_Renderer final : public CRenderer
 {
@@ -23,7 +24,7 @@ public:
 
 private:
 	CRenderTarget* m_pCameraScreen = nullptr;
-
+	CTransform* m_pTransformCom = nullptr;
 public:
 	static CCamera_Renderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;

@@ -71,15 +71,6 @@ void CFlashLight::LateTick(_float fTimeDelta)
 
 HRESULT CFlashLight::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
-
 
 
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();

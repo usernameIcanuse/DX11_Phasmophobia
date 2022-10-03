@@ -42,6 +42,7 @@ public:
 private:
 	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
+
 	_bool	m_bOnlyLight = false;
 private:
 	virtual	HRESULT	Setup_Component() override;

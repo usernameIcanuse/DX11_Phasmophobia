@@ -54,14 +54,6 @@ void CThermometer::LateTick(_float fTimeDelta)
 
 HRESULT CThermometer::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
 
 
 

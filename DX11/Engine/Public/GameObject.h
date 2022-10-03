@@ -31,6 +31,7 @@ public:
 public:
 	virtual void OnEventMessage(const _tchar* pMessage) {}
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f) {}
+	virtual HRESULT SetUp_ShaderResource(_float4x4* matViewMatrix = nullptr, _float4x4* matProjMatrix = nullptr) { return S_OK; }
 
 public:
 	static const _tchar*		m_pTransformTag;

@@ -53,13 +53,6 @@ void CNote::LateTick(_float fTimeDelta)
 
 HRESULT CNote::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom || nullptr == m_pNoteOpenModel)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
 
     CModel* pModelCom = nullptr;
 
@@ -84,8 +77,8 @@ HRESULT CNote::Render()
 //#ifdef _DEBUG
 //      m_pOBBCom->Render();
 //#endif // _DEBUG
-
-      m_pTempNoteModel->Set_Enable(false);
+    if(m_pTempNoteModel)
+          m_pTempNoteModel->Set_Enable(false);
 
     return S_OK;
 }

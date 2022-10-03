@@ -10,8 +10,7 @@ CCamera_Renderer::CCamera_Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* p
 
 HRESULT CCamera_Renderer::Initialize(void* pArg)
 {
-	GAMEINSTANCE->Add_Renderer(*(CRenderer_Manager::RENDERER_TYPE*)pArg, this);
-
+	
 	return S_OK;
 }
 
@@ -50,4 +49,5 @@ void CCamera_Renderer::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pCameraScreen);
 }

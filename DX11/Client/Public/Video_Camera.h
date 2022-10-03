@@ -41,7 +41,9 @@ public:
 private:
 	CTripod* m_pTripod = nullptr;
 	CItem* m_pTempCameraModel = nullptr;
+
 	CCamera_Renderer* m_pCameraRendererCom = nullptr;
+
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);
