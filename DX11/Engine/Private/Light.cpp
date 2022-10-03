@@ -39,6 +39,17 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
 		if (FAILED(pShader->Set_RawValue("g_fRange", &m_LightDesc.fRange, sizeof(_float))))
 			return E_FAIL;
+
+
+		if (FAILED(pShader->Set_RawValue("g_fAttenuation0", &m_LightDesc.fAttenuation0, sizeof(_float))))
+			return E_FAIL;
+
+		if (FAILED(pShader->Set_RawValue("g_fAttenuation1", &m_LightDesc.fAttenuation1, sizeof(_float))))
+			return E_FAIL;
+
+		if (FAILED(pShader->Set_RawValue("g_fAttenuation2", &m_LightDesc.fAttenuation2, sizeof(_float))))
+			return E_FAIL;
+
 	}
 
 	else if(LIGHTDESC::TYPE_SPOTLIGHT == m_LightDesc.eType)

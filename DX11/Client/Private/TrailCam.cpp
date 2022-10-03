@@ -28,6 +28,8 @@ HRESULT CTrailCam::Initialize(void* pArg)
     if (FAILED(Setup_TempModel()))
         return E_FAIL;
 
+    if (FAILED(Setup_Light()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -40,16 +42,27 @@ void CTrailCam::Tick(_float fTimeDelta)
     m_pOBBCom->Update(matWorld);
     m_pAreaCom->Update(matWorld);
 
-   // if (m_bSwitch)
-   // {
-   //     /*ºÒºû ÄÑÁü*/
-   // }
+    if (!m_bInstalled && m_bSwitch)
+    {
+        m_bSwitch = false;
+    }
 }
 
 void CTrailCam::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
+
+    if (m_bSwitch)
+    {
+        LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
+
+        _vector vUp= m_pTransformCom->Get_State(CTransform::STATE_UP);
+
+        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vUp);
+
+        GAMEINSTANCE->Add_Light(m_pLight);
+    }
    // m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
@@ -97,7 +110,8 @@ HRESULT CTrailCam::Render()
 
 void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 {
-   
+    if (!m_bInstalled)
+        return;
     if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
     {
         m_bSwitch = true;
@@ -113,6 +127,8 @@ void CTrailCam::On_Collision_Stay(CCollider* pCollider)
 
 void CTrailCam::On_Collision_Exit(CCollider* pCollider)
 {
+    if (!m_bInstalled)
+        return;
     if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
     {
         m_bSwitch = false;
@@ -168,6 +184,31 @@ HRESULT CTrailCam::Setup_TempModel()
         return E_FAIL;
 
     m_pTempTrailCamModel->Set_Enable(false);
+
+    return S_OK;
+}
+
+HRESULT CTrailCam::Setup_Light()
+{
+    LIGHTDESC LightDesc;
+    ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+    LightDesc.eType = LIGHTDESC::TYPE_POINT;
+
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.8f, 1.f);
+    LightDesc.vAmbient = _float4(1.f, 1.f, 0.8f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+    LightDesc.fRange = 32.f;
+
+    LightDesc.fAttenuation0 = 1.f;
+    LightDesc.fAttenuation1 = 0.14f;
+    LightDesc.fAttenuation2 = 0.07f;
+
+    m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+    if (nullptr == m_pLight)
+        return E_FAIL;
+
 
     return S_OK;
 }
@@ -241,4 +282,5 @@ void CTrailCam::Free()
 {
     __super::Free();
     Safe_Release(m_pAreaCom);
+    Safe_Release(m_pLight);
 }

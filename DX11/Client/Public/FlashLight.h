@@ -40,7 +40,7 @@ public:
 	} 
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
 private:
-	CLight* m_pSpotLight = nullptr;;
+	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
 	_bool	m_bOnlyLight = false;
 private:

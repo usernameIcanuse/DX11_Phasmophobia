@@ -30,6 +30,9 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
     if (FAILED(Setup_TempModel()))
         return E_FAIL;
 
+    if (FAILED(Setup_Light()))
+        return E_FAIL;
+
 
     return S_OK;
 }
@@ -53,6 +56,17 @@ void CDotsProjecter::Tick(_float fTimeDelta)
 void CDotsProjecter::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+    if (m_bInstalled)
+    {
+        LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
+
+        _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) - vLook);
+
+        GAMEINSTANCE->Add_Light(m_pLight);
+    }
 
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
@@ -80,13 +94,20 @@ HRESULT CDotsProjecter::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
+        _int        iPassIndex = 2;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
+      
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            return E_FAIL;
+        {
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_OPACITY)))
+            {
+                iPassIndex = 0;
+            }
+        }
 
         
-        m_pModelCom->Render(i, m_pShaderCom,2);
+        m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
 //
 //#ifdef _DEBUG
@@ -213,6 +234,32 @@ HRESULT CDotsProjecter::Setup_TempModel()
     m_pTempDotsModel->Set_Enable(false);
 }
 
+HRESULT CDotsProjecter::Setup_Light()
+{
+    LIGHTDESC LightDesc;
+    ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+    LightDesc.eType = LIGHTDESC::TYPE_POINT;
+    LightDesc.vDiffuse = _float4(0.f, 1.f, 0.f, 1.f);
+    LightDesc.vAmbient = _float4(0.f, 1.f, 0.f, 1.f);
+    LightDesc.vSpecular = _float4(0.f, 1.f, 0.f, 1.f);
+
+    LightDesc.fRange = 100.f;
+    LightDesc.fAttenuation0 = 1.f;
+    LightDesc.fAttenuation1 = 0.045f;
+    LightDesc.fAttenuation2 = 0.0075f;
+
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) - vLook);
+
+    m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+    if (nullptr == m_pLight)
+        return E_FAIL;
+
+    return S_OK;
+}
+
 CDotsProjecter* CDotsProjecter::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CDotsProjecter* pInstance = new CDotsProjecter(pDevice, pContext);
@@ -242,5 +289,7 @@ CGameObject* CDotsProjecter::Clone(void* pArg)
 void CDotsProjecter::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pLight);
 
 }

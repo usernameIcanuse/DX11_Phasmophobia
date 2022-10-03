@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CLight;
 END
 
 BEGIN(Client)
@@ -28,7 +29,7 @@ public:
 
 private:
 	CCollider* m_pAreaCom = nullptr; //모션 인식
-	CLight* m_pLight = nullptr;//인식시 불 켜짐
+	CLight* m_pLight  =  nullptr;//인식시 불 켜짐
 	CItem* m_pTempTrailCamModel = nullptr;
 
 public:
@@ -39,6 +40,7 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT			Setup_TempModel();
+	HRESULT			Setup_Light();
 public:
 	static CTrailCam* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

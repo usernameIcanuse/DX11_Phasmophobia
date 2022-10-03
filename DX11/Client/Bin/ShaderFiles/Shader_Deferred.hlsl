@@ -139,6 +139,67 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 	return Out;
 }
+
+PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
+{
+	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
+
+	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
+	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	float			fViewZ = vDepthDesc.y * g_fFar;
+	vector			vDiffuseDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/* 0 -> -1, 1 -> 1*/
+	vector			vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+
+
+	vector			vWorldPos;
+
+	/* 투영스페이스 상의 위치르 ㄹ구한다. */
+	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+	vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+	vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.x;
+	vWorldPos.w = 1.0f;
+
+	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+	vWorldPos *= fViewZ;
+
+	/* 뷰스페이스 상  위치를 구한다. */
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+
+	/* 월드페이스 상  위치를 구한다. */
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+	float fAtt;
+
+	vector vPosToLight = g_vLightPos - vWorldPos;
+	float  fDistance = length(vPosToLight);
+
+	if (g_fRange < fDistance)
+	{
+		fAtt = 0;
+	}
+	else
+		fAtt = 1 / (g_fAttenuation0 + fDistance * g_fAttenuation1 + fDistance * fDistance * g_fAttenuation2);
+
+
+	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(vPosToLight), vNormal)) + (g_vLightAmbient * vDiffuseDesc)) * fAtt;
+	Out.vShade.a = 1.f;
+
+	vector			vReflect = reflect(normalize(vPosToLight), vNormal);
+
+	vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 30.f)*fAtt;
+	Out.vSpecular.a = 0.f;
+
+
+	return Out;
+}
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 {
 	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
@@ -299,7 +360,7 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL();
+		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_POINT();
 	}
 
 	pass Light_SpotLight
