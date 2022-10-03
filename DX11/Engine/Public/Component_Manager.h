@@ -5,7 +5,6 @@
 /* 컴포넌트들의 원형을 가지고 있는다. */
 #include "Shader.h"
 #include "Texture.h"
-#include "Renderer.h"
 #include "Transform.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Cube.h"
@@ -14,6 +13,7 @@
 #include "Collider.h"
 #include "Navigation.h"
 #include "VIBuffer_Point_Instance.h"
+#include "Camera_Renderer.h"
 
 
 BEGIN(Engine)

@@ -238,7 +238,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 				break;
 			case MODEL_TAG::MAINDOOR:
 				static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
-
+				static_cast<CDoor*>(pTemp)->Set_MainDoor(true);
 				break;
 			}
 

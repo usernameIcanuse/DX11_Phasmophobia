@@ -1,6 +1,6 @@
 #include "..\Public\Camera_Renderer.h"
 #include "GameInstance.h"
-
+#include "RenderTarget.h"
 
 
 CCamera_Renderer::CCamera_Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -13,6 +13,11 @@ HRESULT CCamera_Renderer::Initialize(void* pArg)
 	GAMEINSTANCE->Add_Renderer(*(CRenderer_Manager::RENDERER_TYPE*)pArg, this);
 
 	return S_OK;
+}
+
+ID3D11ShaderResourceView* CCamera_Renderer::Get_SRV()
+{
+	return m_pCameraScreen->Get_SRV();
 }
 
 CCamera_Renderer * CCamera_Renderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -36,6 +36,11 @@ public:
 		m_pPlayer = _pPlayer;
 	}
 
+	void Set_MainDoor(_bool	_bMainDoor)
+	{
+		m_bMainDoor = _bMainDoor;
+	}
+
 
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag);

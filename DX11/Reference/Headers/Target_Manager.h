@@ -22,6 +22,9 @@ public:
 	HRESULT Begin_MRT(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
 	HRESULT End_MRT(ID3D11DeviceContext* pContext);
 
+	HRESULT Begin_Texture(ID3D11DeviceContext* pContext, class CRenderTarget* pRenderTarget);
+	HRESULT End_Texture(ID3D11DeviceContext* pContext);
+
 #ifdef _DEBUG
 public:
 	HRESULT Ready_Debug(const _tchar* pTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);

@@ -7,6 +7,8 @@
 
 BEGIN(Engine)
 
+class CRenderTarget;
+
 class ENGINE_DLL CCamera_Renderer final : public CRenderer
 {
 private:
@@ -15,6 +17,12 @@ private:
 
 public:
 	virtual HRESULT Initialize(void* pArg) override;
+
+public:
+	ID3D11ShaderResourceView* Get_SRV();
+
+private:
+	CRenderTarget* m_pCameraScreen = nullptr;
 
 public:
 	static CCamera_Renderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
