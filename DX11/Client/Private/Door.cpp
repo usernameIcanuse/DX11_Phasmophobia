@@ -137,14 +137,15 @@ void CDoor::OnEventMessage(const _tchar* pMessage)
 {
     if (0 == lstrcmp(TEXT("Attack"), pMessage))
     {
-        
-        m_bLock = true;
+        if(m_bMainDoor)
+            m_bLock = true;
 
     }
 
     else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
     {
-        m_bLock = false;
+        if (m_bMainDoor)
+            m_bLock = false;
     }
 }
 
