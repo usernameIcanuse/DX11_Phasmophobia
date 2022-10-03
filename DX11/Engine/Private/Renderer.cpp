@@ -179,7 +179,10 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 		if (nullptr != pGameObject)
 		{
 			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
 				continue;
+			}
 			pGameObject->Render();
 		}
 		Safe_Release(pGameObject);
@@ -267,7 +270,10 @@ HRESULT CRenderer::Render_NonLight()
 		if (nullptr != pGameObject)
 		{
 			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
 				continue;
+			}
 			pGameObject->Render();
 		}
 		Safe_Release(pGameObject);
@@ -289,7 +295,10 @@ HRESULT CRenderer::Render_AlphaBlend()
 		if (nullptr != pGameObject)
 		{
 			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
 				continue;
+			}
 			pGameObject->Render();
 		}
 		Safe_Release(pGameObject);
