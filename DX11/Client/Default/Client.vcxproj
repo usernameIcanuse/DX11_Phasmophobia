@@ -175,6 +175,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\Atmosphere.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\CameraScreen.h" />
     <ClInclude Include="..\Public\Camera_FPS.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -257,6 +258,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\Atmosphere.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\CameraScreen.cpp" />
     <ClCompile Include="..\Private\Camera_FPS.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Door.cpp" />

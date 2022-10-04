@@ -190,6 +190,9 @@
     <ClInclude Include="..\Public\Navigation_Mesh.h">
       <Filter>02.GameObject\Stage\Navigation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CameraScreen.h">
+      <Filter>02.GameObject\Item\Camera\CameraScreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -365,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Navigation_Mesh.cpp">
       <Filter>02.GameObject\Stage\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraScreen.cpp">
+      <Filter>02.GameObject\Item\Camera\CameraScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -558,6 +564,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Navigation">
       <UniqueIdentifier>{107cb61b-c173-4b3f-b5fa-9c2124239ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Item\Camera\CameraScreen">
+      <UniqueIdentifier>{6991c7ff-f70c-45d7-b400-abe19280d46c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

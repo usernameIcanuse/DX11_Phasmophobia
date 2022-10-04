@@ -53,10 +53,15 @@ void CFlashLight::LateTick(_float fTimeDelta)
 
         _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 
-
-        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook);
+        if (m_bRenderModel)
+        {
+            XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook);
+        }
+        else
+        {
+            XMStoreFloat4(&pLightDesc->vPosition, XMLoadFloat4(&GAMEINSTANCE->Get_CamPosition()));
+        }
         XMStoreFloat4(&pLightDesc->vDirection, vLook);
-
 
         GAMEINSTANCE->Add_Light(m_pSpotLight);
     }

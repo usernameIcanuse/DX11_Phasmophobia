@@ -188,7 +188,6 @@ HRESULT CVideo_Camera::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
-
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;

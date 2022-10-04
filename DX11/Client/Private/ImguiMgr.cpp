@@ -225,10 +225,7 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-
-		
-
-		/* House */
+		/* House */ 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);

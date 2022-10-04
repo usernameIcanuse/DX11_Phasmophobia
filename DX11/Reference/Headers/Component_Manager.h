@@ -14,6 +14,7 @@
 #include "Navigation.h"
 #include "VIBuffer_Point_Instance.h"
 #include "Camera_Renderer.h"
+#include "VIBuffer_NorRect.h"
 
 
 BEGIN(Engine)
