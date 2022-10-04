@@ -55,10 +55,10 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
-	virtual void Change_Item()
+	virtual void Change_Item(_bool _bFlag)
 	{
-		m_bEnable = !m_bEnable;
-		Set_Enable(m_bEnable);
+		m_bEnable = !_bFlag;
+		Set_Enable(_bFlag);
 	}
 	
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);

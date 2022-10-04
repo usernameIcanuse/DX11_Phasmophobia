@@ -37,7 +37,7 @@ void CFlashLight::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    if (m_bOnlyLight)
+    if (!m_bRenderModel)
         Adjust_Item(nullptr);
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
@@ -60,10 +60,8 @@ void CFlashLight::LateTick(_float fTimeDelta)
 
         GAMEINSTANCE->Add_Light(m_pSpotLight);
     }
-    if (m_bOnlyLight)
-        return;
-
-    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+    if (m_bRenderModel)
+       GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif

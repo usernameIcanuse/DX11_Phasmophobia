@@ -155,7 +155,7 @@ void CInventory::Change_Item()
 			}
 		}
 		else
-			m_vInventory[m_iIndex]->Change_Item();
+			m_vInventory[m_iIndex]->Change_Item(false);
 		
 	}
 	m_iIndex = (++m_iIndex) % 3;
@@ -168,11 +168,17 @@ void CInventory::Change_Item()
 			{
 				m_pSpotLight->Set_Enable(false);
 			}
-			else
+			else if (CItem::FLASHLIGHT == m_vInventory[m_iIndex]->Get_ItemType())
+			{
 				m_pSpotLight->Set_Enable(true);
+			}
+			else
+			{
+				m_pSpotLight->Set_Enable(true);
+				m_vInventory[m_iIndex]->Change_Item(false);
+			}
 		}
-
-		m_vInventory[m_iIndex]->Change_Item();
+		m_vInventory[m_iIndex]->Change_Item(true);
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
 }
