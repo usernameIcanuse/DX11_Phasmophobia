@@ -108,6 +108,8 @@ HRESULT CGameInstance::Render_Engine()
 
 	m_pLevel_Manager->Render();
 
+	m_pLight_Manager->Clear_Light();
+
 
 	return S_OK;
 }

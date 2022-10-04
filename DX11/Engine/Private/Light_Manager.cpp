@@ -33,10 +33,7 @@ HRESULT CLight_Manager::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffe
 	for (auto& pLight : m_Lights)
 	{
 		pLight->Render(pShader, pVIBuffer);
-		Safe_Release(pLight);
 	}
-
-	m_Lights.clear();
 
 	return S_OK;
 }

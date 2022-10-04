@@ -74,10 +74,8 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar *
 		pRenderTarget->Clear();
 		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();	
 	}
-
-	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
-	pContext->OMGetRenderTargets(1, &m_pBackBufferView, &m_pDepthStencilView);
-
+	
+	Store_BackBuffer(pContext);
 	/* 렌더타겟들을 장치에 바인딩한다. */
 	pContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView);
 
@@ -86,12 +84,62 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar *
 
 HRESULT CTarget_Manager::End_MRT(ID3D11DeviceContext * pContext)
 {
-	pContext->OMSetRenderTargets(1, &m_pBackBufferView, m_pDepthStencilView);	
+	Set_BackBuffer(pContext);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::Begin_MRT_For_Texture(ID3D11DeviceContext* pContext, const _tchar* pMRTTag)
+{
+	list<CRenderTarget*>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		return E_FAIL;
+
+	if (pMRTList->size() >= 8)
+		return E_FAIL;
+
+	ID3D11RenderTargetView* RTVs[8] = { nullptr };
+
+	_uint		iNumRTVs = 0;
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();
+	}
+
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	pContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::End_MRT_For_Texture(ID3D11DeviceContext* pContext, CRenderTarget* pRenderTarget)
+{
+	if (nullptr == pRenderTarget)
+		return E_FAIL;
+	ID3D11RenderTargetView* RTVs = pRenderTarget->Get_RTV();
+		
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	pContext->OMSetRenderTargets(1, &RTVs, m_pDepthStencilView);
+
+	return S_OK;
+}
+
+void CTarget_Manager::Set_BackBuffer(ID3D11DeviceContext* pContext)
+{
+	pContext->OMSetRenderTargets(1, &m_pBackBufferView, m_pDepthStencilView);
 
 	Safe_Release(m_pBackBufferView);
 	Safe_Release(m_pDepthStencilView);
+}
 
-	return S_OK;
+void CTarget_Manager::Store_BackBuffer(ID3D11DeviceContext* pContext)
+{
+	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
+	pContext->OMGetRenderTargets(1, &m_pBackBufferView, &m_pDepthStencilView);
+
+
 }
 
 #ifdef _DEBUG

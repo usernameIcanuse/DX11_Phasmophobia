@@ -9,7 +9,7 @@ END
 BEGIN(Client)
 
 class CTripod;
-
+class CCamera_Screen;
 class CVideo_Camera final: public CItem
 {
 private:
@@ -34,6 +34,9 @@ public:
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
+	virtual void Turn_Switch();
+
+	virtual void Set_Enable(_bool _bEnable);
 public:
 	void	Connect_Tripod(CTripod* pTripod);
 	void	Disconnect_Tripod();
@@ -41,7 +44,7 @@ public:
 private:
 	CTripod* m_pTripod = nullptr;
 	CItem* m_pTempCameraModel = nullptr;
-	CCamera_Renderer* m_pCameraRendererCom = nullptr;
+	CCamera_Screen* m_pCameraScreen = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
@@ -51,6 +54,7 @@ public:
 private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT			Setup_TempModel();
+	HRESULT			Setup_Screen();
 public:
 	static CVideo_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

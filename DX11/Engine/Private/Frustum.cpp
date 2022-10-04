@@ -149,10 +149,10 @@ void CFrustum::Item_Update()
 	for (auto& pair = m_listFrustumDesc[FRUSTUM_ITEM].begin(); pair != m_listFrustumDesc[FRUSTUM_ITEM].end();)
 	{
 		_vector vItemPosition = pair->first->Get_State(CTransform::STATE_TRANSLATION);
-		if (View_Frustum_Culling(vItemPosition, 1.f))
+		if (View_Frustum_Culling(vItemPosition, 3.f))
 		{
 			_vector vItemLook = pair->first->Get_State(CTransform::STATE_LOOK);
-			_vector vViewLook = XMLoadFloat4((_float4*)(&ViewMatrixInv.r[2]));
+			_vector vViewLook = vItemPosition - ViewMatrixInv.r[3];
 
 			if (0.f > XMVectorGetX(XMVector3Dot(vItemLook, vViewLook)))
 			{
@@ -162,8 +162,14 @@ void CFrustum::Item_Update()
 				continue;
 			}
 		}
-		
-		_matrix			ViewMatrixInv = XMMatrixInverse(nullptr, pair->first->Get_WorldMatrix());
+		/*ºä ¹æº¤ Á¤±ÔÈ­*/
+		_matrix		ViewMatrix = pair->first->Get_WorldMatrix();
+		ViewMatrix.r[0] = XMVector3Normalize(ViewMatrix.r[0]);
+		ViewMatrix.r[1] = XMVector3Normalize(ViewMatrix.r[1]);
+		ViewMatrix.r[2] = XMVector3Normalize(ViewMatrix.r[2]);
+
+
+		_matrix			ViewMatrixInv =  ViewMatrix;
 		_matrix			ProjMatrixInv = XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ));
 
 		FRUSTUMPLANE FrustumPlane;
@@ -209,10 +215,21 @@ void CFrustum::Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRender
 	if (m_FrustumPlane[FRUSTUM_ITEM].empty())
 		return;
 
+	
+
 	auto& pair = m_listFrustumDesc[FRUSTUM_ITEM].begin();
 
 	for (auto& elem : m_FrustumPlane[FRUSTUM_ITEM])
 	{
+		if (CRenderer::RENDER_PRIORITY == eRenderGroup)
+		{
+			pair->second->Add_RenderGroup(eRenderGroup, pGameObject);
+			++pair;
+			continue;
+		}
+		if (XMVector3Equal(pair->first->Get_State(CTransform::STATE_TRANSLATION), vWorldPoint))
+			continue;
+
 		_bool bFlag = false;
 		for (_uint i = 0; i < 6; ++i)
 		{

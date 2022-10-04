@@ -125,10 +125,42 @@ HRESULT CRenderer::Initialize(void * pArg)
 	return S_OK;
 }
 
+HRESULT CRenderer::Begin_RenderTarget(const _tchar* _pMRTTag)
+{
+	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, _pMRTTag)))
+		return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CRenderer::End_RenderTarget()
+{
+	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CRenderer::Set_Environment()
+{
+	CPipeLine* pPipeLine = GET_INSTANCE(CPipeLine);
+
+	GAMEINSTANCE->Clear_DepthStencil_View();
+
+	m_CamViewMat = *(pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_VIEW));
+	m_CamProjMat = *(pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ));
+	m_vCamPosition = pPipeLine->Get_CamPosition();
+
+
+	XMStoreFloat4x4(&m_CamViewInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+	XMStoreFloat4x4(&m_CamProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
+	
+	RELEASE_INSTANCE(CPipeLine);
+
+}
+
 HRESULT CRenderer::Draw_RenderGroup()
 {
-	m_CamViewMat = *(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW));
-	m_CamProjMat = *(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ));
+	Set_Environment();
 
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
@@ -146,9 +178,11 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 
 #ifdef _DEBUG
-	if (FAILED(Render_Debug()))
-		return E_FAIL;
+	//if (FAILED(Render_Debug()))
+	//	return E_FAIL;
 #endif // _DEBUG
+
+	End_Environment();
 
 	return S_OK;
 }
@@ -170,8 +204,9 @@ HRESULT CRenderer::Render_Priority()
 HRESULT CRenderer::Render_NonAlphaBlend()
 {
 	/* 렌더타겟을 장치에 Diffuse + Normal 바인딩한ㄷ앋. */
-	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_Deferred"))))
+	if (FAILED(Begin_RenderTarget( TEXT("MRT_Deferred"))))
 		return E_FAIL;
+
 
 	for (auto& pGameObject : m_RenderObjects[RENDER_NONALPHABLEND])
 	{
@@ -188,7 +223,7 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 	}
 	m_RenderObjects[RENDER_NONALPHABLEND].clear();
 
-	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+	if (FAILED(End_RenderTarget()))
 		return E_FAIL;
 
 	return S_OK;
@@ -197,7 +232,7 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 HRESULT CRenderer::Render_Lights()
 {
 	/* 셰이드 타겟을 장치에 바인드한다. */
-	if (FAILED(m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_LightAcc"))))
+	if (FAILED(Begin_RenderTarget( TEXT("MRT_LightAcc"))))
 		return E_FAIL;
 
 	/* 모든 빛은 이 노멀텍스쳐(타겟)과 연산이 이뤄지면 되기때문에. 
@@ -214,25 +249,15 @@ HRESULT CRenderer::Render_Lights()
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	CPipeLine*		pPipeLine = GET_INSTANCE(CPipeLine);
+	m_pShader->Set_RawValue("g_ViewMatrixInv", &m_CamViewInv, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrixInv", &m_CamProjInv, sizeof(_float4x4));
 
-	_float4x4		ViewMatrixInv, ProjMatrixInv;
+	m_pShader->Set_RawValue("g_vCamPosition", &m_vCamPosition, sizeof(_float4));
 
-	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
-	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
-		
-	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
-
-
-
-	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
-
-	RELEASE_INSTANCE(CPipeLine);
 
 	m_pLight_Manager->Render_Lights(m_pShader, m_pVIBuffer);
 
-	if (FAILED(m_pTarget_Manager->End_MRT(m_pContext)))
+	if (FAILED(End_RenderTarget()))
 		return E_FAIL;
 
 	return S_OK;
