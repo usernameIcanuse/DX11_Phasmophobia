@@ -30,7 +30,7 @@ public:
 	virtual HRESULT Render();
 
 	virtual void OnEventMessage(const _tchar* pMessage);
-
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 public:
 	virtual void Turn_Switch() {};
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr) 
@@ -53,10 +53,9 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
-	virtual void Change_Item()
+	virtual void Change_Item(_bool _bFlag)
 	{
-		m_bEnable = !m_bEnable;
-		Set_Enable(m_bEnable);
+		Set_Enable(_bFlag);
 	}
 	
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
@@ -86,7 +85,6 @@ protected:
 	function<void(CItem*,_float)> m_pEventFunc;
 protected:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

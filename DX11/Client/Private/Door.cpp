@@ -99,16 +99,6 @@ void CDoor::LateTick(_float fTimeDelta)
 
 HRESULT CDoor::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
-
-
 
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
@@ -214,22 +204,20 @@ HRESULT CDoor::Setup_Component()
     return S_OK;
 }
 
-HRESULT CDoor::SetUp_ShaderResource()
+HRESULT CDoor::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
-    if (nullptr == m_pShaderCom)
+    if (nullptr == m_pShaderCom||
+        nullptr == m_pModelCom)
         return E_FAIL;
 
-
-    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
     if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+    if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
         return E_FAIL;
-    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+    if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
         return E_FAIL;
 
-    RELEASE_INSTANCE(CGameInstance);
 
     return S_OK;
 }

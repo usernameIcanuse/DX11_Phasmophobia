@@ -127,6 +127,9 @@ HRESULT CRenderer::Initialize(void * pArg)
 
 HRESULT CRenderer::Draw_RenderGroup()
 {
+	m_CamViewMat = *(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW));
+	m_CamProjMat = *(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ));
+
 	if (FAILED(Render_Priority()))
 		return E_FAIL;
 	if (FAILED(Render_NonAlphaBlend()))
@@ -173,8 +176,14 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 	for (auto& pGameObject : m_RenderObjects[RENDER_NONALPHABLEND])
 	{
 		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
 			pGameObject->Render();
-
+		}
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_NONALPHABLEND].clear();
@@ -258,8 +267,14 @@ HRESULT CRenderer::Render_NonLight()
 	for (auto& pGameObject : m_RenderObjects[RENDER_NONLIGHT])
 	{
 		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
 			pGameObject->Render();
-
+		}
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_NONLIGHT].clear();
@@ -277,8 +292,14 @@ HRESULT CRenderer::Render_AlphaBlend()
 	for (auto& pGameObject : m_RenderObjects[RENDER_ALPHABLEND])
 	{
 		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
 			pGameObject->Render();
-
+		}
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_ALPHABLEND].clear();

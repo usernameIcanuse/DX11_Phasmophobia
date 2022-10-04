@@ -37,7 +37,7 @@ void CFlashLight::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    if (m_bOnlyLight)
+    if (!m_bRenderModel)
         Adjust_Item(nullptr);
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
@@ -60,10 +60,9 @@ void CFlashLight::LateTick(_float fTimeDelta)
 
         GAMEINSTANCE->Add_Light(m_pSpotLight);
     }
-    if (m_bOnlyLight)
-        return;
+    if (m_bRenderModel)
+       GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
-    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
     m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -71,16 +70,6 @@ void CFlashLight::LateTick(_float fTimeDelta)
 
 HRESULT CFlashLight::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
-
-
 
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 

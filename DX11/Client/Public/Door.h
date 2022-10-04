@@ -28,7 +28,7 @@ public:
 	virtual HRESULT Render();
 
 	virtual void OnEventMessage(const _tchar* pMessage);
-	
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 public:
 	void Grab_Door(CGameObject* _pPlayer)
@@ -67,7 +67,6 @@ private:
 
 private:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource();
 
 
 public:

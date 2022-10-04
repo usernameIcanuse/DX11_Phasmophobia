@@ -34,15 +34,15 @@ public:
 
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
-	virtual void Change_Item() 
+	virtual void Change_Item(_bool _bFlag) 
 	{
-		m_bOnlyLight = !m_bOnlyLight;
+		m_bRenderModel = _bFlag;
 	} 
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
 private:
 	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
-	_bool	m_bOnlyLight = false;
+	_bool	m_bRenderModel= true;
 private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT	Setup_Light();

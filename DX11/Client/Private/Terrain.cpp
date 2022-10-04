@@ -53,14 +53,6 @@ void CTerrain::LateTick(_float fTimeDelta)
 
 HRESULT CTerrain::Render()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pVIBufferCom)
-		return E_FAIL;
-
-	/* 셰이더 전역변수에 값을 던진다. */
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
-
 	m_pShaderCom->Begin(0);
 	
 	m_pVIBufferCom->Render();
@@ -89,45 +81,22 @@ HRESULT CTerrain::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CTerrain::SetUp_ShaderResource()
+HRESULT CTerrain::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
-	if (nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom||
+		nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
-	CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pGameInstance->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
 		return E_FAIL;
 
-	//const LIGHTDESC* pLightDesc = pGameInstance->Get_LightDesc(0);
- //
- //	if (nullptr == pLightDesc)
-	//	return E_FAIL;
-
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition", &pGameInstance->Get_CamPosition(), sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDir", &pLightDesc->vDirection, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightPos", &pLightDesc->vPosition, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_fRange", &pLightDesc->fRange, sizeof(_float))))
-	//	return E_FAIL;
-
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-	//	return E_FAIL;
-	//if (FAILED(m_pShaderCom->Set_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-	//	return E_FAIL;
-
-
-	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }

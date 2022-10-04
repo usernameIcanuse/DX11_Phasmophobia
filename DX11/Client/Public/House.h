@@ -26,6 +26,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag );
 
@@ -37,7 +39,7 @@ private:
 
 private:
 	virtual	HRESULT	Setup_Component();
-	virtual HRESULT SetUp_ShaderResource();
+
 
 
 public:

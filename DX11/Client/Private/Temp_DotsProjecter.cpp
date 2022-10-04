@@ -43,21 +43,12 @@ void CTempDotsProjecter::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_ALPHABLEND);
+    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 
 }
 
 HRESULT CTempDotsProjecter::Render()
 {
-    if (nullptr == m_pShaderCom ||
-        nullptr == m_pModelCom)
-        return E_FAIL;
-
-    /* 셰이더 전역변수에 값을 던진다. */
-    if (FAILED(SetUp_ShaderResource()))
-        return E_FAIL;
-
-
 
 
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
