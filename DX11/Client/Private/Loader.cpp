@@ -37,7 +37,6 @@
 #include "Note.h"
 #include "SpiritBox.h"
 #include "Video_Camera.h"
-#include "CameraScreen.h"
 #include "Terrain.h"
 #include "Player.h"
 #include "Inventory.h"
@@ -388,11 +387,6 @@ HRESULT CLoader::Loading_ForStage1Level()
 	//	CEffect::Create(m_pGraphic_Device))))
 	//	return E_FAIL;
 
-	/* For. Prototype_GameObject_CameraScreen*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CameraScreen"),
-		CCamera_Screen::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 #ifdef _DEBUG
 
 	/* For.Prototype_GameObject_Point*/
@@ -447,17 +441,6 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Point_Instance"),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, 200))))
 		return E_FAIL;
-
-	/* For.Prototype_Component_VIBuffer_NorRect*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_NorRect"),
-		CVIBuffer_NorRect::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_CameraRenderer*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Camera_Renderer"),
-		CCamera_Renderer::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
 
 	_matrix			TransformMatrix;
 

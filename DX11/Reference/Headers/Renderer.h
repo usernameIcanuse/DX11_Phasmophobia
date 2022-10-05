@@ -24,16 +24,6 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	virtual void	Clear_RenderTarget() {}
-
-protected:
-	virtual HRESULT Begin_RenderTarget(const _tchar* _pMRTTag);
-	virtual HRESULT End_RenderTarget();
-
-	virtual void Set_Environment();
-	virtual void End_Environment() {};
-
-public:
 	HRESULT Draw_RenderGroup();
 
 protected:
@@ -54,8 +44,6 @@ protected:
 
 	/*카메라, 아이템 카메라 투영 위한 정보*/
 	_float4x4					m_CamViewMat, m_CamProjMat;
-	_float4x4					m_CamViewInv, m_CamProjInv;
-	_float4						m_vCamPosition;
 
 protected:
 	vector<class CComponent*>	m_DebugComponents;

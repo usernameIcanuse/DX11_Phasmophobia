@@ -57,7 +57,7 @@ HRESULT CRenderTarget::Clear()
 
 */
 	m_pContext->ClearRenderTargetView(m_pRTV, (_float*)&m_vClearColor);
-	
+
 
 	return S_OK;
 }

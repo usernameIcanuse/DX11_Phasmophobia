@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "Item.h"
+#include "GameObject.h"
 
 BEGIN(Engine)
 class CShader;
@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CCamera_Screen final : public CItem
+class CCamera_Screen final : public CGameObject
 {
 private:
 	CCamera_Screen(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -27,22 +27,20 @@ public:
 
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
-public:
-	virtual void Turn_Switch();
 
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CCamera_Renderer*		m_pCameraRenderer = nullptr;
-	CVIBuffer_NorRect*		m_pVIBufferCom = nullptr;
+	CVIBuffer_NorRect*			m_pVIBufferCom = nullptr;
 
 	CTransform* m_pCameraTransform = nullptr;
 
 private:
-	_float			m_fSizeX, m_fSizeY;
+	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;
 
 private:
-	virtual	HRESULT	Setup_Component();
+	HRESULT SetUp_Components();
 
 public:
 	static CCamera_Screen* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

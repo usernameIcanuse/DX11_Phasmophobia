@@ -2,7 +2,6 @@
 #include "../Public/Video_Camera.h"
 #include "GameInstance.h"
 #include "Tripod.h"
-#include "CameraScreen.h"
 
 CVideo_Camera::CVideo_Camera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -28,9 +27,6 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
         return E_FAIL;
 
     if (FAILED(Setup_TempModel()))
-        return E_FAIL;
-
-    if (FAILED(Setup_Screen()))
         return E_FAIL;
 
     m_vAdjustpos = _float3(1.f, 1.f, 1.9f);
@@ -155,19 +151,6 @@ void CVideo_Camera::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
     }
 }
 
-void CVideo_Camera::Turn_Switch()
-{
-    m_bSwitch = !m_bSwitch;
-    m_pCameraScreen->Turn_Switch();
-}
-
-void CVideo_Camera::Set_Enable(_bool _bEnable)
-{
-    __super::Set_Enable(_bEnable);
-
-    m_pCameraScreen->Set_Enable(_bEnable);
-}
-
 void CVideo_Camera::Connect_Tripod(CTripod* pTripod)
 {
     if (nullptr == pTripod)
@@ -233,16 +216,6 @@ HRESULT CVideo_Camera::Setup_TempModel()
         return E_FAIL;
 
     m_pTempCameraModel->Set_Enable(false);
-
-    return S_OK;
-}
-
-HRESULT CVideo_Camera::Setup_Screen()
-{
-    /*For.Screen*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Screen"), TEXT("Prototype_GameObject_CameraScreen"), (CGameObject**)&m_pCameraScreen, m_pTransformCom)))
-        return E_FAIL;
-
 
     return S_OK;
 }

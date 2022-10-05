@@ -22,11 +22,8 @@ public:
 	HRESULT Begin_MRT(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
 	HRESULT End_MRT(ID3D11DeviceContext* pContext);
 
-	HRESULT Begin_MRT_For_Texture(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
-	HRESULT End_MRT_For_Texture(ID3D11DeviceContext* pContext, class CRenderTarget* pRenderTarget);
-	
-	void Set_BackBuffer(ID3D11DeviceContext* pContext);
-	void Store_BackBuffer(ID3D11DeviceContext* pContext);
+	HRESULT Begin_Texture(ID3D11DeviceContext* pContext, class CRenderTarget* pRenderTarget);
+	HRESULT End_Texture(ID3D11DeviceContext* pContext);
 
 #ifdef _DEBUG
 public:
