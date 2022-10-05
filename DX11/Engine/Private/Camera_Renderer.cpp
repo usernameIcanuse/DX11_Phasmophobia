@@ -98,20 +98,23 @@ HRESULT CCamera_Renderer::Render_NonAlphaBlend()
 		return E_FAIL;
 
 
-	for (auto& pGameObject : m_RenderObjects[RENDER_NONALPHABLEND])
+	for (int i = RENDER_TERRAIN; i < RENDER_NONLIGHT; ++i)
 	{
-		if (nullptr != pGameObject)
+		for (auto& pGameObject : m_RenderObjects[i])
 		{
-			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			if (nullptr != pGameObject)
 			{
-				Safe_Release(pGameObject);
-				continue;
+				if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+				{
+					Safe_Release(pGameObject);
+					continue;
+				}
+				pGameObject->Render();
 			}
-			pGameObject->Render();
+			Safe_Release(pGameObject);
 		}
-		Safe_Release(pGameObject);
+		m_RenderObjects[i].clear();
 	}
-	m_RenderObjects[RENDER_NONALPHABLEND].clear();
 
 	if (FAILED(End_RenderTarget()))
 		return E_FAIL;

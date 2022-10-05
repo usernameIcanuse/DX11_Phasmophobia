@@ -38,12 +38,17 @@ void CFrustum::Late_Update()
 
 	for (auto& elem : m_vecObjectList)
 	{
-		/*충돌체로 절두체 컬링*/
 		CTransform* pTransform = (CTransform*)elem.first->Get_Component(CGameObject::m_pTransformTag);
 		_vector vWorldPoint = pTransform->Get_State(CTransform::STATE_TRANSLATION);
-		if (View_Frustum_Culling(vWorldPoint, 5.f))
-		{
+		if (elem.second == CRenderer::RENDER_TERRAIN || elem.second == CRenderer::RENDER_PRIORITY)
 			m_listFrustumDesc[FRUSTUM_STATIC].front().second->Add_RenderGroup(elem.second, elem.first);
+		else
+		{	/*충돌체로 절두체 컬링*/
+			
+			if (View_Frustum_Culling(vWorldPoint, 5.f))
+			{
+				m_listFrustumDesc[FRUSTUM_STATIC].front().second->Add_RenderGroup(elem.second, elem.first);
+			}
 		}
 		Item_Frustum_Culling(vWorldPoint, 5.f, elem.second, elem.first);
 	
@@ -221,7 +226,7 @@ void CFrustum::Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRender
 
 	for (auto& elem : m_FrustumPlane[FRUSTUM_ITEM])
 	{
-		if (CRenderer::RENDER_PRIORITY == eRenderGroup)
+		if (CRenderer::RENDER_PRIORITY == eRenderGroup || CRenderer::RENDER_TERRAIN == eRenderGroup)
 		{
 			pair->second->Add_RenderGroup(eRenderGroup, pGameObject);
 			++pair;

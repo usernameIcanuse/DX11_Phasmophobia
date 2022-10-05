@@ -45,9 +45,12 @@ void CSky::LateTick(_float fTimeDelta)
 
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&pGameInstance->Get_CamPosition()));
 
+	pGameInstance->Add_Object_For_Culling(this, CRenderer::RENDER_PRIORITY);
+
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+
 }
 
 HRESULT CSky::Render()
