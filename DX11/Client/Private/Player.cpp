@@ -184,7 +184,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	//m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
 #endif
 	
 }

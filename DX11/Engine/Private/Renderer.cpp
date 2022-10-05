@@ -351,8 +351,8 @@ HRESULT CRenderer::Render_Debug()
 {
 	for (auto& pComponent : m_DebugComponents)
 	{
-	/*	if (nullptr != pComponent)
-			pComponent->Render();*/
+		if (nullptr != pComponent)
+			pComponent->Render();
 
 		Safe_Release(pComponent);
 	}

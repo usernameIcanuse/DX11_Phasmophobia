@@ -29,20 +29,20 @@ HRESULT CVIBuffer_NorRect::Initialize_Prototype()
 
 	pVertices[0].vPosition = _float3(-0.5f, 0.5f, 0.f);
 	pVertices[0].vTexUV = _float2(0.0f, 0.f);
-	pVertices[0].vNormal = _float3(0.f, 0.f, 1.f);
+	pVertices[0].vNormal = _float3(0.f, 0.f, -1.f);
 
 
 	pVertices[1].vPosition = _float3(0.5f, 0.5f, 0.f);
 	pVertices[1].vTexUV = _float2(1.0f, 0.f);
-	pVertices[1].vNormal = _float3(0.f, 0.f, 1.f);
+	pVertices[1].vNormal = _float3(0.f, 0.f, -1.f);
 
 	pVertices[2].vPosition = _float3(0.5f, -0.5f, 0.f);
 	pVertices[2].vTexUV = _float2(1.0f, 1.f);
-	pVertices[2].vNormal = _float3(0.f, 0.f, 1.f);
+	pVertices[2].vNormal = _float3(0.f, 0.f, -1.f);
 
 	pVertices[3].vPosition = _float3(-0.5f, -0.5f, 0.f);
 	pVertices[3].vTexUV = _float2(0.0f, 1.f);
-	pVertices[3].vNormal = _float3(0.f, 0.f, 1.f);
+	pVertices[3].vNormal = _float3(0.f, 0.f, -1.f);
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pVertices;

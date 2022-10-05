@@ -43,6 +43,19 @@ HRESULT CNavigation::Initialize_Prototype(const char * pNavigationData)
 		if (0 == dwByte)
 			break;
 
+		_int	iLength = m_Cells.size();
+		_bool	bFlag = false;
+		for (_int i = 0; i < iLength; ++i)
+		{
+			if (m_Cells[i]->isSamePoints(vPoints[0], vPoints[1], vPoints[2]))
+			{
+				bFlag = true;
+				break;
+			}
+		}
+		if (bFlag)
+			continue;
+
 		CCell*		pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size());
 		if (nullptr == pCell)
 			return E_FAIL;

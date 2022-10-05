@@ -58,10 +58,34 @@ HRESULT CTexture::Initialize_Prototype(const _tchar * pTextureFilePath, _uint iN
 	return S_OK;
 }
 
-HRESULT CTexture::Initialize(void * pArg)
+HRESULT CTexture::Initialize_RTV(const _tchar* pTextureFilePath, _uint iNumTextures)
 {
+	return E_NOTIMPL;
+}
+
+HRESULT CTexture::Initialize(void * pArg)
+{//m_RTV¸¦ ³Ñ°ÜÁÜ
+
+	if (nullptr != pArg)
+	{
+		
+	}
 
 	return S_OK;
+}
+
+
+CTexture* CTexture::Create_RTV(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pTextureFilePath, _uint iNumTextures)
+{
+	CTexture* pInstance = new CTexture(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_RTV(pTextureFilePath, iNumTextures)))
+	{
+		MSG_BOX("Failed to Created : CTexture_RTV");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 CTexture * CTexture::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pTextureFilePath, _uint iNumTextures)

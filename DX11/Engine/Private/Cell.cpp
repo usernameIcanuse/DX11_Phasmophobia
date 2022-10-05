@@ -141,23 +141,26 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, 
 		vPlayerPos.y = 0.f;
 		vPointPos.y = 0.f;
 
-		_vector	vDir = XMLoadFloat3(&vPlayerPos) - XMLoadFloat3(&m_vPoints[i]);
-
-		/* ¹Ù±ùÀ¸·Î ³«¤¶¾Æ¾î */
-		if (DBL_EPSILON < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
-		{
-		
-			if (-1 == m_iNeighbor[i] || iPrevIndex != m_iNeighbor[i])
+		_vector	vDir = XMLoadFloat3(&vPlayerPos) - XMLoadFloat3(&vPointPos);
+		if (DBL_EPSILON < XMVectorGetX(XMVector3Length(vDir)))
+		{/* ¹Ù±ùÀ¸·Î ³«¤¶¾Æ¾î */
+			if (DBL_EPSILON < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
 			{
-				*pNeighborIndex = m_iNeighbor[i];
-				iPrevIndex = m_iIndex;
 
-				return false;
+				if (-1 == m_iNeighbor[i] || iPrevIndex != m_iNeighbor[i])
+				{
+					*pNeighborIndex = m_iNeighbor[i];
+					iPrevIndex = m_iIndex;
+
+					return false;
+				}
 			}
 		}
+		else
+			break;
 	}
 
-	;
+	
 	if(DBL_EPSILON < fabs( m_vCellPlane.y))
 	{
 		_float4		vPos;
@@ -168,6 +171,37 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, 
 	
 
 	return true;	
+}
+
+_bool CCell::isSamePoints(_float3 vPointA, _float3 vPointB, _float3 vPointC)
+{
+	_int	iCnt = 0;
+	for (_int i = 0; i < 3; ++i)
+	{
+		_int iIndex = i;
+		if (XMVector3Equal(XMLoadFloat3(&m_vPoints[iIndex]), XMLoadFloat3(&vPointA)))
+		{
+			++iCnt;
+		}
+		iIndex = (iIndex + 1) % 3;
+		if (XMVector3Equal(XMLoadFloat3(&m_vPoints[iIndex]), XMLoadFloat3(&vPointB)))
+		{
+			++iCnt;
+		}
+		iIndex = (iIndex + 1) % 3;
+		if (XMVector3Equal(XMLoadFloat3(&m_vPoints[iIndex]), XMLoadFloat3(&vPointC)))
+		{
+			++iCnt;
+		}
+
+		if (3 == iCnt)
+		{
+			return true;
+		}
+		else
+			iCnt = 0;
+	}
+	return false;
 }
 
 

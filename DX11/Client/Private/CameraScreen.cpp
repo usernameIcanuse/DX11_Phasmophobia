@@ -33,11 +33,9 @@ HRESULT CCamera_Screen::Initialize(void * pArg)
 		return E_FAIL;
 
 
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVectorSet(300.f, 0.f, 0.f, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_UP, XMVectorSet(0.f, 225.f, 0.f, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,250.f, 0.f, 1.f));
+	m_pTransformCom->Set_Scaled(_float3(0.76f, 0.5f, 1.f));
+	GAMEINSTANCE->Add_Renderer(CRenderer_Manager::VIDEO_CAMERA, m_pCameraRenderer);
 
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 
 	return S_OK;
 }
@@ -47,21 +45,29 @@ void CCamera_Screen::Tick(_float fTimeDelta)
 	/*매 틱마다 카메라 화면 위치로 조정해주기*/
 	if (m_bSwitch)
 	{
-		GAMEINSTANCE->Add_Renderer(CRenderer_Manager::VIDEO_CAMERA, m_pCameraRenderer);
 		GAMEINSTANCE->Add_ItemFrustum(CFrustum::FRUSTUM_ITEM, (CRenderer*)m_pCameraRenderer, m_pCameraTransform);
 	}
+	_vector vPosition = m_pCameraTransform->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLook = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_LOOK));
+	_vector vUp = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_UP));
+	_vector vRight = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_RIGHT));
+	_float3	vScale = m_pTransformCom->Get_Scaled();
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * vScale.z);
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition+ vUp * vScale.y*0.57f - vLook * 0.14f + vRight*vScale.x*0.048f);
+
+	
 }
 
 void CCamera_Screen::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 }
 
 HRESULT CCamera_Screen::Render()
 {
-	if (FAILED(SetUp_ShaderResource(nullptr, nullptr)))
-		return E_FAIL;
-
 	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
@@ -72,14 +78,12 @@ HRESULT CCamera_Screen::Render()
 HRESULT CCamera_Screen::Setup_Component()
 {
 	/* For.Com_Shader */
-	/*if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxNorTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-		return E_FAIL;*/
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxNorTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
-		return E_FAIL;//나중에 norrect로 바꿔야함
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_NorRect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;
 
 	/* For.Com_CameraRenderer*/
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Camera_Renderer"), TEXT("Com_CameraRenderer"), (CComponent**)&m_pCameraRenderer,m_pCameraTransform)))
@@ -107,9 +111,9 @@ HRESULT CCamera_Screen::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* 
 
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
 
