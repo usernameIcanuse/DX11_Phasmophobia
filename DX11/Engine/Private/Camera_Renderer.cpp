@@ -1,5 +1,6 @@
 #include "..\Public\Camera_Renderer.h"
 #include "GameInstance.h"
+#include "GameObject.h"
 #include "RenderTarget.h"
 
 
@@ -48,6 +49,189 @@ HRESULT CCamera_Renderer::Initialize(void* pArg)
 	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Draw_RenderGroup()
+{
+	Set_Environment();
+
+	if (FAILED(Render_Priority()))
+		return E_FAIL;
+	if (FAILED(Render_NonAlphaBlend()))
+		return E_FAIL;
+	if (FAILED(Render_Lights()))
+		return E_FAIL;
+	if (FAILED(Render_Blend()))
+		return E_FAIL;
+	if (FAILED(Render_NonLight()))
+		return E_FAIL;
+	if (FAILED(Render_AlphaBlend()))
+		return E_FAIL;
+	if (FAILED(Render_UI()))
+		return E_FAIL;
+
+	End_Environment();
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_Priority()
+{
+	for (auto& pGameObject : m_RenderObjects[RENDER_PRIORITY])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_PRIORITY].clear();
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_NonAlphaBlend()
+{
+	/* 렌더타겟을 장치에 Diffuse + Normal 바인딩한ㄷ앋. */
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+		return E_FAIL;
+
+
+	for (auto& pGameObject : m_RenderObjects[RENDER_NONALPHABLEND])
+	{
+		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
+			pGameObject->Render();
+		}
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_NONALPHABLEND].clear();
+
+	if (FAILED(End_RenderTarget()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_Lights()
+{
+	/* 셰이드 타겟을 장치에 바인드한다. */
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_LightAcc"))))
+		return E_FAIL;
+
+	/* 모든 빛은 이 노멀텍스쳐(타겟)과 연산이 이뤄지면 되기때문에.
+	모든 빛마다 각각 던질피룡가 없다. */
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_NormalTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Normal")))))
+		return E_FAIL;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Depth")))))
+		return E_FAIL;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
+		return E_FAIL;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShader->Set_RawValue("g_ViewMatrixInv", &m_CamViewInv, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrixInv", &m_CamProjInv, sizeof(_float4x4));
+
+	m_pShader->Set_RawValue("g_vCamPosition", &m_vCamPosition, sizeof(_float4));
+
+
+	m_pLight_Manager->Render_Lights(m_pShader, m_pVIBuffer);
+
+	if (FAILED(End_RenderTarget()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_Blend()
+{
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Shade")))))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Specular")))))
+		return E_FAIL;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShader->Begin(4);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pVIBuffer->Render();
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_NonLight()
+{
+	for (auto& pGameObject : m_RenderObjects[RENDER_NONLIGHT])
+	{
+		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
+			pGameObject->Render();
+		}
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_NONLIGHT].clear();
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_AlphaBlend()
+{
+	m_RenderObjects[RENDER_ALPHABLEND].sort([](CGameObject* pSour, CGameObject* pDest)
+		{
+			return pSour->Get_CamDistance() > pDest->Get_CamDistance();
+		});
+
+	for (auto& pGameObject : m_RenderObjects[RENDER_ALPHABLEND])
+	{
+		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
+			pGameObject->Render();
+		}
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_ALPHABLEND].clear();
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_UI()
+{
+	for (auto& pGameObject : m_RenderObjects[RENDER_UI])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_UI].clear();
 
 	return S_OK;
 }

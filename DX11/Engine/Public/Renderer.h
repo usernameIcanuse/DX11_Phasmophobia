@@ -34,7 +34,7 @@ protected:
 	virtual void End_Environment() {};
 
 public:
-	HRESULT Draw_RenderGroup();
+	virtual HRESULT Draw_RenderGroup();
 
 protected:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];
@@ -62,13 +62,13 @@ protected:
 #endif // _DEBUG
 
 public:
-	HRESULT Render_Priority();
-	HRESULT Render_NonAlphaBlend();
-	HRESULT Render_Lights();
-	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */ 
-	HRESULT Render_NonLight();
-	HRESULT Render_AlphaBlend();
-	HRESULT Render_UI();
+	virtual HRESULT Render_Priority();
+	virtual HRESULT Render_NonAlphaBlend();
+	virtual HRESULT Render_Lights();
+	virtual HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */ 
+	virtual HRESULT Render_NonLight();
+	virtual HRESULT Render_AlphaBlend();
+	virtual HRESULT Render_UI();
 
 #ifdef _DEBUG
 public:

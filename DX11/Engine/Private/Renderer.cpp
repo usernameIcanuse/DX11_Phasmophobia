@@ -178,8 +178,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 
 #ifdef _DEBUG
-	//if (FAILED(Render_Debug()))
-	//	return E_FAIL;
+	if (FAILED(Render_Debug()))
+		return E_FAIL;
 #endif // _DEBUG
 
 	End_Environment();
@@ -370,8 +370,6 @@ HRESULT CRenderer::Render_Debug()
 
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
-
-
 
 	return S_OK;
 }

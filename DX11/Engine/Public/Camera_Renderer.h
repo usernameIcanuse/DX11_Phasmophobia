@@ -20,6 +20,16 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
+public:
+	virtual		HRESULT Render_Priority();
+	virtual		HRESULT Render_NonAlphaBlend();
+	virtual		HRESULT Render_Lights();
+	virtual		HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
+	virtual		HRESULT Render_NonLight();
+	virtual		HRESULT Render_AlphaBlend();
+	virtual		HRESULT Render_UI();
+	virtual HRESULT Draw_RenderGroup();
+public:
 	ID3D11ShaderResourceView* Get_SRV();
 
 	virtual void	Clear_RenderTarget() override;

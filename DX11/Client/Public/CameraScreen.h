@@ -6,7 +6,7 @@
 BEGIN(Engine)
 class CShader;
 class CCamera_Renderer;
-class CVIBuffer_NorRect;
+class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
@@ -33,7 +33,7 @@ public:
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CCamera_Renderer*		m_pCameraRenderer = nullptr;
-	CVIBuffer_NorRect*		m_pVIBufferCom = nullptr;
+	CVIBuffer_Rect*		m_pVIBufferCom = nullptr;
 
 	CTransform* m_pCameraTransform = nullptr;
 

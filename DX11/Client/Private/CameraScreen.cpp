@@ -35,7 +35,7 @@ HRESULT CCamera_Screen::Initialize(void * pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVectorSet(300.f, 0.f, 0.f, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_UP, XMVectorSet(0.f, 225.f, 0.f, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(500.f,100.f, 0.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f,250.f, 0.f, 1.f));
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 
@@ -78,8 +78,8 @@ HRESULT CCamera_Screen::Setup_Component()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_NorRect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
-		return E_FAIL;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;//나중에 norrect로 바꿔야함
 
 	/* For.Com_CameraRenderer*/
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Camera_Renderer"), TEXT("Com_CameraRenderer"), (CComponent**)&m_pCameraRenderer,m_pCameraTransform)))
