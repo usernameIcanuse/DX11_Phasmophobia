@@ -226,13 +226,7 @@ HRESULT CDoor::Setup_Component()
 
 void CDoor::On_Collision_Enter(CCollider* pCollider)
 {
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
-    {
-        CTransform* pPlayerTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
 
-
-
-    }
 }
 
 void CDoor::On_Collision_Stay(CCollider* pCollider)

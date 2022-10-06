@@ -53,30 +53,33 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+	m_pTransformCom->Reset_Direction();
 
 	if (pGameInstance->Is_KeyState(KEY::W, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+		m_pTransformCom->Add_Direction(CTransform::FRONT);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::S, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta, m_pNavigationCom);
+		m_pTransformCom->Add_Direction(CTransform::BACK);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::A, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Left(fTimeDelta, m_pNavigationCom);
+		m_pTransformCom->Add_Direction(CTransform::LEFT);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::D, KEY_STATE::HOLD))
 	{
-		m_pTransformCom->Go_Right(fTimeDelta, m_pNavigationCom);
+		m_pTransformCom->Add_Direction(CTransform::RIGHT);
 	}
+
 	if (pGameInstance->Is_KeyState(KEY::LEFT, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f * fTimeDelta);
 	}
+
 	if (pGameInstance->Is_KeyState(KEY::RIGHT, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
@@ -86,6 +89,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), -1.f * fTimeDelta);
 	}
+
 	if (pGameInstance->Is_KeyState(KEY::DOWN, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta);
@@ -103,6 +107,9 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
+
+	m_pTransformCom->Move(fTimeDelta,m_pNavigationCom);
+
 	
 }
 
@@ -207,7 +214,13 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 {
-	
+	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
+	{
+		/*
+			이동 방식을 모든 벡터를 다 더한 후 방향을 구해 최종적인 방향 벡터와 길이를 구해준 후에
+			문과 충돌 계산을 할 때 방향 벡터와 함께 받아와서 슬라이딩 태우고 후에 갈 수 있는지 판단을 해야함
+		*/
+	}
 
 }
 
