@@ -41,6 +41,7 @@ private:
 
 private: /*기본 귀신 상호작용, 기능*/
 	void Whispering(); //내귀에 캔디
+	void DotsProjecter();
 	void Light_Attack(_float fTimeDelta =0.f); //이벤트
 	void Attack(_float fTimeDelta = 0.f); //헌팅
 	void Moving(_float fTimeDelta = 0.f);
@@ -69,9 +70,11 @@ private:
 
 	_bool				m_bGhostWriting = false;
 	_bool				m_bHandPrint = false;
+	_bool				m_bDotsProjecter = false;
 
 	_bool				m_bCheckGhostWriting = false;
 	_bool				m_bCheckHandPrint = false;
+	_bool				m_bCheckDotsProjecter = false;
 	
 private:
 	HRESULT	Setup_Component();

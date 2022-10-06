@@ -167,6 +167,9 @@ HRESULT CCamera_Renderer::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Specular")))))
 		return E_FAIL;
 
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_EmissiveTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Emissive")))))
+		return E_FAIL;
+
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -280,6 +283,7 @@ void CCamera_Renderer::Set_Environment()
 	ViewMatrix.r[0] = XMVector3Normalize(ViewMatrix.r[0]);
 	ViewMatrix.r[1] = XMVector3Normalize(ViewMatrix.r[1]);
 	ViewMatrix.r[2] = XMVector3Normalize(ViewMatrix.r[2]);
+	ViewMatrix.r[3] += ViewMatrix.r[1]*0.25 + ViewMatrix.r[2]*0.5f;
 
 	XMStoreFloat4(&m_vCamPosition, ViewMatrix.r[3]);
 

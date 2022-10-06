@@ -60,13 +60,21 @@ HRESULT CThermometer::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
+        _int iPassIndex = 2;
+
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;
+        if (m_bSwitch)
+        {
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+                return E_FAIL;
 
+            iPassIndex = 3;
+        }
 
-        m_pModelCom->Render(i, m_pShaderCom,2);
+        m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
 
     // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont

@@ -143,6 +143,10 @@ void CGhost::Whispering()
 	
 }
 
+void CGhost::DotsProjecter()
+{
+}
+
 void CGhost::Stop_Updating_SpawnPoint()
 {
 	m_pSpawnPoint->Set_Ghost(nullptr);
@@ -240,6 +244,13 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 
 void CGhost::On_Collision_Stay(CCollider* pCollider)
 {
+	if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
+	{
+		if (m_bDotsProjecter)
+		{
+
+		}
+	}
 	
 }
 

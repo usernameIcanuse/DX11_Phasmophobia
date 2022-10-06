@@ -20,6 +20,11 @@ public:
 		return m_fCamDistance;
 	}
 
+	_float	Get_CullingRange()
+	{
+		return m_fCullingRange;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -49,6 +54,7 @@ protected:
 
 	
 	_bool		m_bEnable = true;
+	_float		m_fCullingRange = 5.f;
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, class CComponent** ppOut, void* pArg = nullptr);

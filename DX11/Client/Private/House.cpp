@@ -25,6 +25,9 @@ HRESULT CHouse::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    m_fCullingRange = 100.f;
+   
+
     return S_OK;
 }
 
@@ -41,8 +44,8 @@ void CHouse::LateTick(_float fTimeDelta)
     XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
     {*/
-        m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
+        //m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    GAMEINSTANCE->Add_Object_For_Culling( this, CRenderer::RENDER_NONALPHABLEND);
     //}
 
 }

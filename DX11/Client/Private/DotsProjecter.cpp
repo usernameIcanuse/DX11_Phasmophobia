@@ -209,6 +209,22 @@ HRESULT CDotsProjecter::Setup_Component()
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
+
+    /* For.Com_Area*/
+
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+    ColliderDesc.vScale = _float3(5.f, 5.f, 5.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+
+    _vector     vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    XMStoreFloat3(&ColliderDesc.vTranslation, XMVectorSet(0.f, 0.f, 0.f, 0.f) - ColliderDesc.vScale.z * 0.55f * vLook);
+    //ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.pOwner = this;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM_AREA;
+
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
+        return E_FAIL;
    
 
     return S_OK;
@@ -281,5 +297,6 @@ void CDotsProjecter::Free()
     __super::Free();
 
     Safe_Release(m_pLight);
+    Safe_Release(m_pAreaCom);
 
 }

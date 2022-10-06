@@ -44,7 +44,7 @@ private:
 
 	_bool	View_Frustum_Culling(_fvector vWorldPoint, _float fRange );
 	void	Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRenderer::RENDERGROUP eRenderGroup, CGameObject* pGameObject);
-
+	
 private:
 	_float4				m_vOriginalPoints[8];
 	//////////각 카메라 아이템이 가져야할 절두체)/////////////

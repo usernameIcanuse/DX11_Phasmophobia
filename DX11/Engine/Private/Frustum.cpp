@@ -1,6 +1,7 @@
 #include "..\Public\Frustum.h"
 #include "PipeLine.h"
 #include "Transform.h"
+#include "Collider.h"
 #include "Renderer.h"
 #include "GameObject.h"
 
@@ -32,7 +33,7 @@ void CFrustum::Update()
 }
 
 void CFrustum::Late_Update()
-{
+{/*아이템 컬링을 충돌체(OBB,ABB)로 판단해야함, 절두체 내부에 충돌체가 있는 경우, 충돌체 내부(큰 오브젝트)에 절두체가 들어간 경우*/
 	if (m_vecObjectList.empty() || m_listFrustumDesc[FRUSTUM_STATIC].empty())
 		return;
 
@@ -40,17 +41,21 @@ void CFrustum::Late_Update()
 	{
 		CTransform* pTransform = (CTransform*)elem.first->Get_Component(CGameObject::m_pTransformTag);
 		_vector vWorldPoint = pTransform->Get_State(CTransform::STATE_TRANSLATION);
+		//priority와 지형은 무조건 렌더
+		_float fRange = elem.first->Get_CullingRange();
+
 		if (elem.second == CRenderer::RENDER_TERRAIN || elem.second == CRenderer::RENDER_PRIORITY)
 			m_listFrustumDesc[FRUSTUM_STATIC].front().second->Add_RenderGroup(elem.second, elem.first);
+		
 		else
 		{	/*충돌체로 절두체 컬링*/
-			
-			if (View_Frustum_Culling(vWorldPoint, 5.f))
+			if (View_Frustum_Culling(vWorldPoint, fRange))
 			{
 				m_listFrustumDesc[FRUSTUM_STATIC].front().second->Add_RenderGroup(elem.second, elem.first);
 			}
 		}
-		Item_Frustum_Culling(vWorldPoint, 5.f, elem.second, elem.first);
+		Item_Frustum_Culling(vWorldPoint, fRange,
+		 elem.second, elem.first);
 	
 		Safe_Release(elem.first);
 	}
@@ -215,6 +220,7 @@ _bool CFrustum::View_Frustum_Culling(_fvector vWorldPoint, _float fRange)
 	return true;
 }
 
+
 void CFrustum::Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRenderer::RENDERGROUP eRenderGroup, CGameObject* pGameObject)
 {
 	if (m_FrustumPlane[FRUSTUM_ITEM].empty())
@@ -232,8 +238,6 @@ void CFrustum::Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRender
 			++pair;
 			continue;
 		}
-		if (XMVector3Equal(pair->first->Get_State(CTransform::STATE_TRANSLATION), vWorldPoint))
-			continue;
 
 		_bool bFlag = false;
 		for (_uint i = 0; i < 6; ++i)
@@ -254,6 +258,7 @@ void CFrustum::Item_Frustum_Culling(_fvector vWorldPoint, _float fRange, CRender
 	}
 
 }
+
 
 void CFrustum::Free()
 {

@@ -25,6 +25,8 @@ HRESULT CDoor::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    m_fCullingRange = 10.f;
+
     GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
 
     return S_OK;
@@ -87,12 +89,11 @@ void CDoor::LateTick(_float fTimeDelta)
     XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
     {*/
-    //GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+   GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
     //}
 
 #ifdef _DEBUG
-        m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+       // m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }

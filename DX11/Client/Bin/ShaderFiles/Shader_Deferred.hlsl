@@ -32,6 +32,7 @@ vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 texture2D	g_SpecularTexture;
 texture2D	g_DepthTexture;
 texture2D	g_DiffuseTexture;
+texture2D	g_EmissiveTexture;
 texture2D	g_ShadeTexture;
 texture2D	g_NormalTexture;
 texture2D	g_Texture;
@@ -284,8 +285,9 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular; 
+	Out.vColor = vDiffuse * vShade + vSpecular + vEmissive; 
 
 	if (Out.vColor.a == 0.f)
 		discard;

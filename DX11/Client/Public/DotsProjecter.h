@@ -36,6 +36,8 @@ public:
 
 private:
 	CLight*		m_pLight = nullptr;//설치 시 불 켜짐
+	CCollider* m_pAreaCom = nullptr;
+
 	CItem* m_pTempDotsModel = nullptr;
 
 public:
