@@ -34,13 +34,20 @@ public:
 private:
 	CShader* m_pShaderCom = nullptr;
 	//CTexture* m_pTextureCom = nullptr;
-	CRenderer* m_pRendererCom = nullptr;
+	//CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
+
+	_bool	m_bSwitch = false;
 
 private:
 	virtual	HRESULT	Setup_Component();
 	virtual HRESULT SetUp_ShaderResource();
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider);
+	virtual void On_Collision_Stay(CCollider* pCollider);
+	virtual void On_Collision_Exit(CCollider* pCollider);
 
 
 public:

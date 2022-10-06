@@ -37,7 +37,6 @@ public:
 #endif
 
 private:
-	CCollider* m_pRayCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
 	CNavigation* m_pNavigationCom = nullptr;
 
@@ -46,18 +45,6 @@ private:
 #endif
 
 	CInventory* m_pInventory = nullptr;
-
-	_float			m_fDist = FLT_MAX;
-	CGameObject*	m_pItem = nullptr;
-	class CDoor*	m_pDoor = nullptr;
-
-	_float3			m_vColliderPos;
-	COLLISION_TYPE	m_eColliderType = COLLISION_TYPE::TYPE_END;
-	_float4			m_vColliderLook;
-	
-	_bool			m_bGrab = false;
-	CGameObject*	 m_pTripod = nullptr;
-
 
 private:
 	HRESULT	Setup_Component();

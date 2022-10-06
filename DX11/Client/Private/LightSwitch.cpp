@@ -40,7 +40,7 @@ void CLightSwitch::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
  
-    m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+    //m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 }
 
@@ -95,8 +95,8 @@ HRESULT CLightSwitch::Setup_Component()
     //    return E_FAIL;
 
     /* For.Com_Renderer*/
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-        return E_FAIL;
+   /* if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+        return E_FAIL;*/
 
     /* For.Com_OBB*/
     CCollider::COLLIDERDESC  ColliderDesc;
@@ -157,6 +157,18 @@ HRESULT CLightSwitch::SetUp_ShaderResource()
     return S_OK;
 }
 
+void CLightSwitch::On_Collision_Enter(CCollider* pCollider)
+{
+}
+
+void CLightSwitch::On_Collision_Stay(CCollider* pCollider)
+{
+}
+
+void CLightSwitch::On_Collision_Exit(CCollider* pCollider)
+{
+}
+
 CLightSwitch* CLightSwitch::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CLightSwitch* pInstance = new CLightSwitch(pDevice, pContext);
@@ -188,7 +200,7 @@ void CLightSwitch::Free()
     __super::Free();
     
     Safe_Release(m_pShaderCom);
-    Safe_Release(m_pRendererCom);
+   // Safe_Release(m_pRendererCom);
    // Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);

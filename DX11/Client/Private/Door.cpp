@@ -224,6 +224,25 @@ HRESULT CDoor::Setup_Component()
     return S_OK;
 }
 
+void CDoor::On_Collision_Enter(CCollider* pCollider)
+{
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+    {
+        CTransform* pPlayerTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
+
+
+
+    }
+}
+
+void CDoor::On_Collision_Stay(CCollider* pCollider)
+{
+}
+
+void CDoor::On_Collision_Exit(CCollider* pCollider)
+{
+}
+
 HRESULT CDoor::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
     if (nullptr == m_pShaderCom||
