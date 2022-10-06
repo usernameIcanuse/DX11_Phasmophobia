@@ -109,7 +109,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_pTransformCom->Move(fTimeDelta,m_pNavigationCom);
-
+	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
 
@@ -213,13 +213,20 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 }
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
-{
+{ 
 	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
 	{
 		/*
 			이동 방식을 모든 벡터를 다 더한 후 방향을 구해 최종적인 방향 벡터와 길이를 구해준 후에
 			문과 충돌 계산을 할 때 방향 벡터와 함께 받아와서 슬라이딩 태우고 후에 갈 수 있는지 판단을 해야함
 		*/
+		CTransform* pDoorTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
+		_float3 vRight;
+		XMStoreFloat3(&vRight, pDoorTransform->Get_State(CTransform::STATE_RIGHT));
+
+		m_pTransformCom->Slide_Object(vRight, m_pNavigationCom);
+		//m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+
 	}
 
 }

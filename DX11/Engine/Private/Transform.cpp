@@ -258,6 +258,46 @@ HRESULT CTransform::Move(_float fTimeDelta, CNavigation* pNaviCom)
 	return S_OK;
 }
 
+HRESULT CTransform::Slide_Object(_float3 vContactDirection, CNavigation* pNaviCom)
+{
+	_vector vDir = XMLoadFloat3(&m_vMoveDir);
+	if (DBL_EPSILON < fabs(XMVectorGetX(XMVector3Length(vDir))))
+	{
+		_vector vContactDir = XMVector3Normalize(XMLoadFloat3(&vContactDirection));
+		_vector vSlideDirection = vContactDir * XMVector3Dot(vDir, vContactDir);
+
+		_vector vPosition = Get_State(CTransform::STATE_TRANSLATION) - vDir;
+
+
+		if (nullptr != pNaviCom)
+		{
+			/*if (false == pNaviCom->isMove(vPosition))
+				return S_OK;*/
+			_float fPositionY = 0.f;
+			_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+			if (pNaviCom->isMove(vPosition, fPositionY, vSlideDirection, vMovedPosition))
+			{
+				_float4 vPos;
+				XMStoreFloat4(&vPos, vMovedPosition);
+				vPos.y = fPositionY;
+				vPosition = XMLoadFloat4(&vPos);
+			}
+			else
+				return S_OK;
+			/*
+			_float fPositionY = 0.f;
+			pNaviCom->isMove(vPosition, fPositionY);*/
+		}
+		else
+		{
+			vPosition += vSlideDirection;
+		}
+		Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	}
+
+	return S_OK;
+}
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_TransformDesc.fRotationPerSec * fTimeDelta);
