@@ -285,9 +285,9 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-	vector			vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
+	//vector			vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular + vEmissive; 
+	Out.vColor = vDiffuse * vShade + vSpecular;/* + vEmissive; */
 
 	if (Out.vColor.a == 0.f)
 		discard;

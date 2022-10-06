@@ -298,6 +298,9 @@ void CCamera_Renderer::Set_Environment()
 	XMStoreFloat4x4(&m_CamViewInv, XMMatrixTranspose(ViewMatrix));
 	XMStoreFloat4x4(&m_CamProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ))));
 
+
+	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
+	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));
 }
 
 void CCamera_Renderer::End_Environment()

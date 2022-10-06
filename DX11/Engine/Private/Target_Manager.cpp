@@ -71,7 +71,7 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar *
 
 	for (auto& pRenderTarget : *pMRTList)	
 	{
-		pRenderTarget->Clear();
+		//pRenderTarget->Clear();
 		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();	
 	}
 	
@@ -104,7 +104,7 @@ HRESULT CTarget_Manager::Begin_MRT_For_Texture(ID3D11DeviceContext* pContext, co
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
-		pRenderTarget->Clear();
+		//pRenderTarget->Clear();
 		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV();
 	}
 
@@ -122,6 +122,20 @@ HRESULT CTarget_Manager::End_MRT_For_Texture(ID3D11DeviceContext* pContext, CRen
 		
 	/* 렌더타겟들을 장치에 바인딩한다. */
 	pContext->OMSetRenderTargets(1, &RTVs, m_pDepthStencilView);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::Clear_MRT(const _tchar* pMRTTag)
+{
+	list<CRenderTarget*>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		return E_FAIL;
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+	}
 
 	return S_OK;
 }
