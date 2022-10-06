@@ -1486,10 +1486,18 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 				strPrototypeTag = TEXT("Prototype_GameObject_Video_Camera");
 				break;
 
+			case OBJ_TAG::TRAILCAM:
+				strPrototypeTag = TEXT("Prototype_GameObject_TrailCam");
+				break;
+
+			case OBJ_TAG::TRIPOD:
+				strPrototypeTag = TEXT("Prototype_GameObject_Tripod");
+				break;
+
 			case OBJ_TAG::GHOST:
 				strPrototypeTag = TEXT("Prototype_GameObject_Ghost");
 				break;
-				
+
 			case OBJ_TAG::ATMOSPHERE:
 				strPrototypeTag = TEXT("Prototype_GameObject_Atmosphere");
 				break;
@@ -1519,6 +1527,8 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 
 
 			m_vecCollocatedObject[(_uint)iLayerTag].push_back(pTemp);
+			m_vecObjectTag[(_uint)iLayerTag].push_back(iObjTag);
+
 
 		}
 	}

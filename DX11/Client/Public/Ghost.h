@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CCollider;
 class CModel;
 class CRenderer;
+class CNavigation;
 END
 
 
@@ -40,8 +41,6 @@ private:
 	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
 
 private: /*기본 귀신 상호작용, 기능*/
-	void Whispering(); //내귀에 캔디
-	void DotsProjecter();
 	void Light_Attack(_float fTimeDelta =0.f); //이벤트
 	void Attack(_float fTimeDelta = 0.f); //헌팅
 	void Moving(_float fTimeDelta = 0.f);
@@ -52,6 +51,7 @@ private:
 	CCollider*		m_pOBBCom = nullptr; // attack
 	CCollider*		m_pSphereCom = nullptr;  //ghost
 	CModel*			m_pModelCom = nullptr;
+	CNavigation*	m_pNavigationCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 
 #ifdef _DEBUG

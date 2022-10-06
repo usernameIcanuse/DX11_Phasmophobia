@@ -31,6 +31,8 @@ public:
 
 	virtual void Set_Enable(_bool _bEnable);
 
+private:
+	void DotsProjecter();
 
 public:
 	void	Add_Score(_int _iScoreIndex);

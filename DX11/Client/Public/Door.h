@@ -41,6 +41,11 @@ public:
 		m_bMainDoor = _bMainDoor;
 	}
 
+	void Open_Door(_float _fRadian)
+	{
+		m_fOpenRadian = _fRadian;
+	}
+
 
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag);
@@ -60,6 +65,7 @@ private:
 	CGameObject*	m_pPlayer = nullptr;
 
 	_float			m_fRadian = 0.f;
+	_float			m_fOpenRadian = 0.f;
 	_bool			m_bMainDoor = false;
 	_bool			m_bLock = false;
 

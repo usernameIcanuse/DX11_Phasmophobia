@@ -183,8 +183,8 @@ void CPlayer::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
 #endif
 	
 }
@@ -230,13 +230,13 @@ HRESULT CPlayer::Setup_Component()
 	
 
 	/* For.Com_Navigation*/
-	CGameObject* pNavigation = nullptr;
+	//CGameObject* pNavigation = nullptr;
 
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1,TEXT("Layer_Navigation"),TEXT("Prototype_GameObject_Navigation_Mesh"),&pNavigation)))
-		return E_FAIL;
+	//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1,TEXT("Layer_Navigation"),TEXT("Prototype_GameObject_Navigation_Mesh"),&pNavigation)))
+	//	return E_FAIL;
 
-	m_pNavigationCom = (CNavigation*)pNavigation->Get_Component(TEXT("Com_Navigation"));
-	Safe_AddRef(m_pNavigationCom);
+	//m_pNavigationCom = (CNavigation*)pNavigation->Get_Component(TEXT("Com_Navigation"));
+	//Safe_AddRef(m_pNavigationCom);
 
 #ifdef _DEBUG
 	/*For.Com_Renderer*/

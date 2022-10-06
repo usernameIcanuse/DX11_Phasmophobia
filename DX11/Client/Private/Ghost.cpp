@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
+#include "Door.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -41,6 +42,8 @@ HRESULT CGhost::Initialize(void* pArg)
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 
+	m_fUpdatePointTime = 5.f;
+
 	return S_OK;
 }
 
@@ -72,6 +75,7 @@ void CGhost::LateTick(_float fTimeDelta)
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 	m_pRendererCom->Add_DebugRenderGroup(m_pSphereCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
 
 
 #endif // _DEBUG
@@ -138,14 +142,6 @@ _bool CGhost::Check_GhostWriting()
 	return m_bGhostWriting;
 }
 
-void CGhost::Whispering()
-{
-	
-}
-
-void CGhost::DotsProjecter()
-{
-}
 
 void CGhost::Stop_Updating_SpawnPoint()
 {
@@ -185,14 +181,9 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Moving(_float fTimeDelta)
 {
-#ifdef _DEBUG
-	wsprintf(m_szEvent, TEXT(""));
-	//m_pTransformCom->Go_Backward(fTimeDelta);
-#endif
-	//if (m_fTime > 5.f)
-	//{
-	//	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Stop"));
-	//}
+	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
+	m_pTransformCom->Go_Left(fTimeDelta, m_pNavigationCom);
+
 }
 
 
@@ -227,6 +218,15 @@ HRESULT CGhost::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
+	/* For.Com_Navigation*/
+	CNavigation::NAVIDESC	NaviDesc;
+	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+	NaviDesc.m_iCurrentIndex = 0;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -239,19 +239,23 @@ HRESULT CGhost::Setup_SpawnPoint()
 
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {
-	
+	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
+	{
+		CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(10, 60);
+
+		_int	iValue = dis(gen);
+
+		pDoor->Open_Door((_float)iValue);
+	}
 }
 
 void CGhost::On_Collision_Stay(CCollider* pCollider)
 {
-	if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
-	{
-		if (m_bDotsProjecter)
-		{
 
-		}
-	}
-	
 }
 
 void CGhost::On_Collision_Exit(CCollider* pCollider)
@@ -292,5 +296,6 @@ void CGhost::Free()
 	Safe_Release(m_pSphereCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pNavigationCom);
 
 }

@@ -240,7 +240,7 @@ HRESULT CVideo_Camera::Setup_TempModel()
 HRESULT CVideo_Camera::Setup_Screen()
 {
     /*For.Screen*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Screen"), TEXT("Prototype_GameObject_CameraScreen"), (CGameObject**)&m_pCameraScreen, m_pTransformCom)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_CameraScreen"), (CGameObject**)&m_pCameraScreen, m_pTransformCom)))
         return E_FAIL;
 
 

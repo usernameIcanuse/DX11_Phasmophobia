@@ -257,10 +257,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Inventory"),
 		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-	/*For. Prototype_GameObject_Navigation_Mesh*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
-		CNavigation_Mesh::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	///*For. Prototype_GameObject_Navigation_Mesh*/
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
+	//	CNavigation_Mesh::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 
 	/* For.Prototype_GameObject_Ghost*/
@@ -714,8 +714,8 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_RAY))))
 		return E_FAIL;
 
-	/* For. Prototype_Component_Navigation*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation"),
+	/* For. Prototype_Component_Navigation_Ghost*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"),
 		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation4.dat"))))
 		return E_FAIL;
 

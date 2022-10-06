@@ -117,6 +117,10 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 	m_pGhost_Status->Set_Enable(_bEnable);
 }
 
+void CGhost_SpawnPoint::DotsProjecter()
+{
+}
+
 void CGhost_SpawnPoint::Add_Score(_int _iScoreIndex)
 {
 	m_pGhost_Status->Add_Score(_iScoreIndex);
@@ -262,6 +266,14 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 			}
 		}
 	}
+	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
+	{
+		if (m_bDotsProjecter)
+		{
+			DotsProjecter();//일정 시간동안만 외곽선 렌더링
+		}
+	}
+
 }
 
 void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)

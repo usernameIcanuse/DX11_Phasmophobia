@@ -68,6 +68,8 @@ void CCamera_Screen::LateTick(_float fTimeDelta)
 
 HRESULT CCamera_Screen::Render()
 {
+
+
 	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();

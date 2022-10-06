@@ -83,7 +83,7 @@ void CInventory::Add_Item(CItem* pItem)
 	_int	iEmptyIndex = -1;
 	for (int i = m_iIndex; i < 3; i=(++i)%3)
 	{
-		if (m_vInventory[i] == nullptr)
+		if (m_vInventory[i] == nullptr || m_vInventory[i] == pItem)
 		{
 			iEmptyIndex = i;
 			break;
@@ -127,6 +127,7 @@ void CInventory::Drop_Item()
 	if (m_pSpotLight == m_vInventory[m_iIndex])
 		m_pSpotLight = nullptr;
 
+
 	m_vInventory[m_iIndex] = nullptr;
 }
 
@@ -160,9 +161,10 @@ void CInventory::Change_Item()
 	}
 	m_iIndex = (++m_iIndex) % 3;
 
-	if (m_vInventory[m_iIndex])
+	
+	if (nullptr != m_pSpotLight)
 	{
-		if (nullptr != m_pSpotLight)
+		if (m_vInventory[m_iIndex])
 		{
 			if (CItem::UVLIGHT == m_vInventory[m_iIndex]->Get_ItemType())
 			{
@@ -172,13 +174,16 @@ void CInventory::Change_Item()
 			{
 				m_pSpotLight->Set_Enable(true);
 			}
-			else
-			{
-				m_pSpotLight->Set_Enable(true);
-				m_vInventory[m_iIndex]->Change_Item(false);
-			}
 		}
-
+		else
+		{
+			m_pSpotLight->Set_Enable(true);
+			m_pSpotLight->Change_Item(false);
+		}
+		
+	}
+	if (m_vInventory[m_iIndex])
+	{
 		m_vInventory[m_iIndex]->Change_Item(true);
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
