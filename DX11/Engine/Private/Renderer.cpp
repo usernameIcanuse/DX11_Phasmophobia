@@ -17,6 +17,17 @@ CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pTarget_Manager);
 }
 
+CRenderer::CRenderer(const CRenderer& rhs)
+	:CComponent(rhs)
+	,m_pTarget_Manager(rhs.m_pTarget_Manager)
+	,m_pLight_Manager(rhs.m_pLight_Manager)
+	
+{
+	Safe_AddRef(m_pTarget_Manager);
+	Safe_AddRef(m_pLight_Manager);
+	
+}
+
 HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eGroup, CGameObject * pGameObject)
 {
 	if (eGroup >= RENDER_END ||
@@ -436,9 +447,9 @@ void CRenderer::Free()
 
 	m_DebugComponents.clear();
 
+#endif
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBuffer);
-#endif
 
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pTarget_Manager);

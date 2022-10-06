@@ -9,6 +9,11 @@ CCamera_Renderer::CCamera_Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* p
 {
 }
 
+CCamera_Renderer::CCamera_Renderer(const CCamera_Renderer& rhs)
+	:CRenderer(rhs)
+{
+}
+
 HRESULT CCamera_Renderer::Initialize_Prototype()
 {
 	

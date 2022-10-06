@@ -13,6 +13,7 @@ class ENGINE_DLL CCamera_Renderer final : public CRenderer
 {
 private:
 	CCamera_Renderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCamera_Renderer(const CCamera_Renderer& rhs);
 	virtual ~CCamera_Renderer() = default;
 
 public:

@@ -135,6 +135,7 @@ _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vL
        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
        
        Connect_Tripod((CTripod*)pConnectItem);
+       m_pCameraScreen->Set_Position();
        
 
        return true;

@@ -238,6 +238,7 @@ HRESULT CDotsProjecter::Setup_TempModel()
         return E_FAIL;
 
     m_pTempDotsModel->Set_Enable(false);
+    return S_OK;
 }
 
 HRESULT CDotsProjecter::Setup_Light()

@@ -20,6 +20,7 @@ public:
 	*/
 protected:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CRenderer(const CRenderer& rhs);
 	virtual ~CRenderer() = default;
 	 
 public:

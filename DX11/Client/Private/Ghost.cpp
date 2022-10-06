@@ -181,8 +181,8 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Moving(_float fTimeDelta)
 {
-	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-	m_pTransformCom->Go_Left(fTimeDelta*0.2f, m_pNavigationCom);
+	//m_pTransformCom->Go_Left(fTimeDelta*0.2f, m_pNavigationCom);
+	//m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 
 }
 
@@ -215,8 +215,8 @@ HRESULT CGhost::Setup_Component()
 		return E_FAIL;
 
 	///* For.Com_Renderer*/
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-	//	return E_FAIL;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
 
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
@@ -300,7 +300,7 @@ void CGhost::Free()
 	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pSphereCom);
 	Safe_Release(m_pModelCom);
-	//Safe_Release(m_pRendererCom);
+	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pNavigationCom);
 
 }
