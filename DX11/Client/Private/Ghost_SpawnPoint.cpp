@@ -199,11 +199,11 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_SpawnPoint"), (CComponent**)&m_pSpawnPointCom, &ColliderDesc)))
 		return E_FAIL;
-
+#ifdef _DEBUG
 	/* For.Com_Renderer*/
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
-
+#endif
 	return S_OK;
 }
 
@@ -333,6 +333,7 @@ void CGhost_SpawnPoint::Free()
 
 	Safe_Release(m_pSpawnPointCom);
 	Safe_Release(m_pAreaCom);
+#ifdef _DEBUG
 	Safe_Release(m_pRendererCom);
-
+#endif
 }

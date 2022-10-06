@@ -381,6 +381,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 			case OBJ_TAG::DOTSPROJECTER:
 				strPrototypeTag = TEXT("Prototype_GameObject_DotsProjecter");
 				break;
+
 			case OBJ_TAG::FLASHLIGHT:
 				strPrototypeTag = TEXT("Prototype_GameObject_FlashLight");
 				break;

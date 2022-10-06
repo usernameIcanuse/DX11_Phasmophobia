@@ -45,6 +45,7 @@ public:
 	{
 		m_fOpenRadian = _fRadian;
 	}
+	void  HandPrint_Appear();
 
 
 public:

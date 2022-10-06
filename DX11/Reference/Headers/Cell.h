@@ -32,7 +32,7 @@ public:
 #ifdef _DEBUG
 	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint, _int iIndex);	
 #endif
-	_bool isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, _int& iPrevIndex);
+	_bool isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, _int& iPrevIndex, _vector& vSlideDirection);
 	_bool isSamePoints(_float3 vPointA, _float3 vPointB, _float3 vPointC);
 
 #ifdef _DEBUG

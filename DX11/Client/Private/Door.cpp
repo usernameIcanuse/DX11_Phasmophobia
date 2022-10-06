@@ -79,7 +79,7 @@ void CDoor::Tick(_float fTimeDelta)
     }
     else if( XMConvertToRadians(90.f) > m_fRadian && DBL_EPSILON < m_fOpenRadian)
     {
-        _float fRadian = m_fOpenRadian * fTimeDelta;
+        _float fRadian = m_fOpenRadian * fTimeDelta*0.1f;
         m_fOpenRadian -= fRadian;
         if (DBL_EPSILON > m_fOpenRadian)
         {
@@ -178,6 +178,10 @@ void CDoor::Close_Door(_float fTimeDelta)
     }
 }
 
+void CDoor::HandPrint_Appear()
+{
+}
+
 HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
@@ -211,9 +215,9 @@ HRESULT CDoor::Setup_Component()
     //if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
     //    return E_FAIL;
 
-    /* For.Com_Renderer*/
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-        return E_FAIL;
+    ///* For.Com_Renderer*/
+    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+    //    return E_FAIL;
    
   
 
@@ -269,7 +273,7 @@ void CDoor::Free()
     __super::Free();
     
     Safe_Release(m_pShaderCom);
-    Safe_Release(m_pRendererCom);
+    //Safe_Release(m_pRendererCom);
     //Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);

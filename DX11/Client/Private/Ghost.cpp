@@ -70,8 +70,8 @@ void CGhost::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-
+	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 	m_pRendererCom->Add_DebugRenderGroup(m_pSphereCom);
@@ -182,7 +182,7 @@ void CGhost::Attack(_float fTimeDelta)
 void CGhost::Moving(_float fTimeDelta)
 {
 	m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-	m_pTransformCom->Go_Left(fTimeDelta, m_pNavigationCom);
+	m_pTransformCom->Go_Left(fTimeDelta*0.2f, m_pNavigationCom);
 
 }
 
@@ -214,9 +214,9 @@ HRESULT CGhost::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_Sphere"), (CComponent**)&m_pSphereCom, &ColliderDesc)))
 		return E_FAIL;
 
-	/* For.Com_Renderer*/
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
+	///* For.Com_Renderer*/
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+	//	return E_FAIL;
 
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
@@ -240,7 +240,7 @@ HRESULT CGhost::Setup_SpawnPoint()
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
-	{
+	{ 
 		CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
 
 		std::random_device rd;
@@ -250,6 +250,11 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 		_int	iValue = dis(gen);
 
 		pDoor->Open_Door((_float)iValue);
+		if (m_bHandPrint)
+		{
+			m_bCheckHandPrint = true;//증거 한 번만 찾도록
+			pDoor->HandPrint_Appear();
+		}
 	}
 }
 
@@ -295,7 +300,7 @@ void CGhost::Free()
 	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pSphereCom);
 	Safe_Release(m_pModelCom);
-	Safe_Release(m_pRendererCom);
+	//Safe_Release(m_pRendererCom);
 	Safe_Release(m_pNavigationCom);
 
 }

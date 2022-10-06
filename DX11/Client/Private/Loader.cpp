@@ -258,9 +258,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	///*For. Prototype_GameObject_Navigation_Mesh*/
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
-	//	CNavigation_Mesh::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
+		CNavigation_Mesh::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
 
 
 	/* For.Prototype_GameObject_Ghost*/

@@ -133,8 +133,9 @@ void CImguiMgr::Set_Prototype()
 			return;
 
 		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
+#ifdef _DEBUG
 		m_pNavigationCom = static_cast<CPlayer*>(m_pPlayer)->Get_Navigation();
-
+#endif
 		CGameObject* pPoints = nullptr;
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
 			return;
@@ -779,12 +780,12 @@ void CImguiMgr::Sort_Points_ClockWise()
 		vPoints[1] = m_vCellPoints[2];
 		vPoints[2] = m_vCellPoints[1];
 	}
-
+#ifdef _DEBUG
 	m_pNavigationCom->Add_Cell(vPoints[0], vPoints[1], vPoints[2]);
 	m_vSavePoints.push_back(vPoints[0]);
 	m_vSavePoints.push_back(vPoints[1]);
 	m_vSavePoints.push_back(vPoints[2]);
-
+#endif
 }
 
 void CImguiMgr::Picking_Object()

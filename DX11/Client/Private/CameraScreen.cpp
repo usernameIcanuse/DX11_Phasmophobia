@@ -36,28 +36,16 @@ HRESULT CCamera_Screen::Initialize(void * pArg)
 	m_pTransformCom->Set_Scaled(_float3(0.76f, 0.5f, 1.f));
 	GAMEINSTANCE->Add_Renderer(CRenderer_Manager::VIDEO_CAMERA, m_pCameraRenderer);
 
-
 	return S_OK;
 }
 
 void CCamera_Screen::Tick(_float fTimeDelta)
 {
-	/*매 틱마다 카메라 화면 위치로 조정해주기*/
+		/*매 틱마다 카메라 화면 위치로 조정해주기*/
 	if (m_bSwitch)
 	{
 		GAMEINSTANCE->Add_ItemFrustum(CFrustum::FRUSTUM_ITEM, (CRenderer*)m_pCameraRenderer, m_pCameraTransform);
 	}
-	_vector vPosition = m_pCameraTransform->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vLook = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_LOOK));
-	_vector vUp = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_UP));
-	_vector vRight = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_RIGHT));
-	_float3	vScale = m_pTransformCom->Get_Scaled();
-
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
-	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * vScale.z);
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition+ vUp * vScale.y*0.57f - vLook * 0.14f + vRight*vScale.x*0.048f);
-
 	
 }
 
@@ -104,13 +92,6 @@ HRESULT CCamera_Screen::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* 
 		nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
-	/*if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;*/
-
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
@@ -131,6 +112,21 @@ void CCamera_Screen::Turn_Switch()
 	m_bSwitch = !m_bSwitch;
 	if (false == m_bSwitch)
 		m_pCameraRenderer->Clear_RenderTarget();
+}
+
+void CCamera_Screen::Set_Position()
+{
+	_vector vPosition = m_pCameraTransform->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLook = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_LOOK));
+	_vector vUp = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_UP));
+	_vector vRight = XMVector3Normalize(m_pCameraTransform->Get_State(CTransform::STATE_RIGHT));
+	_float3	vScale = m_pTransformCom->Get_Scaled();
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+	m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook * vScale.z);
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPosition + vUp * vScale.y * 0.57f - vLook * 0.14f + vRight * vScale.x * 0.048f);
+
 }
 
 CCamera_Screen * CCamera_Screen::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

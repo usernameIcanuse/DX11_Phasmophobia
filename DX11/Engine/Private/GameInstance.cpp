@@ -514,6 +514,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pRenderer_Manager);
+	Safe_Release(m_pGame_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pLight_Manager);
@@ -524,7 +525,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pPipeLine);
-	Safe_Release(m_pGame_Manager);
+
 
 
 }

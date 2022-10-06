@@ -30,6 +30,9 @@ public:
 public:
 	virtual void Turn_Switch();
 
+public:
+	void Set_Position();
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CCamera_Renderer*		m_pCameraRenderer = nullptr;

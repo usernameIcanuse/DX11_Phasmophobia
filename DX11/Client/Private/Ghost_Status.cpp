@@ -54,9 +54,9 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 void CGhost_Status::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
+#ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
-
+#endif
 	m_fTime += fTimeDelta;
 	if (m_iCnt < 10 && 60.f < m_fTime)
 	{

@@ -57,17 +57,18 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
-	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;	
-
+	//vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;	
+	_vector vDirection = XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 	if (nullptr != pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
 		_float fPositionY = 0.f;
-		if (pNaviCom->isMove(vPosition, fPositionY))
+		_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		if (pNaviCom->isMove(vPosition, fPositionY, vDirection, vMovedPosition))
 		{
 			_float4 vPos;
-			XMStoreFloat4(&vPos, vPosition);
+			XMStoreFloat4(&vPos, vMovedPosition);
 			vPos.y = fPositionY;
 			vPosition = XMLoadFloat4(&vPos);
 		}
@@ -76,6 +77,11 @@ HRESULT CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNaviCom)
 
 		//_float fPositionY = 0.f;
 		//pNaviCom->isMove(vPosition, fPositionY);
+
+	}
+	else
+	{
+		vPosition += XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
 	}
 
@@ -89,18 +95,19 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vLook = Get_State(CTransform::STATE_LOOK);
 
-	vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
-
+	//vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	_vector		vDirection = -1.f*XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
 	if (nullptr != pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
 		_float fPositionY = 0.f;
-		if (pNaviCom->isMove(vPosition, fPositionY))
+		_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		if (pNaviCom->isMove(vPosition, fPositionY, vDirection, vMovedPosition))
 		{
 			_float4 vPos;
-			XMStoreFloat4(&vPos, vPosition);
+			XMStoreFloat4(&vPos, vMovedPosition);
 			vPos.y = fPositionY;
 			vPosition = XMLoadFloat4(&vPos);
 		}
@@ -108,6 +115,11 @@ HRESULT CTransform::Go_Backward(_float fTimeDelta, CNavigation* pNaviCom)
 			return S_OK;
 		//_float fPositionY = 0.f;
 		//pNaviCom->isMove(vPosition, fPositionY);
+
+	}
+	else
+	{
+		vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
 	}
 
@@ -121,18 +133,19 @@ HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
 
-	vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
-
+	//vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	_vector vDirection = -1.f*XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
 	if (nullptr != pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
 		_float fPositionY = 0.f;
-		if (pNaviCom->isMove(vPosition, fPositionY))
+		_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		if (pNaviCom->isMove(vPosition, fPositionY, vDirection, vMovedPosition))
 		{
 			_float4 vPos;
-			XMStoreFloat4(&vPos, vPosition);
+			XMStoreFloat4(&vPos, vMovedPosition);
 			vPos.y = fPositionY;
 			vPosition = XMLoadFloat4(&vPos);
 		}
@@ -140,6 +153,11 @@ HRESULT CTransform::Go_Left(_float fTimeDelta, CNavigation* pNaviCom)
 			return S_OK;
 		//_float fPositionY = 0.f;
 		//pNaviCom->isMove(vPosition, fPositionY);
+	}
+	else
+	{
+		vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+
 	}
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
@@ -152,18 +170,19 @@ HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNaviCom)
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 	_vector		vRight = Get_State(CTransform::STATE_RIGHT);
 
-	vPosition += XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
-
+//	vPosition += XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	_vector vDirection = XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
 
 	if (nullptr != pNaviCom)
 	{
 		/*if (false == pNaviCom->isMove(vPosition))
 			return S_OK;*/
 		_float fPositionY = 0.f;
-		if (pNaviCom->isMove(vPosition, fPositionY))
+		_vector vMovedPosition = XMVectorSet(0.f,0.f,0.f,0.f);
+		if (pNaviCom->isMove(vPosition, fPositionY,vDirection,vMovedPosition))
 		{
 			_float4 vPos;
-			XMStoreFloat4(&vPos, vPosition);
+			XMStoreFloat4(&vPos, vMovedPosition);
 			vPos.y = fPositionY;
 			vPosition = XMLoadFloat4(&vPos);
 		}
@@ -173,7 +192,10 @@ HRESULT CTransform::Go_Right(_float fTimeDelta, CNavigation* pNaviCom)
 		_float fPositionY = 0.f;
 		pNaviCom->isMove(vPosition, fPositionY);*/
 	}
-
+	else
+	{
+		vPosition += XMVector3Normalize(vRight) * m_TransformDesc.fSpeedPerSec * fTimeDelta;
+	}
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 
 	return S_OK;

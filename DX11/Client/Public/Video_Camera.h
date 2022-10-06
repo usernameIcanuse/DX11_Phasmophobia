@@ -37,6 +37,7 @@ public:
 	virtual void Turn_Switch();
 
 	virtual void Set_Enable(_bool _bEnable);
+	virtual void Adjust_Item(CTransform* _pPlayerTransform);
 public:
 	void	Connect_Tripod(CTripod* pTripod);
 	void	Disconnect_Tripod();

@@ -49,19 +49,17 @@ protected:
 protected:
 	class CTarget_Manager*					m_pTarget_Manager = nullptr;
 	class CLight_Manager*					m_pLight_Manager = nullptr;
-
-
-#ifdef _DEBUG
-/* 직교투영을 위한 정보이다. */
-protected:
-	_float4x4					m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
-	class CShader*				m_pShader = nullptr;
-	class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
-
 	/*카메라, 아이템 카메라 투영 위한 정보*/
 	_float4x4					m_CamViewMat, m_CamProjMat;
 	_float4x4					m_CamViewInv, m_CamProjInv;
 	_float4						m_vCamPosition;
+	/* 직교투영을 위한 정보이다. */
+	_float4x4					m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
+
+	class CShader*				m_pShader = nullptr;
+	class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
+
+#ifdef _DEBUG
 
 protected:
 	vector<class CComponent*>	m_DebugComponents;

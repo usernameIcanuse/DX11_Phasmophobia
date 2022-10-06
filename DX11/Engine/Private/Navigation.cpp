@@ -88,19 +88,23 @@ HRESULT CNavigation::Initialize(void * pArg)
 
 /* 객체가 움직이는데 있어 네비게이션 상에서 움직일 수 있는가? 아닌가? : return  */
 /* vPosition : 객체의 현재위치?!(x), 객체가 움직이고 난 이후의 위치. */
-_bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
+_bool CNavigation::isMove(_fvector vPosition, _float fPositionY, _vector vDirection, _vector& vMovedPosition)
 {
 	/* m_NaviDesc.m_iCurrentIndex : 현재 객체가 존재하는 쎌의 인덱스. */
 	_int		iNeighborIndex = -1;
 	_int		iPrevIndex = -1;
-	
+	_vector		vSlideDirection;
+
+
 	if(m_Cells.empty())
 		return true;
 
 	/*1. 현재 존재하는 셀 안에서만 움직였을때  */
-	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vPosition, &iNeighborIndex, fPositionY, iPrevIndex))
+	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vPosition + vDirection, &iNeighborIndex, fPositionY, iPrevIndex, vSlideDirection))
+	{
+		vMovedPosition = vPosition + vDirection;
 		return true;
-
+	}
 	/* 현재 존재하고 있는 쎌 바깥으로 나갔다. */
 	else
 	{		
@@ -111,8 +115,7 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
 			while (1)
 			{
 				
-
-				if (true == m_Cells[iNeighborIndex]->isIn(vPosition, &iNeighborIndex, fPositionY, iPrevIndex))
+				if (true == m_Cells[iNeighborIndex]->isIn(vPosition+vDirection, &iNeighborIndex, fPositionY, iPrevIndex, vSlideDirection))
 					break;
 
 				if (0 > iNeighborIndex)
@@ -121,13 +124,43 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY)
 			}
 
 			m_NaviDesc.m_iCurrentIndex = iNeighborIndex;
+			vMovedPosition = vPosition + vDirection;
 
 			return true;
 		}
 
-		/*1. 나간쪽에 이웃이 없다면.  */
+		/*1. 나간쪽에 이웃이 없다면.  슬라이딩 현재 셀 안에서만 타야함*/
 		else
 		{
+			vSlideDirection = XMVector3Normalize(vSlideDirection);
+			_vector vSlidePos = vPosition + vSlideDirection * XMVector3Dot(vSlideDirection, vDirection);
+			if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vSlidePos, &iNeighborIndex, fPositionY, iPrevIndex, vSlideDirection))
+			{//내 셀 안에서 슬라이드 탈 때
+				vMovedPosition = vSlidePos;
+				return true;
+			}
+			else
+			{
+				if (0 <= iNeighborIndex)
+				{
+
+					while (1)
+					{
+
+						if (true == m_Cells[iNeighborIndex]->isIn(vSlidePos, &iNeighborIndex, fPositionY, iPrevIndex, vSlideDirection))
+							break;
+
+						if (0 > iNeighborIndex)
+							return false;
+
+					}
+
+					m_NaviDesc.m_iCurrentIndex = iNeighborIndex;
+					vMovedPosition = vSlidePos;
+
+					return true;
+				}
+			}
 			return false;
 		}
 	}

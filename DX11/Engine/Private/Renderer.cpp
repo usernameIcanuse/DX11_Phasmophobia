@@ -430,15 +430,15 @@ void CRenderer::Free()
 
 		m_RenderObjects[i].clear();
 	}
-
+#ifdef _DEBUG
 	for (auto& pComponent : m_DebugComponents)
 		Safe_Release(pComponent);
 
 	m_DebugComponents.clear();
-	
 
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBuffer);
+#endif
 
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pTarget_Manager);

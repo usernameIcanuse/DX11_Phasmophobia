@@ -91,12 +91,13 @@ HRESULT CSpiritBox::Render()
     {
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
     }
-
+#ifdef _DEBUG
     if (m_fAnswerTime > 0.f)
     {
         GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szAnswer, _float2(1100.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
     }
+#endif
 //#ifdef _DEBUG
 //      m_pOBBCom->Render();
 //#endif // _DEBUG

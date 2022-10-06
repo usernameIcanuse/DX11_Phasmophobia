@@ -43,7 +43,7 @@ void CVideo_Camera::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+    m_pCameraScreen->Set_Position();
 }
 
 void CVideo_Camera::LateTick(_float fTimeDelta)
@@ -166,6 +166,13 @@ void CVideo_Camera::Set_Enable(_bool _bEnable)
     __super::Set_Enable(_bEnable);
 
     m_pCameraScreen->Set_Enable(_bEnable);
+}
+
+void CVideo_Camera::Adjust_Item(CTransform* _pPlayerTransform)
+{
+    __super::Adjust_Item(_pPlayerTransform);
+
+    m_pCameraScreen->Set_Position();
 }
 
 void CVideo_Camera::Connect_Tripod(CTripod* pTripod)
