@@ -10,7 +10,7 @@ CRenderTarget::CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 	Safe_AddRef(m_pContext);
 }
 
-HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
+HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, _bool bMakeDepthStencil)
 {
 	m_vClearColor = vClearColor;
 
@@ -41,7 +41,24 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture, nullptr, &m_pSRV)))
 		return E_FAIL;
 
+	if (bMakeDepthStencil)
+	{
+		ID3D11Texture2D* pDepthStencilTexture = nullptr;
 
+		TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+		if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, &pDepthStencilTexture)))
+			return E_FAIL;
+
+		if (FAILED(m_pDevice->CreateDepthStencilView(pDepthStencilTexture, nullptr, &m_pDepthStencilView)))
+			return E_FAIL;
+
+		m_bDepthStencilView = bMakeDepthStencil;
+
+		Safe_Release(pDepthStencilTexture);
+
+	}
 
 	return S_OK;
 }
@@ -100,11 +117,11 @@ HRESULT CRenderTarget::Render_Debug(CShader * pShader, CVIBuffer_Rect * pVIBuffe
 
 #endif // _DEBUG
 
-CRenderTarget * CRenderTarget::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
+CRenderTarget * CRenderTarget::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, _bool bMakeDepthStencil)
 {
 	CRenderTarget*		pInstance = new CRenderTarget(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(iWidth, iHeight, eFormat, vClearColor)))
+	if (FAILED(pInstance->Initialize(iWidth, iHeight, eFormat, vClearColor, bMakeDepthStencil)))
 	{
 		MSG_BOX("Failed to Created : CRenderTarget");
 		Safe_Release(pInstance);
@@ -117,6 +134,8 @@ void CRenderTarget::Free()
 {
 	Safe_Release(m_pSRV);
 	Safe_Release(m_pRTV);
+	if (m_bDepthStencilView)
+		Safe_Release(m_pDepthStencilView);
 
 	Safe_Release(m_pTexture);
 

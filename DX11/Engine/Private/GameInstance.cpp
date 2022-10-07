@@ -439,6 +439,15 @@ HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString
 	m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor);
 }
 
+HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+
+	m_pFont_Manager->Render_Font(pFontTag, pString, vPosition, vColor, rotation, vOrigin, vScale);
+}
+
 HRESULT CGameInstance::Add_EventObject(_int iIndex, CGameObject* pObject)
 {
 	if (nullptr == m_pGame_Manager)

@@ -57,14 +57,14 @@ void CSpiritBox::LateTick(_float fTimeDelta)
     
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
-    //if (m_bSwitch)
-    //{
-    //    CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
-    //    if (nullptr != pTexture)
-    //    {
-    //        m_pRendererCom->Draw_On_Texture(m_pRenderTarget, pTexture, m_pShaderTexCom, 0, m_szDegree, _float2(920,1640), TEXT("Font_Dream"));
-    //    }
-    //}
+    if (m_bSwitch)
+    {
+        CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
+        if (nullptr != pTexture)
+        {
+            m_pRendererCom->Draw_On_Texture(m_pRenderTarget, pTexture, m_pShaderTexCom, 0, m_szDegree, _float2(920,1640), TEXT("Font_Dream"));
+        }
+    }
 
 #ifdef _DEBUG
    // m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
@@ -80,25 +80,25 @@ HRESULT CSpiritBox::Render()
     {
         _int iPassIndex = 2;
 
-        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        //if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+        //    return E_FAIL;
          if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
               return E_FAIL;
 
          if (m_bSwitch)
          {
-         /*    if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pRenderTarget->Get_SRV())))
-                 return E_FAIL;*/
+             if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pRenderTarget->Get_SRV())))
+                 return E_FAIL;
 
              if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
                  return E_FAIL;
              iPassIndex = 3;
          }
-    /*     else
+         else
          {
              if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
                  return E_FAIL;
-         }*/
+         }
         
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
@@ -230,7 +230,8 @@ HRESULT CSpiritBox::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
-    m_pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, 2048, 2048, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f));
+    /*For.RenderTarget*/
+    m_pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, 2048, 2048, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f),true);
     if (nullptr == m_pRenderTarget)
         return E_FAIL;
     return S_OK;

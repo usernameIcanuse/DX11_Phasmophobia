@@ -30,6 +30,15 @@ HRESULT CFont_Manager::Render_Font(const _tchar * pFontTag, const _tchar * pStri
 	return pFont->Render(pString, vPosition, vColor);	
 }
 
+HRESULT CFont_Manager::Render_Font(const _tchar* pFontTag, const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale)
+{
+	CCustomFont* pFont = Find_Font(pFontTag);
+	if (nullptr == pFont)
+		return E_FAIL;
+
+	return pFont->Render(pString, vPosition, vColor, rotation,vOrigin,vScale);
+}
+
 CCustomFont * CFont_Manager::Find_Font(const _tchar * pFontTag)
 {
 	auto	iter = find_if(m_Fonts.begin(), m_Fonts.end(), CTag_Finder(pFontTag));

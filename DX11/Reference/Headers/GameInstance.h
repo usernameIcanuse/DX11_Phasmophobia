@@ -94,7 +94,7 @@ public:/* For.Collision_Manager*/
 public:/* For.Font_Manager*/
 	HRESULT Add_Font(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
-
+	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale);
 public:/*For.Game_Manager*/
 	HRESULT Add_EventObject(_int iIndex, class CGameObject* pObject);
 	void Broadcast_Message(_int iIndex, const _tchar* pMessage);

@@ -119,7 +119,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;*/
 #endif // _DEBUG
 
-	/*_matrix			WorldMatrix = XMMatrixIdentity();
+	_matrix			WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
 	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height, 0.f, 0.f);
 
@@ -127,7 +127,7 @@ HRESULT CRenderer::Initialize_Prototype()
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));*/
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));
 
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_Deferred.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	if (nullptr == m_pShader)
@@ -177,17 +177,6 @@ void CRenderer::Set_Environment()
 	
 	RELEASE_INSTANCE(CPipeLine);
 
-	D3D11_VIEWPORT			ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-
-	_uint		iNumViewports = 1;
-
-	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
-
-	_matrix			WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
-	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height, 0.f, 0.f);
-
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));
 
@@ -230,18 +219,24 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	D3D11_TEXTURE2D_DESC TextureDesc;
 	pRenderTarget->Get_Desc(&TextureDesc);
 
-	_matrix WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[0] = XMVectorSet(TextureDesc.Width, 0.f, 0.f, 0.f);
-	WorldMatrix.r[1] = XMVectorSet(0.f, TextureDesc.Height, 0.f, 0.f);
+	_matrix WorldMat = XMMatrixIdentity();
+	WorldMat.r[0] = XMVectorSet(TextureDesc.Width, 0.f, 0.f, 0.f);
+	WorldMat.r[1] = XMVectorSet(0.f, TextureDesc.Height, 0.f, 0.f);
+
+	_float4x4 WorldMatrix;
+	XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(WorldMat));
+
+	_float4x4 ProjMatrix;
+	XMStoreFloat4x4(&ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(TextureDesc.Width, TextureDesc.Height, 0.f, 1.f)));
+
 
 	m_pTarget_Manager->Store_BackBuffer(m_pContext);//백버퍼 보관해놓음
 
-	m_pTarget_Manager->End_MRT_For_Texture(m_pContext, pRenderTarget);
-	pRenderTarget->Clear();
+	m_pTarget_Manager->Set_RenderTarget(m_pContext, pRenderTarget);
 
-	pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
 	pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_ProjMatrix", &ProjMatrix, sizeof(_float4x4));
 
 	if (FAILED(pTexture->Set_ShaderResourceView(pShader,"g_DiffuseTexture", iPassindex)))
 		return;
@@ -249,8 +244,9 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	pShader->Begin(iPassindex);
 
 	m_pVIBuffer->Render();
+	//const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale
 
-	GAMEINSTANCE->Render_Font(pTexttag, pText, vRenderPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	GAMEINSTANCE->Render_Font(pTexttag, pText, XMVectorSet(vRenderPos.x, vRenderPos.y,0.f,0.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 0.f));
 
 	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
 }
@@ -435,17 +431,17 @@ HRESULT CRenderer::Render_Debug()
 
 	m_DebugComponents.clear();
 
-	if (nullptr == m_pTarget_Manager)
-		return E_FAIL;
+	//if (nullptr == m_pTarget_Manager)
+	//	return E_FAIL;
 
-	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+	//	return E_FAIL;
 
-	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-		return E_FAIL;
+	//if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	//	return E_FAIL;
 
-	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
-	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
+	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
 
 	return S_OK;
 }

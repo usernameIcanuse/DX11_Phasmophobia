@@ -126,6 +126,21 @@ HRESULT CTarget_Manager::End_MRT_For_Texture(ID3D11DeviceContext* pContext, CRen
 	return S_OK;
 }
 
+HRESULT CTarget_Manager::Set_RenderTarget(ID3D11DeviceContext* pContext, CRenderTarget* pRenderTarget)
+{
+	if (nullptr == pRenderTarget)
+		return E_FAIL;
+	ID3D11RenderTargetView* RTV = pRenderTarget->Get_RTV();
+	ID3D11DepthStencilView* DSV = pRenderTarget->GeT_DepthStencilView();
+
+	pContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	pRenderTarget->Clear();
+
+	pContext->OMSetRenderTargets(1, &RTV, DSV);
+
+	return S_OK;
+}
+
 HRESULT CTarget_Manager::Clear_MRT(const _tchar* pMRTTag)
 {
 	list<CRenderTarget*>* pMRTList = Find_MRT(pMRTTag);

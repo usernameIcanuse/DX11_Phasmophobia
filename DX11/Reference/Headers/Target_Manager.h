@@ -24,6 +24,7 @@ public:
 
 	HRESULT Begin_MRT_For_Texture(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
 	HRESULT End_MRT_For_Texture(ID3D11DeviceContext* pContext, class CRenderTarget* pRenderTarget);
+	HRESULT Set_RenderTarget(ID3D11DeviceContext* pContext, class CRenderTarget* pRenderTarget);
 
 	HRESULT	Clear_MRT(const _tchar* pMRTTag);
 	

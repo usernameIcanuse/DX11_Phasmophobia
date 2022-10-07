@@ -82,7 +82,12 @@ HRESULT CThermometer::Render()
 
     if (m_bSwitch)
     {
-        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+        //const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale
+        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, XMVectorSet(200.f, 200.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 0.f));
+        /*
+        * 스프라이트 폰트를 그릴 때는 현재 세팅 되어있는 1번 렌더타겟에 자동을 그림? 다른 렌더타겟에 그리게 할 수 있음?
+        * 스프라이트 폰트는 셰이더를 통해서 효과를 줄 수 있음?
+        */
     }
 //#ifdef _DEBUG
 //      m_pOBBCom->Render();

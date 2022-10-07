@@ -32,12 +32,15 @@ public:
 	ID3D11RenderTargetView* Get_RTV() const {
 		return m_pRTV;
 	}
+	ID3D11DepthStencilView* GeT_DepthStencilView() const{
+		return m_pDepthStencilView;
+	}
 
 public:
 	/* 1. ID3D11Texture2D 라는 객체를 선 생성. */
 	/* 2. ID3D11RenderTargetView를 생성. */
 	/* 3. ID3D11ShaderResourceView를 생성. */
-	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor);
+	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, _bool bMakeDepthStencil = false);
 	HRESULT Clear();
 
 #ifdef _DEBUG
@@ -64,9 +67,11 @@ private:
 
 	/* 셰이더 전역변수로 바인딩 될 수 있는 객체. */
 	ID3D11ShaderResourceView*			m_pSRV = nullptr;
+	ID3D11DepthStencilView*				m_pDepthStencilView = nullptr;
 
+	_bool								m_bDepthStencilView = false;
 public:
-	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor);	
+	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, _bool bMakeDepthStencil = false);
 	virtual void Free() override;
 };
 
