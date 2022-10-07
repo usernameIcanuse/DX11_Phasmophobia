@@ -120,7 +120,7 @@ HRESULT CTarget_Manager::End_MRT_For_Texture(ID3D11DeviceContext* pContext, CRen
 		return E_FAIL;
 	ID3D11RenderTargetView* RTVs = pRenderTarget->Get_RTV();
 		
-	/* 렌더타겟들을 장치에 바인딩한다. */
+	/* 렌더타겟을 장치에 바인딩한다. */
 	pContext->OMSetRenderTargets(1, &RTVs, m_pDepthStencilView);
 
 	return S_OK;

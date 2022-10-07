@@ -298,6 +298,16 @@ void CCamera_Renderer::Set_Environment()
 	XMStoreFloat4x4(&m_CamViewInv, XMMatrixTranspose(ViewMatrix));
 	XMStoreFloat4x4(&m_CamProjInv, XMMatrixTranspose(XMMatrixInverse(nullptr, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ))));
 
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+
+	_uint		iNumViewports = 1;
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	_matrix			WorldMatrix = XMMatrixIdentity();
+	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height, 0.f, 0.f);
 
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));

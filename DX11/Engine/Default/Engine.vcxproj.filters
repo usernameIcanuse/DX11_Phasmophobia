@@ -467,12 +467,6 @@
     <Filter Include="01.Utility\03.Component\04. Model\Hierarchy">
       <UniqueIdentifier>{be79c8da-7014-4605-850e-6c8df4c57e2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\07. Render_Target">
-      <UniqueIdentifier>{da0bcd45-9e4d-4e60-b18c-528241352469}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\07. Render_Target\Manager">
-      <UniqueIdentifier>{56fe324f-3a79-46e1-a70d-1a066c9436c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03.Component\04. Model\Animation\Channel">
       <UniqueIdentifier>{0201d9cd-a94a-4335-992c-b04412ebb7f6}</UniqueIdentifier>
     </Filter>
@@ -481,6 +475,12 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\00.VIBuffer\Nor_Rect">
       <UniqueIdentifier>{00deb195-488c-4cf9-9d67-c69a8dcde435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07. Render_Target">
+      <UniqueIdentifier>{da0bcd45-9e4d-4e60-b18c-528241352469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07. Render_Target\Manager">
+      <UniqueIdentifier>{56fe324f-3a79-46e1-a70d-1a066c9436c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

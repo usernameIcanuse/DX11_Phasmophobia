@@ -41,8 +41,6 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture, nullptr, &m_pSRV)))
 		return E_FAIL;
 
-	
-
 
 
 	return S_OK;

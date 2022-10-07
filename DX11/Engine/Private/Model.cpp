@@ -176,6 +176,23 @@ HRESULT CModel::Bind_SRV(CShader * pShader, const char * pConstantName, _uint iM
 	return m_Materials[iMaterialIndex].pTextures[eType]->Set_ShaderResourceView(pShader, pConstantName);	
 }
 
+CTexture* CModel::Get_SRV(_uint iMeshContainerIndex, aiTextureType eType)
+{
+	if (iMeshContainerIndex >= m_iNumMeshContainers)
+		return nullptr;
+
+	_uint		iMaterialIndex = m_MeshContainers[iMeshContainerIndex]->Get_MaterialIndex();
+	if (iMaterialIndex >= m_iNumMaterials)
+		return nullptr;
+
+	if (nullptr == m_Materials[iMaterialIndex].pTextures[eType])
+	{
+		return nullptr;
+	}
+
+	return m_Materials[iMaterialIndex].pTextures[eType];
+}
+
 HRESULT CModel::Create_MeshContainers()
 {
 	m_iNumMeshContainers = m_pAIScene->mNumMeshes;

@@ -17,6 +17,7 @@
 #include "VIBuffer_NorRect.h"
 
 
+
 BEGIN(Engine)
 
 class CComponent_Manager final : public CBase

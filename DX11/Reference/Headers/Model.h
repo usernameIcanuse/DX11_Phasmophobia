@@ -33,7 +33,7 @@ public:
 
 public:
 	HRESULT Bind_SRV(class CShader* pShader, const char* pContantName, _uint iMeshContainerIndex, aiTextureType eType);
-
+	CTexture* Get_SRV(_uint iMeshContainerIndex, aiTextureType eType);
 private:
 	const aiScene*				m_pAIScene = nullptr;
 	Assimp::Importer			m_Importer;

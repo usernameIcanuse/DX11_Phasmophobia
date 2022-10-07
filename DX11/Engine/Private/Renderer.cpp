@@ -6,6 +6,7 @@
 #include "VIBuffer_Rect.h"
 #include "PipeLine.h"
 #include "GameInstance.h"
+#include "RenderTarget.h"
 
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -118,7 +119,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;*/
 #endif // _DEBUG
 
-	_matrix			WorldMatrix = XMMatrixIdentity();
+	/*_matrix			WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
 	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height, 0.f, 0.f);
 
@@ -126,7 +127,7 @@ HRESULT CRenderer::Initialize_Prototype()
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));*/
 
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_Deferred.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	if (nullptr == m_pShader)
@@ -176,6 +177,17 @@ void CRenderer::Set_Environment()
 	
 	RELEASE_INSTANCE(CPipeLine);
 
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+
+	_uint		iNumViewports = 1;
+
+	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	_matrix			WorldMatrix = XMMatrixIdentity();
+	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height, 0.f, 0.f);
+
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));
 
@@ -208,6 +220,43 @@ HRESULT CRenderer::Draw_RenderGroup()
 	End_Environment();
 
 	return S_OK;
+}
+
+void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture, CShader* pShader,_int iPassindex,const _tchar* pText, _float2 vRenderPos, const _tchar* pTexttag)
+{
+
+	GAMEINSTANCE->Clear_DepthStencil_View();
+
+	D3D11_TEXTURE2D_DESC TextureDesc;
+	pRenderTarget->Get_Desc(&TextureDesc);
+
+	_matrix WorldMatrix = XMMatrixIdentity();
+	WorldMatrix.r[0] = XMVectorSet(TextureDesc.Width, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, TextureDesc.Height, 0.f, 0.f);
+
+	m_pTarget_Manager->Store_BackBuffer(m_pContext);//백버퍼 보관해놓음
+
+	m_pTarget_Manager->End_MRT_For_Texture(m_pContext, pRenderTarget);
+	pRenderTarget->Clear();
+
+	pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	if (FAILED(pTexture->Set_ShaderResourceView(pShader,"g_DiffuseTexture", iPassindex)))
+		return;
+
+	pShader->Begin(iPassindex);
+
+	m_pVIBuffer->Render();
+
+	GAMEINSTANCE->Render_Font(pTexttag, pText, vRenderPos, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+
+	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
+}
+
+void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture[], CShader* pShader, _int iPassindex, _float3 vRenderPos[])
+{
 }
 
 HRESULT CRenderer::Render_Priority()
@@ -378,7 +427,7 @@ HRESULT CRenderer::Render_Debug()
 {
 	for (auto& pComponent : m_DebugComponents)
 	{
-		if (nullptr != pComponent)
+		/*if (nullptr != pComponent)*/
 			pComponent->Render();
 
 		Safe_Release(pComponent);

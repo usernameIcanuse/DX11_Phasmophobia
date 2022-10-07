@@ -2,6 +2,7 @@
 #include "../Public/SpiritBox.h"
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
+#include "RenderTarget.h"
 
 CSpiritBox::CSpiritBox(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -53,8 +54,17 @@ void CSpiritBox::Tick(_float fTimeDelta)
 void CSpiritBox::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-
+    
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+
+    //if (m_bSwitch)
+    //{
+    //    CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
+    //    if (nullptr != pTexture)
+    //    {
+    //        m_pRendererCom->Draw_On_Texture(m_pRenderTarget, pTexture, m_pShaderTexCom, 0, m_szDegree, _float2(920,1640), TEXT("Font_Dream"));
+    //    }
+    //}
 
 #ifdef _DEBUG
    // m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
@@ -72,25 +82,28 @@ HRESULT CSpiritBox::Render()
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        
-
          if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
               return E_FAIL;
 
          if (m_bSwitch)
          {
+         /*    if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pRenderTarget->Get_SRV())))
+                 return E_FAIL;*/
+
              if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
                  return E_FAIL;
              iPassIndex = 3;
          }
+    /*     else
+         {
+             if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+                 return E_FAIL;
+         }*/
         
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
 
-    if (m_bSwitch)
-    {
-        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, _float2(0.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-    }
+
 #ifdef _DEBUG
     if (m_fAnswerTime > 0.f)
     {
@@ -138,7 +151,7 @@ void CSpiritBox::MalFunction(_float fTimeDelta)
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dis(10, 90);
 
-        wsprintf(m_szDegree, TEXT("Frequency : %03d"), dis(gen));
+        wsprintf(m_szDegree, TEXT("%03d"), dis(gen));
         m_fTimeAcc = 0.f;
     }
 }
@@ -148,7 +161,7 @@ void CSpiritBox::Normal_Operation(_float fTimeDelta)
     if (m_bInGhostArea)
         m_fAnswerTimeLasting -= fTimeDelta;
 
-    wsprintf(m_szDegree, TEXT("Frequency : %03d"), m_lFrequency);
+    wsprintf(m_szDegree, TEXT("%03d"), m_lFrequency);
 }
 
 void CSpiritBox::Frequency_Control(_long lMouseMove)
@@ -196,11 +209,12 @@ HRESULT CSpiritBox::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
-
-
-
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SpiritBox"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
+
+    /* For.Com_TexShader*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_TexShader"), (CComponent**)&m_pShaderTexCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -216,6 +230,9 @@ HRESULT CSpiritBox::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
+    m_pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, 2048, 2048, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f));
+    if (nullptr == m_pRenderTarget)
+        return E_FAIL;
     return S_OK;
 }
 
@@ -249,4 +266,6 @@ CGameObject* CSpiritBox::Clone(void* pArg)
 void CSpiritBox::Free()
 {
     __super::Free();
+    Safe_Release(m_pRenderTarget);
+    Safe_Release(m_pShaderTexCom);
 }

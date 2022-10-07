@@ -2,6 +2,10 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CRenderTarget;
+END
+
 BEGIN(Client)
 
 class CSpiritBox final : public CItem
@@ -32,6 +36,9 @@ public:
 
 
 private:
+	CRenderTarget*	m_pRenderTarget= nullptr;
+	CShader* m_pShaderTexCom = nullptr;
+
 	_long		m_lFrequency = 100;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력
 

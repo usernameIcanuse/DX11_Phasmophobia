@@ -43,6 +43,10 @@ protected:
 public:
 	virtual HRESULT Draw_RenderGroup();
 
+public:
+	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex, const _tchar* pText, _float2 vRenderPos, const _tchar* pTexttag);
+	void Draw_On_Texture(class CRenderTarget* pRenderTarget, class CTexture* pTexture[], class CShader* pShader, _int iPassindex, _float3 vRenderPos[]);
+
 protected:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];
 	typedef list<class CGameObject*>		RENDEROBJECTS;

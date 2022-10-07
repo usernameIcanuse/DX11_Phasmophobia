@@ -138,7 +138,7 @@ HRESULT CPlayer::Setup_Component()
 	CCollider::COLLIDERDESC ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(5.f, 12.f, 5.f);
+	ColliderDesc.vScale = _float3(1.f, 12.f, 1.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;
@@ -209,17 +209,14 @@ HRESULT CPlayer::Setup_Inventory()
 
 void CPlayer::On_Collision_Enter(CCollider* pCollider)
 {
-	
+
 }
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
 { 
 	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
 	{
-		/*
-			이동 방식을 모든 벡터를 다 더한 후 방향을 구해 최종적인 방향 벡터와 길이를 구해준 후에
-			문과 충돌 계산을 할 때 방향 벡터와 함께 받아와서 슬라이딩 태우고 후에 갈 수 있는지 판단을 해야함
-		*/
+
 		CTransform* pDoorTransform = (CTransform*)pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag);
 		_float3 vRight;
 		XMStoreFloat3(&vRight, pDoorTransform->Get_State(CTransform::STATE_RIGHT));
@@ -228,6 +225,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		//m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 	}
+	/*한 번 슬라이드 잘못 타면 붙어버림*/
 
 }
 

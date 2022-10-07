@@ -4,13 +4,27 @@
 
 BEGIN(Engine)
 
-class CRenderTarget final : public CBase
+class ENGINE_DLL CRenderTarget final : public CBase
 {
+public:
+	typedef struct tagRenderTargetDesc
+	{
+		_uint iWidth;
+		_uint iHeight;
+		DXGI_FORMAT eFormat;
+		_float4 vClearColor;
+	}RENDERTARGETDESC;
+
 private:
 	CRenderTarget(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CRenderTarget() = default;
 
 public:
+	void Get_Desc(D3D11_TEXTURE2D_DESC*	TextureDesc)
+	{
+		m_pTexture->GetDesc(TextureDesc);
+	}
+
 	ID3D11ShaderResourceView* Get_SRV() const {
 		return m_pSRV;
 	}
