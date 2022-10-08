@@ -2,6 +2,10 @@
 #include "Item.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CRenderTarget;
+END
+
 BEGIN(Client)
 
 class CThermometer final : public CItem
@@ -31,6 +35,11 @@ public:
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 
 private:
+	CRenderTarget* m_pDiffuse = nullptr;
+	CRenderTarget* m_pEmissive = nullptr;
+
+	CShader* m_pShaderTexCom = nullptr;
+
 	_int		m_iDegree = 0;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//온도 출력
 	_float		m_fTimeAcc = 0.f;//온도 갱신

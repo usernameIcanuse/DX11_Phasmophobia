@@ -60,9 +60,24 @@ void CSpiritBox::LateTick(_float fTimeDelta)
     if (m_bSwitch)
     {
         CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
+        CRenderer::RENDERFONT RenderFont;
         if (nullptr != pTexture)
         {
-            m_pRendererCom->Draw_On_Texture(m_pRenderTarget, pTexture, m_pShaderTexCom, 0, m_szDegree, _float2(920,1640), TEXT("Font_Dream"));
+           
+            RenderFont.pString = m_szDegree;
+            RenderFont.vPosition = XMVectorSet(650.f, 560.f, 0.f, 0.f);
+            RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+            RenderFont.rotation = 90.f;
+            RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+            RenderFont.vScale = XMVectorSet(1.f, 1.f, 1.f, 0.f);
+
+            m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Dream"));
+
+        }
+        pTexture = m_pModelCom->Get_SRV(0, aiTextureType_EMISSIVE);
+        if (nullptr != pTexture)
+        {
+            m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Dream"));
         }
     }
 
@@ -87,16 +102,18 @@ HRESULT CSpiritBox::Render()
 
          if (m_bSwitch)
          {
-             if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pRenderTarget->Get_SRV())))
+             if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pDiffuse->Get_SRV())))
                  return E_FAIL;
 
-             if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+             if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_EmissiveTexture", m_pEmissive->Get_SRV())))
                  return E_FAIL;
              iPassIndex = 3;
          }
          else
          {
              if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+                 return E_FAIL;
+             if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
                  return E_FAIL;
          }
         
@@ -231,8 +248,11 @@ HRESULT CSpiritBox::Setup_Component()
         return E_FAIL;
 
     /*For.RenderTarget*/
-    m_pRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, 2048, 2048, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f),true);
-    if (nullptr == m_pRenderTarget)
+    m_pDiffuse= CRenderTarget::Create(m_pDevice, m_pContext, 1280, 720, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f),true);
+    if (nullptr == m_pDiffuse)
+        return E_FAIL;
+    m_pEmissive = CRenderTarget::Create(m_pDevice, m_pContext, 1280, 720, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true);
+    if (nullptr == m_pEmissive)
         return E_FAIL;
     return S_OK;
 }
@@ -267,6 +287,7 @@ CGameObject* CSpiritBox::Clone(void* pArg)
 void CSpiritBox::Free()
 {
     __super::Free();
-    Safe_Release(m_pRenderTarget);
+    Safe_Release(m_pDiffuse);
+    Safe_Release(m_pEmissive);
     Safe_Release(m_pShaderTexCom);
 }

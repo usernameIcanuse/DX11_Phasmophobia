@@ -36,7 +36,8 @@ public:
 
 
 private:
-	CRenderTarget*	m_pRenderTarget= nullptr;
+	CRenderTarget*	m_pDiffuse= nullptr;
+	CRenderTarget* m_pEmissive = nullptr;
 	CShader* m_pShaderTexCom = nullptr;
 
 	_long		m_lFrequency = 100;

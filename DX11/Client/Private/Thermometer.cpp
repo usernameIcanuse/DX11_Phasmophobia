@@ -3,6 +3,7 @@
 #include "Ghost_SpawnPoint.h"
 #include "Atmosphere.h"
 #include "GameInstance.h"
+#include "RenderTarget.h"
 
 
 CThermometer::CThermometer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,6 +48,30 @@ void CThermometer::LateTick(_float fTimeDelta)
 
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
+    if (m_bSwitch)
+    {
+        CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
+        CRenderer::RENDERFONT RenderFont;
+        if (nullptr != pTexture)
+        {
+            
+            RenderFont.pString = m_szDegree;
+            RenderFont.vPosition = XMVectorSet(655, 180, 0.f, 0.f);
+            RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+            RenderFont.rotation = 0.f;
+            RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+            RenderFont.vScale = XMVectorSet(1.f, 1.f, 1.f, 0.f);//시작 점을 오른쪽 아래로 넘기기
+
+            m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Dream"));
+
+        }
+        pTexture = m_pModelCom->Get_SRV(0, aiTextureType_EMISSIVE);
+        if (nullptr != pTexture)
+        {
+            m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0,RenderFont, TEXT("Font_Dream"));
+        }
+    }
+
 #ifdef _DEBUG
   //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -62,16 +87,25 @@ HRESULT CThermometer::Render()
     {
         _int iPassIndex = 2;
 
-        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+   
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;
+
         if (m_bSwitch)
         {
-            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+            if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pDiffuse->Get_SRV())))
                 return E_FAIL;
 
+            if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_EmissiveTexture", m_pEmissive->Get_SRV())))
+                return E_FAIL;
             iPassIndex = 3;
+        }
+        else
+        {
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+                return E_FAIL;
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+                return E_FAIL;
         }
 
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
@@ -80,15 +114,15 @@ HRESULT CThermometer::Render()
     // MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
 
 
-    if (m_bSwitch)
-    {
-        //const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale
-        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, XMVectorSet(200.f, 200.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 0.f));
-        /*
-        * 스프라이트 폰트를 그릴 때는 현재 세팅 되어있는 1번 렌더타겟에 자동을 그림? 다른 렌더타겟에 그리게 할 수 있음?
-        * 스프라이트 폰트는 셰이더를 통해서 효과를 줄 수 있음?
-        */
-    }
+    //if (m_bSwitch)
+    //{
+    //    //const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale
+    //    GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szDegree, XMVectorSet(200.f, 200.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f), XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 0.f));
+    //    /*
+    //    * 스프라이트 폰트를 그릴 때는 현재 세팅 되어있는 1번 렌더타겟에 자동을 그림? 다른 렌더타겟에 그리게 할 수 있음?
+    //    * 스프라이트 폰트는 셰이더를 통해서 효과를 줄 수 있음?
+    //    */
+    //}
 //#ifdef _DEBUG
 //      m_pOBBCom->Render();
 //#endif // _DEBUG
@@ -106,7 +140,7 @@ void CThermometer::MalFunction(_float fTimeDelta)
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dis(10, 99);
 
-        wsprintf(m_szDegree, TEXT("방온도 : %d"), dis(gen));
+        wsprintf(m_szDegree, TEXT("%d"), dis(gen));
         m_fTimeAcc = 0.f;
 
     }
@@ -116,7 +150,7 @@ void CThermometer::Normal_Operation(_float fTimeDelta)
 {
     if (m_fTimeAcc >= 1.5f)
     {
-        wsprintf(m_szDegree, TEXT("방온도 : %d"), m_iDegree);
+        wsprintf(m_szDegree, TEXT("%d"), m_iDegree);
         m_fTimeAcc = 0.f;
 
     }
@@ -159,8 +193,10 @@ HRESULT CThermometer::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
+    /* For.Com_TexShader*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_TexShader"), (CComponent**)&m_pShaderTexCom)))
+        return E_FAIL;
 
-    
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Thermometer"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
@@ -176,6 +212,15 @@ HRESULT CThermometer::Setup_Component()
     ColliderDesc.m_eObjID = COLLISION_TYPE::THERMOMETER;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+        return E_FAIL;
+
+    /*For.RenderTarget*/
+    m_pDiffuse= CRenderTarget::Create(m_pDevice, m_pContext, 1280, 720, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true);
+    if (nullptr == m_pDiffuse)
+        return E_FAIL;
+
+    m_pEmissive = CRenderTarget::Create(m_pDevice, m_pContext, 1280, 720, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true);
+    if (nullptr == m_pEmissive)
         return E_FAIL;
 
     return S_OK;
@@ -211,4 +256,8 @@ CGameObject* CThermometer::Clone(void* pArg)
 void CThermometer::Free()
 {
     __super::Free();
+
+    Safe_Release(m_pDiffuse);
+    Safe_Release(m_pEmissive);
+    Safe_Release(m_pShaderTexCom);
 }

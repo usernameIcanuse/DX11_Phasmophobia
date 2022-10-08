@@ -211,10 +211,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 	return S_OK;
 }
 
-void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture, CShader* pShader,_int iPassindex,const _tchar* pText, _float2 vRenderPos, const _tchar* pTexttag)
+void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture, CShader* pShader,_int iPassindex, RENDERFONT& RenderFont,const _tchar* pTexttag)
 {
-
-	GAMEINSTANCE->Clear_DepthStencil_View();
 
 	D3D11_TEXTURE2D_DESC TextureDesc;
 	pRenderTarget->Get_Desc(&TextureDesc);
@@ -246,7 +244,7 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	m_pVIBuffer->Render();
 	//const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale
 
-	GAMEINSTANCE->Render_Font(pTexttag, pText, XMVectorSet(vRenderPos.x, vRenderPos.y,0.f,0.f), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMConvertToRadians(90.f), XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 0.f));
+	GAMEINSTANCE->Render_Font(pTexttag, RenderFont.pString, RenderFont.vPosition, RenderFont.vColor, XMConvertToRadians(RenderFont.rotation), RenderFont.vOrigin, RenderFont.vScale);
 
 	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
 }

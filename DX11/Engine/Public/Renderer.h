@@ -10,6 +10,17 @@ BEGIN(Engine)
 class ENGINE_DLL CRenderer  : public CComponent
 {
 public:
+	typedef struct tagRenderFont
+	{
+		const _tchar* pString;
+		_vector vPosition;
+		_vector vColor;
+		_float rotation;
+		_vector vOrigin;
+		_vector vScale;
+	}RENDERFONT;
+
+public:
 	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN,RENDER_NONALPHABLEND, RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
 	/* Emissive를 위한 렌더타겟 하나 더 만들어서 NONALPHABLEND에서 칠하고 BLEND에서 같이 섞어주기*/
 	/*
@@ -44,7 +55,7 @@ public:
 	virtual HRESULT Draw_RenderGroup();
 
 public:
-	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex, const _tchar* pText, _float2 vRenderPos, const _tchar* pTexttag);
+	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex,RENDERFONT& RenderFont, const _tchar* pTexttag);
 	void Draw_On_Texture(class CRenderTarget* pRenderTarget, class CTexture* pTexture[], class CShader* pShader, _int iPassindex, _float3 vRenderPos[]);
 
 protected:
