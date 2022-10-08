@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCamera_Renderer;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -46,6 +47,7 @@ private:
 	CTripod* m_pTripod = nullptr;
 	CItem* m_pTempCameraModel = nullptr;
 	CCamera_Screen* m_pCameraScreen = nullptr;
+	CTexture* m_pNormalTex = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

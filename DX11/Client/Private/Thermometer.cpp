@@ -56,7 +56,7 @@ void CThermometer::LateTick(_float fTimeDelta)
         {
             
             RenderFont.pString = m_szDegree;
-            RenderFont.vPosition = XMVectorSet(655, 180, 0.f, 0.f);
+            RenderFont.vPosition = XMVectorSet(625, 150, 0.f, 0.f);
             RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
             RenderFont.rotation = 0.f;
             RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
@@ -140,7 +140,7 @@ void CThermometer::MalFunction(_float fTimeDelta)
         std::mt19937 gen(rd());
         std::uniform_int_distribution<int> dis(10, 99);
 
-        wsprintf(m_szDegree, TEXT("%d"), dis(gen));
+        wsprintf(m_szDegree, TEXT("%2d"), dis(gen));
         m_fTimeAcc = 0.f;
 
     }
@@ -150,7 +150,7 @@ void CThermometer::Normal_Operation(_float fTimeDelta)
 {
     if (m_fTimeAcc >= 1.5f)
     {
-        wsprintf(m_szDegree, TEXT("%d"), m_iDegree);
+        wsprintf(m_szDegree, TEXT("%2d"), m_iDegree);
         m_fTimeAcc = 0.f;
 
     }

@@ -193,6 +193,9 @@
     <ClInclude Include="..\Public\CameraScreen.h">
       <Filter>02.GameObject\Item\Camera\CameraScreen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HandPrint.h">
+      <Filter>02.GameObject\Ghost\HandPrint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -371,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CameraScreen.cpp">
       <Filter>02.GameObject\Item\Camera\CameraScreen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HandPrint.cpp">
+      <Filter>02.GameObject\Ghost\HandPrint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -568,6 +574,9 @@
     <Filter Include="02.GameObject\Item\Camera\CameraScreen">
       <UniqueIdentifier>{6991c7ff-f70c-45d7-b400-abe19280d46c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\Ghost\HandPrint">
+      <UniqueIdentifier>{1de57512-26ef-4418-88c3-debcb2b3e513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -596,6 +605,9 @@
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>03.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Decals.hlsl">
       <Filter>03.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

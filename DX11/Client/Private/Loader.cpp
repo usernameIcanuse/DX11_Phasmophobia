@@ -536,6 +536,10 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
 		return E_FAIL;
+	/*For.Prototype_Component_VideoCam_Normal*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VideoCam_Normal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/Video_Camera/Camera 1 Normal.png")))))
+		return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	/* For.Prototype_Component_Model_Tripod*/
@@ -543,7 +547,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
 		return E_FAIL;
 	
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f);
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)* XMMatrixRotationY(XMConvertToRadians(180.0f));
 	/* For.Prototype_Component_Model_RoomDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoomDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "RoomDoor.fbx", TransformMatrix))))

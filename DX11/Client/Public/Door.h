@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 class CShader;
-class CTexture;
+class CRenderTarget;
 class CCollider;
 class CRenderer;
 class CModel;
@@ -55,8 +55,10 @@ private:
 	void Close_Door(_float fTimeDelta = 0.f);
 
 private:
+	CRenderTarget* m_pRenderTarget = nullptr;
+	CTexture* m_pHandPrintTextureCom = nullptr;
+	
 	CShader* m_pShaderCom = nullptr;
-	//CTexture* m_pTextureCom = nullptr;
 	CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
 

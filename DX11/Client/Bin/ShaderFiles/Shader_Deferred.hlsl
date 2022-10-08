@@ -35,6 +35,7 @@ texture2D	g_DiffuseTexture;
 texture2D	g_EmissiveTexture;
 texture2D	g_ShadeTexture;
 texture2D	g_NormalTexture;
+texture2D	g_UVLightTexture;
 texture2D	g_Texture;
 
 sampler DefaultSampler = sampler_state
@@ -94,6 +95,44 @@ struct PS_OUT_LIGHT
 	vector		vShade : SV_TARGET0;
 	vector		vSpecular : SV_TARGET1;
 };
+
+
+float Attenuation(vector			vPosToLight)
+{
+	float fDistance = length(vPosToLight);
+
+	float fAtt;
+
+	if (fDistance > g_fRange)
+	{
+		fAtt = 0.f;
+	}
+	else
+		fAtt = 1 / (g_fAttenuation0 + fDistance * g_fAttenuation1 + fDistance * fDistance * g_fAttenuation2);
+
+	return fAtt;
+
+}
+
+float CutOff(vector vPosToLight)
+{
+	float fTheta = dot(normalize(-vPosToLight), normalize(g_vLightDir));
+	float fCos_Half_Theta = cos(g_fTheta * 0.5f);
+	float fCos_Half_Phi = cos(g_fPhi * 0.5f);
+
+	float fSpot;
+	if (fTheta > fCos_Half_Theta)
+		fSpot = 1;
+	else if (fTheta < fCos_Half_Phi)
+		fSpot = 0;
+	else
+	{
+		float fValue = (fTheta - fCos_Half_Phi) / (fCos_Half_Theta - fCos_Half_Phi);
+		fSpot = pow(abs(fValue), g_fFallOff);
+	}
+
+	return fSpot;
+}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
@@ -174,18 +213,10 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	/* 월드페이스 상  위치를 구한다. */
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
-	float fAtt;
 
 	vector vPosToLight = g_vLightPos - vWorldPos;
-	float  fDistance = length(vPosToLight);
-
-	if (g_fRange < fDistance)
-	{
-		fAtt = 0;
-	}
-	else
-		fAtt = 1 / (g_fAttenuation0 + fDistance * g_fAttenuation1 + fDistance * fDistance * g_fAttenuation2);
-
+	
+	float fAtt = Attenuation(vPosToLight);
 
 	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(vPosToLight), vNormal)) + (g_vLightAmbient * vDiffuseDesc)) * fAtt;
 	Out.vShade.a = 1.f;
@@ -200,6 +231,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
 	return Out;
 }
+
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 {
@@ -234,34 +266,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
 	vector vPosToLight = g_vLightPos - vWorldPos;
-	float fDistance = length(vPosToLight);
 
-	float fAtt;
-
-	if (fDistance > g_fRange)
-	{
-		fAtt = 0.f;
-	}
-	else
-		fAtt = 1 / (g_fAttenuation0 + fDistance * g_fAttenuation1 + fDistance * fDistance * g_fAttenuation2);
-
-
-	float fTheta = dot(normalize(-vPosToLight), normalize(g_vLightDir));
-	float fCos_Half_Theta = cos(g_fTheta * 0.5f);
-	float fCos_Half_Phi = cos(g_fPhi * 0.5f);
-
-	float fSpot;
-	if (fTheta > fCos_Half_Theta)
-		fSpot = 1;
-	else if (fTheta < fCos_Half_Phi)
-		fSpot = 0;
-	else
-	{
-		float fValue = (fTheta - fCos_Half_Phi) / (fCos_Half_Theta - fCos_Half_Phi);
-		fSpot = pow(abs(fValue), g_fFallOff);
-	}
-
-
+	float fAtt = Attenuation(vPosToLight);
+	float fSpot = CutOff(vPosToLight);
 
 	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vAmbient)) * fAtt*fSpot ;
 	Out.vShade.a = 1.f;
@@ -287,7 +294,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 	//vector			vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular;/* + vEmissive; */
+	Out.vColor = vDiffuse * vShade + vSpecular;
 
 	if (Out.vColor.a == 0.f)
 		discard;

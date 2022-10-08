@@ -108,7 +108,7 @@ void CDoor::LateTick(_float fTimeDelta)
     //}
 
 #ifdef _DEBUG
-       // m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+       m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }
@@ -131,6 +131,7 @@ HRESULT CDoor::Render()
 
         m_pModelCom->Render(i, m_pShaderCom,iPassIndex);
     }
+
 
 //#ifdef _DEBUG
 //    m_pOBBCom->Render();
@@ -215,9 +216,9 @@ HRESULT CDoor::Setup_Component()
     //if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
     //    return E_FAIL;
 
-    ///* For.Com_Renderer*/
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-    //    return E_FAIL;
+    /* For.Com_Renderer*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+        return E_FAIL;
    
   
 
@@ -286,7 +287,7 @@ void CDoor::Free()
     __super::Free();
     
     Safe_Release(m_pShaderCom);
-    //Safe_Release(m_pRendererCom);
+    Safe_Release(m_pRendererCom);
     //Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);

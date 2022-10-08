@@ -63,15 +63,13 @@ HRESULT CVideo_Camera::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        _int    iPassIndex = 2;
+        
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
-        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            iPassIndex = 0;
-        }
+     
+        m_pNormalTex->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture",0);
         
-        m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
+        m_pModelCom->Render(i, m_pShaderCom, 2);
     }
 
 //#ifdef _DEBUG
@@ -230,6 +228,9 @@ HRESULT CVideo_Camera::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
+    /*For.Com_Texture*/
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VideoCam_Normal"), TEXT("Com_Texture"), (CComponent**)&m_pNormalTex)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -284,4 +285,5 @@ CGameObject* CVideo_Camera::Clone(void* pArg)
 void CVideo_Camera::Free()
 {
     __super::Free();
+    Safe_Release(m_pNormalTex);
 }

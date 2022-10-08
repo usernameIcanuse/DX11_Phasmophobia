@@ -72,7 +72,6 @@ HRESULT CTripod::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        _uint iPassIndex = 0;
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;

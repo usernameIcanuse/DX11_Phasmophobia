@@ -24,7 +24,7 @@ struct VS_IN
 }; 
 
 struct VS_OUT
-{
+{ 
 	float4		vPosition : SV_POSITION;
 	float4		vNormal : NORMAL;
 	float2		vTexUV : TEXCOORD0;
@@ -63,6 +63,13 @@ struct PS_IN
 };
 
 struct PS_OUT
+{
+	vector		vDiffuse : SV_TARGET0;
+	vector		vNormal : SV_TARGET1;
+	vector		vDepth : SV_TARGET2;
+};
+
+struct PS_OUT_NORMAL
 {
 	vector		vDiffuse : SV_TARGET0;
 	vector		vNormal : SV_TARGET1;
@@ -152,7 +159,7 @@ struct PS_IN_NORMAL
 };
 
 
-PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
+PS_OUT_NORMAL PS_MAIN_NORMAL(PS_IN_NORMAL In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
