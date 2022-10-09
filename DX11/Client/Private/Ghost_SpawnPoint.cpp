@@ -67,6 +67,12 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 		CTransform* matGhostTransform = (CTransform*)m_pGhost->Get_Component(CGameObject::m_pTransformTag);
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matGhostTransform->Get_State(CTransform::STATE_TRANSLATION));
 	}
+	if (m_bIsInDots)
+	{/*µµÆ® ÄðÅ¸ÀÓ*/
+		m_fDotsProjecterTime -= fTimeDelta;
+		if(0.f > m_fDotsProjecterCoolTime)
+			m_fDotsProjecterCoolTime -= fTimeDelta;
+	}
 
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 	m_pAreaCom->Update(matWorld);
@@ -78,6 +84,8 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 	m_fWhisperingTime -= fTimeDelta;
 #endif
 	m_fWhisperCoolTime -= fTimeDelta;
+
+	m_bIsInDots = false;
 }
 
 void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
@@ -119,6 +127,20 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 
 void CGhost_SpawnPoint::DotsProjecter()
 {
+	if (0.f > m_fDotsProjecterCoolTime)
+	{
+		/*±Í½Å ·»´õ*/
+		if (0.f > m_fDotsProjecterTime)
+		{
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dis(5, 30);
+
+			m_fDotsProjecterCoolTime = dis(gen);
+			m_fDotsProjecterTime = 1.f;
+
+		}
+	}
 }
 
 void CGhost_SpawnPoint::Add_Score(_int _iScoreIndex)
@@ -271,6 +293,7 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 		if (m_bDotsProjecter)
 		{
 			DotsProjecter();//ÀÏÁ¤ ½Ã°£µ¿¾È¸¸ ¿Ü°û¼± ·»´õ¸µ
+			m_bIsInDots = true;
 		}
 	}
 

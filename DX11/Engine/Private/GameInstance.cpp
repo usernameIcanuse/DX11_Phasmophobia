@@ -138,6 +138,7 @@ void CGameInstance::Clear_RendererIndex(_uint eListIndex)
 	m_pRenderer_Manager->Clear_RendererIndex(eListIndex);
 }
 
+
 HRESULT CGameInstance::Clear(_uint iLevelID)
 {
 	if (nullptr == m_pObject_Manager || 

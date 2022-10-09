@@ -151,6 +151,19 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXCUBETEX_DECLARATION;
 
+	typedef struct tagVertex_Box_texture
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT2		vTexUV;
+	}VTXBOXTEX;
+
+	typedef struct ENGINE_DLL tagVertex_Box_Texture_Declaration
+	{
+		static const unsigned int		iNumElements = 2;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXBOXTEX_DECLARATION;
+
+
 	typedef struct tagVertex_Position
 	{
 		XMFLOAT3		vPosition;

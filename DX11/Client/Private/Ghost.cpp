@@ -260,7 +260,7 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 
 void CGhost::On_Collision_Stay(CCollider* pCollider)
 {
-
+	
 }
 
 void CGhost::On_Collision_Exit(CCollider* pCollider)

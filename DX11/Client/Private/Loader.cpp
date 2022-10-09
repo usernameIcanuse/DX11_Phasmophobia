@@ -16,6 +16,7 @@
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
+#include "HandPrint.h"
 
 #include "Temp_DotsProjecter.h"
 #include "Temp_Note.h"
@@ -278,6 +279,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CGhost_Status::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_HandPrint*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HandPrint"),
+		CHandPrint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 
 
 	/* For.Prototype_GameObject_Sky */
@@ -409,6 +415,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_HandPrint*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_HandPrint"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/HandPrint/HandPrint1.png"), 1))))
+		return E_FAIL;
+
 	///* For.Prototype_Component_Texture_Player */
 	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Player"),
 	//	CTexture::Create(m_pGraphic_Device, CTexture::TYPE_DEFAULT, TEXT("../Bin/Resources/Textures/Player/Player.jpg"), 1))))
@@ -441,6 +452,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_VIBuffer_Cube*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Box*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Box"),
+		CVIBuffer_Box::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Point_Instance*/
@@ -509,7 +525,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad.fbx", TransformMatrix))))
 		return E_FAIL;
-
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixTranslation(-0.7f, 0.1f, 0.f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
 	/* For.Prototype_Component_Model_Note_Open*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
@@ -582,14 +598,14 @@ HRESULT CLoader::Loading_ForStage1Level()
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "FurnishedCabin.fbx", TransformMatrix))))
 			return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 	/* For.Prototype_Component_Model_SuburbanHouse*/
 	/*if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_SuburbanHouse"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse1.fbx", TransformMatrix))))
 		return E_FAIL;*/
 
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 
 //	/* For.Prototype_Component_Model_Garage 됨/중간 물건들 텍스처문제*/
 //	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Garage"),
@@ -733,6 +749,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Shader_VtxCubeTex */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxCubeTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Decals */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_Decals"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Decals.hlsl"), VTXBOXTEX_DECLARATION::Element, VTXBOXTEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxModel */

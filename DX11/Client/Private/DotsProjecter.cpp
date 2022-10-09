@@ -40,17 +40,17 @@ HRESULT CDotsProjecter::Initialize(void* pArg)
 void CDotsProjecter::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
- 
-    //if (GAMEINSTANCE->Is_KeyState(KEY::E, KEY_STATE::TAP))
-    //{
-    //    _float4 fDist;
-    //    if (Picking((CVIBuffer*)m_pVIBufferCom,fDist))
-    //    {
-    //        int a = 0;
-    //    }
-    //}
-    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
+    if (false == m_bInstalled)
+    {
+        m_pAreaCom->Set_Enable(false);
+    }
+
+    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+    if (m_bInstalled)
+    {
+        m_pAreaCom->Update(m_pTransformCom->Get_WorldMatrix());
+    }
 }
 
 void CDotsProjecter::LateTick(_float fTimeDelta)
@@ -71,7 +71,8 @@ void CDotsProjecter::LateTick(_float fTimeDelta)
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
-   // m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+   m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+   m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom);
 
 #endif
 
@@ -133,7 +134,7 @@ _bool CDotsProjecter::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 v
        // m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
 
         m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+        m_pAreaCom->Set_Enable(true);
 
         return true;
     }
@@ -158,7 +159,7 @@ _bool CDotsProjecter::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 v
         m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
 
         m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+        m_pAreaCom->Set_Enable(true);
         return true;
     }
 
@@ -205,7 +206,7 @@ HRESULT CDotsProjecter::Setup_Component()
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, ColliderDesc.vScale.z * -0.5f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::DOTSPROJECTER;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
@@ -218,13 +219,15 @@ HRESULT CDotsProjecter::Setup_Component()
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 
     _vector     vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-    XMStoreFloat3(&ColliderDesc.vTranslation, XMVectorSet(0.f, 0.f, 0.f, 0.f) - ColliderDesc.vScale.z * 0.55f * vLook);
+    XMStoreFloat3(&ColliderDesc.vTranslation, XMVectorSet(0.f, 0.f, -ColliderDesc.vScale.z*0.5f,0.f));
     //ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
     ColliderDesc.pOwner = this;
-    ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM_AREA;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::DOTSPROJECTER;
 
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
         return E_FAIL;
+
+    m_pAreaCom->Set_Enable(false);
    
 
     return S_OK;

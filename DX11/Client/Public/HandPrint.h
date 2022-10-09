@@ -7,7 +7,8 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CRenderer;
-class CVIBuffer_Cube;
+class CVIBuffer_Box;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -26,11 +27,18 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
+public:
+	void Set_Position(CTransform* _pTransform);
+
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;		
-	CVIBuffer_Cube*			m_pVIBufferCom = nullptr;
+	CVIBuffer_Box*			m_pVIBufferCom = nullptr;
+	CCollider* m_pOBBCom = nullptr;
 
 private:
 	_float4x4		m_ProjMatrix;
@@ -38,7 +46,7 @@ private:
 
 private:
 	HRESULT SetUp_Components();
-	HRESULT SetUp_ShaderResource();
+
 
 public:
 	static CHandPrint* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -82,6 +82,10 @@ private:
 	_bool		m_bCheckDotsProjecter = true;
 	_bool		m_bCheckFreeze = true;
 	_bool		m_bCheckGhostOrb = true;
+
+	_float		m_fDotsProjecterTime = 2.f;
+	_float		m_fDotsProjecterCoolTime = 0.f;//5~20.f
+	_bool		m_bIsInDots = false;
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

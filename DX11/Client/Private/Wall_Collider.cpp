@@ -44,8 +44,8 @@ void CWall_Collider::LateTick(_float fTimeDelta)
    // m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 #ifdef _DEBUG
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBDirCom);
+  //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+  //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBDirCom);
 #endif
 }
 

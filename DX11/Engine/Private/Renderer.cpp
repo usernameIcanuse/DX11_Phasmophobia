@@ -213,6 +213,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 	if (FAILED(Render_NonAlphaBlend()))
 		return E_FAIL;
+	if (FAILED(Render_Decal()))
+		return E_FAIL;
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 	if (FAILED(Render_Blend()))
@@ -296,7 +298,7 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 	if (FAILED(Begin_RenderTarget( TEXT("MRT_Deferred"))))
 		return E_FAIL;
 
-	for (int i = RENDER_TERRAIN; i < RENDER_NONLIGHT; ++i)
+	for (int i = RENDER_TERRAIN; i < RENDER_DECAL; ++i)
 	{
 		for (auto& pGameObject : m_RenderObjects[i])
 		{
@@ -313,6 +315,30 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 		}
 		m_RenderObjects[i].clear();
 	}
+	if (FAILED(End_RenderTarget()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_Decal()
+{
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+		return E_FAIL;
+
+	for (auto & pGameObject : m_RenderObjects[RENDER_DECAL])
+	{
+		if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+		{
+			Safe_Release(pGameObject);
+			continue;
+		}
+		pGameObject->Render();
+		Safe_Release(pGameObject);
+	}
+
+	m_RenderObjects[RENDER_DECAL].clear();
+
 	if (FAILED(End_RenderTarget()))
 		return E_FAIL;
 
@@ -438,6 +464,12 @@ HRESULT CRenderer::Render_UI()
 
 	return S_OK;
 }
+
+ID3D11ShaderResourceView* CRenderer::Get_SRV(const _tchar* pTargetTag)
+{
+	return m_pTarget_Manager->Get_SRV(pTargetTag);
+}
+
 #ifdef _DEBUG
 
 HRESULT CRenderer::Render_Debug()
@@ -452,17 +484,17 @@ HRESULT CRenderer::Render_Debug()
 
 	m_DebugComponents.clear();
 
-	//if (nullptr == m_pTarget_Manager)
-	//	return E_FAIL;
+	if (nullptr == m_pTarget_Manager)
+		return E_FAIL;
 
-	//if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
-	//	return E_FAIL;
+	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
 
-	//if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
-	//	return E_FAIL;
+	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
 
-	//m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
-	//m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
 
 	return S_OK;
 }

@@ -66,6 +66,8 @@ HRESULT CCamera_Renderer::Draw_RenderGroup()
 		return E_FAIL;
 	if (FAILED(Render_NonAlphaBlend()))
 		return E_FAIL;
+	if (FAILED(Render_Decal()))
+		return E_FAIL;
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 	if (FAILED(Render_Blend()))
@@ -103,7 +105,7 @@ HRESULT CCamera_Renderer::Render_NonAlphaBlend()
 		return E_FAIL;
 
 
-	for (int i = RENDER_TERRAIN; i < RENDER_NONLIGHT; ++i)
+	for (int i = RENDER_TERRAIN; i < RENDER_DECAL; ++i)
 	{
 		for (auto& pGameObject : m_RenderObjects[i])
 		{
@@ -123,6 +125,31 @@ HRESULT CCamera_Renderer::Render_NonAlphaBlend()
 
 	if (FAILED(End_RenderTarget()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCamera_Renderer::Render_Decal()
+{
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+		return E_FAIL;
+
+	for (auto& pGameObject : m_RenderObjects[RENDER_DECAL])
+	{
+		if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+		{
+			Safe_Release(pGameObject);
+			continue;
+		}
+		pGameObject->Render();
+		Safe_Release(pGameObject);
+	}
+
+	m_RenderObjects[RENDER_DECAL].clear();
+
+	if (FAILED(End_RenderTarget()))
+		return E_FAIL;
+
 
 	return S_OK;
 }
