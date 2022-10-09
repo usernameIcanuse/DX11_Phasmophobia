@@ -24,6 +24,7 @@ public:
 public:
 	virtual		HRESULT Render_Priority();
 	virtual		HRESULT Render_NonAlphaBlend();
+	virtual		HRESULT Render_Decal();
 	virtual		HRESULT Render_Lights();
 	virtual		HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
 	virtual		HRESULT Render_NonLight();

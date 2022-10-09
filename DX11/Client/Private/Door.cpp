@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Door.h"
 #include "GameInstance.h"
+#include "HandPrint.h"
 
 CDoor::CDoor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -220,7 +221,12 @@ HRESULT CDoor::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
    
-  
+    CHandPrint* pTemp = nullptr;
+
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"),(CGameObject**) & pTemp)))
+        return E_FAIL;
+
+    pTemp->Set_Position(m_pTransformCom);
 
     return S_OK;
 }

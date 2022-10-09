@@ -41,19 +41,12 @@ void CHandPrint::Tick(_float fTimeDelta)
 
 void CHandPrint::LateTick(_float fTimeDelta)
 {
-
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_DECAL);
 }
 
 HRESULT CHandPrint::Render()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pVIBufferCom)
-		return E_FAIL;
-
-	/* 셰이더 전역변수에 값을 던진다. */
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
-
+	
 	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
@@ -63,8 +56,10 @@ HRESULT CHandPrint::Render()
 
 HRESULT CHandPrint::SetUp_Components()
 {
+
+
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Decals"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -72,7 +67,7 @@ HRESULT CHandPrint::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_HandPrint"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -82,18 +77,17 @@ HRESULT CHandPrint::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CHandPrint::SetUp_ShaderResource()
+HRESULT CHandPrint::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
-	if (nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
-	/*if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
-		return E_FAIL;*/
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
 	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
@@ -101,6 +95,19 @@ HRESULT CHandPrint::SetUp_ShaderResource()
 
 
 	return S_OK;
+}
+
+void CHandPrint::Set_Position(CTransform* _pTransform)
+{
+	_vector vLook = _pTransform->Get_State(CTransform::STATE_LOOK);
+	_vector vRight = _pTransform->Get_State(CTransform::STATE_RIGHT);
+	_vector vPos = _pTransform->Get_State(CTransform::STATE_TRANSLATION);
+	vPos += XMVector3Normalize(vLook) * 0.3f;
+
+	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
 }
 
 CHandPrint * CHandPrint::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)

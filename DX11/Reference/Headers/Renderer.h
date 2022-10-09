@@ -21,7 +21,7 @@ public:
 	}RENDERFONT;
 
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN,RENDER_NONALPHABLEND, RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN,RENDER_NONALPHABLEND, RENDER_DECAL,RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
 	/* Emissive를 위한 렌더타겟 하나 더 만들어서 NONALPHABLEND에서 칠하고 BLEND에서 같이 섞어주기*/
 	/*
 	* 텍스처에 그려야 하는 경우, 텍스처 크기 2048 2048로 같음 근데 다른 사이즈가 있을 수 있으니까
@@ -56,7 +56,6 @@ public:
 
 public:
 	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex,RENDERFONT& RenderFont, const _tchar* pTexttag);
-	void Draw_On_Texture(class CRenderTarget* pRenderTarget, class CTexture* pTexture[], class CShader* pShader, _int iPassindex, _float3 vRenderPos[]);
 
 protected:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];
@@ -84,6 +83,7 @@ protected:
 public:
 	virtual HRESULT Render_Priority();
 	virtual HRESULT Render_NonAlphaBlend();
+	virtual HRESULT Render_Decal();
 	virtual HRESULT Render_Lights();
 	virtual HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */ 
 	virtual HRESULT Render_NonLight();

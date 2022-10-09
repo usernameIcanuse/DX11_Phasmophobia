@@ -106,15 +106,17 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Depth"))))
 		return E_FAIL;
-	//if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelNormal"))))
-	//	return E_FAIL;
-	//if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelBinormal"))))
-	//	return E_FAIL;
-	//if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelTangent"))))
-	//	return E_FAIL;
+	/*if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelNormal"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelBinormal"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PixelTangent"))))
+		return E_FAIL;*/
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
+	/*if(FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Decals"),TEXT("Target_UVLight"))))
+		return E_FAIL;*/
 
 
 	/* For.MRT_LightAcc */
@@ -213,6 +215,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 	if (FAILED(Render_NonAlphaBlend()))
 		return E_FAIL;
+	if (FAILED(Render_Decal()))
+		return E_FAIL;
 	if (FAILED(Render_Lights()))
 		return E_FAIL;
 	if (FAILED(Render_Blend()))
@@ -272,10 +276,6 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
 }
 
-void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture[], CShader* pShader, _int iPassindex, _float3 vRenderPos[])
-{
-}
-
 HRESULT CRenderer::Render_Priority()
 {
 	for (auto& pGameObject : m_RenderObjects[RENDER_PRIORITY])
@@ -316,6 +316,28 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 	if (FAILED(End_RenderTarget()))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CRenderer::Render_Decal()
+{
+	/*if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+		return E_FAIL;
+	for (auto& pGameObject : m_RenderObjects[RENDER_DECAL])
+	{
+		if (nullptr != pGameObject)
+		{
+			if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+			{
+				Safe_Release(pGameObject);
+				continue;
+			}
+			pGameObject->Render();
+		}
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_DECAL].clear();
+	*/
 	return S_OK;
 }
 
@@ -364,8 +386,6 @@ HRESULT CRenderer::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Specular")))))
 		return E_FAIL;
 
-	/*if (FAILED(m_pShader->Set_ShaderResourceView("g_EmissiveTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Emissive")))))
-		return E_FAIL;*/
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));

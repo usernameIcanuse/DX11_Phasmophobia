@@ -60,7 +60,7 @@ void CLobby_Main::LateTick(_float fTimeDelta)
 
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CLobby_Main::Render()

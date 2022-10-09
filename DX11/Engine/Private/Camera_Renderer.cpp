@@ -127,6 +127,30 @@ HRESULT CCamera_Renderer::Render_NonAlphaBlend()
 	return S_OK;
 }
 
+HRESULT CCamera_Renderer::Render_Decal()
+{
+	//if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+	//	return E_FAIL;
+
+	//for (auto& pGameObject : m_RenderObjects[RENDER_DECAL])
+	//{
+	//	if (nullptr != pGameObject)
+	//	{
+	//		if (FAILED(pGameObject->SetUp_ShaderResource(&m_CamViewMat, &m_CamProjMat)))
+	//		{
+	//			Safe_Release(pGameObject);
+	//			continue;
+	//		}
+	//		pGameObject->Render();
+	//	}
+	//	Safe_Release(pGameObject);
+	//}
+	//m_RenderObjects[RENDER_DECAL].clear();
+
+	return S_OK;
+}
+
+
 HRESULT CCamera_Renderer::Render_Lights()
 {
 	/* 셰이드 타겟을 장치에 바인드한다. */

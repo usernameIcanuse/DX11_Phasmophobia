@@ -60,7 +60,7 @@ void CLobby_AddItems::LateTick(_float fTimeDelta)
 {
 
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CLobby_AddItems::Render()

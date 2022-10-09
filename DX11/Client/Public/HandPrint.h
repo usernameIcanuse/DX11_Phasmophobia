@@ -26,6 +26,11 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
+public:
+	void	Set_Position(CTransform* _pTransform);
+
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
@@ -38,7 +43,7 @@ private:
 
 private:
 	HRESULT SetUp_Components();
-	HRESULT SetUp_ShaderResource();
+
 
 public:
 	static CHandPrint* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

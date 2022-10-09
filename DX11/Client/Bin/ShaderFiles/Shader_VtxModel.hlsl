@@ -69,20 +69,7 @@ struct PS_OUT
 	vector		vDepth : SV_TARGET2;
 };
 
-struct PS_OUT_NORMAL
-{
-	vector		vDiffuse : SV_TARGET0;
-	vector		vNormal : SV_TARGET1;
-	vector		vDepth : SV_TARGET2;
-};
 
-struct PS_OUT_EMISSIVE
-{
-	vector		vDiffuse : SV_TARGET0;
-	vector		vNormal : SV_TARGET1;
-	vector		vDepth : SV_TARGET2;
-	vector		vEmissive : SV_TARGET3;
-};
 
 PS_OUT PS_MAIN(PS_IN In)
 {
@@ -157,6 +144,21 @@ struct PS_IN_NORMAL
 	float3		vBinormal : BINORMAL;
 
 };
+struct PS_OUT_NORMAL
+{
+	vector		vDiffuse : SV_TARGET0;
+	vector		vNormal : SV_TARGET1;
+	vector		vDepth : SV_TARGET2;
+	
+};
+
+struct PS_OUT_EMISSIVE
+{
+	vector		vDiffuse : SV_TARGET0;
+	vector		vNormal : SV_TARGET1;
+	vector		vDepth : SV_TARGET2;
+	vector		vEmissive : SV_TARGET3;
+};
 
 
 PS_OUT_NORMAL PS_MAIN_NORMAL(PS_IN_NORMAL In)
@@ -167,7 +169,9 @@ PS_OUT_NORMAL PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 	/* 0 ~ 1 */
 	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
-
+	//Out.vPixelNormal = vPixelNormal;
+	//Out.vPixelBinormal = In.vBinormal * 0.5f + 0.5f;
+	//Out.vPixelTangent = In.vTangent * 0.5f + 0.5f;
 	/* -1 ~ 1 */
 	vPixelNormal = vPixelNormal * 2.f - 1.f;
 
@@ -192,6 +196,9 @@ PS_OUT_EMISSIVE PS_MAIN_NORMALEMISSIVE(PS_IN_NORMAL In)
 
 	/* 0 ~ 1 */
 	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+	//Out.vPixelNormal = vector(vPixelNormal, 0.f);
+	//Out.vPixelBinormal = vector(In.vBinormal * 0.5f + 0.5f,0.f);
+	//Out.vPixelTangent = vector(In.vTangent * 0.5f + 0.5f,0.f);
 
 	/* -1 ~ 1 */
 	vPixelNormal = vPixelNormal * 2.f - 1.f;

@@ -58,7 +58,7 @@ void CLobby_Store::Tick(_float fTimeDelta)
 
 void CLobby_Store::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CLobby_Store::Render()
