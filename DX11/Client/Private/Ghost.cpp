@@ -39,8 +39,12 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(Setup_SpawnPoint()))
 		return E_FAIL;
 
+	m_pModelCom->Set_CurrentAnimation(0);
+
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
+
+
 
 	m_fUpdatePointTime = 5.f;
 
@@ -54,11 +58,15 @@ void CGhost::Tick(_float fTimeDelta)
 	m_fTime += fTimeDelta;
 	m_fUpdatePointTime -= fTimeDelta;
 
+	m_pModelCom->Play_Animation(fTimeDelta);
+
 	if (0.f > m_fUpdatePointTime)
 	{
 		Stop_Updating_SpawnPoint();
 	}
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+
+	
 
 	m_pOBBCom->Update(matWorld);
 	m_pSphereCom->Update(matWorld);
@@ -83,12 +91,20 @@ void CGhost::LateTick(_float fTimeDelta)
 
 HRESULT CGhost::Render()
 {
-//#ifdef _DEBUG
-//	m_pOBBCom->Render();
-//	m_pSphereCom->Render();
-//
-//
-//#endif // _DEBUG
+
+	_uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
+
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			return E_FAIL;
+		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			return E_FAIL;*/
+
+
+
+		m_pModelCom->Render(i, m_pShaderCom, 0, "g_Bones");
+	}
 
 #ifdef _DEBUG
 	GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szEvent, _float2(0.f, 200.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
@@ -96,6 +112,25 @@ HRESULT CGhost::Render()
 
 	return S_OK;
 }
+
+HRESULT CGhost::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
+{
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pModelCom)
+		return E_FAIL;
+
+
+	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+	return S_OK;
+
+}
+
 
 void CGhost::Set_Enable(_bool _bEnable)
 {
@@ -226,6 +261,14 @@ HRESULT CGhost::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
+	/* For.Com_Ghost*/
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Ghost_Girl"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+		return E_FAIL;
+
+	/* For.Com_Shader*/
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -300,6 +343,7 @@ void CGhost::Free()
 	Safe_Release(m_pOBBCom);
 	Safe_Release(m_pSphereCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pNavigationCom);
 

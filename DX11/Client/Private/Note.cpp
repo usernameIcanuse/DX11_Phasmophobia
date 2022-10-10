@@ -53,24 +53,24 @@ void CNote::LateTick(_float fTimeDelta)
 
 HRESULT CNote::Render()
 {
-    CModel* pModelCom = nullptr;
+   /* CModel* pModelCom = nullptr;
 
     if (m_bInstalled)
         pModelCom = m_pNoteOpenModel;
     else
-        pModelCom = m_pModelCom;
+        pModelCom = m_pModelCom;*/
 
-    _uint iNumMeshContainers = pModelCom->Get_NumMeshContainers();
+    _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+        if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
       /*  if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
         
-        pModelCom->Render(i, m_pShaderCom,0);
+        m_pModelCom->Render(i, m_pShaderCom,0);
     }
 
 //#ifdef _DEBUG
@@ -163,8 +163,8 @@ HRESULT CNote::Setup_Component()
         return E_FAIL;
 
     /* For.Com_ModelOpen */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"), TEXT("Com_ModelOpen"), (CComponent**)&m_pNoteOpenModel)))
-        return E_FAIL;
+  /*  if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"), TEXT("Com_ModelOpen"), (CComponent**)&m_pNoteOpenModel)))
+        return E_FAIL;*/
 
     /* For.Com_OBB*/
     CCollider::COLLIDERDESC			ColliderDesc;

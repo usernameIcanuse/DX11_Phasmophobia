@@ -7,6 +7,7 @@ class CCollider;
 class CModel;
 class CRenderer;
 class CNavigation;
+class CShader;
 END
 
 
@@ -30,6 +31,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
 	virtual void Set_Enable(_bool _bEnable);
 	virtual void OnEventMessage(const _tchar* pMessage);
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
@@ -51,6 +54,7 @@ private:
 	CCollider*		m_pOBBCom = nullptr; // attack
 	CCollider*		m_pSphereCom = nullptr;  //ghost
 	CModel*			m_pModelCom = nullptr;
+	CShader* m_pShaderCom = nullptr;
 	CNavigation*	m_pNavigationCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 

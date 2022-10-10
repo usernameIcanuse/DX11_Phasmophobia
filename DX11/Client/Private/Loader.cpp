@@ -476,6 +476,12 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 
 	_matrix			TransformMatrix;
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)/**XMMatrixTranslation(0.f,10.f,0.f)*/;
+
+	/*For. Prototype_Component_Model_Ghost_Girl*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Ghost_Girl"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Ghost/Ghost_Girl/", "Ghost_Girl.fbx", TransformMatrix))))
+		return E_FAIL;
 
 	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 
@@ -527,9 +533,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		return E_FAIL;
 	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixTranslation(-0.7f, 0.1f, 0.f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
 	/* For.Prototype_Component_Model_Note_Open*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Note_Open"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f))*XMMatrixTranslation(0.f,0.f,0.25f);
 
@@ -759,6 +765,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 	/* For.Prototype_Component_Shader_VtxModel */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxAnimModel */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxAnimModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxPointInstance*/
