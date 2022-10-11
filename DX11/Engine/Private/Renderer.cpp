@@ -115,6 +115,10 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Decals"), TEXT("Target_Diffuse"))))
+		return E_FAIL;
+	/*나중에 노멀도 있으면 Normal도 바인드함*/
+
 
 
 	/* For.MRT_LightAcc */
@@ -323,8 +327,10 @@ HRESULT CRenderer::Render_NonAlphaBlend()
 
 HRESULT CRenderer::Render_Decal()
 {
-	if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_Decals"))))
 		return E_FAIL;
+	/*MRT_Deferred에는 깊이 렌더타겟이 바인딩 돼있음 근데 바인딩 돼있는걸 
+	동시에 텍스처로 사용하려고 하면 안됨(?)*/
 
 	for (auto & pGameObject : m_RenderObjects[RENDER_DECAL])
 	{
