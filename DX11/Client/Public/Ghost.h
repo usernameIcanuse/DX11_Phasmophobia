@@ -74,7 +74,7 @@ private:
 
 	_bool				m_bGhostWriting = false;
 	_bool				m_bHandPrint = true;
-	_bool				m_bDotsProjecter = false;
+	_bool				m_bDotsProjecter = true;
 
 	_bool				m_bCheckGhostWriting = false;
 	_bool				m_bCheckHandPrint = false;
@@ -82,6 +82,8 @@ private:
 
 	_float				m_fIdleTime = 3.f;
 	_float				m_fHandPrintCoolTime = -1.f;
+	_bool				m_bInDots = false;
+	_float				m_fDotsTime = 1.5f;
 
 	
 private:

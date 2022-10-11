@@ -26,7 +26,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
+private:
 	void	Add_Item(CItem* pItem);
 	void	Drop_Item();//아이템 버리기
 	void	Change_Item();
@@ -48,6 +48,7 @@ private:
 	_uint					m_iIndex = 0;
 	CItem*					m_pSpotLight = nullptr;
 
+	class CPlayer*			m_pPlayer = nullptr;
 	CTransform*				m_pPlayerTransform = nullptr;
 
 	_float			m_fDist = FLT_MAX;

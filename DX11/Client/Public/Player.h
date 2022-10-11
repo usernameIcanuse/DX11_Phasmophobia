@@ -29,6 +29,9 @@ public:
 	virtual HRESULT Render();
 
 public:
+	_bool	Picking_Navigation(RAY tMouseRay, _float4& vPickedPos);
+
+
 #ifdef _DEBUG
 	CNavigation* Get_Navigation()
 	{

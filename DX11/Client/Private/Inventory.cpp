@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Video_Camera.h"
 #include "Door.h"
+#include "Player.h"
 
 
 CInventory::CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -29,7 +30,8 @@ HRESULT CInventory::Initialize(void* pArg)
 
 	if (pArg)
 	{
-		m_pPlayerTransform = (CTransform*)pArg;
+		m_pPlayer = (CPlayer*)pArg;
+		m_pPlayerTransform = (CTransform*)m_pPlayer->Get_Component(CGameObject::m_pTransformTag);
 	}
 
 	m_vInventory.reserve(3);
@@ -59,6 +61,9 @@ void CInventory::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
+	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+
 	if (m_vInventory[m_iIndex])
 	{
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
@@ -118,21 +123,48 @@ void CInventory::Tick(_float fTimeDelta)
 
 	if (m_eColliderType != COLLISION_TYPE::TYPE_END)
 	{
-		if (m_eColliderType == COLLISION_TYPE::TRIPOD)
-			Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
-		else
-			Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook);
-
-		if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+		if (nullptr != m_vInventory[m_iIndex])
 		{
+
 			if (m_eColliderType == COLLISION_TYPE::TRIPOD)
-				Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
+				Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
 			else
-				Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook);
+				Item_TempModel(m_vColliderPos, m_eColliderType, m_vColliderLook);
+
+			if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+			{
+				if (m_eColliderType == COLLISION_TYPE::TRIPOD)
+					Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook, (CItem*)m_pTripod);
+				else
+					Install_Item(m_vColliderPos, m_eColliderType, m_vColliderLook);
+			}
+		}
+	}
+	else
+	{
+		if (nullptr != m_vInventory[m_iIndex])
+		{
+
+			_float4		vPickedPos;
+			_float3		vPosition;
+			
+			if (true == m_pPlayer->Picking_Navigation(*(RAY*)m_pRayCom->Get_Collider(), vPickedPos))
+			{
+				vPosition.x = vPickedPos.x;
+				vPosition.y = vPickedPos.y;
+				vPosition.z = vPickedPos.z;
+
+				Item_TempModel(vPosition, COLLISION_TYPE::NAVIGATION, m_vColliderLook);
+
+
+				if (pGameInstance->Is_KeyState(KEY::F, KEY_STATE::TAP))
+				{
+					Install_Item(vPosition, COLLISION_TYPE::NAVIGATION, m_vColliderLook);
+				}
+			}
 		}
 	}
 
-	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 	m_fDist = FLT_MAX;
 	m_eColliderType = COLLISION_TYPE::TYPE_END;
@@ -218,8 +250,6 @@ void CInventory::Drop_Item()
 
 void CInventory::Install_Item(_float3 _vInstallPos, COLLISION_TYPE _eCollisionType, _float4 vLook, CItem* pConnectObject)
 {
-	if (nullptr == m_vInventory[m_iIndex])
-		return;
 
 	if (m_vInventory[m_iIndex]->Install(_vInstallPos, _eCollisionType, vLook, pConnectObject))
 	{

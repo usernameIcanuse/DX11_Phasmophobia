@@ -206,6 +206,43 @@ _bool CCell::isSamePoints(_float3 vPointA, _float3 vPointB, _float3 vPointC)
 	return false;
 }
 
+_bool CCell::isPicked(RAY _tMouseRay, _int* pNeighborIndex, _float4& vPickedPos)
+{
+	_vector vRayEnd = XMLoadFloat3(&_tMouseRay.vPos) + XMLoadFloat3(&_tMouseRay.vDir) * _tMouseRay.fLength;
+
+	_vector vIntersects = XMPlaneIntersectLine(XMLoadFloat4(&m_vCellPlane), XMLoadFloat3(&_tMouseRay.vPos), vRayEnd);
+	_vector vInterSectsLength = vIntersects - XMLoadFloat3(&_tMouseRay.vPos);
+	
+	if (_tMouseRay.fLength <= XMVectorGetX(XMVector3Length(vInterSectsLength)))
+	{
+		*pNeighborIndex = -1;
+		return false;
+	}
+	for (_uint i = 0; i < LINE_END; ++i)
+	{
+		_float3 vPlayerPos;
+		_float3 vPointPos = m_vPoints[i];
+
+		XMStoreFloat3(&vPlayerPos, vIntersects);
+
+		vPlayerPos.y = 0.f;
+		vPointPos.y = 0.f;
+
+		_vector	vDir = XMLoadFloat3(&vPlayerPos) - XMLoadFloat3(&vPointPos);
+		/* ¹Ù±ùÀ¸·Î ³«¤¶¾Æ¾î */
+		if (DBL_EPSILON < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(XMLoadFloat3(&m_vNormal[i])))))
+		{
+			*pNeighborIndex = m_iNeighbor[i];
+			return false;
+		}
+
+	}
+
+	XMStoreFloat4(&vPickedPos, vIntersects);
+
+	return true;
+}
+
 
 
 

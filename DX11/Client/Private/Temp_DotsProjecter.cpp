@@ -91,7 +91,7 @@ void CTempDotsProjecter::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eTy
 
         m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
     }
-    else if (eType == COLLISION_TYPE::OBJECT)
+    else if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::NAVIGATION)
     {
         _float3 vScale = m_pTransformCom->Get_Scaled();
         _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));

@@ -63,7 +63,7 @@ HRESULT CTempVideoCam::Render()
 
 void CTempVideoCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
-    if (eType == COLLISION_TYPE::OBJECT )
+    if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::NAVIGATION)
     {
         CTransform* pTransform = (CTransform*)pConnectItem->Get_Component(CGameObject::m_pTransformTag);
 

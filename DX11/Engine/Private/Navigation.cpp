@@ -160,10 +160,53 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY, _vector vDirect
 
 					return true;
 				}
+				else
+				{
+					return false;
+				}
+
 			}
-			return false;
 		}
 	}
+}
+
+_bool CNavigation::Picking_Mesh(RAY _tMouseRay,_int	_iCurrentIndex, _float4&	vPickedPos)
+{
+	if (m_Cells.empty())
+		return false;
+
+	if (_iCurrentIndex == -1)
+		_iCurrentIndex = m_NaviDesc.m_iCurrentIndex;
+
+	_int		iNeighborIndex = -1;
+
+	if (true == m_Cells[_iCurrentIndex]->isPicked(_tMouseRay, &iNeighborIndex, vPickedPos))
+		return true;
+
+	else
+	{
+		/*2. 나간쪽 쎌에 이웃이 존재할때 */
+		if (0 <= iNeighborIndex)
+		{
+
+			while (1)
+			{
+
+				if (true == m_Cells[iNeighborIndex]->isPicked(_tMouseRay, &iNeighborIndex, vPickedPos))
+					break;
+
+				if (0 > iNeighborIndex)
+					return false;
+
+			}
+
+			m_NaviDesc.m_iCurrentIndex = iNeighborIndex;
+			return true;
+		}
+		else
+			return false;
+	}
+	return S_OK;
 }
 
 #ifdef _DEBUG

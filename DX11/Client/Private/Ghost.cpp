@@ -244,9 +244,17 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Normal_Operation(_float fTimeDelta)
 {
-	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+	if (m_bInDots)
+	{
+		m_fDotsTime -= fTimeDelta;
+		m_pModelCom->Play_Animation(fTimeDelta*2.f);
+		GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+		if (0.f > m_fDotsTime)
+		{
+			m_bInDots = false;
+		}
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	}
 }
 
 
@@ -339,6 +347,15 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 
 			}
 			m_fHandPrintCoolTime = 10.f;
+		}
+	}
+
+	if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
+	{
+		if (m_bDotsProjecter)
+		{
+			m_bInDots = true;
+			m_fDotsTime = 1.f;
 		}
 	}
 }

@@ -112,7 +112,7 @@ HRESULT CDotsProjecter::Render()
 
 _bool CDotsProjecter::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
-    if (COLLISION_TYPE::OBJECT == eType)
+    if (COLLISION_TYPE::OBJECT == eType|| eType == COLLISION_TYPE::NAVIGATION)
     {
         _float3 vScale = m_pTransformCom->Get_Scaled();
         _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));

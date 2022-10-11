@@ -43,6 +43,7 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 
+	m_fChangeDir = 5.f;
 	/*생성과 동시에 플레이어 위치를 알고 있음?
 	근데 만약에 플레이어 생성 전에 얘가 만들어지면 안됨 순서를 맞춰줘야함?*/
 

@@ -84,7 +84,7 @@ HRESULT CVideo_Camera::Render()
 
 _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {
-    if (eType == COLLISION_TYPE::OBJECT )
+    if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::NAVIGATION)
     {
         _float3 vScale = m_pTransformCom->Get_Scaled();
 
