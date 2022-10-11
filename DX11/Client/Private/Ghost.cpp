@@ -83,7 +83,6 @@ void CGhost::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 	m_pRendererCom->Add_DebugRenderGroup(m_pGhostCom);
@@ -99,14 +98,18 @@ HRESULT CGhost::Render()
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+		_int	iPassIndex = 1;
+
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
-		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-			return E_FAIL;*/
+		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			iPassIndex = 0;
+		}
 
 
 
-		m_pModelCom->Render(i, m_pShaderCom, 0, "g_Bones");
+		m_pModelCom->Render(i, m_pShaderCom, iPassIndex, "g_Bones");
 	}
 
 #ifdef _DEBUG
@@ -201,6 +204,7 @@ void CGhost::Stop_Updating_SpawnPoint()
 
 void CGhost::Light_Attack(_float fTimeDelta)
 {
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 	m_pModelCom->Play_Animation(fTimeDelta);
 
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
@@ -219,6 +223,7 @@ void CGhost::Light_Attack(_float fTimeDelta)
 void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
 	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
@@ -239,6 +244,8 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Normal_Operation(_float fTimeDelta)
 {
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+
 	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
