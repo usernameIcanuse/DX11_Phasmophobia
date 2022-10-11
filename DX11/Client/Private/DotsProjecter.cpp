@@ -175,6 +175,17 @@ void CDotsProjecter::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, 
     }
 }
 
+void CDotsProjecter::MalFunction(_float fTimeDelta)
+{
+    /*ºû ±ôºýÀÓ*/
+}
+
+void CDotsProjecter::Normal_Operation(_float fTimeDelta)
+{
+    /*±Í½Å ·»´õ?*/ 
+}
+
+
 void CDotsProjecter::On_Collision_Enter(CCollider* pCollider)
 {
     __super::On_Collision_Enter(pCollider);

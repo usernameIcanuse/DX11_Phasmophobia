@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "../Public/Door.h"
 #include "GameInstance.h"
-#include "HandPrint.h"
 
 CDoor::CDoor(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -78,13 +77,14 @@ void CDoor::Tick(_float fTimeDelta)
         }
     
     }
-    else if( XMConvertToRadians(90.f) > m_fRadian && DBL_EPSILON < m_fOpenRadian)
+    else if(m_bGhostOpen && XMConvertToRadians(90.f) > m_fRadian)
     {
-        _float fRadian = m_fOpenRadian * fTimeDelta*0.1f;
+        _float fRadian = m_fOpenRadian * fTimeDelta;
         m_fOpenRadian -= fRadian;
-        if (DBL_EPSILON > m_fOpenRadian)
+        if (0.f > m_fOpenRadian)
         {
             m_fOpenRadian = 0.f;
+            m_bGhostOpen = false;
         }
 
         if (XMConvertToRadians(90.f) > m_fRadian + fRadian && DBL_EPSILON < m_fRadian + fRadian)
@@ -94,7 +94,6 @@ void CDoor::Tick(_float fTimeDelta)
         }
     }
 
-    m_pHandPrint->Set_Position(m_pTransformCom);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 }
@@ -181,10 +180,6 @@ void CDoor::Close_Door(_float fTimeDelta)
     }
 }
 
-void CDoor::HandPrint_Appear()
-{
-}
-
 HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
@@ -223,10 +218,6 @@ HRESULT CDoor::Setup_Component()
         return E_FAIL;
 
    
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
-        return E_FAIL;
-
-
     return S_OK;
 }
 

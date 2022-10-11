@@ -8,10 +8,10 @@
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
-	//, m_pImguiMgr(CImguiMgr::Get_Instance())
+	, m_pImguiMgr(CImguiMgr::Get_Instance())
 {
 	Safe_AddRef(m_pGameInstance);
-	//Safe_AddRef(m_pImguiMgr);
+	Safe_AddRef(m_pImguiMgr);
 }
 
 HRESULT CMainApp::Initialize()
@@ -29,7 +29,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;	
 
-	//m_pImguiMgr->Init(m_pDevice, m_pContext);
+	m_pImguiMgr->Init(m_pDevice, m_pContext);
 	
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
@@ -51,7 +51,7 @@ void CMainApp::Tick(float fTimeDelta)
 		return;
 
 	m_pGameInstance->Tick_Engine(fTimeDelta);
-	//m_pImguiMgr->Tick(fTimeDelta);
+	m_pImguiMgr->Tick(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -64,7 +64,7 @@ HRESULT CMainApp::Render()
 	
 	m_pGameInstance->Render_Engine();
 
-	//m_pImguiMgr->Render();
+	m_pImguiMgr->Render();
 
 	m_pGameInstance->Present();
 
@@ -150,6 +150,6 @@ void CMainApp::Free()
 	Safe_Release(m_pGameInstance);		
 	Safe_Release(m_pImguiMgr);
 
-	//CImguiMgr::Destroy_Instance();
+	CImguiMgr::Destroy_Instance();
 	CGameInstance::Release_Engine();	
 }

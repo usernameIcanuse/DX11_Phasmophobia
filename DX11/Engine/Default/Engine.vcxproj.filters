@@ -163,9 +163,6 @@
     <ClInclude Include="..\Public\VIBuffer_NorRect.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Nor_Rect</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_Box.h">
-      <Filter>01.Utility\03.Component\00.VIBuffer\Box</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -314,9 +311,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_NorRect.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Nor_Rect</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_Box.cpp">
-      <Filter>01.Utility\03.Component\00.VIBuffer\Box</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,9 +481,6 @@
     </Filter>
     <Filter Include="01.Utility\07. Render_Target\Manager">
       <UniqueIdentifier>{56fe324f-3a79-46e1-a70d-1a066c9436c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03.Component\00.VIBuffer\Box">
-      <UniqueIdentifier>{eda328e6-5e9f-4005-b8ac-1cef73b66ee5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

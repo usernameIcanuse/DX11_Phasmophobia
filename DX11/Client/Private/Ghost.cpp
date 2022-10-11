@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
+#include "HandPrint.h"
 #include "Door.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -39,7 +40,10 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(Setup_SpawnPoint()))
 		return E_FAIL;
 
-	m_pModelCom->Set_CurrentAnimation(0);
+	if (FAILED(Setup_Bahavior()))
+		return E_FAIL;
+
+	m_pModelCom->Set_CurrentAnimation(1);
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
@@ -58,7 +62,7 @@ void CGhost::Tick(_float fTimeDelta)
 	m_fTime += fTimeDelta;
 	m_fUpdatePointTime -= fTimeDelta;
 
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_fHandPrintCoolTime -= fTimeDelta;
 
 	if (0.f > m_fUpdatePointTime)
 	{
@@ -69,7 +73,7 @@ void CGhost::Tick(_float fTimeDelta)
 	
 
 	m_pOBBCom->Update(matWorld);
-	m_pSphereCom->Update(matWorld);
+	m_pGhostCom->Update(matWorld);
 
 
 }
@@ -82,8 +86,7 @@ void CGhost::LateTick(_float fTimeDelta)
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
-	m_pRendererCom->Add_DebugRenderGroup(m_pSphereCom);
-	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pGhostCom);
 
 
 #endif // _DEBUG
@@ -143,19 +146,32 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 {
 	if (0 == lstrcmp(TEXT("Event"), pMessage))
 	{
+		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
+		
 		m_fEventTime = 10.f + m_pSpawnPoint->Get_Anger() / 6;
 		m_EventFunc = std::bind(&CGhost::Light_Attack, std::placeholders::_1, std::placeholders::_2);
+	
+		m_pModelCom->Set_CurrentAnimation(0);
+
 	}
 	 
 	else if (0 == lstrcmp(TEXT("Attack"), pMessage))
 	{
-		m_fAttackTime = 10.f + m_pSpawnPoint->Get_Anger() / 6;
-		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
-	}
+		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
 
+		m_pOBBCom->Set_Enable(true);
+		m_fAttackTime = 10.f + m_pSpawnPoint->Get_Anger() / 5;
+		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
+	
+		m_pModelCom->Set_CurrentAnimation(0);
+	}
 	else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
 	{
-		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
+		m_EventFunc = std::bind(&CGhost::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+		m_pModelCom->Set_CurrentAnimation(1);
+		m_fEventTime = m_fAttackTime = 0.f;
 	}
 
 }
@@ -185,6 +201,8 @@ void CGhost::Stop_Updating_SpawnPoint()
 
 void CGhost::Light_Attack(_float fTimeDelta)
 {
+	m_pModelCom->Play_Animation(fTimeDelta);
+
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
 #ifdef _DEBUG
 	wsprintf(m_szEvent, TEXT("±ð²á~"));
@@ -193,8 +211,7 @@ void CGhost::Light_Attack(_float fTimeDelta)
 	if (0.f > m_fEventTime)
 	{
 		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
-		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
-
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 	}
 	
 }
@@ -205,20 +222,24 @@ void CGhost::Attack(_float fTimeDelta)
 #ifdef _DEBUG
 	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
+	m_fIdleTime -= fTimeDelta;
+	if (0.f > m_fIdleTime)
+		m_pModelCom->Set_CurrentAnimation(1);
+
+	m_pModelCom->Play_Animation(fTimeDelta*1.3f);
+
 	m_fAttackTime -= fTimeDelta;
 	if (0.f > m_fAttackTime)
 	{
+		m_pOBBCom->Set_Enable(false);
 		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
-		m_EventFunc = std::bind(&CGhost::Moving, std::placeholders::_1, std::placeholders::_2);
-
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 	}
 }
 
-void CGhost::Moving(_float fTimeDelta)
+void CGhost::Normal_Operation(_float fTimeDelta)
 {
-	//m_pTransformCom->Go_Left(fTimeDelta*0.2f, m_pNavigationCom);
-	//m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-
+	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
 
@@ -237,28 +258,22 @@ HRESULT CGhost::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
 
-	/* For.Com_Sphere*/
+	m_pOBBCom->Set_Enable(false);
+
+	/* For.Com_Ghost*/
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-	ColliderDesc.vScale = _float3(10.f, 10.f, 10.f);
+	ColliderDesc.vScale = _float3(3.f, 10.f, 3.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_Sphere"), (CComponent**)&m_pSphereCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Ghost"), (CComponent**)&m_pGhostCom, &ColliderDesc)))
 		return E_FAIL;
 
 	///* For.Com_Renderer*/
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	/* For.Com_Navigation*/
-	CNavigation::NAVIDESC	NaviDesc;
-	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
-	NaviDesc.m_iCurrentIndex = 0;
-
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
 	/* For.Com_Ghost*/
@@ -280,23 +295,43 @@ HRESULT CGhost::Setup_SpawnPoint()
 	return S_OK;
 }
 
+HRESULT CGhost::Setup_Bahavior()
+{
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), nullptr, m_pTransformCom)))
+		return E_FAIL;
+	return S_OK;
+}/**/
+
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
 	{ 
-		CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
-
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(10, 60);
-
-		_int	iValue = dis(gen);
-
-		pDoor->Open_Door((_float)iValue);
-		if (m_bHandPrint)
+		if (0.f > m_fHandPrintCoolTime)
 		{
-			m_bCheckHandPrint = true;//Áõ°Å ÇÑ ¹ø¸¸ Ã£µµ·Ï
-			pDoor->HandPrint_Appear();
+			CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
+
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dis(30, 70);
+
+			_int	iValue = dis(gen);
+
+			pDoor->Open_Door((_float)iValue);
+			if (m_bHandPrint)
+			{
+				m_bCheckHandPrint = true;//Áõ°Å ÇÑ ¹ø¸¸ Ã£µµ·Ï
+
+				CHandPrint* pTemp;
+
+				if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&pTemp)))
+					return;
+
+				CTransform* pObjectTransform = (CTransform*)pDoor->Get_Component(CGameObject::m_pTransformTag);
+
+				pTemp->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+
+			}
+			m_fHandPrintCoolTime = 10.f;
 		}
 	}
 }
@@ -341,10 +376,9 @@ void CGhost::Free()
 	__super::Free();
 
 	Safe_Release(m_pOBBCom);
-	Safe_Release(m_pSphereCom);
+	Safe_Release(m_pGhostCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pNavigationCom);
 
 }

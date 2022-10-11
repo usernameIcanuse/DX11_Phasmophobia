@@ -43,9 +43,10 @@ public:
 
 	void Open_Door(_float _fRadian)
 	{
-		m_fOpenRadian = _fRadian;
+		m_bGhostOpen = true;
+		m_fOpenRadian = XMConvertToRadians(_fRadian);
 	}
-	void  HandPrint_Appear();
+
 
 
 public:
@@ -66,10 +67,10 @@ private:
 
 private:
 	CGameObject*	m_pPlayer = nullptr;
-	class CHandPrint* m_pHandPrint = nullptr;
 
 	_float			m_fRadian = 0.f;
 	_float			m_fOpenRadian = 0.f;
+	_bool			m_bGhostOpen = false;
 	_bool			m_bMainDoor = false;
 	_bool			m_bLock = false;
 

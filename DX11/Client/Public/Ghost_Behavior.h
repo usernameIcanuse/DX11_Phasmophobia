@@ -3,7 +3,10 @@
 #include "Client_Defines.h"
 
 BEGIN(Engine)
+#ifdef _DEBUG
 class CRenderer;
+#endif
+class CNavigation;
 END
 
 
@@ -12,18 +15,12 @@ BEGIN(Client)
 class CGhost_SpawnPoint;
 
 
-class CGhost_Status final: public CGameObject
+class CGhost_Behavior final: public CGameObject
 {
-public:
-
-	enum WEIGHT {PLAYER_IN_HOUSE = 2, PLAYER_IN_AREA = 2, ITEM_IN_AREA=1/*total 6*/, SPIRITBOX = 2, DOTSPROJECTER = 1,
-				CAMERA = 1/*total 2*/, FIND_EVIDENCE = 5/*total 3*/,TIME_ATTACK = 1/*1 per minute*/ };
-				//=>Total Score 40
-	friend class CGhost_SpawnPoint;
 private:
-	CGhost_Status(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CGhost_Status(const CGhost_Status& rhs);
-	virtual ~CGhost_Status() = default;
+	CGhost_Behavior(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CGhost_Behavior(const CGhost_Behavior& rhs);
+	virtual ~CGhost_Behavior() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -32,52 +29,35 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
 	virtual void OnEventMessage(const _tchar* pMessage);
-	
+
 public:
-	void	Add_Score(_int _iScore)
-	{
-		m_iScore += _iScore;
-	}
-	void	Subtract_Score(_int _iScore)
-	{
-		m_iScore -= _iScore;
-	}
+	void Normal_Operation(_float fTimeDelta);
+	void Event(_float fTimeDelta);
+	void Attack(_float fTimeDelta);
 
 private:
+	CTransform* m_pOwnerTransform = nullptr;
+	/*플레이어도 미리 가지고 있음?*/
+	CTransform* m_pPlayerTransform = nullptr;
+
+	CNavigation* m_pNavigationCom = nullptr;
+
+	function<void(CGhost_Behavior*, _float)> m_pEventFunc;
+
+	_float		m_fChangeDir = 0.f;
+	_float		m_fRadian = 0.f;
+	_float		m_fIdleTime = 3.f;
 
 #ifdef _DEBUG
-	_tchar		m_szAgression[MAX_PATH] = TEXT("");//공격성 등 여러개 출력
-	CRenderer* m_pRenderercom = nullptr;
-	_float		m_fTimeAcc = 0.f;
+	CRenderer* m_pRendererCom = nullptr;
 #endif
-
-	_int	   m_iScore = 0;
-	_uint	   m_iEMF = 1;
-
-
-	_float		m_fTime = 0.f;//timeattack용
-	_int		m_iCnt = 0;
-
-	_float		m_fEventCoolTime = 100.f;//이벤트와 헌팅
-	//_float		m_fAttackCoolTime = 100.f;
-
-	_float		m_fTermBeforeEvent = 5.f;
-	_tchar		m_szEventMessage[MAX_PATH] = TEXT("");
-
-	_uint		m_iEventWeight = 0;
-	//_uint		m_iAttackWeight = 0;
-
-	_bool		m_bEvent = true;
-	_bool		m_bAttack = true;
-	_bool		m_bTerm = false;
-
-
-	_bool		m_bEMFLevel5 = false;
-	
+private:
+	HRESULT Setup_Component();
 
 public:
-	static CGhost_Status* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CGhost_Behavior* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;//SpawnPoint를 넘겨줌
 	virtual void Free() override;
 

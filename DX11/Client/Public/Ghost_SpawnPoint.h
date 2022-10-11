@@ -52,6 +52,11 @@ public:
 		m_pGhost = _pGhost;
 	}
 
+	_vector Get_SpawnPoint()
+	{
+		return m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);			
+	}
+
 
 private:
 	CCollider*		m_pAreaCom = nullptr;

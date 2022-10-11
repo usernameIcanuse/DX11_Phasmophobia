@@ -31,8 +31,8 @@ public:
 	
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	
-	virtual void MalFunction(_float fTimeDelta = 0.f) {}
-	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+	virtual void MalFunction(_float fTimeDelta = 0.f);
+	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 
 private:
 	CLight*		m_pLight = nullptr;//설치 시 불 켜짐

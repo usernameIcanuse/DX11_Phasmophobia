@@ -108,7 +108,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta,m_pNavigationCom);
+	m_pTransformCom->Move(fTimeDelta/*,m_pNavigationCom*/);
 	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -150,13 +150,13 @@ HRESULT CPlayer::Setup_Component()
 	
 
 	/* For.Com_Navigation*/
-	//CGameObject* pNavigation = nullptr;
+	CGameObject* pNavigation = nullptr;
 
-	//if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1,TEXT("Layer_Navigation"),TEXT("Prototype_GameObject_Navigation_Mesh"),&pNavigation)))
-	//	return E_FAIL;
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1,TEXT("Layer_Navigation"),TEXT("Prototype_GameObject_Navigation_Mesh"),&pNavigation)))
+		return E_FAIL;
 
-	//m_pNavigationCom = (CNavigation*)pNavigation->Get_Component(TEXT("Com_Navigation"));
-	//Safe_AddRef(m_pNavigationCom);
+	m_pNavigationCom = (CNavigation*)pNavigation->Get_Component(TEXT("Com_Navigation"));
+	Safe_AddRef(m_pNavigationCom);
 
 #ifdef _DEBUG
 	/*For.Com_Renderer*/
@@ -209,7 +209,12 @@ HRESULT CPlayer::Setup_Inventory()
 
 void CPlayer::On_Collision_Enter(CCollider* pCollider)
 {
-
+	if (COLLISION_TYPE::GHOST_ATTACK == pCollider->Get_Type())
+	{
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
+		/*Game_End()*/
+	}
 }
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)

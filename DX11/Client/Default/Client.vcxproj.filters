@@ -196,6 +196,9 @@
     <ClInclude Include="..\Public\HandPrint.h">
       <Filter>02.GameObject\Ghost\HandPrint</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ghost_Behavior.h">
+      <Filter>02.GameObject\Ghost\Ghost_Behavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\HandPrint.cpp">
       <Filter>02.GameObject\Ghost\HandPrint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ghost_Behavior.cpp">
+      <Filter>02.GameObject\Ghost\Ghost_Behavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -576,6 +582,9 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost\HandPrint">
       <UniqueIdentifier>{1de57512-26ef-4418-88c3-debcb2b3e513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Ghost_Behavior">
+      <UniqueIdentifier>{91ad5387-2149-4e61-b473-ebd44de94d5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -46,16 +46,14 @@ private:
 private: /*기본 귀신 상호작용, 기능*/
 	void Light_Attack(_float fTimeDelta =0.f); //이벤트
 	void Attack(_float fTimeDelta = 0.f); //헌팅
-	void Moving(_float fTimeDelta = 0.f);
-
+	void Normal_Operation(_float fTimeDelta = 0.f);
 
 
 private:
 	CCollider*		m_pOBBCom = nullptr; // attack
-	CCollider*		m_pSphereCom = nullptr;  //ghost
+	CCollider*		m_pGhostCom = nullptr;  //ghost
 	CModel*			m_pModelCom = nullptr;
-	CShader* m_pShaderCom = nullptr;
-	CNavigation*	m_pNavigationCom = nullptr;
+	CShader*		m_pShaderCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 
 #ifdef _DEBUG
@@ -64,6 +62,8 @@ private:
 
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	_float				m_fUpdatePointTime = 0.f;
+
+	//ghost가 핸드 프린트 하나를 가지고 있고 시간 지나서 문 부딪힐 때마다 재활용
 	
 	function<void(CGhost*,_float)>	m_EventFunc;
 
@@ -73,16 +73,21 @@ private:
 	_float				m_fAttackTime = 10.f;
 
 	_bool				m_bGhostWriting = false;
-	_bool				m_bHandPrint = false;
+	_bool				m_bHandPrint = true;
 	_bool				m_bDotsProjecter = false;
 
 	_bool				m_bCheckGhostWriting = false;
 	_bool				m_bCheckHandPrint = false;
 	_bool				m_bCheckDotsProjecter = false;
+
+	_float				m_fIdleTime = 3.f;
+	_float				m_fHandPrintCoolTime = -1.f;
+
 	
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_SpawnPoint();
+	HRESULT Setup_Bahavior();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

@@ -25,12 +25,8 @@ HRESULT CGhost_Status::Initialize_Prototype()
 
 HRESULT CGhost_Status::Initialize(void* pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
-
 	
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
@@ -46,7 +42,7 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 	Add_Score(PLAYER_IN_HOUSE);
 	
 	/*m_fAttackCoolTime = */m_fEventCoolTime = dis(gen) + 20;
-
+	
 
 	return S_OK;
 }
@@ -178,7 +174,7 @@ void CGhost_Status::OnEventMessage(const _tchar* pMessage)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(0, 100);
+		std::uniform_int_distribution<int> dis(60,100 );
 
 		m_bEvent = false;
 		m_bAttack = false;

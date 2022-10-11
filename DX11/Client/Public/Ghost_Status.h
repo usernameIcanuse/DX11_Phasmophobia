@@ -68,8 +68,8 @@ private:
 	_uint		m_iEventWeight = 0;
 	//_uint		m_iAttackWeight = 0;
 
-	_bool		m_bEvent = true;
-	_bool		m_bAttack = true;
+	_bool		m_bEvent = false;
+	_bool		m_bAttack = false;
 	_bool		m_bTerm = false;
 
 

@@ -16,6 +16,7 @@
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
+#include "Ghost_Behavior.h"
 #include "HandPrint.h"
 
 #include "Temp_DotsProjecter.h"
@@ -279,6 +280,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CGhost_Status::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Ghost_Behavior*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_Behavior"),
+		CGhost_Behavior::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_HandPrint*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HandPrint"),
 		CHandPrint::Create(m_pDevice, m_pContext))))
@@ -454,10 +460,6 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_VIBuffer_Box*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Box"),
-		CVIBuffer_Box::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Point_Instance*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Point_Instance"),
@@ -476,7 +478,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 
 	_matrix			TransformMatrix;
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)/**XMMatrixTranslation(0.f,10.f,0.f)*/;
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)*XMMatrixRotationY(XMConvertToRadians(180.f));
 
 	/*For. Prototype_Component_Model_Ghost_Girl*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Ghost_Girl"),
@@ -759,7 +761,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	/* For.Prototype_Component_Shader_Decals */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_Decals"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Decals.hlsl"), VTXBOXTEX_DECLARATION::Element, VTXBOXTEX_DECLARATION::iNumElements))))
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Decals.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VtxModel */

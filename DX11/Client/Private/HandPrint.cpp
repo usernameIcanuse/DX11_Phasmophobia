@@ -30,7 +30,7 @@ HRESULT CHandPrint::Initialize(void * pArg)
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaled(_float3(2.f, 2.f, 1.f));
+	m_pTransformCom->Set_Scaled(_float3(1.f, 1.f, 1.f));
 
 	
 	return S_OK;
@@ -38,6 +38,23 @@ HRESULT CHandPrint::Initialize(void * pArg)
 
 void CHandPrint::Tick(_float fTimeDelta)
 {
+	if (m_pObjectTransform)
+	{
+		_float3 vScale = m_pTransformCom->Get_Scaled();
+
+		_vector vRight = m_pObjectTransform->Get_State(CTransform::STATE_RIGHT);
+		_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		_vector vLook = m_pObjectTransform->Get_State(CTransform::STATE_LOOK);
+		_vector vPos = m_pObjectTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+		vPos = vPos + XMVector3Normalize(vRight) * m_vPosOffSet.x + XMVector3Normalize(vLook) * m_vPosOffSet.z 
+			+ XMVector3Normalize(vUp) * m_vPosOffSet.y;
+
+		m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook)* vScale.z);
+		m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
+		m_pTransformCom->Set_State(CTransform::STATE_UP, XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScale.y);
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	}
 }
 
 void CHandPrint::LateTick(_float fTimeDelta)
@@ -51,6 +68,7 @@ void CHandPrint::LateTick(_float fTimeDelta)
 
 HRESULT CHandPrint::Render()
 {
+	
 
 	m_pShaderCom->Begin(0);
 
@@ -74,7 +92,7 @@ HRESULT CHandPrint::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Box"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_Cube"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 
 	/* For.Com_OBB*/
@@ -131,19 +149,30 @@ HRESULT CHandPrint::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pPro
 	return S_OK;
 }
 
-void CHandPrint::Set_Position(CTransform* _pTransform)
+void CHandPrint::Set_Position(CTransform* _pTransform,_vector vPlayerPos)
 {
-	_vector vLook = _pTransform->Get_State(CTransform::STATE_LOOK);
+	m_pObjectTransform = _pTransform;
+
 	_vector vRight = _pTransform->Get_State(CTransform::STATE_RIGHT);
 	_vector vPos = _pTransform->Get_State(CTransform::STATE_TRANSLATION);
 
-	vPos = vPos - XMVector3Normalize(vLook)*0.8f-vRight*3.f+XMVectorSet(0.f,4.f,0.f,0.f);
+	_float4 vPlayerDir;
+	XMStoreFloat4(&vPlayerDir, vPlayerPos - vPos);
+	_vector vEraseHeight = XMVectorSet(vPlayerDir.x, 0.f, vPlayerDir.z, 0.f);
 
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook));
-	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight)*2.f);
-	m_pTransformCom->Set_State(CTransform::STATE_UP, XMVectorSet(0.f, 1.f, 0.f, 0.f) * 2.f);
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
-
+	if (0.f > XMVectorGetX(XMVector3Dot(XMVector3Normalize(vRight), vEraseHeight)))
+	{//문의 기본 오프셋이 왼쪽으로 가있지만 1,0,0,0이 right인 상황
+		m_vPosOffSet.x = vPlayerDir.x;
+		if (0.f > XMVectorGetX(XMVector3Length(XMVector3Cross(vRight, vEraseHeight))))
+		{
+			m_vPosOffSet.z = 1.f;
+		}
+		else
+		{
+			m_vPosOffSet.z = -1.f;
+		}
+		m_vPosOffSet.y = 10.f;
+	}
 
 }
 
