@@ -265,10 +265,10 @@ HRESULT CDotsProjecter::Setup_Light()
     LightDesc.vAmbient = _float4(0.f, 1.f, 0.f, 1.f);
     LightDesc.vSpecular = _float4(0.f, 1.f, 0.f, 1.f);
 
-    LightDesc.fRange = 100.f;
+    LightDesc.fRange = 20.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.045f;
-    LightDesc.fAttenuation2 = 0.0075f;
+    LightDesc.fAttenuation1 = 0.22f;
+    LightDesc.fAttenuation2 = 0.20f;
 
     _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 

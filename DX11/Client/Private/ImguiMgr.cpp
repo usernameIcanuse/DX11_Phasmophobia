@@ -811,6 +811,7 @@ void CImguiMgr::Tool_Object()
 	Rotation();
 	Scaling();
 
+
 	ImGui::End();
 }
 
@@ -885,10 +886,34 @@ void CImguiMgr::Tool_Collider()
 		m_pSelectedTransform = (CTransform*)m_WallPrototype->Get_Component(CGameObject::m_pTransformTag);
 
 	}
+#pragma region Translation
+	if (m_pSelectedObject)
+	{
+
+		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet += XMVectorSet(0.f, 0.05f, 0.f, 0.f);
+		}
+		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+		{
+			m_vSelectedOffSet -= XMVectorSet(0.f, 0.05f, 0.f, 0.f);
+		}
+
+	}
+#pragma endregion Translation
+
+#pragma region Rotation
+	static int Rotation = 0;
 
 
-	Translation();
-	Rotation();
+	if (m_pSelectedObject)
+	{
+		if (ImGui::InputInt("input int", &Rotation))
+		{
+			m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(Rotation));
+		}
+	}
+#pragma region Rotaion
 
 	static float Scale[4] = { 1.f, 1.f, 1.f, 0.44f };
 	ImGui::InputFloat3("input float3", Scale);
@@ -1097,33 +1122,51 @@ void CImguiMgr::Picking_Object()
 }
 void CImguiMgr::Translation()
 {
-	ImGui::Text("[ P ] : y+");
-	ImGui::Text("[ O ] : y-");
+	static ImGuiSliderFlags flags_x = ImGuiSliderFlags_None;
+	static ImGuiSliderFlags flags_y = ImGuiSliderFlags_None;
+	static ImGuiSliderFlags flags_z = ImGuiSliderFlags_None;
+
+	static _float slider_x = 0.f;
+	static _float slider_y = 0.f;
+	static _float slider_z = 0.f;
+	static float vec4a[4] = { slider_x, slider_y, slider_z, 0.44f };
+
+
+	ImGui::Text("X : %f", slider_x);
+	if (ImGui::SliderFloat("X : ", &slider_x, 0.0f, 200.0f, "%.3f", flags_x))
+		vec4a[0] = slider_x;
+
+	ImGui::Text("Y : %f", slider_y);
+	if (ImGui::SliderFloat("Y : ", &slider_y, 0.0f, 200.0f, "%.3f", flags_y))
+		vec4a[1] = slider_y;
+
+	ImGui::Text("Z : %f", slider_z);
+	if (ImGui::SliderFloat("Z : ", &slider_z, 0.0f, 200.0f, "%.3f", flags_z))
+		vec4a[2] = slider_z;
+
+	if (ImGui::InputFloat3("input float3", vec4a))
+	{
+		slider_x = vec4a[0];
+		slider_y = vec4a[1];
+		slider_z = vec4a[2];
+	}
 
 	if (m_pSelectedObject)
 	{
-	
-		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
-		{
-			m_vSelectedOffSet += XMVectorSet(0.f,0.05f,0.f,0.f);
-		}
-		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
-		{
-			m_vSelectedOffSet -= XMVectorSet(0.f, 0.05f, 0.f, 0.f);
-		}
-	
+		m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(slider_x, slider_y, slider_z, 1.f));
+
 	}
+	
 }
 
 void CImguiMgr::Rotation()
-{ // Sliders
-	static int Rotation= 0;
-	ImGui::InputInt("input int", &Rotation );
-	
-
-	if (m_pSelectedObject)
+{ 
+	if (GAMEINSTANCE->Is_KeyState(KEY::K, KEY_STATE::TAP))
 	{
-		m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(Rotation));
+		if (m_pSelectedObject)
+		{
+			m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(5.f));
+		}
 	}
 }
 
@@ -1288,10 +1331,7 @@ void CImguiMgr::CollocateHouse()
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 		
-		pTempTransform->Set_State(CTransform::STATE_RIGHT,m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
-		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
-		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
-		pTempTransform->Set_State(CTransform::STATE_TRANSLATION,m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
+		pTempTransform->Set_WorldMatrix(m_pSelectedTransform->Get_WorldMatrix());
 
 		m_vecCollocatedHouse[(_uint)tIndex].push_back(pTemp);
 
@@ -1397,11 +1437,7 @@ void CImguiMgr::CollocateObject()
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 
-		pTempTransform->Set_State(CTransform::STATE_RIGHT, m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
-		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
-		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
-		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
-
+		pTempTransform->Set_WorldMatrix(m_pSelectedTransform->Get_WorldMatrix());
 
 		m_vecCollocatedObject[(_uint)tLayerIndex].push_back(pTemp);
 		m_vecObjectTag[(_uint)tLayerIndex].push_back(tObjIndex);
@@ -1428,11 +1464,8 @@ void CImguiMgr::CollocateCollider()
 
 		CTransform* pTempTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 
-		pTempTransform->Set_State(CTransform::STATE_RIGHT, m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT));
-		pTempTransform->Set_State(CTransform::STATE_UP, m_pSelectedTransform->Get_State(CTransform::STATE_UP));
-		pTempTransform->Set_State(CTransform::STATE_LOOK, m_pSelectedTransform->Get_State(CTransform::STATE_LOOK));
-		pTempTransform->Set_State(CTransform::STATE_TRANSLATION, m_pSelectedTransform->Get_State(CTransform::STATE_TRANSLATION));
-
+		pTempTransform->Set_WorldMatrix(m_pSelectedTransform->Get_WorldMatrix());
+		
 		m_vecCollider.push_back(pTemp);
 	}
 }
@@ -1520,12 +1553,8 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				return;
 			}
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
-
-
+			
+			pTransform->Set_WorldMatrix(tDataMap.matWorld);
 
 			switch (iModelTag)
 			{
@@ -1865,13 +1894,7 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 				return;
 			}
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataObj.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataObj.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataObj.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataObj.matWorld.r[CTransform::STATE_TRANSLATION]);
-
-
-
+			pTransform->Set_WorldMatrix(tDataObj.matWorld);
 
 			m_vecCollocatedObject[(_uint)iLayerTag].push_back(pTemp);
 			m_vecObjectTag[(_uint)iLayerTag].push_back(iObjTag);
@@ -1964,13 +1987,9 @@ void CImguiMgr::Load_Collider(const char* strStageName, const char* strFileName)
 				RELEASE_INSTANCE(CGameInstance);
 				return;
 			}
-
+			
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
-
+			pTransform->Set_WorldMatrix(tDataCollider.matWorld);
 
 
 
@@ -2028,11 +2047,7 @@ void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
 			}
 
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
-
+			pTransform->Set_WorldMatrix(tDataCollider.matWorld);
 
 
 

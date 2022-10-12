@@ -78,10 +78,9 @@ HRESULT CLightBulb::Render()
         }
         if (m_bSwitch)
         {
-            if(FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
-            {
-                iPassIndex = 3;
-            }
+            iPassIndex = 3;
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+                return E_FAIL;
         }
 
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
@@ -131,15 +130,15 @@ HRESULT		CLightBulb::Setup_Light()
     LIGHTDESC LightDesc;
 
     LightDesc.eType = LIGHTDESC::TYPE_POINT;
-    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.8f, 1.f);
-    LightDesc.vAmbient = _float4(1.f, 1.f, 0.8f, 1.f);
-    LightDesc.vSpecular = _float4(1.f, 1.f, 0.8f, 1.f);
+    LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.f);
+    LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+    LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
     XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     
-    LightDesc.fRange = 100.f;
+    LightDesc.fRange = 65.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.045f;
-    LightDesc.fAttenuation2 = 0.0075f;
+    LightDesc.fAttenuation1 = 0.08f;
+    LightDesc.fAttenuation2 = 0.02f;
 
     m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
     if (nullptr == m_pLight)

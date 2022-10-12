@@ -4,6 +4,7 @@
 #include "Video_Camera.h"
 #include "Door.h"
 #include "Player.h"
+#include "LightSwitch.h"
 
 
 CInventory::CInventory(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -387,6 +388,14 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 	else if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
 	{
 		m_pDoor = (CDoor*)pCollider->Get_Owner();
+	}
+	else if (COLLISION_TYPE::LIGHTSWITCH == pCollider->Get_Type())
+	{
+		if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+		{
+			CLightSwitch* pOwner = (CLightSwitch*)pCollider->Get_Owner();
+			pOwner->Turn_Switch();
+		}
 	}
 }
 

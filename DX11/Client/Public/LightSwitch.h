@@ -32,7 +32,7 @@ public:
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 public:
-	void Turn_Switch(_bool _bSwitch);
+	void Turn_Switch();
 
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag);

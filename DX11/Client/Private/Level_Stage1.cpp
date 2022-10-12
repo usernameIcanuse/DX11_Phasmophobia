@@ -160,13 +160,9 @@ HRESULT CLevel_Stage1::Load_Stage()
 				RELEASE_INSTANCE(CGameInstance);
 				return E_FAIL;
 			}
+
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
-
-
+			pTransform->Set_WorldMatrix(tDataMap.matWorld);
 
 			switch (iModelTag)
 			{
@@ -223,12 +219,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 				return E_FAIL;
 			}
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataMap.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataMap.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataMap.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataMap.matWorld.r[CTransform::STATE_TRANSLATION]);
-
-
+			pTransform->Set_WorldMatrix(tDataMap.matWorld);
 
 			switch (iModelTag)
 			{
@@ -288,10 +279,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 			}
 
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
+			pTransform->Set_WorldMatrix(tDataCollider.matWorld);
 
 		}
 	}
@@ -336,11 +324,8 @@ HRESULT CLevel_Stage1::Load_Stage()
 			}
 
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataCollider.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataCollider.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataCollider.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataCollider.matWorld.r[CTransform::STATE_TRANSLATION]);
-
+			pTransform->Set_WorldMatrix(tDataCollider.matWorld);
+			
 		}
 	}
 
@@ -437,13 +422,47 @@ HRESULT CLevel_Stage1::Load_Stage()
 				RELEASE_INSTANCE(CGameInstance);
 				return E_FAIL;
 			}
+
 			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_State(CTransform::STATE_RIGHT, tDataObj.matWorld.r[CTransform::STATE_RIGHT]);
-			pTransform->Set_State(CTransform::STATE_UP, tDataObj.matWorld.r[CTransform::STATE_UP]);
-			pTransform->Set_State(CTransform::STATE_LOOK, tDataObj.matWorld.r[CTransform::STATE_LOOK]);
-			pTransform->Set_State(CTransform::STATE_TRANSLATION, tDataObj.matWorld.r[CTransform::STATE_TRANSLATION]);
+			pTransform->Set_WorldMatrix(tDataObj.matWorld);
+			
+		}
+	}
+	CloseHandle(hFile);
+	strcpy_s(Filepath2, "../Bin/Resources/Map/NormalHouse/LightSwitch");
+	
+	hFile = CreateFileA(Filepath2,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	SWITCH_DATA tData;
+	ZeroMemory(&tData, sizeof(SWITCH_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(SWITCH_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
 
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Light"),
+				TEXT("Prototype_GameObject_LightSwitch"),
+				nullptr, &tData)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+		
 		}
 	}
 	CloseHandle(hFile);
@@ -460,7 +479,7 @@ HRESULT CLevel_Stage1::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.9f, 0.9f, 0.9f, 1.f);
+	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 

@@ -101,9 +101,9 @@ HRESULT CLightSwitch::Setup_Component()
     CCollider::COLLIDERDESC  ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
+    ColliderDesc.vScale = _float3(0.5f, 0.5f, 0.3f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, 0.f, ColliderDesc.vScale.z * 0.5f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::LIGHTSWITCH;
 
@@ -129,6 +129,7 @@ HRESULT		CLightSwitch::Setup_LightBulb(SWITCH_DATA _tData)
 
         m_LightBulbList.push_back(pTemp);
     }
+    return S_OK;
 
 }
 
@@ -154,9 +155,9 @@ HRESULT CLightSwitch::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pP
     return S_OK;
 }
 
-void CLightSwitch::Turn_Switch(_bool _bSwitch)
+void CLightSwitch::Turn_Switch()
 {
-    m_bSwitch = _bSwitch;
+    m_bSwitch = !m_bSwitch;
     for (auto& elem : m_LightBulbList)
     {
         elem->Turn_Switch(m_bSwitch);
