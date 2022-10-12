@@ -23,7 +23,7 @@ public:
 
 public:
 	_bool isMove(_fvector vPosition, _float fPositionY, _vector vDirection,_vector& vMovedPosition);
-	_bool Picking_Mesh(RAY	_tMouseRay, _int	_iCurrentIndex, _float4&	vPickedPos);
+	_bool Picking_Mesh(RAY	_tMouseRay,_float4&	vPickedPos);
 
 #ifdef _DEBUG
 public:

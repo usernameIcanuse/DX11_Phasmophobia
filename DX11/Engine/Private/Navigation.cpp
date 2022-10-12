@@ -56,6 +56,18 @@ HRESULT CNavigation::Initialize_Prototype(const char * pNavigationData)
 		if (bFlag)
 			continue;
 
+		for (_int i = 0;  i < 3; ++i)
+		{
+			_float fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPoints[i]) - XMLoadFloat3(&vPoints[(i + 1) % 3])));
+			if (60.f < fLength)
+			{
+				bFlag = true;
+				break;
+			}
+		}
+		if (bFlag)
+			continue;
+
 		CCell*		pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size());
 		if (nullptr == pCell)
 			return E_FAIL;
@@ -170,17 +182,14 @@ _bool CNavigation::isMove(_fvector vPosition, _float fPositionY, _vector vDirect
 	}
 }
 
-_bool CNavigation::Picking_Mesh(RAY _tMouseRay,_int	_iCurrentIndex, _float4&	vPickedPos)
+_bool CNavigation::Picking_Mesh(RAY _tMouseRay, _float4& vPickedPos)
 {
 	if (m_Cells.empty())
 		return false;
 
-	if (_iCurrentIndex == -1)
-		_iCurrentIndex = m_NaviDesc.m_iCurrentIndex;
-
 	_int		iNeighborIndex = -1;
 
-	if (true == m_Cells[_iCurrentIndex]->isPicked(_tMouseRay, &iNeighborIndex, vPickedPos))
+	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isPicked(_tMouseRay, &iNeighborIndex, vPickedPos))
 		return true;
 
 	else

@@ -73,6 +73,7 @@ void CImguiMgr::Tick(_float fTimeDelta)
 		ImGui::Checkbox("Object Tool", &show_Object_Tool);
 		ImGui::Checkbox("Collider Tool", &show_Collider_Tool);
 		ImGui::Checkbox("Navigation Tool", &show_Navigation_Tool);
+		ImGui::Checkbox("Light Tool", &show_Light_Tool);
 
 
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
@@ -108,6 +109,12 @@ void CImguiMgr::Tick(_float fTimeDelta)
 			Tool_Collider();
 		else if (!show_Map_Tool && !show_Object_Tool && !show_Collider_Tool && show_Navigation_Tool)
 			Tool_Navigation();
+
+		if (show_Light_Tool)
+		{
+			Tool_Light();
+			Picking_Light();
+		}
 
 		if(!show_Navigation_Tool)
 			Picking_Object();
@@ -161,7 +168,16 @@ void CImguiMgr::Set_Prototype()
 			return;
 		m_WallPrototype->Set_Enable(false);
 
-		
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightSwitch"), &m_pPrototypeSwitch)))
+			return;
+		m_pSwitchTransform = (CTransform*)m_pPrototypeSwitch->Get_Component(CGameObject::m_pTransformTag);
+		m_pPrototypeSwitch->Set_Enable(false);
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightBulb"), &m_pPrototypeBulb)))
+			return;
+		m_pBulbTransform = (CTransform*)m_pPrototypeBulb->Get_Component(CGameObject::m_pTransformTag);
+		m_pPrototypeBulb->Set_Enable(false);
+
+
 		/* Object */
 		CGameObject* pTemp = nullptr;
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
@@ -423,14 +439,8 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor" };
-							/*"Pier_house","Pier_house2","RoofTop","RoofTop_Background1",
-							"RoofTop_Background2","RoofTop_Background3",
-		"RoofTop_Background4","RoofTop_Background5","RoofTop_Background6",
-		"RoofTop_Background7","RoofTop_Background8","RoofTop_Background9",
-		"RoofTop_Background10","RoofTop_Background11","RoofTop_Background12",
-		"RoofTop_Background13","RoofTop_Background14","SlumHouse1",
-							"OldHouse","Shelter",*/
+	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor"};
+							
 
 
 	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -473,6 +483,245 @@ void CImguiMgr::Tool_Map()
 	Scaling();
 
 	ImGui::End();
+
+}
+
+void CImguiMgr::Tool_Light()
+{
+	ImGui::Begin("Tool_Light");
+	static _bool bFirst = false;
+	if (false == bFirst)
+	{
+		m_vNavigationPoints.push_back(_float3(0.f, 0.f, 0.f));
+	}
+	static _int	iLightIndex = 0;//들어온 순서대로
+
+
+	if (ImGui::Button("Close Me"))
+	{
+		m_vNavigationPoints.clear();
+		m_vNavigationPoints.push_back(_float3(0.f, 0.f, 0.f));
+		show_Light_Tool = false;
+		m_iSelectSwitchIndex =  -1;
+		m_pPrototypeSwitch->Set_Enable(false);
+		m_pPrototypeBulb->Set_Enable(false);
+	}
+	/* Save/Load*/
+	static char Stage[256] = "";
+	ImGui::InputText("Stage Name", Stage, IM_ARRAYSIZE(Stage));
+
+	static char str0[256] = "";
+	ImGui::InputText("File Name", str0, IM_ARRAYSIZE(str0));
+
+
+	if (ImGui::Button("Save"))
+	{
+		Save_Light(Stage, str0);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load_Light(Stage, str0);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Light"));
+		m_vecLightSwitch.clear();
+		m_pLightSwitch = nullptr;
+		m_pLightBulb = nullptr;
+		m_vNavigationPoints[0] = m_vNavigationPoints[1] = _float3(0.f, 0.f, 0.f);
+
+	}
+
+	if (ImGui::Button("Switch"))
+	{
+		if(m_pPrototypeBulb->Get_Enable()==false)
+			m_pPrototypeSwitch->Set_Enable(true);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Bulb"))
+	{
+		if(m_pPrototypeSwitch->Get_Enable() == false)
+			m_pPrototypeBulb->Set_Enable(true);
+	}
+
+	if (ImGui::Button("Connect"))
+	{//스위치랑 전구 픽킹해서 연결
+		if (nullptr != m_pLightBulb && nullptr != m_pLightSwitch)
+		{
+			m_vecLightSwitch[m_iSelectSwitchIndex].second += 1;
+			m_vecBulb[m_iSelectSwitchIndex].push_back(m_pLightBulb);
+			m_pLightBulb = m_pLightSwitch = nullptr;
+		}
+	}
+
+	
+	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		m_iSelectSwitchIndex = -1;
+		m_pPrototypeBulb->Set_Enable(false);
+		m_pPrototypeSwitch->Set_Enable(false);
+		m_pLightSwitch = nullptr;
+		m_pLightBulb= nullptr;
+	}
+
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+	{
+		if (m_pPrototypeBulb->Get_Enable())
+		{
+			CGameObject* pTemp = nullptr;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightBulb"), &pTemp)))
+				return;
+			CTransform* pObjTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pObjTransform->Set_WorldMatrix(m_pBulbTransform->Get_WorldMatrix());
+
+			m_vecTempBulb.push_back(pTemp);
+		}
+		else if (m_pPrototypeSwitch->Get_Enable())
+		{
+			CGameObject* pTemp = nullptr;
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightSwitch"), &pTemp)))
+				return;
+
+			CTransform* pObjTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
+			pObjTransform->Set_WorldMatrix(m_pSwitchTransform->Get_WorldMatrix());
+
+			m_vecLightSwitch.push_back(make_pair(pTemp,0));
+		}
+	}
+
+
+#pragma region Translation
+	static ImGuiSliderFlags flags_x = ImGuiSliderFlags_None;
+	static ImGuiSliderFlags flags_y = ImGuiSliderFlags_None;
+	static ImGuiSliderFlags flags_z = ImGuiSliderFlags_None;
+	
+	static _float slider_x = 0.f;
+	static _float slider_y = 0.f;
+	static _float slider_z = 0.f;
+	static float vec4a[4] = { slider_x, slider_y, slider_z, 0.44f };
+
+
+	ImGui::Text("X : %f", slider_x);
+	if(ImGui::SliderFloat("X : ", &slider_x, 0.0f, 200.0f, "%.3f", flags_x))
+		vec4a[0] = slider_x;
+
+
+
+	ImGui::Text("Y : %f", slider_y);
+	if (ImGui::SliderFloat("Y : ", &slider_y, 0.0f, 200.0f, "%.3f", flags_y))
+		vec4a[1] = slider_y;
+	
+
+
+	ImGui::Text("Z : %f", slider_z);
+	if (ImGui::SliderFloat("Z : ", &slider_z, 0.0f, 200.0f, "%.3f", flags_z))
+		vec4a[2] = slider_z;
+	
+	if (ImGui::InputFloat3("input float3", vec4a))
+	{
+		slider_x = vec4a[0];
+		slider_y = vec4a[1];
+		slider_z = vec4a[2];
+	}
+
+#pragma endregion Translation
+
+#pragma region Rotation
+	if (GAMEINSTANCE->Is_KeyState(KEY::K, KEY_STATE::TAP))
+	{
+		if (m_pPrototypeSwitch->Get_Enable())
+		{
+			m_pSwitchTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(5.f));
+		}
+		else if (m_pPrototypeBulb->Get_Enable())
+		{
+			m_pBulbTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(5.f));
+		}
+	}
+#pragma endregion Rotation
+
+#pragma region Scale
+	static ImGuiSliderFlags flags_f = ImGuiSliderFlags_None;
+
+	static float slider_f = 1.f;
+
+	ImGui::Text("Underlying float value: %f", slider_f);
+	ImGui::SliderFloat("Scaling", &slider_f, 0.5f, 10.0f, "%.3f", flags_f);
+
+#pragma endregion Scale
+	if (m_pPrototypeSwitch->Get_Enable())
+	{
+		m_pSwitchTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(slider_x, slider_y, slider_z, 1.f));
+		m_pSwitchTransform->Set_Scaled(_float3(slider_f, slider_f, slider_f));
+			}
+	else if (m_pPrototypeBulb->Get_Enable())
+	{
+		m_pBulbTransform->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(slider_x, slider_y, slider_z, 1.f));
+		m_pBulbTransform->Set_Scaled(_float3(slider_f, slider_f, slider_f));
+	}
+
+
+	ImGui::End();
+
+}
+
+void CImguiMgr::Picking_Light()
+{
+	
+		RAY tRay = CMath_Utility::Get_MouseRayInWorldSpace();
+		_int	iIndex = 0;
+		for (auto& elem : m_vecLightSwitch)
+		{
+			_float fDist = 0.f;
+			CCollider* pCollider = (CCollider*)elem.first->Get_Component(TEXT("Com_OBB"));
+			if (pCollider->Collision(tRay, fDist))
+			{
+				if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+				{
+					m_pLightSwitch = elem.first;
+					m_iSelectSwitchIndex = iIndex;
+
+					CTransform* pTransform = (CTransform*)m_pLightSwitch->Get_Component(CGameObject::m_pTransformTag);
+
+					XMStoreFloat3(&m_vNavigationPoints[0], pTransform->Get_State(CTransform::STATE_TRANSLATION));
+					m_pVIBufferPoint->Update(m_vNavigationPoints);
+
+					return;//겹쳐져 있는 경우는 없다고 가정
+				}
+			}
+			++iIndex;
+		}
+
+		
+			for (auto& elem : m_vecTempBulb)
+			{
+				_float fDist = 0.f;
+				CCollider* pCollider = (CCollider*)elem->Get_Component(TEXT("Com_OBB"));
+				if (pCollider->Collision(tRay, fDist))
+				{
+					if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+					{
+						m_pLightBulb = elem;
+
+						CTransform* pTransform = (CTransform*)m_pLightBulb->Get_Component(CGameObject::m_pTransformTag);
+
+						XMStoreFloat3(&m_vNavigationPoints[1], pTransform->Get_State(CTransform::STATE_TRANSLATION));
+						m_pVIBufferPoint->Update(m_vNavigationPoints);
+
+
+						return;//겹쳐져 있는 경우는 없다고 가정
+					}
+				}
+			}
+		
+
+		
+
+	
 
 }
 
@@ -1371,6 +1620,103 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 
 			m_vecCollocatedHouse[(_uint)iModelTag].push_back(pTemp);
 
+		}
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFile);
+	MSG_BOX("Loaded file");
+}
+
+void CImguiMgr::Save_Light(const char* strStageName, const char* strFileName)
+{
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+
+	HANDLE hFileBrix = CreateFileA(Filepath,
+		GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFileBrix)
+	{
+		MSG_BOX("Failed to save file");
+		return;
+	}
+
+	DWORD dwByteBrix = 0;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	SWITCH_DATA tData;
+	_int iIndex = 0;
+	for (auto& elem : m_vecLightSwitch)
+	{
+		ZeroMemory(&tData, sizeof(SWITCH_DATA));
+
+		CTransform* pTranform = (CTransform*)elem.first->Get_Component(CGameObject::m_pTransformTag);
+		XMStoreFloat4x4(& tData.matSwitchWorld, pTranform->Get_WorldMatrix());
+		
+		tData.iBulbNum = elem.second;
+
+	
+		_int iCnt = 0;
+		for (auto& pBulb : m_vecBulb[iIndex])
+		{
+			pTranform = (CTransform*)pBulb->Get_Component(CGameObject::m_pTransformTag);
+			XMStoreFloat4x4(&tData.matBulbWorld[iCnt++],pTranform->Get_WorldMatrix());
+			WriteFile(hFileBrix, &tData, sizeof(SWITCH_DATA), &dwByteBrix, nullptr);
+		}
+		++iIndex;
+	}
+	
+
+	RELEASE_INSTANCE(CGameInstance);
+	CloseHandle(hFileBrix);
+	MSG_BOX("Saved file");
+}
+
+void CImguiMgr::Load_Light(const char* strStageName, const char* strFileName)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	char Filepath[255] = "../Bin/Resources/Map/";
+	strcat_s(Filepath, sizeof(Filepath), strStageName);
+	strcat_s(Filepath, sizeof(Filepath), "/");
+	strcat_s(Filepath, sizeof(Filepath), strFileName);
+	HANDLE hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+	DWORD dwByteHouse = 0;
+	SWITCH_DATA tData;
+	ZeroMemory(&tData, sizeof(SWITCH_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(SWITCH_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			CGameObject* pTemp = nullptr;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Light"),
+				TEXT("Prototype_GameObject_LightSwitch"),
+				&pTemp,&tData)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return;
+			}
 		}
 	}
 

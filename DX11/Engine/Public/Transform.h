@@ -30,6 +30,11 @@ public:
 		return XMLoadFloat4x4(&m_WorldMatrix);
 	}
 
+	void Set_WorldMatrix(_matrix WorldMatrix)
+	{
+		XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
+	}
+
 	void Set_State(STATE eState, _fvector vState)
 	{
 		_float4		vData;

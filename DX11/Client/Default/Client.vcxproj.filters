@@ -67,9 +67,6 @@
     <ClInclude Include="..\Public\Sky.h">
       <Filter>02.GameObject\SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player.h">
-      <Filter>02.GameObject\Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Camera_FPS.h">
       <Filter>02.GameObject\Camera\Camera_FPS</Filter>
     </ClInclude>
@@ -198,6 +195,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Ghost_Behavior.h">
       <Filter>02.GameObject\Ghost\Ghost_Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\LightBulb.h">
+      <Filter>02.GameObject\Stage\House\LightSwitch\LightBulb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +386,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ghost_Behavior.cpp">
       <Filter>02.GameObject\Ghost\Ghost_Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\LightBulb.cpp">
+      <Filter>02.GameObject\Stage\House\LightSwitch\LightBulb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -585,6 +591,9 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost\Ghost_Behavior">
       <UniqueIdentifier>{91ad5387-2149-4e61-b473-ebd44de94d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\House\LightSwitch\LightBulb">
+      <UniqueIdentifier>{edda5e22-8703-45e7-a256-94fce83fa652}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

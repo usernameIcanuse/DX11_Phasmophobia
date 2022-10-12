@@ -49,6 +49,7 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 
 void CGhost_Status::Tick(_float fTimeDelta)
 {
+	
 	__super::Tick(fTimeDelta);
 #ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;

@@ -345,5 +345,12 @@ namespace Engine
 		_matrix matWorld;
 	}COLLIDER_DATA;
 
+	typedef struct tagLightSwitch
+	{
+		_float4x4 matSwitchWorld;
+		_int	iBulbNum;
+		_float4x4 matBulbWorld[10];
+	}SWITCH_DATA;
+
 
 }

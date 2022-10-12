@@ -13,6 +13,9 @@
 
 #include "Point.h"
 
+#include "LightSwitch.h"
+#include "LightBulb.h"
+
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
@@ -260,9 +263,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CInventory::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	///*For. Prototype_GameObject_Navigation_Mesh*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
+	/*if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
 		CNavigation_Mesh::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 
 	/* For.Prototype_GameObject_Ghost*/
@@ -405,6 +408,17 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CCamera_Screen::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_LightSwitch*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LightSwitch"),
+		CLightSwitch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_LightBulb*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LightBulb"),
+		CLightBulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 #ifdef _DEBUG
 
 	/* For.Prototype_GameObject_Point*/
@@ -479,6 +493,16 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	_matrix			TransformMatrix;
 	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)*XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	/*For. Prototype_Component_Model_LightSwitch*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_LightSwitch"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/LightSwitch/", "Push_Lightswitch.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/*For. Prototype_Component_Model_LightBulb*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_LightBulb"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/LightSwitch/", "LightBulb.fbx", TransformMatrix))))
+		return E_FAIL;
 
 	/*For. Prototype_Component_Model_Ghost_Girl*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Ghost_Girl"),

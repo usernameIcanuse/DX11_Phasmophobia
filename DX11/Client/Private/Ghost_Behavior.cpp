@@ -44,6 +44,7 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 
 	m_fChangeDir = 5.f;
+	m_fRadian = XMConvertToRadians(10.f);
 	/*생성과 동시에 플레이어 위치를 알고 있음?
 	근데 만약에 플레이어 생성 전에 얘가 만들어지면 안됨 순서를 맞춰줘야함?*/
 
@@ -80,7 +81,7 @@ void CGhost_Behavior::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
 #endif
 }
 
@@ -114,7 +115,7 @@ void CGhost_Behavior::OnEventMessage(const _tchar* pMessage)
 	else if (0 == lstrcmp(TEXT("Event"), pMessage))
 	{
 		/*이벤트 그냥 소리 효과나 플레이어 주변에 정지한 상태로 바라보기?*/
-		m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
+		//m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
 		m_pEventFunc = std::bind(&CGhost_Behavior::Event, std::placeholders::_1, std::placeholders::_2);
 	}
 
@@ -171,7 +172,7 @@ void CGhost_Behavior::Event(_float fTimeDelta)
 
 void CGhost_Behavior::Attack(_float fTimeDelta)
 {
-	m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
+	//m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
 
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)

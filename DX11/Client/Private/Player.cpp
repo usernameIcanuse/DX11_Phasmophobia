@@ -26,13 +26,13 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
+	TransformDesc.fSpeedPerSec = 20.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(70.f, 0.f, 45.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(70.f, 0.f, 52.f, 1.f));
 
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
@@ -108,7 +108,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta,m_pNavigationCom);
+	m_pTransformCom->Move(fTimeDelta/*,m_pNavigationCom*/);
 	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -134,7 +134,7 @@ HRESULT CPlayer::Render()
 
 _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 {
-	return m_pNavigationCom->Picking_Mesh(tMouseRay, -1, vPickedPos);
+	return m_pNavigationCom->Picking_Mesh(tMouseRay, vPickedPos);
 }
 
 HRESULT CPlayer::Setup_Component()
@@ -155,13 +155,7 @@ HRESULT CPlayer::Setup_Component()
 	
 
 	/* For.Com_Navigation*/
-	/*CGameObject* pNavigation = nullptr;
 
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1,TEXT("Layer_Navigation"),TEXT("Prototype_GameObject_Navigation_Mesh"),&pNavigation)))
-		return E_FAIL;
-
-	m_pNavigationCom = (CNavigation*)pNavigation->Get_Component(TEXT("Com_Navigation"));
-	Safe_AddRef(m_pNavigationCom);*/
 	CNavigation::NAVIDESC	NaviDesc;
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = 0;

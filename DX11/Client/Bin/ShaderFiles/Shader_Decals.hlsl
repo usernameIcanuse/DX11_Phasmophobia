@@ -105,16 +105,18 @@ PS_OUT_DECAL PS_MAIN_DECAL(PS_IN_DECAL In)
 	//데칼 큐브는 계산편의를 위해서 로컬 길이를 1,1,1로 해놓음 
 	if (vDecalLocalPos.x < -0.5f || vDecalLocalPos.x > 0.5f || vDecalLocalPos.y < -0.5f || vDecalLocalPos.y > 0.5f ||
 		vDecalLocalPos.z < -0.5f || vDecalLocalPos.z > 0.5f)
+	{ //discard를 하면 현재 그리려는 화면 픽셀 색이 있어도 그냥 0,0,0,0으로 만듦
 		discard;
+	}
 	
-	float2 fDecalUV = vDecalLocalPos.xy + 0.5f;
-	fDecalUV.y = 1.f - fDecalUV.y;
+		float2 fDecalUV = vDecalLocalPos.xy + 0.5f;
+		fDecalUV.y = 1.f - fDecalUV.y;
 
-	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, fDecalUV);
+		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, fDecalUV);
 
-	if (Out.vColor.a < 0.1f)
-		discard;
-
+		if (Out.vColor.a < 0.1f)
+			discard;
+	
 
 	return Out;	
 }

@@ -34,16 +34,17 @@ private:
 	bool show_demo_window = true;
 	bool show_another_window = false;
 
-	bool show_Map_Tool = false;
-	bool show_Object_Tool = false;
-	bool show_Collider_Tool = false;
-	bool show_Navigation_Tool = false;
-
+	_bool show_Map_Tool = false;
+	_bool show_Object_Tool = false;
+	_bool show_Collider_Tool = false;
+	_bool show_Navigation_Tool = false;
+	_bool show_Light_Tool = false;
 private:
 	void Set_Prototype();
 
 
 	void Tool_Map();
+	void Tool_Light();
 	void Tool_Object();
 	void Tool_Collider();
 	void Tool_Navigation();
@@ -54,6 +55,8 @@ private:
 
 	void Sort_Points_ClockWise();
 
+	void Picking_Light();
+
 	void Picking_Object();
 	void MoveObject(_float4 _fPosition);
 	void CollocateHouse();
@@ -62,6 +65,9 @@ private:
 
 	void Save_Map(const char* strStageName,const char* strFileName);
 	void Load_Map(const char* strStageName, const char* strFileName);
+
+	void Save_Light(const char* strStageName, const char* strFileName);
+	void Load_Light(const char* strStageName, const char* strFileName);
 
 	void Save_Object(const char* strStageName, const char* strFileName);
 	void Load_Object(const char* strStageName, const char* strFileName);
@@ -97,6 +103,16 @@ private:
 	CGameObject* m_WallPrototype = nullptr;
 	vector<CGameObject*> m_vecWall;
 
+	vector<pair<CGameObject*, _int>> m_vecLightSwitch;//스위치, 연결된 전구 개수
+	vector<CGameObject*>			 m_vecTempBulb;
+	vector<CGameObject*>			 m_vecBulb[20];//스위치(인덱스)당 가지고 있는 전구
+	CGameObject* m_pLightSwitch = nullptr;
+	CGameObject* m_pPrototypeSwitch = nullptr;
+	CTransform* m_pSwitchTransform = nullptr;
+	CGameObject* m_pLightBulb = nullptr;
+	CGameObject* m_pPrototypeBulb = nullptr;
+	CTransform* m_pBulbTransform = nullptr;
+	_int		 m_iSelectSwitchIndex = -1;
 
 	//선택한 오브젝트
 
