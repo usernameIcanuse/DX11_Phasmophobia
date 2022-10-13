@@ -83,12 +83,6 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Decals"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 
-	/* For.Target_UVLight*/
-	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_UVLight"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-		return E_FAIL;
-
-
-
 
 	/* For.Target_Depth */
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Depth"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 0.f, 0.f, 1.f))))
@@ -132,8 +126,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
 		return E_FAIL;
-	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_UVLight"))))
-		return E_FAIL;
+
 
 
 #ifdef _DEBUG	
@@ -149,8 +142,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Ready_Debug( TEXT("Target_Decals"),1180.f,100.f,200.f,200.f)))
 		return E_FAIL;
-	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_UVLight"), 1180.f, 300.f, 200.f, 200.f)))
-		return E_FAIL;
+
 #endif // _DEBUG
 
 	_matrix			WorldMatrix = XMMatrixIdentity();
@@ -373,8 +365,7 @@ HRESULT CRenderer::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
 		return E_FAIL;
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Decals")))))
-		return E_FAIL;
+
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -413,6 +404,15 @@ HRESULT CRenderer::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
 	m_pShader->Begin(5);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pVIBuffer->Render();
+	///////////////////////손자국 블렌딩///////////////////////////////
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Decals")))))
+		return E_FAIL;
+
+	m_pShader->Begin(6);
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
 	m_pVIBuffer->Render();

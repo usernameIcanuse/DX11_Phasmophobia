@@ -55,6 +55,10 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 	else if(LIGHTDESC::TYPE_SPOTLIGHT == m_LightDesc.eType)
 	{
 		iPassIndex = 3;
+
+		if (true == m_LightDesc.bUVLight)
+			iPassIndex = 4;
+
 		if (FAILED(pShader->Set_RawValue("g_vLightDir", &m_LightDesc.vDirection, sizeof(_float4))))
 			return E_FAIL;
 

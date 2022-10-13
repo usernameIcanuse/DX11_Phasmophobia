@@ -96,15 +96,6 @@ struct PS_OUT_LIGHT
 	vector		vSpecular : SV_TARGET1;
 };
 
-
-struct PS_OUT_STENCIL
-{
-	vector		vShade : SV_TARGET0;
-	vector		vSpecular : SV_TARGET1;
-	uint		iStencilRef : SV_STENCILREF;
-};
-
-
 float Attenuation(vector			vPosToLight)
 {
 	float fDistance = length(vPosToLight);
@@ -291,9 +282,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 	return Out;
 }
 
-PS_OUT_STENCIL PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
+PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
 {
-	PS_OUT_STENCIL		Out = (PS_OUT_STENCIL)1;
+	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
 
 	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
@@ -302,8 +293,6 @@ PS_OUT_STENCIL PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
 	float			fViewZ = vDepthDesc.y * g_fFar;
 	/* 0 -> -1, 1 -> 1*/
 	vector			vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
-
-
 	vector			vWorldPos;
 
 	/* 투영스페이스 상의 위치르 ㄹ구한다. */
@@ -331,15 +320,14 @@ PS_OUT_STENCIL PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
 	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vAmbient)) * fAtt * fSpot;
 	Out.vShade.a = 1.f;
 
+
 	vector			vReflect = reflect(normalize(g_vLightDir), vNormal);
 
 	vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
 	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * fAtt * fSpot * -1.f, vLook)), 30.f);
 	Out.vSpecular.a = 0.f;
-
-	Out.iStencilRef = 1;
-
+	
 	return Out;
 }
 
@@ -365,10 +353,10 @@ PS_OUT PS_MAIN_BLEND_UV(PS_IN In)
 {
 	PS_OUT			Out = (PS_OUT)Out;
 
-	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vUVLight = g_UVLightTexture.Sample(DefaultSampler, In.vTexUV);
 	
 
-	Out.vColor = vDiffuse;
+	Out.vColor = vUVLight;
 
 	if (Out.vColor.a == 0.f)
 		discard;
@@ -499,7 +487,7 @@ technique11 DefaultTechnique
 	pass Stencil_Light_SpotLight
 	{
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_DepthFalse_StencilWrite, 0);
+		SetDepthStencilState(DSS_DepthFalse_StencilWrite, 1);
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
@@ -521,11 +509,11 @@ technique11 DefaultTechnique
 	pass Blend_UV
 	{
 		SetBlendState(BS_Blending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_DepthFalse_StencilRead, 0);
+		SetDepthStencilState(DSS_DepthFalse_StencilRead, 1);
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_BLEND();
+		PixelShader = compile ps_5_0 PS_MAIN_BLEND_UV();
 	}
 }

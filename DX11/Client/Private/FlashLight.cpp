@@ -151,6 +151,7 @@ HRESULT CFlashLight::Setup_Light()
     ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
     LightDesc.eType = tagLightDesc::TYPE_SPOTLIGHT;
+    LightDesc.bUVLight = false;
     
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 0.3f);
