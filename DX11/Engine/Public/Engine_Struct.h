@@ -48,6 +48,8 @@ namespace Engine
 		float			fTheta;
 		float			fPhi;
 
+		_bool			bUVLight;
+
 	}LIGHTDESC;
 
 	typedef struct tagModelMaterial
