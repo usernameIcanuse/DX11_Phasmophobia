@@ -117,20 +117,33 @@ PS_OUT_DECAL PS_MAIN_DECAL(PS_IN_DECAL In)
 	Out.vColor.y = 255.f;
 	Out.vColor.z = 0.f;
 
-	if (Out.vColor.a < 0.1f)
+	if (Out.vColor.a < 0.4f)
 		discard;
 	
 
 	return Out;	
 }
 
+DepthStencilState DSS_DepthFalse_StencilWrite
+{
+	DepthEnable = false;
+	DepthWriteMask = zero;
+
+	StencilEnable = true;
+	StencilWriteMask = 0xff;
+
+	//FrontFaceStencilRef = 1;
+
+	FrontFaceStencilFunc = always;
+	FrontFaceStencilPass = Replace;
+};//
 
 technique11 DefaultTechnique
 {
 	pass Default_Alpha
 	{	
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetDepthStencilState(DSS_DepthFalse_StencilWrite, 1);
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN_DECAL();

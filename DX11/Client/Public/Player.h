@@ -40,7 +40,7 @@ public:
 #endif
 
 private:
-	CCollider* m_pOBBCom = nullptr;
+	CCollider* m_pAABBCom = nullptr;
 	CNavigation* m_pNavigationCom = nullptr;
 
 #ifdef _DEBUG

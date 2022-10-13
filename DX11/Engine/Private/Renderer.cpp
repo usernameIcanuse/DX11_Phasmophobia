@@ -365,6 +365,9 @@ HRESULT CRenderer::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
 		return E_FAIL;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Decals")))))
+		return E_FAIL;
+
 
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
@@ -404,15 +407,6 @@ HRESULT CRenderer::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
 	m_pShader->Begin(5);
-
-	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
-	m_pVIBuffer->Render();
-	///////////////////////손자국 블렌딩///////////////////////////////
-
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Decals")))))
-		return E_FAIL;
-
-	m_pShader->Begin(6);
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
 	m_pVIBuffer->Render();

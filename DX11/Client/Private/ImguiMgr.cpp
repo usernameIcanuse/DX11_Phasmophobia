@@ -482,6 +482,9 @@ void CImguiMgr::Tool_Map()
 	Rotation();
 	Scaling();
 
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+		CollocateHouse();
+
 	ImGui::End();
 
 }
@@ -811,6 +814,9 @@ void CImguiMgr::Tool_Object()
 	Rotation();
 	Scaling();
 
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+		CollocateObject();
+
 
 	ImGui::End();
 }
@@ -1068,28 +1074,28 @@ void CImguiMgr::Picking_Object()
 	_float4 fPosition;
 	if (-1 < m_iSelectedIndex || m_pSelectedObject)
 	{
-		if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
-		{
-			//_float3 fScale = m_pSelectedTransform->Get_Scaled();
-			
-			
-			XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
+		//if (CMath_Utility::Picking(m_pTerrainVIBuffer, m_pTerrainTransform, &fPosition))
+		//{
+		//	//_float3 fScale = m_pSelectedTransform->Get_Scaled();
+		//	
+		//	
+		//	XMStoreFloat4(&fPosition, XMLoadFloat4(&fPosition) + m_vSelectedOffSet);
 
-		
-			m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
+		//
+		//	m_pSelectedTransform->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&fPosition));
 
-			if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)
-				CollocateHouse();
-			else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool)
-			{
-				if (-1 < m_iSelectedIndex)
-					CollocateObject();
-				else
-					MoveObject(fPosition);
-			}
-			else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
-				CollocateCollider();
-		}
+		//	if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool)
+		//		CollocateHouse();
+		//	else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool)
+		//	{
+		//		if (-1 < m_iSelectedIndex)
+		//			CollocateObject();
+		//		else
+		//			MoveObject(fPosition);
+		//	}
+		//	else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool)
+		//		CollocateCollider();
+		//}
 
 	}
 	

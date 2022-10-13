@@ -109,7 +109,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_pTransformCom->Move(fTimeDelta/*,m_pNavigationCom*/);
-	m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
 
@@ -139,7 +139,7 @@ _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 
 HRESULT CPlayer::Setup_Component()
 {
-	/* For.Com_OBB*/
+	/* For.Com_AABB*/
 	CCollider::COLLIDERDESC ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
@@ -150,7 +150,7 @@ HRESULT CPlayer::Setup_Component()
 	ColliderDesc.m_eObjID = COLLISION_TYPE::PLAYER;
 	ColliderDesc.fRayLength = 10.f;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
 		return E_FAIL;
 	
 
@@ -276,7 +276,7 @@ void CPlayer::Free()
 	__super::Free();
 
 	Safe_Release(m_pNavigationCom);
-	Safe_Release(m_pOBBCom);
+	Safe_Release(m_pAABBCom);
 
 #ifdef _DEBUG
 	Safe_Release(m_pRendererCom);

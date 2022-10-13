@@ -115,7 +115,38 @@ void CCollider::Update(_fmatrix TransformMatrix)
 
 _bool CCollider::Collision(CCollider * pTargetCollider)
 {
-	
+	if (TYPE_AABB == m_eCollisionType)
+	{
+		switch (pTargetCollider->Get_Collision_Type())
+		{
+		case TYPE_AABB:
+			return m_bColl = m_pAABB->Intersects(*(BoundingBox*)pTargetCollider->Get_Collider());
+
+			break;
+		case TYPE_OBB:
+			return m_bColl = m_pAABB->Intersects(*(BoundingOrientedBox*)pTargetCollider->Get_Collider());
+			break;
+		case TYPE_SPHERE:
+			return m_bColl = m_pAABB->Intersects(*(BoundingSphere*)pTargetCollider->Get_Collider());
+			break;
+
+		case TYPE_RAY:
+			RAY _tRay = *(RAY*)pTargetCollider->Get_Collider();
+			_float fDist = 0;
+			XMStoreFloat3(&_tRay.vDir, XMVector3Normalize(XMLoadFloat3(&_tRay.vDir)));
+			if (m_pAABB->Intersects(XMVectorSetW(XMLoadFloat3(&_tRay.vPos), 1.f), XMVectorSetW(XMLoadFloat3(&_tRay.vDir), 0.f), fDist))
+			{
+				if (fDist <= m_tRay.fLength)
+				{
+					XMStoreFloat3(&m_vCollidePos, XMLoadFloat3(&_tRay.vPos) + XMLoadFloat3(&_tRay.vDir) * fDist);
+					m_fDist = fDist;
+					return m_bColl = true;
+				}
+			}
+			break;
+		}
+	}
+
 	if (TYPE_OBB == m_eCollisionType)
 	{
 		switch (pTargetCollider->Get_Collision_Type())

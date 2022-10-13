@@ -56,9 +56,6 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 	{
 		iPassIndex = 3;
 
-		if (true == m_LightDesc.bUVLight)
-			iPassIndex = 4;
-
 		if (FAILED(pShader->Set_RawValue("g_vLightDir", &m_LightDesc.vDirection, sizeof(_float4))))
 			return E_FAIL;
 
@@ -102,6 +99,14 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
 	/* ¼ÎÀÌµå Å¸°Ù¿¡ ±×¸°´Ù.  */
 	pVIBuffer->Render();
+
+	if (true == m_LightDesc.bUVLight)
+	{
+		pShader->Begin(iPassIndex+1);
+
+		/* ¼ÎÀÌµå Å¸°Ù¿¡ ±×¸°´Ù.  */
+		pVIBuffer->Render();
+	}
 
 	return S_OK;
 }

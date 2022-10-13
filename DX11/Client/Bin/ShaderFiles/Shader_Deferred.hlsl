@@ -289,6 +289,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
 	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vAmbient = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV) * 0.5f;
+	vector			vUVTex = g_UVLightTexture.Sample(DefaultSampler, In.vTexUV);
 
 	float			fViewZ = vDepthDesc.y * g_fFar;
 	/* 0 -> -1, 1 -> 1*/
@@ -317,15 +318,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT_STENCIL(PS_IN In)
 	float fAtt = Attenuation(vPosToLight);
 	float fSpot = CutOff(vPosToLight);
 
-	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vAmbient)) * fAtt * fSpot;
+	Out.vShade = saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + vUVTex) * fAtt * fSpot;
 	Out.vShade.a = 1.f;
-
 
 	vector			vReflect = reflect(normalize(g_vLightDir), vNormal);
 
 	vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * fAtt * fSpot * -1.f, vLook)), 30.f);
+	Out.vSpecular = vUVTex * pow(saturate(dot(normalize(vReflect) * fAtt * fSpot * -1.f, vLook)), 30.f);
 	Out.vSpecular.a = 0.f;
 	
 	return Out;
@@ -349,34 +349,11 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	return Out;
 }
 
-PS_OUT PS_MAIN_BLEND_UV(PS_IN In)
-{
-	PS_OUT			Out = (PS_OUT)Out;
-
-	vector			vUVLight = g_UVLightTexture.Sample(DefaultSampler, In.vTexUV);
-	
-
-	Out.vColor = vUVLight;
-
-	if (Out.vColor.a == 0.f)
-		discard;
-
-	return Out;
-}
-
 BlendState BS_Default
 {
 	BlendEnable[0] = false;
 };
 
-BlendState BS_Blending
-{
-	BlendEnable[0] = true;
-
-	SrcBlend = src_alpha;
-	DestBlend = inv_src_alpha;
-	BlendOp = add;
-};
 
 BlendState BS_AlphaBlending
 {
@@ -408,21 +385,6 @@ DepthStencilState DSS_ZEnable_ZWriteEnable_false
 	DepthWriteMask = zero;
 };
 
-DepthStencilState DSS_DepthFalse_StencilWrite
-{
-	DepthEnable = true;
-	DepthWriteMask = all;
-	DepthFunc = less_equal;
-
-	StencilEnable = true;
-	StencilWriteMask = 0xff;
-
-	//FrontFaceStencilRef = 1;
-	
-	FrontFaceStencilFunc = always;
-	FrontFaceStencilPass = Replace;
-};//uvLight
-
 DepthStencilState DSS_DepthFalse_StencilRead
 {
 	DepthEnable = true;
@@ -435,7 +397,7 @@ DepthStencilState DSS_DepthFalse_StencilRead
 	FrontFaceStencilFunc = Equal;
 	FrontFaceStencilPass = Zero;
 
-};//Blend
+};//uvLight
 
 
 technique11 DefaultTechnique
@@ -487,7 +449,7 @@ technique11 DefaultTechnique
 	pass Stencil_Light_SpotLight
 	{
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_DepthFalse_StencilWrite, 1);
+		SetDepthStencilState(DSS_DepthFalse_StencilRead, 1);
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
@@ -506,14 +468,4 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_BLEND();
 	}
 
-	pass Blend_UV
-	{
-		SetBlendState(BS_Blending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_DepthFalse_StencilRead, 1);
-		SetRasterizerState(RS_Default);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_BLEND_UV();
-	}
 }
