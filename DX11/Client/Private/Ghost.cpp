@@ -65,7 +65,7 @@ void CGhost::Tick(_float fTimeDelta)
 	m_fTime += fTimeDelta;
 	m_fUpdatePointTime -= fTimeDelta;
 
-	m_fHandPrintCoolTime -= fTimeDelta;
+	
 
 	if (0.f > m_fUpdatePointTime)
 	{
@@ -255,10 +255,19 @@ void CGhost::Normal_Operation(_float fTimeDelta)
 		if (0.f > m_fDotsTime)
 		{
 			m_bInDots = false;
-			m_pHandPrint->Set_Enable(false);
 		}
 
 	}
+
+	if (m_bHandPrint)
+	{
+		m_fHandPrintCoolTime -= fTimeDelta;
+		if (0.f > m_fHandPrintCoolTime)
+		{
+			m_pHandPrint->Set_Enable(false);
+		}
+	}
+
 }
 
 
@@ -347,7 +356,7 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 				m_pHandPrint->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 
 			}
-			m_fHandPrintCoolTime = 10.f;
+			m_fHandPrintCoolTime = 20.f;
 		}
 	}
 
