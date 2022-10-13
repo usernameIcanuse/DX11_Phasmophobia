@@ -493,7 +493,7 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT_STENCIL();
+		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT();
 	}
 
 	pass Stencil_Light_SpotLight
@@ -504,7 +504,7 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT();
+		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT_STENCIL();
 	}
 
 	pass Blend

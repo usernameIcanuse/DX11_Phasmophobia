@@ -423,6 +423,7 @@ HRESULT CLevel_Stage1::Load_Stage()
 		}
 	}
 	CloseHandle(hFile);
+
 	strcpy_s(Filepath2, "../Bin/Resources/Map/NormalHouse/LightSwitch");
 	
 	hFile = CreateFileA(Filepath2,
@@ -473,27 +474,13 @@ HRESULT CLevel_Stage1::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)
 		return E_FAIL;
-
-
-
-	/*ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
-
-	LightDesc.eType = tagLightDesc::TYPE_POINT;
-	LightDesc.vPosition = _float4(10.f, 5.f, 10.f, 0.f);
-	LightDesc.fRange = 10.f;
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-
-	if (FAILED(pGameInstance->Add_Light(m_pDevice, m_pContext, LightDesc)))
-		return E_FAIL;*/
 
 
 	return S_OK;

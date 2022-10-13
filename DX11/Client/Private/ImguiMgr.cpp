@@ -1693,8 +1693,8 @@ void CImguiMgr::Save_Light(const char* strStageName, const char* strFileName)
 		{
 			pTranform = (CTransform*)pBulb->Get_Component(CGameObject::m_pTransformTag);
 			XMStoreFloat4x4(&tData.matBulbWorld[iCnt++],pTranform->Get_WorldMatrix());
-			WriteFile(hFileBrix, &tData, sizeof(SWITCH_DATA), &dwByteBrix, nullptr);
 		}
+		WriteFile(hFileBrix, &tData, sizeof(SWITCH_DATA), &dwByteBrix, nullptr);
 		++iIndex;
 	}
 	
