@@ -75,10 +75,6 @@ HRESULT CLightSwitch::Render()
     }
 
 
-#ifdef _DEBUG
-    m_pOBBCom->Render();
-#endif
-
     return S_OK;
 }
 

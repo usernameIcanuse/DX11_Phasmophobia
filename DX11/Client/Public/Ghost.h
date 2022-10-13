@@ -60,6 +60,8 @@ private:
 	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력
 #endif
 
+	class CHandPrint*	 m_pHandPrint = nullptr;
+
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	_float				m_fUpdatePointTime = 0.f;
 

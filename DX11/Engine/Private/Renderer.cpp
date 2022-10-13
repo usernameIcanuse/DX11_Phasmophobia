@@ -79,9 +79,14 @@ HRESULT CRenderer::Initialize_Prototype()
 	//if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_PixelTangent"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 	//	return E_FAIL;
 
+	/* For.Target_Decals*/
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_Decals"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		return E_FAIL;
+
 	/* For.Target_UVLight*/
 	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext, TEXT("Target_UVLight"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
+
 
 
 
@@ -115,7 +120,7 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Specular"))))
 		return E_FAIL;
 
-	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Decals"), TEXT("Target_Diffuse"))))
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Decals"), TEXT("Target_Decals"))))
 		return E_FAIL;
 	/*나중에 노멀도 있으면 Normal도 바인드함*/
 
@@ -126,6 +131,8 @@ HRESULT CRenderer::Initialize_Prototype()
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
+		return E_FAIL;
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_UVLight"))))
 		return E_FAIL;
 
 
@@ -140,10 +147,10 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;
 	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Specular"), 300.f, 300.f, 200.f, 200.f)))
 		return E_FAIL;
-	if (FAILED(m_pTarget_Manager->Ready_Debug( TEXT("Target_UVLight"),1180.f,100.f,200.f,200.f)))
+	if (FAILED(m_pTarget_Manager->Ready_Debug( TEXT("Target_Decals"),1180.f,100.f,200.f,200.f)))
 		return E_FAIL;
-	/*if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_Emissive"), 300.f, 500.f, 200.f, 200.f)))
-		return E_FAIL;*/
+	if (FAILED(m_pTarget_Manager->Ready_Debug(TEXT("Target_UVLight"), 1180.f, 300.f, 200.f, 200.f)))
+		return E_FAIL;
 #endif // _DEBUG
 
 	_matrix			WorldMatrix = XMMatrixIdentity();
@@ -206,6 +213,7 @@ void CRenderer::Set_Environment()
 
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));
+	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Decals"));
 
 }
 
@@ -365,6 +373,8 @@ HRESULT CRenderer::Render_Lights()
 		return E_FAIL;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Diffuse")))))
 		return E_FAIL;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Decals")))))
+		return E_FAIL;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -396,8 +406,8 @@ HRESULT CRenderer::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Specular")))))
 		return E_FAIL;
 
-	/*if (FAILED(m_pShader->Set_ShaderResourceView("g_EmissiveTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_Emissive")))))
-		return E_FAIL;*/
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_UVLightTexture", m_pTarget_Manager->Get_SRV(TEXT("Target_UVLight")))))
+		return E_FAIL;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -501,7 +511,7 @@ HRESULT CRenderer::Render_Debug()
 
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);	
 	m_pTarget_Manager->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
-
+	m_pTarget_Manager->Render_Debug(TEXT("MRT_Decals"), m_pShader, m_pVIBuffer);
 	return S_OK;
 }
 

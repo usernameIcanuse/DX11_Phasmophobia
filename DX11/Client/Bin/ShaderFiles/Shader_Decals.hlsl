@@ -109,13 +109,16 @@ PS_OUT_DECAL PS_MAIN_DECAL(PS_IN_DECAL In)
 		discard;
 	}
 	
-		float2 fDecalUV = vDecalLocalPos.xy + 0.5f;
-		fDecalUV.y = 1.f - fDecalUV.y;
+	float2 fDecalUV = vDecalLocalPos.xy + 0.5f;
+	fDecalUV.y = 1.f - fDecalUV.y;
 
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, fDecalUV);
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, fDecalUV);
+	Out.vColor.x = 220.f;
+	Out.vColor.y = 255.f;
+	Out.vColor.z = 0.f;
 
-		if (Out.vColor.a < 0.1f)
-			discard;
+	if (Out.vColor.a < 0.1f)
+		discard;
 	
 
 	return Out;	

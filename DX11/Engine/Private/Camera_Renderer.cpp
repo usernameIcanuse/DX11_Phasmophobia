@@ -131,7 +131,7 @@ HRESULT CCamera_Renderer::Render_NonAlphaBlend()
 
 HRESULT CCamera_Renderer::Render_Decal()
 {
-	if (FAILED(Begin_RenderTarget(TEXT("MRT_Deferred"))))
+	if (FAILED(Begin_RenderTarget(TEXT("MRT_Decals"))))
 		return E_FAIL;
 
 	for (auto& pGameObject : m_RenderObjects[RENDER_DECAL])
@@ -338,6 +338,7 @@ void CCamera_Renderer::Set_Environment()
 
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Deferred"));
 	m_pTarget_Manager->Clear_MRT(TEXT("MRT_LightAcc"));
+	m_pTarget_Manager->Clear_MRT(TEXT("MRT_Decals"));
 }
 
 void CCamera_Renderer::End_Environment()

@@ -23,11 +23,12 @@ HRESULT CLevel_Stage1::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 	//임구이 안 쓸 때
-	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-	//	return E_FAIL;
+	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
 
-	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
+		return E_FAIL;*/
+	/////////////////////////
 
 	if(FAILED(Ready_Lights()))
 		return E_FAIL;
@@ -45,13 +46,6 @@ void CLevel_Stage1::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	/*CGameInstance* pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-
-	if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY))))
-		return;
-
-	Safe_Release(pGameInstance);*/
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 
 }

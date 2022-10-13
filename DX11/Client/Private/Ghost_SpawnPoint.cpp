@@ -94,8 +94,8 @@ void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
 
 #ifdef _DEBUG
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
-	m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom); 
-	m_pRendererCom->Add_DebugRenderGroup(m_pSpawnPointCom);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom); 
+	//m_pRendererCom->Add_DebugRenderGroup(m_pSpawnPointCom);
 
 #endif
 }

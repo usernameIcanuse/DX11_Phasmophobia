@@ -29,12 +29,12 @@ vector		g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 
-texture2D	g_SpecularTexture;
 texture2D	g_DepthTexture;
 texture2D	g_DiffuseTexture;
+texture2D	g_NormalTexture;
+texture2D	g_SpecularTexture;
 texture2D	g_EmissiveTexture;
 texture2D	g_ShadeTexture;
-texture2D	g_NormalTexture;
 texture2D	g_UVLightTexture;
 texture2D	g_Texture;
 
@@ -94,6 +94,13 @@ struct PS_OUT_LIGHT
 {
 	vector		vShade : SV_TARGET0;
 	vector		vSpecular : SV_TARGET1;
+};
+
+struct PS_OUT_UVLIGHT
+{
+	vector		vShade : SV_TARGET0;
+	vector		vSpecular : SV_TARGET1;
+	vector		vUVLight : SV_TARGET2;
 };
 
 
@@ -233,9 +240,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 }
 
 
-PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
+PS_OUT_UVLIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 {
-	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
+	PS_OUT_UVLIGHT		Out = (PS_OUT_UVLIGHT)1;
 
 	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
@@ -280,6 +287,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * fAtt * fSpot * -1.f, vLook)), 30.f) ;
 	Out.vSpecular.a = 0.f;
 
+	vector vUVColor = g_UVLightTexture.Sample(DefaultSampler, In.vTexUV);
+	
+	if (220 == dot(vUVColor, g_vLightDiffuse))
+		Out.vUVLight = vUVColor;
+	else
+		Out.vUVLight = vector(0.f, 0.f, 0.f, 0.f);
+
 	return Out;
 }
 
@@ -292,9 +306,11 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-	//vector			vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
+	
+	if(StencilPass)
+		vector			vUVLight = g_UVLightTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = vDiffuse * vShade + vSpecular;
+	Out.vColor = vDiffuse * vShade + vSpecular + vUVLight;
 
 	if (Out.vColor.a == 0.f)
 		discard;
@@ -337,6 +353,33 @@ DepthStencilState DSS_ZEnable_ZWriteEnable_false
 	DepthWriteMask = zero;
 };
 
+DepthStencilState DSS_DepthFalse_StencilTrue
+{
+	DepthEnable = true;
+	DepthWriteMask = all;
+	DepthFunc = less_equal;
+
+	StencilEnable = true;
+	StencilWriteMask = 0xffffffff;
+	StencilRef = 1;
+	StencilFunc = always;
+	StencilPass = Replace;
+};//uvLight
+
+DepthStencilState DSS_DepthFalse_StencilTrue
+{
+	DepthEnable = true;
+	DepthWriteMask = all;
+	DepthFunc = less_equal;
+
+	StencilEnable = true;
+	StencilReadMask = 0xffffffff;
+	StencilRef = 1;
+	StencilFunc = Equal;
+	StencilPass = Zero;
+};
+
+
 technique11 DefaultTechnique
 {
 	pass Debug
@@ -376,6 +419,17 @@ technique11 DefaultTechnique
 	{
 		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT();
+	}
+
+	pass Stencil_Light_SpotLight
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_DepthFalse_StencilTrue, 0);
 		SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();

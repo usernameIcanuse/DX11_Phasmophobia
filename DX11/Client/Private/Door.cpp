@@ -109,7 +109,7 @@ void CDoor::LateTick(_float fTimeDelta)
     //}
 
 #ifdef _DEBUG
-       m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+       //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }

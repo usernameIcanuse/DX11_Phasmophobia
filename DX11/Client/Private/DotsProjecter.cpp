@@ -71,8 +71,8 @@ void CDotsProjecter::LateTick(_float fTimeDelta)
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
-   m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
-   m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom);
+   //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+   //m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom);
 
 #endif
 

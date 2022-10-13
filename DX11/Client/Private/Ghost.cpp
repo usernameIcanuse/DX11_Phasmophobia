@@ -43,13 +43,16 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(Setup_Bahavior()))
 		return E_FAIL;
 
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
+		return E_FAIL;
+
+	m_pHandPrint->Set_Enable(false);
+
 	m_pModelCom->Set_CurrentAnimation(1);
+
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
-
-
-
 	m_fUpdatePointTime = 5.f;
 
 	return S_OK;
@@ -84,8 +87,8 @@ void CGhost::LateTick(_float fTimeDelta)
 
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 #ifdef _DEBUG
-	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
-	m_pRendererCom->Add_DebugRenderGroup(m_pGhostCom);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pGhostCom);
 
 
 #endif // _DEBUG
@@ -252,6 +255,7 @@ void CGhost::Normal_Operation(_float fTimeDelta)
 		if (0.f > m_fDotsTime)
 		{
 			m_bInDots = false;
+			m_pHandPrint->Set_Enable(false);
 		}
 
 	}
@@ -336,14 +340,11 @@ void CGhost::On_Collision_Enter(CCollider* pCollider)
 			{
 				m_bCheckHandPrint = true;//증거 한 번만 찾도록
 
-				CHandPrint* pTemp;
-
-				if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&pTemp)))
-					return;
+				m_pHandPrint->Set_Enable(true);				
 
 				CTransform* pObjectTransform = (CTransform*)pDoor->Get_Component(CGameObject::m_pTransformTag);
 
-				pTemp->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+				m_pHandPrint->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 
 			}
 			m_fHandPrintCoolTime = 10.f;

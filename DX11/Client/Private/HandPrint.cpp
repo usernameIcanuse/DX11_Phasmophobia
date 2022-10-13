@@ -63,7 +63,7 @@ void CHandPrint::LateTick(_float fTimeDelta)
 
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_DECAL);
 
-	m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 }
 
 HRESULT CHandPrint::Render()
