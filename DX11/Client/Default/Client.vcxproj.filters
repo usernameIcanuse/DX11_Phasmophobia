@@ -202,6 +202,9 @@
     <ClInclude Include="..\Public\LightBulb.h">
       <Filter>02.GameObject\Stage\House\LightSwitch\LightBulb</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Computer.h">
+      <Filter>02.GameObject\Stage\Truck\Computer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -389,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\LightBulb.cpp">
       <Filter>02.GameObject\Stage\House\LightSwitch\LightBulb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Computer.cpp">
+      <Filter>02.GameObject\Stage\Truck\Computer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -594,6 +600,18 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\House\LightSwitch\LightBulb">
       <UniqueIdentifier>{edda5e22-8703-45e7-a256-94fce83fa652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Computer">
+      <UniqueIdentifier>{49d6ef63-8444-4b30-aa7f-9b6692448f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Computer\Mouse">
+      <UniqueIdentifier>{06694c1b-ddd0-46f4-bc0b-7d9843d74884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Computer\KeyBoard">
+      <UniqueIdentifier>{27312646-bfcb-449a-8cb0-d5e8bafc3dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Screen">
+      <UniqueIdentifier>{1eb7c1e1-033e-436e-a599-404ce57b0477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

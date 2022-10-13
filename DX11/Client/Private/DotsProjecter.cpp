@@ -19,9 +19,13 @@ HRESULT CDotsProjecter::Initialize_Prototype()
 
 HRESULT CDotsProjecter::Initialize(void* pArg)
 {
-    if (FAILED(__super::Initialize(pArg)))
+    if (FAILED(__super::Initialize(nullptr)))
         return E_FAIL;
 
+    if (nullptr != pArg)
+    {
+        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
+    }
    // m_pTransformCom->Set_Scaled(_float3(5.f, 5.f, 5.f));
 
     if (FAILED(Setup_Component()))

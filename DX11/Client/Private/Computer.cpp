@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "../Public/Truck.h"
+#include "../Public/Computer.h"
 #include "GameInstance.h"
 
-CTruck::CTruck(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CComputer::CComputer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
 {
 }
 
-CTruck::CTruck(const CTruck& rhs)
+CComputer::CComputer(const CComputer& rhs)
     :CGameObject(rhs)
 {
 }
 
-HRESULT CTruck::Initialize_Prototype()
+HRESULT CComputer::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CTruck::Initialize(void* pArg)
+HRESULT CComputer::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(nullptr)))
         return E_FAIL;
@@ -33,13 +33,13 @@ HRESULT CTruck::Initialize(void* pArg)
     return S_OK;
 }
 
-void CTruck::Tick(_float fTimeDelta)
+void CComputer::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
 }
 
-void CTruck::LateTick(_float fTimeDelta)
+void CComputer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
    /* _float4 vPosition;
@@ -52,7 +52,7 @@ void CTruck::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CTruck::Render()
+HRESULT CComputer::Render()
 {
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
@@ -74,7 +74,7 @@ HRESULT CTruck::Render()
 
 
 
-HRESULT CTruck::Setup_Component()
+HRESULT CComputer::Setup_Component()
 {
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -83,13 +83,11 @@ HRESULT CTruck::Setup_Component()
     /* For.Com_Model*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
-
-
    
     return S_OK;
 }
 
-HRESULT CTruck::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
+HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
     if (nullptr == m_pShaderCom||
         nullptr == m_pModelCom)
@@ -107,33 +105,33 @@ HRESULT CTruck::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMat
     return S_OK;
 }
 
-CTruck* CTruck::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CComputer* CComputer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CTruck* pInstance = new CTruck(pDevice, pContext);
+    CComputer* pInstance = new CComputer(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CTruck");
+        MSG_BOX("Failed to Created : CComputer");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CTruck::Clone(void* pArg)
+CGameObject* CComputer::Clone(void* pArg)
 {
-    CTruck* pInstance = new CTruck(*this);
+    CComputer* pInstance = new CComputer(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CTruck");
+        MSG_BOX("Failed to Cloned : CComputer");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CTruck::Free()
+void CComputer::Free()
 {
     __super::Free();
     

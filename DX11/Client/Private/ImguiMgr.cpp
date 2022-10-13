@@ -1167,13 +1167,22 @@ void CImguiMgr::Translation()
 
 void CImguiMgr::Rotation()
 { 
-	if (GAMEINSTANCE->Is_KeyState(KEY::K, KEY_STATE::TAP))
+	if (m_pSelectedObject)
 	{
-		if (m_pSelectedObject)
+		if (GAMEINSTANCE->Is_KeyState(KEY::K, KEY_STATE::TAP))
 		{
-			m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(5.f));
+			m_pSelectedTransform->Rotation(m_pSelectedTransform->Get_State(CTransform::STATE_UP), XMConvertToRadians(5.f));
+		}
+		if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
+		{
+			m_pSelectedTransform->Rotation(m_pSelectedTransform->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(5.f));
+		}
+		if (GAMEINSTANCE->Is_KeyState(KEY::L, KEY_STATE::TAP))
+		{
+			m_pSelectedTransform->Rotation(m_pSelectedTransform->Get_State(CTransform::STATE_LOOK), XMConvertToRadians(5.f));
 		}
 	}
+
 }
 
 void CImguiMgr::Scaling()

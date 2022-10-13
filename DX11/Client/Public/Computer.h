@@ -4,19 +4,18 @@
 
 BEGIN(Engine)
 class CShader;
-class CCollider;
 class CModel;
-
+class CCollider;
 END
 
 BEGIN(Client)
 
-class CTruck final : public CGameObject
+class CComputer final : public CGameObject
 {
 private:
-	CTruck(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CTruck(const CTruck& rhs);
-	virtual ~CTruck() = default;
+	CComputer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CComputer(const CComputer& rhs);
+	virtual ~CComputer() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -29,16 +28,15 @@ public:
 
 private:
 	CShader* m_pShaderCom = nullptr;
-	CCollider* m_pOBBCom = nullptr;
 	CModel* m_pModelCom = nullptr;
-
+	CCollider* m_pOBBCom = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component();
 
 
 public:
-	static CTruck* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CComputer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg);
 	virtual void Free() override;
 };

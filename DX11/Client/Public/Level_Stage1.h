@@ -27,6 +27,7 @@ private:
 	HRESULT Load_Stage();
 	HRESULT Ready_Lights();
 	HRESULT Ready_Layer_Terrain(const _tchar* pLayertag);
+	HRESULT Load_TruckProps();
 
 private:
 	CLight* m_pBaseLight = nullptr;
