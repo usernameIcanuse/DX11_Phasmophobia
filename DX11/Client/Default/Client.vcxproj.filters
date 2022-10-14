@@ -205,6 +205,9 @@
     <ClInclude Include="..\Public\Computer.h">
       <Filter>02.GameObject\Stage\Truck\Computer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Truck_Inside.h">
+      <Filter>02.GameObject\Stage\Truck\Inside</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -395,6 +398,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Computer.cpp">
       <Filter>02.GameObject\Stage\Truck\Computer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Truck_Inside.cpp">
+      <Filter>02.GameObject\Stage\Truck\Inside</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -612,6 +618,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Truck\Screen">
       <UniqueIdentifier>{1eb7c1e1-033e-436e-a599-404ce57b0477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Inside">
+      <UniqueIdentifier>{c99f5251-0306-460e-ba26-d6d6e1b9face}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

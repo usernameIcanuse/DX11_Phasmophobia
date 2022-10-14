@@ -25,7 +25,7 @@ HRESULT CDoor::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
-    m_fCullingRange = 10.f;
+    m_fCullingRange = 15.f;
 
     GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
 

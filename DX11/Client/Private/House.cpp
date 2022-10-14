@@ -52,8 +52,6 @@ void CHouse::LateTick(_float fTimeDelta)
 
 HRESULT CHouse::Render()
 {
-
-
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)

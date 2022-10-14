@@ -24,6 +24,11 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    if (nullptr != pArg)
+    {
+        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
+    }
+
     if (FAILED(Setup_Component()))
         return E_FAIL;
 

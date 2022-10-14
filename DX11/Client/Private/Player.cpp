@@ -32,7 +32,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(70.f, 0.f, 52.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(125.f, 0.f, 52.f, 1.f));
 
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
@@ -118,7 +118,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	//m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
 #endif
 	
 }
@@ -160,7 +160,7 @@ HRESULT CPlayer::Setup_Component()
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = 0;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
 
@@ -234,8 +234,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		XMStoreFloat3(&vRight, pDoorTransform->Get_State(CTransform::STATE_RIGHT));
 
 		m_pTransformCom->Slide_Object(vRight, m_pNavigationCom);
-		//m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+		
 	}
 	/*한 번 슬라이드 잘못 타면 붙어버림*/
 

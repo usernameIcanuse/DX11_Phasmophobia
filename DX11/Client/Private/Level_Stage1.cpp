@@ -364,6 +364,52 @@ HRESULT CLevel_Stage1::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Items");
 
+	
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Ghost");
+
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	OBJ_DATA  tDataObj;
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+			
+
+			CHARACTERDATA tagData;
+			XMStoreFloat4x4(&tagData.matWorld, tDataObj.matWorld);
+			tagData.iCurrentIndex = 49;
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_STAGE1,
+				TEXT("Layer_Light"),
+				TEXT("Prototype_GameObject_Ghost"),
+				nullptr, &tagData)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+
+		}
+	}
+	CloseHandle(hFile);
+	//MSG_BOX("Loaded Items");
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
@@ -417,19 +463,19 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 		return E_FAIL;
 	}
 	DWORD dwByteHouse = 0;
-	OBJ_DATA tDataObj;
-	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	MAP_DATA tTruckPos;
+	ZeroMemory(&tTruckPos, sizeof(MAP_DATA));
 	_matrix	TruckWorldMat;
 	while (true)
 	{
-		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		if (TRUE == ReadFile(hFile, &tTruckPos, sizeof(MAP_DATA), &dwByteHouse, nullptr))
 		{
 			if (0 == dwByteHouse)
 			{
 				break;
 			}
 
-			TruckWorldMat = tDataObj.matWorld;
+			TruckWorldMat = tTruckPos.matWorld;
 		}
 	}
 
@@ -439,7 +485,6 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 	TruckWorldMat.r[0]=XMVector3Normalize(TruckWorldMat.r[0]);
 	TruckWorldMat.r[1] = XMVector3Normalize(TruckWorldMat.r[1]);
 	TruckWorldMat.r[2] = XMVector3Normalize(TruckWorldMat.r[2]);
-
 
 	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Truck_Default");
 	hFile = CreateFileA(Filepath,
@@ -453,22 +498,58 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 	}
 
 	dwByteHouse = 0;
-	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	MAP_DATA tData;
+	ZeroMemory(&tData, sizeof(MAP_DATA));
 
 	while (true)
 	{
-		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
 		{
 			if (0 == dwByteHouse)
 			{
 				break;
 			}
 
-			_matrix LocalMat = tDataObj.matWorld;
+			_matrix LocalMat = tData.matWorld;
 			_float4x4 WorldMatrix;
 			XMStoreFloat4x4(&WorldMatrix, LocalMat*TruckWorldMat);
 
 			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Truck"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/TruckInside_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+	//MAP_DATA tData;
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Truck_Inside"), nullptr, &WorldMatrix))
 				return E_FAIL;
 		}
 	}
@@ -487,6 +568,7 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 	}
 
 	dwByteHouse = 0;
+	OBJ_DATA tDataObj;
 	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
 
 	while (true)

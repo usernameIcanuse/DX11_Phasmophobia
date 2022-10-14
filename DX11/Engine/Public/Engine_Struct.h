@@ -325,6 +325,7 @@ namespace Engine
 		MAINDOOR,
 		ROOMDOOR,
 		LIGHTSWITCH,
+		TRUCK_INSIDE,
 		MODEL_END
 	};
 
@@ -335,6 +336,12 @@ namespace Engine
 		OBJ_TAG		tObjTag;
 		_matrix		matWorld;
 	} OBJ_DATA;
+
+	typedef struct tagCharacterData
+	{
+		_float4x4 matWorld;
+		_int		iCurrentIndex;
+	}CHARACTERDATA;
 
 	typedef struct tagHouseData
 	{

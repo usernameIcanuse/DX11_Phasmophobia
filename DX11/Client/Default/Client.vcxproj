@@ -249,6 +249,7 @@
     <ClInclude Include="..\Public\TrailCam.h" />
     <ClInclude Include="..\Public\Tripod.h" />
     <ClInclude Include="..\Public\Truck.h" />
+    <ClInclude Include="..\Public\Truck_Inside.h" />
     <ClInclude Include="..\Public\UIBackground.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\UVLight.h" />
@@ -332,6 +333,7 @@
     <ClCompile Include="..\Private\TrailCam.cpp" />
     <ClCompile Include="..\Private\Tripod.cpp" />
     <ClCompile Include="..\Private\Truck.cpp" />
+    <ClCompile Include="..\Private\Truck_Inside.cpp" />
     <ClCompile Include="..\Private\UIBackground.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\UVLight.cpp" />

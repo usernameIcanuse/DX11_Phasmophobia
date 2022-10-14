@@ -72,7 +72,7 @@ BOOL AntialiasedLineEnable;
 RasterizerState RS_Default
 {
 	FillMode = solid;
-	CullMode = none;
+	CullMode = back;
 	FrontCounterClockwise = false;
 };
 

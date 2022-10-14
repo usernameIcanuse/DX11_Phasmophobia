@@ -37,6 +37,14 @@ public:
 	void Event(_float fTimeDelta);
 	void Attack(_float fTimeDelta);
 
+public:
+	void Set_Owner(CTransform* _pOwnerTransform)
+	{
+		m_pOwnerTransform = _pOwnerTransform;
+		Safe_AddRef(m_pOwnerTransform);
+	}
+	void Set_NaviIndex(_int iCurrentIndex);
+
 private:
 	CTransform* m_pOwnerTransform = nullptr;
 	/*플레이어도 미리 가지고 있음?*/
@@ -54,7 +62,7 @@ private:
 	CRenderer* m_pRendererCom = nullptr;
 #endif
 private:
-	HRESULT Setup_Component();
+	HRESULT Setup_Component(_int iNaviIndex);
 
 public:
 	static CGhost_Behavior* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

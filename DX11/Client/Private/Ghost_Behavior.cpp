@@ -28,14 +28,14 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	
 	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
+	_int iNaviIndex;
 
 	if (nullptr != pArg)
 	{
-		m_pOwnerTransform = (CTransform*)pArg;
-		Safe_AddRef(m_pOwnerTransform);
+		iNaviIndex = *(_int*)pArg;
 	}
 
-	if (FAILED(Setup_Component()))
+	if (FAILED(Setup_Component(iNaviIndex)))
 		return E_FAIL;
 
 	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_STAGE1, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
@@ -51,14 +51,14 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CGhost_Behavior::Setup_Component()
+HRESULT CGhost_Behavior::Setup_Component(_int iNaviIndex)
 {
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
-	NaviDesc.m_iCurrentIndex = 0;
+	NaviDesc.m_iCurrentIndex = iNaviIndex;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
 #ifdef _DEBUG
@@ -179,6 +179,11 @@ void CGhost_Behavior::Attack(_float fTimeDelta)
 	{
 		m_pOwnerTransform->Go_Straight(fTimeDelta * 1.3f, m_pNavigationCom);
 	}
+}
+
+void CGhost_Behavior::Set_NaviIndex(_int iCurrentIndex)
+{
+	m_pNavigationCom->Set_CurrentIndex(iCurrentIndex);
 }
 
 

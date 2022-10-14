@@ -24,6 +24,10 @@ public:
 public:
 	_bool isMove(_fvector vPosition, _float fPositionY, _vector vDirection,_vector& vMovedPosition);
 	_bool Picking_Mesh(RAY	_tMouseRay,_float4&	vPickedPos);
+	void Set_CurrentIndex(_int iCurrentIndex)
+	{
+		m_NaviDesc.m_iCurrentIndex = iCurrentIndex;
+	}
 
 #ifdef _DEBUG
 public:

@@ -14,11 +14,18 @@ END
 BEGIN(Client)
 
 class CGhost_SpawnPoint;
-
+class CGhost_Behavior;
 
 class CGhost final: public CGameObject
 {
 	friend class CGhost_SpawnPoint;
+public:
+	typedef struct
+	{
+		_float4x4 matWorld;
+		_int iCurrentIndex;
+	}GHOST_LOADDATA;
+
 private:
 	CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGhost(const CGhost& rhs);
@@ -56,6 +63,9 @@ private:
 	CShader*		m_pShaderCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 
+	CGhost_Behavior* m_pBehavior = nullptr;
+	_int			m_iSpawnPointIndex = 0;
+
 #ifdef _DEBUG
 	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력
 #endif
@@ -91,7 +101,7 @@ private:
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_SpawnPoint();
-	HRESULT Setup_Bahavior();
+	HRESULT Setup_Bahavior(_int iNaviIndex);
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

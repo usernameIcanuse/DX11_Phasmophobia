@@ -160,19 +160,20 @@ void CHandPrint::Set_Position(CTransform* _pTransform,_vector vPlayerPos)
 	XMStoreFloat4(&vPlayerDir, vPlayerPos - vPos);
 	_vector vEraseHeight = XMVectorSet(vPlayerDir.x, 0.f, vPlayerDir.z, 0.f);
 
-	if (0.f > XMVectorGetX(XMVector3Dot(XMVector3Normalize(vRight), vEraseHeight)))
-	{//문의 기본 오프셋이 왼쪽으로 가있지만 1,0,0,0이 right인 상황
-		m_vPosOffSet.x = vPlayerDir.x;
+	//if (-0.1f > XMVectorGetX(XMVector3Dot(XMVector3Normalize(vRight), XMVector3Normalize(vEraseHeight))))
+	//{//문의 기본 오프셋이 왼쪽으로 가있지만 1,0,0,0이 right인 상황
+		//m_vPosOffSet.x = vPlayerDir.x;
 		if (0.f > XMVectorGetX(XMVector3Length(XMVector3Cross(vRight, vEraseHeight))))
 		{
-			m_vPosOffSet.z = 1.f;
+			m_vPosOffSet.z = 0.5f;
 		}
 		else
 		{
-			m_vPosOffSet.z = -1.f;
-		}
+			m_vPosOffSet.z = -0.5f;
+		} 
 		m_vPosOffSet.y = 10.f;
-	}
+	//}
+		m_vPosOffSet.x = -5.f;
 
 }
 

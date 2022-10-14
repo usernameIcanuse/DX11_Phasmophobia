@@ -29,6 +29,7 @@
 
 #include "Atmosphere.h"
 #include "Truck.h"
+#include "Truck_Inside.h"
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
@@ -398,6 +399,11 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CTruck::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_Truck_Inside*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Truck_Inside"),
+		CTruck_Inside::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
@@ -579,7 +585,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
 		return E_FAIL;
 	
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)* XMMatrixRotationY(XMConvertToRadians(180.0f));
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)/** XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
 	/* For.Prototype_Component_Model_RoomDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_RoomDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "RoomDoor.fbx", TransformMatrix))))
@@ -603,6 +609,12 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Truck.fbx", TransformMatrix))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Truck_Inside*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck_Inside"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Garage.fbx", TransformMatrix))))
+		return E_FAIL;
+
 	
 //	/* For.Prototype_Component_Model_AbandonedMarket*/
 //	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_AbandonedMarket"),
@@ -650,9 +662,14 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_RAY))))
 		return E_FAIL;
 
-	/* For. Prototype_Component_Navigation_Ghost*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"),
+	/* For. Prototype_Component_Navigation_House*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_House"),
 		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation4.dat"))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Navigation_OutSide*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"),
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/OutSide.dat"))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));

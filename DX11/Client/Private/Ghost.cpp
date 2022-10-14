@@ -4,6 +4,7 @@
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
 #include "HandPrint.h"
+#include "Ghost_Behavior.h"
 #include "Door.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -34,14 +35,24 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
 
+	
+
+	if (nullptr != pArg)
+	{
+		CHARACTERDATA tagData = *(CHARACTERDATA*)pArg;
+		m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&tagData.matWorld));
+
+		if (FAILED(Setup_Bahavior(tagData.iCurrentIndex)))
+			return E_FAIL;
+		m_iSpawnPointIndex = tagData.iCurrentIndex;
+	}
+
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
 	if (FAILED(Setup_SpawnPoint()))
 		return E_FAIL;
 
-	if (FAILED(Setup_Bahavior()))
-		return E_FAIL;
 
 	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
 		return E_FAIL;
@@ -226,13 +237,18 @@ void CGhost::Light_Attack(_float fTimeDelta)
 void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
+
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
 	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)
+	{
 		m_pModelCom->Set_CurrentAnimation(1);
+	}
+	else
+		m_pModelCom->Set_CurrentAnimation(0);
 
 	m_pModelCom->Play_Animation(fTimeDelta*1.3f);
 
@@ -247,8 +263,24 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Normal_Operation(_float fTimeDelta)
 {
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+	m_pModelCom->Play_Animation(fTimeDelta);
+
+	_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
+	_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+
+	if (35.f < XMVectorGetX(XMVector3Length(vSpawnPos - vPosition)))
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
+		m_pBehavior->Set_NaviIndex(m_iSpawnPointIndex);
+	}
+
 	if (m_bInDots)
 	{
+		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
+
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
+
 		m_fDotsTime -= fTimeDelta;
 		m_pModelCom->Play_Animation(fTimeDelta*2.f);
 		GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
@@ -323,10 +355,14 @@ HRESULT CGhost::Setup_SpawnPoint()
 	return S_OK;
 }
 
-HRESULT CGhost::Setup_Bahavior()
+HRESULT CGhost::Setup_Bahavior(_int iNaviIndex)
 {
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), nullptr, m_pTransformCom)))
+	
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior, &iNaviIndex)))
 		return E_FAIL;
+
+	m_pBehavior->Set_Owner(m_pTransformCom);
+
 	return S_OK;
 }/**/
 
