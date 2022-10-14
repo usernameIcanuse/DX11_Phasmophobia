@@ -208,6 +208,12 @@
     <ClInclude Include="..\Public\Truck_Inside.h">
       <Filter>02.GameObject\Stage\Truck\Inside</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Mouse.h">
+      <Filter>02.GameObject\Stage\Truck\Computer\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\KeyBoard.h">
+      <Filter>02.GameObject\Stage\Truck\Computer\KeyBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -401,6 +407,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Truck_Inside.cpp">
       <Filter>02.GameObject\Stage\Truck\Inside</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mouse.cpp">
+      <Filter>02.GameObject\Stage\Truck\Computer\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\KeyBoard.cpp">
+      <Filter>02.GameObject\Stage\Truck\Computer\KeyBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

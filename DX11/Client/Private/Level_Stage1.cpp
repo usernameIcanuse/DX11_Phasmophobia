@@ -410,6 +410,8 @@ HRESULT CLevel_Stage1::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Items");
 
+
+
 	RELEASE_INSTANCE(CGameInstance);
 	return S_OK;
 }
@@ -550,6 +552,112 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
 
 			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Truck_Inside"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Computer_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+	//MAP_DATA tData;
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Computer"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
+
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/KeyBoard_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+	//MAP_DATA tData;
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_KeyBoard"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Mouse_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+	//MAP_DATA tData;
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Mouse"), nullptr, &WorldMatrix))
 				return E_FAIL;
 		}
 	}
@@ -931,6 +1039,7 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 
 	CloseHandle(hFile);
 
+	
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;

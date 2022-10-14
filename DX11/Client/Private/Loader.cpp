@@ -30,6 +30,9 @@
 #include "Atmosphere.h"
 #include "Truck.h"
 #include "Truck_Inside.h"
+#include "Computer.h"
+#include "Mouse.h"
+#include "KeyBoard.h"
 
 #include "Camera_Free.h"
 #include "Camera_FPS.h"
@@ -404,6 +407,19 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CTruck_Inside::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For. Prototype_GameObject_Computer*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Computer"),
+		CComputer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_KeyBoard*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_KeyBoard"),
+		CKeyBoard::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Mouse*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mouse"),
+		CMouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	///* For.Prototype_GameObject_Effect */
 	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
 	//	CEffect::Create(m_pGraphic_Device))))
@@ -614,6 +630,20 @@ HRESULT CLoader::Loading_ForStage1Level()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Truck_Inside"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Garage.fbx", TransformMatrix))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Computer*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Computer"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Monitor_1.fbx", TransformMatrix))))
+		return E_FAIL;
+	/* For.Prototype_Component_Model_Mouse*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Mouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Mouse.fbx", TransformMatrix))))
+		return E_FAIL;
+	/* For.Prototype_Component_Model_KeyBoard*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Model_KeyBoard"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Keyboard.fbx", TransformMatrix))))
+		return E_FAIL;
+
 
 	
 //	/* For.Prototype_Component_Model_AbandonedMarket*/

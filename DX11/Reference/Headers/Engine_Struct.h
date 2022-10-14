@@ -326,6 +326,9 @@ namespace Engine
 		ROOMDOOR,
 		LIGHTSWITCH,
 		TRUCK_INSIDE,
+		COMPUTER,
+		KEYBOARD,
+		MOUSE,
 		MODEL_END
 	};
 

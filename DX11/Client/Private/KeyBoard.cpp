@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "../Public/Computer.h"
+#include "../Public/KeyBoard.h"
 #include "GameInstance.h"
 
-CComputer::CComputer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CKeyBoard::CKeyBoard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
 {
 }
 
-CComputer::CComputer(const CComputer& rhs)
+CKeyBoard::CKeyBoard(const CKeyBoard& rhs)
     :CGameObject(rhs)
 {
 }
 
-HRESULT CComputer::Initialize_Prototype()
+HRESULT CKeyBoard::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CComputer::Initialize(void* pArg)
+HRESULT CKeyBoard::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(nullptr)))
         return E_FAIL;
@@ -33,13 +33,13 @@ HRESULT CComputer::Initialize(void* pArg)
     return S_OK;
 }
 
-void CComputer::Tick(_float fTimeDelta)
+void CKeyBoard::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
 }
 
-void CComputer::LateTick(_float fTimeDelta)
+void CKeyBoard::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
    /* _float4 vPosition;
@@ -52,7 +52,7 @@ void CComputer::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CComputer::Render()
+HRESULT CKeyBoard::Render()
 {
     _uint iNumMeshContainers = m_pModelCom->Get_NumMeshContainers();
 
@@ -74,20 +74,20 @@ HRESULT CComputer::Render()
 
 
 
-HRESULT CComputer::Setup_Component()
+HRESULT CKeyBoard::Setup_Component()
 {
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
     /* For.Com_Model*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Computer"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_KeyBoard"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
    
     return S_OK;
 }
 
-HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
+HRESULT CKeyBoard::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
     if (nullptr == m_pShaderCom||
         nullptr == m_pModelCom)
@@ -105,33 +105,33 @@ HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProj
     return S_OK;
 }
 
-CComputer* CComputer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CKeyBoard* CKeyBoard::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    CComputer* pInstance = new CComputer(pDevice, pContext);
+    CKeyBoard* pInstance = new CKeyBoard(pDevice, pContext);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CComputer");
+        MSG_BOX("Failed to Created : CKeyBoard");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CComputer::Clone(void* pArg)
+CGameObject* CKeyBoard::Clone(void* pArg)
 {
-    CComputer* pInstance = new CComputer(*this);
+    CKeyBoard* pInstance = new CKeyBoard(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CComputer");
+        MSG_BOX("Failed to Cloned : CKeyBoard");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CComputer::Free()
+void CKeyBoard::Free()
 {
     __super::Free();
     
