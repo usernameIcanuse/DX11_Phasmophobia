@@ -35,13 +35,16 @@ public:
 #ifdef _DEBUG
 	CNavigation* Get_Navigation()
 	{
-		return m_pNavigationCom;
+		return m_pCurrNavigation;
 	}
 #endif
 
 private:
 	CCollider* m_pAABBCom = nullptr;
-	CNavigation* m_pNavigationCom = nullptr;
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
 
 #ifdef _DEBUG
 	CRenderer*   m_pRendererCom = nullptr;

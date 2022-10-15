@@ -232,8 +232,6 @@ HRESULT CTransform::Move(_float fTimeDelta, CNavigation* pNaviCom)
 
 	if (nullptr != pNaviCom)
 	{
-		/*if (false == pNaviCom->isMove(vPosition))
-			return S_OK;*/
 		_float fPositionY = 0.f;
 		_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 		if (pNaviCom->isMove(vPosition, fPositionY, XMLoadFloat3(&m_vMoveDir), vMovedPosition))
@@ -245,9 +243,7 @@ HRESULT CTransform::Move(_float fTimeDelta, CNavigation* pNaviCom)
 		}
 		else
 			return E_FAIL;
-		/*
-		_float fPositionY = 0.f;
-		pNaviCom->isMove(vPosition, fPositionY);*/
+
 	}
 	else
 	{

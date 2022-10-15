@@ -23,11 +23,11 @@ HRESULT CLevel_Stage1::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 	//임구이 안 쓸 때
-	/*if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-		return E_FAIL;*/
+		return E_FAIL;
 	/////////////////////////
 
 	if(FAILED(Ready_Lights()))
@@ -144,31 +144,20 @@ HRESULT CLevel_Stage1::Load_Stage()
 				break;
 			}
 
-			CGameObject* pTemp = nullptr;
 			MODEL_TAG	 iModelTag = tDataMap.tModelTag;
+			_float4x4	 WorldMat;
+			XMStoreFloat4x4(&WorldMat,tDataMap.matWorld);
 
 			if (FAILED(pGameInstance->Add_GameObject(
 				LEVEL_STAGE1,
 				TEXT("Layer_House"),
-				TEXT("Prototype_GameObject_House"),
-				&pTemp)))
+				TEXT("Prototype_GameObject_Tutorial"),
+				nullptr,&WorldMat)))
 			{
 				MSG_BOX("Fail");
 				RELEASE_INSTANCE(CGameInstance);
 				return E_FAIL;
 			}
-
-			CTransform* pTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
-			pTransform->Set_WorldMatrix(tDataMap.matWorld);
-
-			switch (iModelTag)
-			{
-			case MODEL_TAG::FURNISHEDCABIN:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-
-				break;
-			}
-
 
 		}
 	}
@@ -535,7 +524,7 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 	}
 
 	dwByteHouse = 0;
-	//MAP_DATA tData;
+
 	ZeroMemory(&tData, sizeof(MAP_DATA));
 
 	while (true)
@@ -745,6 +734,7 @@ HRESULT CLevel_Stage1::Load_TruckProps()
 	}
 
 	dwByteHouse = 0;
+	tDataObj;
 	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
 
 	while (true)

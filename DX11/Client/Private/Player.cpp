@@ -31,8 +31,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
-
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(125.f, 0.f, 52.f, 1.f));
+	//118,20,126/ index 1; tutorial
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(118.f, 20.f, 26.f, 1.f));
 
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
@@ -108,7 +108,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta/*,m_pNavigationCom*/);
+	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -118,23 +118,23 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	m_pRendererCom->Add_DebugRenderGroup(m_pNavigationCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pNaviOutSideCom);
 #endif
 	
 }
 
 HRESULT CPlayer::Render()
 {
-//#ifdef _DEBUG
-//	m_pNavigationCom->Render();
-//	//m_pOBBCom->Render();
-//#endif
+
 	return S_OK;
 }
 
 _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 {
-	return m_pNavigationCom->Picking_Mesh(tMouseRay, vPickedPos);
+	if(m_pCurrNavigation == m_pNaviHouseCom)
+		return m_pCurrNavigation->Picking_Mesh(tMouseRay, vPickedPos);
+
+	return false;
 }
 
 HRESULT CPlayer::Setup_Component()
@@ -160,9 +160,16 @@ HRESULT CPlayer::Setup_Component()
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = 0;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
 		return E_FAIL;
 
+	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+	NaviDesc.m_iCurrentIndex = 1;
+
+	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
+		return E_FAIL;
+
+	m_pCurrNavigation = m_pNaviOutSideCom;
 
 
 #ifdef _DEBUG
@@ -222,6 +229,12 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 		/*Game_End()*/
 	}
+
+	else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+	{
+		m_pCurrNavigation = m_pNaviHouseCom;
+	}
+
 }
 
 void CPlayer::On_Collision_Stay(CCollider* pCollider)
@@ -233,7 +246,7 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 		_float3 vRight;
 		XMStoreFloat3(&vRight, pDoorTransform->Get_State(CTransform::STATE_RIGHT));
 
-		m_pTransformCom->Slide_Object(vRight, m_pNavigationCom);
+		m_pTransformCom->Slide_Object(vRight, m_pCurrNavigation);
 		
 	}
 	/*한 번 슬라이드 잘못 타면 붙어버림*/
@@ -242,6 +255,10 @@ void CPlayer::On_Collision_Stay(CCollider* pCollider)
 
 void CPlayer::On_Collision_Exit(CCollider* pCollider)
 {
+	if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+	{
+		m_pCurrNavigation = m_pNaviOutSideCom;
+	}
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -274,7 +291,8 @@ void CPlayer::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pNaviHouseCom);
+	Safe_Release(m_pNaviOutSideCom);
 	Safe_Release(m_pAABBCom);
 
 #ifdef _DEBUG

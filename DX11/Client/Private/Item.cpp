@@ -135,7 +135,7 @@ void	CItem::Adjust_Item(CTransform* _pPlayerTransform)
     vPlayerPos += vLook * m_vAdjustpos.z;
 
 
-    m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos + XMVectorSet(0.f, 10.f, 0.f, 0.f));
+    m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPlayerPos + XMVectorSet(0.f, 12.f, 0.f, 0.f));
     m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
     m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
     m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);

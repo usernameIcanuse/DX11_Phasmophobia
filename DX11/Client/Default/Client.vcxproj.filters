@@ -214,6 +214,9 @@
     <ClInclude Include="..\Public\KeyBoard.h">
       <Filter>02.GameObject\Stage\Truck\Computer\KeyBoard</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Tutorial.h">
+      <Filter>02.GameObject\Stage\House\Tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -413,6 +416,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\KeyBoard.cpp">
       <Filter>02.GameObject\Stage\Truck\Computer\KeyBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Tutorial.cpp">
+      <Filter>02.GameObject\Stage\House\Tutorial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -633,6 +639,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Truck\Inside">
       <UniqueIdentifier>{c99f5251-0306-460e-ba26-d6d6e1b9face}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\House\Tutorial">
+      <UniqueIdentifier>{93b37f4d-f68d-4d47-9811-aba221a590dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

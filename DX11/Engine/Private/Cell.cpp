@@ -169,7 +169,7 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float& fPositionY, 
 		XMStoreFloat4(&vPos, vPosition);
 		fPositionY = (-m_vCellPlane.x * vPos.x - m_vCellPlane.z * vPos.z
 		-m_vCellPlane.w) / m_vCellPlane.y;
-	};
+	}
 	
 
 	return true;	

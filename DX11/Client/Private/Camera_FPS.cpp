@@ -38,7 +38,7 @@ void CCamera_FPS::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_RIGHT, matTarget.r[0]);
 	m_pTransformCom->Set_State(CTransform::STATE_UP, matTarget.r[1]);
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, matTarget.r[2]);
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matTarget.r[3] + XMVectorSet(0.f,10.f,0.f,0.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matTarget.r[3] + XMVectorSet(0.f,12.f,0.f,0.f));
 
 	//	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vPos));
 

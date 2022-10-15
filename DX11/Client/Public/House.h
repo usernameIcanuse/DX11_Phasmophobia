@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 class CShader;
-class CTexture;
+class CCollider;
 class CRenderer;
 class CModel;
 
@@ -12,9 +12,9 @@ END
 
 BEGIN(Client)
 
-class CHouse final : public CGameObject
+class CHouse : public CGameObject
 {
-private:
+protected:
 	CHouse(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CHouse(const CHouse& rhs);
 	virtual ~CHouse() = default;
@@ -31,14 +31,22 @@ public:
 public:
 	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag );
 
-private:
+protected:
 	CShader* m_pShaderCom = nullptr;
+#ifdef _DEBUG
 	CRenderer* m_pRendererCom = nullptr;
+#endif
 	CModel* m_pModelCom = nullptr;
+	CCollider* m_pOBBCom = nullptr;
 
 
-private:
+protected:
 	virtual	HRESULT	Setup_Component();
+
+public:
+	virtual void On_Collision_Enter(CCollider* pCollider);
+	virtual void On_Collision_Stay(CCollider* pCollider);
+	virtual void On_Collision_Exit(CCollider* pCollider);
 
 public:
 	static CHouse* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

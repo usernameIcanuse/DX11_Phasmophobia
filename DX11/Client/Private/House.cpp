@@ -19,11 +19,13 @@ HRESULT CHouse::Initialize_Prototype()
 
 HRESULT CHouse::Initialize(void* pArg)
 {
-    if (FAILED(__super::Initialize(pArg)))
+    if (FAILED(__super::Initialize(nullptr)))
         return E_FAIL;
 
-    if (FAILED(Setup_Component()))
-        return E_FAIL;
+    if (nullptr != pArg)
+    {
+        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
+    }
 
     m_fCullingRange = 100.f;
    
@@ -34,19 +36,19 @@ HRESULT CHouse::Initialize(void* pArg)
 void CHouse::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
  
 }
 
 void CHouse::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
-        //m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
     GAMEINSTANCE->Add_Object_For_Culling( this, CRenderer::RENDER_NONALPHABLEND);
-    //}
+
+#ifdef _DEBUG
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+#endif
 
 }
 
@@ -87,11 +89,28 @@ HRESULT CHouse::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
+#ifdef _DEBUG
     /* For.Com_Renderer*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
-   
+#endif
     return S_OK;
+}
+
+void CHouse::On_Collision_Enter(CCollider* pCollider)
+{
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+    {
+        int a = 10;
+    }
+}
+
+void CHouse::On_Collision_Stay(CCollider* pCollider)
+{
+}
+
+void CHouse::On_Collision_Exit(CCollider* pCollider)
+{
 }
 
 HRESULT CHouse::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
@@ -145,6 +164,7 @@ void CHouse::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pRendererCom);
     Safe_Release(m_pModelCom);
+    Safe_Release(m_pOBBCom);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

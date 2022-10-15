@@ -100,7 +100,7 @@ HRESULT CNavigation::Initialize(void * pArg)
 
 /* 객체가 움직이는데 있어 네비게이션 상에서 움직일 수 있는가? 아닌가? : return  */
 /* vPosition : 객체의 현재위치?!(x), 객체가 움직이고 난 이후의 위치. */
-_bool CNavigation::isMove(_fvector vPosition, _float fPositionY, _vector vDirection, _vector& vMovedPosition)
+_bool CNavigation::isMove(_fvector vPosition, _float& fPositionY, _vector vDirection, _vector& vMovedPosition)
 {
 	/* m_NaviDesc.m_iCurrentIndex : 현재 객체가 존재하는 쎌의 인덱스. */
 	_int		iNeighborIndex = -1;

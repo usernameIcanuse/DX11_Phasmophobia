@@ -39,7 +39,7 @@
 #include "Thermometer.h"
 #include "TrailCam.h"
 #include "Tripod.h"
-#include "House.h"
+#include "Tutorial.h"
 #include "Door.h"
 //#include "LightSwitch.h"
 #include "EMF.h"
@@ -370,9 +370,9 @@ HRESULT CLoader::Loading_ForStage1Level()
 		CDoor::Create(m_pDevice,m_pContext))))
 		return E_FAIL;
 
-	/* For. Prototype_GameObject_House*/
-	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
-		CHouse::Create(m_pDevice, m_pContext))))
+	/* For. Prototype_GameObject_Tutorial*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tutorial"),
+		CTutorial::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For. Prototype_GameObject_Atmosphere*/
@@ -699,7 +699,7 @@ HRESULT CLoader::Loading_ForStage1Level()
 
 	/* For. Prototype_Component_Navigation_OutSide*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"),
-		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/OutSide.dat"))))
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation_Outside.dat"))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
