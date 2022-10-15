@@ -100,11 +100,11 @@ HRESULT CLightBulb::SetUp_ModelCom(const _tchar* pPrototypeTag)
 HRESULT CLightBulb::Setup_Component()
 {
     /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_LightBulb"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LightBulb"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
 #ifdef _DEBUG
@@ -118,7 +118,7 @@ HRESULT CLightBulb::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::LIGHTSWITCH;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 #endif
 

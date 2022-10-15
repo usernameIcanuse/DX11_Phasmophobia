@@ -225,12 +225,12 @@ _long CGameInstance::Get_DIMouseMoveState(MOUSEMOVE eMouseMove)
 	return m_pInput_Manager->Get_DIMouseMoveState(eMouseMove);
 }
 
-HRESULT CGameInstance::Open_Level(_uint iLevelID, CLevel * pLevel)
+HRESULT CGameInstance::Open_Level(_uint iLevelID, CLevel * pLevel, _uint iNextLevelID)
 {
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
-	return m_pLevel_Manager->Open_Level(iLevelID, pLevel);
+	return m_pLevel_Manager->Open_Level(iLevelID, pLevel,iNextLevelID);
 }
 
 _uint CGameInstance::Get_Current_Level()
@@ -246,6 +246,13 @@ void CGameInstance::Set_Current_Level(_uint _iCurrentLevelID)
 		return;
 	return m_pLevel_Manager->Set_Current_Level(_iCurrentLevelID);
 
+}
+
+_uint CGameInstance::Get_Next_Level()
+{
+	if (nullptr == m_pLevel_Manager)
+		return -1;
+	return m_pLevel_Manager->Get_Next_Level();
 }
 
 HRESULT CGameInstance::Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype)

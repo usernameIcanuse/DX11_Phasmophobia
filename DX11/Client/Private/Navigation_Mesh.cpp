@@ -63,7 +63,7 @@ HRESULT CNavigation_Mesh::SetUp_Components()
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = 0;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_Ghost"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
 

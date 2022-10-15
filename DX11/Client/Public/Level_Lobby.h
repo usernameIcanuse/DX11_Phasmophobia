@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CLight;
 END
 
 BEGIN(Client)
@@ -21,6 +22,13 @@ public:
 	virtual HRESULT Render();
 
 private:
+
+	HRESULT Ready_Layer_SkyBox(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Terrain(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
+	HRESULT Ready_Lights();
+	HRESULT Load_Stage();
+
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_WaitingRoom(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Store(const _tchar* pLayerTag);
@@ -32,6 +40,7 @@ private://각 로비 저장할 용도로만
 	CGameObject* m_pStore;
 	CGameObject* m_pAddItems;
 
+	CLight* m_pBaseLight = nullptr;
 
 public:
 	static CLevel_Lobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -183,7 +183,7 @@ void CDoor::Close_Door(_float fTimeDelta)
 HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 {
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
        return E_FAIL;
 
     /* For.Com_OBB*/
@@ -196,7 +196,7 @@ HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::DOOR;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -206,11 +206,11 @@ HRESULT CDoor::SetUp_ModelCom(const _tchar* pPrototypeTag)
 HRESULT CDoor::Setup_Component()
 {
     /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
     /* For.Com_Texture*/
-    //if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+    //if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
     //    return E_FAIL;
 
     /* For.Com_Renderer*/

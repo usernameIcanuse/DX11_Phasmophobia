@@ -210,7 +210,7 @@ HRESULT CDotsProjecter::Setup_Component()
         return E_FAIL;
  
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_DotsProjecter"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_DotsProjecter"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -223,7 +223,7 @@ HRESULT CDotsProjecter::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
     /* For.Com_Area*/
@@ -239,7 +239,7 @@ HRESULT CDotsProjecter::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::DOTSPROJECTER;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
         return E_FAIL;
 
     m_pAreaCom->Set_Enable(false);
@@ -252,7 +252,7 @@ HRESULT CDotsProjecter::Setup_Component()
 HRESULT CDotsProjecter::Setup_TempModel()
 {
     /*For.TempModel*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempDotsProjecter"), (CGameObject**)&m_pTempDotsModel)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempDotsProjecter"), (CGameObject**)&m_pTempDotsModel)))
         return E_FAIL;
 
     m_pTempDotsModel->Set_Enable(false);

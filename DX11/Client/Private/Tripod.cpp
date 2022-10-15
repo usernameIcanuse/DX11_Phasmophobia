@@ -136,7 +136,7 @@ HRESULT CTripod::Setup_Component()
  
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Tripod"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Tripod"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -149,7 +149,7 @@ HRESULT CTripod::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
     /* For.Com_Tripod*/
@@ -162,7 +162,7 @@ HRESULT CTripod::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::TRIPOD;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Tripod"), (CComponent**)&m_pTripodCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Tripod"), (CComponent**)&m_pTripodCom, &ColliderDesc)))
         return E_FAIL;
 
 

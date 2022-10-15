@@ -30,7 +30,7 @@ HRESULT CTutorial::Setup_Component()
         return E_FAIL;
 
     /* For.Com_Model*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_FurnishedCabin"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FurnishedCabin"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -42,7 +42,7 @@ HRESULT CTutorial::Setup_Component()
     ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y*0.5f, -ColliderDesc.vScale.z * 0.16f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::HOUSE;
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom,&ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom,&ColliderDesc)))
         return E_FAIL;
    
     return S_OK;

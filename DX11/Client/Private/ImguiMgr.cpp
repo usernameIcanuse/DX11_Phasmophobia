@@ -98,11 +98,16 @@ void CImguiMgr::Tick(_float fTimeDelta)
 		ImGui::End();
 	}
 
-	if (CURRENT_LEVEL == LEVEL_STAGE1)
+	if (CURRENT_LEVEL == LEVEL_GAMEPLAY || CURRENT_LEVEL == LEVEL_LOBBY)
 	{
 		Set_Prototype();
 		if (show_Map_Tool && !show_Object_Tool && !show_Collider_Tool && !show_Navigation_Tool)
-			Tool_Map();
+		{
+			if (CURRENT_LEVEL == LEVEL_LOBBY)
+				Tool_Lobby();
+			else
+				Tool_Map();
+		}
 		else if (!show_Map_Tool && show_Object_Tool && !show_Collider_Tool && !show_Navigation_Tool)
 			Tool_Object();
 		else if (!show_Map_Tool && !show_Object_Tool && show_Collider_Tool && !show_Navigation_Tool)
@@ -136,7 +141,7 @@ void CImguiMgr::Set_Prototype()
 	{
 		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
+		if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Current_Level(), TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
 			return;
 
 		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
@@ -144,7 +149,7 @@ void CImguiMgr::Set_Prototype()
 		m_pNavigationCom = static_cast<CPlayer*>(m_pPlayer)->Get_Navigation();
 #endif
 		CGameObject* pPoints = nullptr;
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
 			return;
 
 		m_pVIBufferPoint = (CVIBuffer_Point_Instance*)pPoints->Get_Component(TEXT("Com_VIBuffer"));
@@ -154,132 +159,138 @@ void CImguiMgr::Set_Prototype()
 		m_iSelectedIndex = -1;
 
 		CGameObject* pTerrain = nullptr;
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
+		if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Current_Level(), TEXT("Layer_Terrain"), TEXT("Prototype_GameObject_Terrain"), &pTerrain)))
 			return;
 
 		m_pTerrainTransform = (CTransform*)pTerrain->Get_Component(CGameObject::m_pTransformTag);
 		m_pTerrainVIBuffer = (CVIBuffer_Terrain*)pTerrain->Get_Component(TEXT("Com_VIBuffer"));
 		
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Collider"), &m_ColliderPrototype)))
-			return;
-		m_ColliderPrototype->Set_Enable(false);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Collider"), &m_ColliderPrototype)))
+		//	return;
+		//m_ColliderPrototype->Set_Enable(false);
 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Wall"), &m_WallPrototype)))
-			return;
-		m_WallPrototype->Set_Enable(false);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Wall"), &m_WallPrototype)))
+		//	return;
+		//m_WallPrototype->Set_Enable(false);
 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightSwitch"), &m_pPrototypeSwitch)))
-			return;
-		m_pSwitchTransform = (CTransform*)m_pPrototypeSwitch->Get_Component(CGameObject::m_pTransformTag);
-		m_pPrototypeSwitch->Set_Enable(false);
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightBulb"), &m_pPrototypeBulb)))
-			return;
-		m_pBulbTransform = (CTransform*)m_pPrototypeBulb->Get_Component(CGameObject::m_pTransformTag);
-		m_pPrototypeBulb->Set_Enable(false);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightSwitch"), &m_pPrototypeSwitch)))
+		//	return;
+		//m_pSwitchTransform = (CTransform*)m_pPrototypeSwitch->Get_Component(CGameObject::m_pTransformTag);
+		//m_pPrototypeSwitch->Set_Enable(false);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_LightBulb"), &m_pPrototypeBulb)))
+		//	return;
+		//m_pBulbTransform = (CTransform*)m_pPrototypeBulb->Get_Component(CGameObject::m_pTransformTag);
+		//m_pPrototypeBulb->Set_Enable(false);
 
 
-		/* Object */
+		///* Object */
+		//CGameObject* pTemp = nullptr;
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Note"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//
+		//
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+		//
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeObject.push_back(pTemp);
+
+		///* House */ 
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeHouse.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+		//m_vecPrototypeHouse.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+		//m_vecPrototypeHouse.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+		//m_vecPrototypeHouse.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck_Inside"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeHouse.push_back(pTemp);
+
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Computer"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeHouse.push_back(pTemp);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_KeyBoard"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeHouse.push_back(pTemp);
+		//if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
+		//	return;
+		//pTemp->Set_Enable(false);
+		//m_vecPrototypeHouse.push_back(pTemp);
 		CGameObject* pTemp = nullptr;
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Note"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		
-		
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-		
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeObject.push_back(pTemp);
-
-		/* House */ 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeHouse.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_House"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
-		m_vecPrototypeHouse.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
-		m_vecPrototypeHouse.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Door"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
-		m_vecPrototypeHouse.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck_Inside"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeHouse.push_back(pTemp);
-
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Computer"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeHouse.push_back(pTemp);
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_KeyBoard"), &pTemp)))
-			return;
-		pTemp->Set_Enable(false);
-		m_vecPrototypeHouse.push_back(pTemp);
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Lobby"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeHouse.push_back(pTemp);
@@ -291,6 +302,96 @@ void CImguiMgr::Set_Prototype()
 	}
 }
 
+void CImguiMgr::Tool_Lobby()
+{
+	ImGui::Begin("Tool_Map");
+
+	static int item_curr_idx = -1; // Here we store our selection data as an index.
+
+	if (ImGui::Button("Close Me"))
+	{
+		show_Map_Tool = false;
+		m_iSelectedIndex = item_curr_idx = -1;
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+	/* Save/Load Map*/
+	static char Lobby[256] = "";
+	ImGui::InputText("Stage Name", Lobby, IM_ARRAYSIZE(Lobby));
+
+	static char str[256] = "";
+	ImGui::InputText("File Name", str, IM_ARRAYSIZE(str));
+
+
+	if (ImGui::Button("Save"))
+	{
+		Save_Map(Lobby, str);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		Load_Map(Lobby, str);
+	}
+
+	if (ImGui::Button("Clear"))
+	{
+		GAMEINSTANCE->Clear_Layer(LEVEL_LOBBY, TEXT("Layer_House"));
+		for (int i = 0; i < (_uint)MODEL_TAG::MODEL_END; ++i)
+			m_vecCollocatedHouse[i].clear();
+
+	}
+
+
+	const char* items[] = { "Lobby" };
+
+
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		m_iSelectedIndex = item_curr_idx = -1;
+		m_pSelectedObject = nullptr;
+		m_pSelectedTransform = nullptr;
+	}
+
+	if (ImGui::BeginListBox("House"))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			m_vecPrototypeHouse[n]->Set_Enable(false);
+			const bool is_selected = (item_curr_idx == n);
+			if (ImGui::Selectable(items[n], is_selected))
+				m_iSelectedIndex = item_curr_idx = n;
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+
+			}
+		}
+
+		ImGui::EndListBox();
+	}
+
+	if (-1 < m_iSelectedIndex)
+	{
+		m_pSelectedObject = m_vecPrototypeHouse[m_iSelectedIndex];
+		m_pSelectedObject->Set_Enable(true);
+		m_pSelectedTransform = (CTransform*)m_pSelectedObject->Get_Component(CGameObject::m_pTransformTag);
+
+	}
+
+	Translation();
+	Rotation();
+	Scaling();
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+		CollocateHouse();
+
+	ImGui::End();
+
+}
 
 void CImguiMgr::Tool_Map()
 {
@@ -326,14 +427,14 @@ void CImguiMgr::Tool_Map()
 
 	if (ImGui::Button("Clear"))
 	{
-		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1,TEXT("Layer_House"));
+		GAMEINSTANCE->Clear_Layer(LEVEL_GAMEPLAY,TEXT("Layer_House"));
 		for(int i=0;i<(_uint)MODEL_TAG::MODEL_END;++i)
 			m_vecCollocatedHouse[i].clear();
 
 	}
 
 
-	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse"};
+	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse","Lobby"};
 							
 
 
@@ -424,7 +525,7 @@ void CImguiMgr::Tool_Light()
 
 	if (ImGui::Button("Clear"))
 	{
-		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Light"));
+		GAMEINSTANCE->Clear_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Light"));
 		m_vecLightSwitch.clear();
 		m_pLightSwitch = nullptr;
 		m_pLightBulb = nullptr;
@@ -470,7 +571,7 @@ void CImguiMgr::Tool_Light()
 		if (m_pPrototypeBulb->Get_Enable())
 		{
 			CGameObject* pTemp = nullptr;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightBulb"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightBulb"), &pTemp)))
 				return;
 			CTransform* pObjTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
 			pObjTransform->Set_WorldMatrix(m_pBulbTransform->Get_WorldMatrix());
@@ -480,7 +581,7 @@ void CImguiMgr::Tool_Light()
 		else if (m_pPrototypeSwitch->Get_Enable())
 		{
 			CGameObject* pTemp = nullptr;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightSwitch"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Light"), TEXT("Prototype_GameObject_LightSwitch"), &pTemp)))
 				return;
 
 			CTransform* pObjTransform = (CTransform*)pTemp->Get_Component(CGameObject::m_pTransformTag);
@@ -656,7 +757,7 @@ void CImguiMgr::Tool_Object()
 
 	if (ImGui::Button("Clear"))
 	{
-		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Object"));//일단 맵 만들 때는 레이어 하나로만
+		GAMEINSTANCE->Clear_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Object"));//일단 맵 만들 때는 레이어 하나로만
 		for (int i = 0; i < (_uint)LAYER::LAYER_END; ++i)
 		{
 			m_vecObjectTag[i].clear();
@@ -752,7 +853,7 @@ void CImguiMgr::Tool_Collider()
 
 	if (ImGui::Button("Clear"))
 	{
-		GAMEINSTANCE->Clear_Layer(LEVEL_STAGE1, TEXT("Layer_Collider"));//일단 맵 만들 때는 레이어 하나로만
+		GAMEINSTANCE->Clear_Layer(LEVEL_GAMEPLAY, TEXT("Layer_Collider"));//일단 맵 만들 때는 레이어 하나로만
 		m_vecCollider.clear();
 
 	}
@@ -1113,52 +1214,58 @@ void CImguiMgr::CollocateHouse()
 
 		switch (m_iSelectedIndex)
 		{
-		
+		//
+		//case 0:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
+		//		return;
+		//	tIndex = MODEL_TAG::TRUCK;
+		//	break;
+		//case 1:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
+		//		return;
+		//	static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+		//	tIndex = MODEL_TAG::FURNISHEDCABIN;
+		//	break;
+
+		//case 2:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		//		return;
+		//	static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
+		//	tIndex = MODEL_TAG::ROOMDOOR;
+		//	break;
+
+		//case 3:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
+		//		return;
+		//	static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
+		//	tIndex = MODEL_TAG::MAINDOOR;
+		//	break;
+
+		//case 4:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Truck_Inside"), &pTemp)))
+		//		return;
+		//	tIndex = MODEL_TAG::TRUCK_INSIDE;
+		//	break;
+		//case 5:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Computer"), &pTemp)))
+		//		return;
+		//	tIndex = MODEL_TAG::COMPUTER;
+		//	break;
+		//case 6:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_KeyBoard"), &pTemp)))
+		//		return;
+		//	tIndex = MODEL_TAG::KEYBOARD;
+		//	break;
+		//case 7:
+		//	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
+		//		return;
+		//	tIndex = MODEL_TAG::MOUSE;
+
 		case 0:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
-				return;
-			tIndex = MODEL_TAG::TRUCK;
-			break;
-		case 1:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Lobby"), &pTemp)))
 				return;
 			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
 			tIndex = MODEL_TAG::FURNISHEDCABIN;
-			break;
-
-		case 2:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
-				return;
-			static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));
-			tIndex = MODEL_TAG::ROOMDOOR;
-			break;
-
-		case 3:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Door"), &pTemp)))
-				return;
-			static_cast<CDoor*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_MainDoor"));
-			tIndex = MODEL_TAG::MAINDOOR;
-			break;
-
-		case 4:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Truck_Inside"), &pTemp)))
-				return;
-			tIndex = MODEL_TAG::TRUCK_INSIDE;
-			break;
-		case 5:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Computer"), &pTemp)))
-				return;
-			tIndex = MODEL_TAG::COMPUTER;
-			break;
-		case 6:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_KeyBoard"), &pTemp)))
-				return;
-			tIndex = MODEL_TAG::KEYBOARD;
-			break;
-		case 7:
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_House"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
-				return;
-			tIndex = MODEL_TAG::MOUSE;
 			break;
 
 		}
@@ -1186,63 +1293,63 @@ void CImguiMgr::CollocateObject()
 		case 0:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::DOTSPROJECTER;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_DotsProjecter"), &pTemp)))
 				return;
 			break;
 
 		case 1:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::FLASHLIGHT;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_FlashLight"), &pTemp)))
 				return;
 			break;
 
 		case 2:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::THERMOMETER;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Thermometer"), &pTemp)))
 				return;
 			break;
 
 		case 3:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::EMF;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_EMF"), &pTemp)))
 				return;
 			break;
 
 		case 4:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::NOTE;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Note"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Note"), &pTemp)))
 				return;
 			break;
 
 		case 5:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::SPIRITBOX;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_SpiritBox"), &pTemp)))
 				return;
 			break;
 
 		case 6:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::VIDEOCAMERA;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Video_Camera"), &pTemp)))
 				return;
 			break;
 
 		case 7:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::GHOST;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
 				return;
 			break;
 
 		case 8:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::ATMOSPHERE;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Atmosphere"), &pTemp)))
 				return;
 			break;
 
@@ -1250,21 +1357,21 @@ void CImguiMgr::CollocateObject()
 		case 9:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::TRAILCAM;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_TrailCam"), &pTemp)))
 				return;
 			break;
 
 		case 10:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::TRIPOD;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Tripod"), &pTemp)))
 				return;
 			break;
 
 		case 11:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::UVLIGHT;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_UVLight"), &pTemp)))
 				return;
 			break;
 		}
@@ -1287,12 +1394,12 @@ void CImguiMgr::CollocateCollider()
 		CGameObject* pTemp = nullptr;
 		if (m_ColliderPrototype->Get_Enable())
 		{
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Collider"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Collider"), &pTemp)))
 				return;
 		}
 		else if (m_WallPrototype->Get_Enable())
 		{
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Wall"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Collider"), TEXT("Prototype_GameObject_Wall"), &pTemp)))
 				return;
 		}
 
@@ -1377,7 +1484,7 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 			MODEL_TAG	 iModelTag = tDataMap.tModelTag;
 
 			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_STAGE1,
+				LEVEL_GAMEPLAY,
 				TEXT("Layer_House"),
 				TEXT("Prototype_GameObject_House"),
 				&pTemp)))
@@ -1511,7 +1618,7 @@ void CImguiMgr::Load_Light(const char* strStageName, const char* strFileName)
 			CGameObject* pTemp = nullptr;
 
 			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_STAGE1,
+				LEVEL_GAMEPLAY,
 				TEXT("Layer_Light"),
 				TEXT("Prototype_GameObject_LightSwitch"),
 				&pTemp,&tData)))
@@ -1658,7 +1765,7 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 			
 
 			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_STAGE1,
+				LEVEL_GAMEPLAY,
 				TEXT("Layer_Object"),
 				strPrototypeTag,
 				&pTemp)))
@@ -1752,7 +1859,7 @@ void CImguiMgr::Load_Collider(const char* strStageName, const char* strFileName)
 			CGameObject* pTemp = nullptr;
 
 			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_STAGE1,
+				LEVEL_GAMEPLAY,
 				TEXT("Layer_Collider"),
 				TEXT("Prototype_GameObject_Collider"),
 				&pTemp)))
@@ -1810,7 +1917,7 @@ void CImguiMgr::Load_Wall(const char* strStageName, const char* strFileName)
 			CGameObject* pTemp = nullptr;
 
 			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_STAGE1,
+				LEVEL_GAMEPLAY,
 				TEXT("Layer_Collider"),
 				TEXT("Prototype_GameObject_Wall"),
 				&pTemp)))

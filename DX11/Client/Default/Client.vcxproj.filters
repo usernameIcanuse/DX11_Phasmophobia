@@ -34,7 +34,7 @@
     <ClInclude Include="..\Public\Loading.h">
       <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Stage1.h">
+    <ClInclude Include="..\Public\Level_Tutorial.h">
       <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h">
@@ -217,6 +217,9 @@
     <ClInclude Include="..\Public\Tutorial.h">
       <Filter>02.GameObject\Stage\House\Tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Lobby.h">
+      <Filter>02.GameObject\BackGround\Lobby</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -246,7 +249,7 @@
     <ClCompile Include="..\Private\Loading.cpp">
       <Filter>02.GameObject\BackGround\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Stage1.cpp">
+    <ClCompile Include="..\Private\Level_Tutorial.cpp">
       <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp">
@@ -419,6 +422,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Tutorial.cpp">
       <Filter>02.GameObject\Stage\House\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby.cpp">
+      <Filter>02.GameObject\BackGround\Lobby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,9 +31,14 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
-	//118,20,126/ index 1; tutorial
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(118.f, 20.f, 26.f, 1.f));
 
+	if (nullptr != pArg)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4((_float4*)pArg));
+
+	}
+
+	
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
 
@@ -150,9 +155,11 @@ HRESULT CPlayer::Setup_Component()
 	ColliderDesc.m_eObjID = COLLISION_TYPE::PLAYER;
 	ColliderDesc.fRayLength = 10.f;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
 		return E_FAIL;
 	
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
 
 	/* For.Com_Navigation*/
 
@@ -160,16 +167,18 @@ HRESULT CPlayer::Setup_Component()
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = 0;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
 		return E_FAIL;
 
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
-	NaviDesc.m_iCurrentIndex = 1;
+	NaviDesc.m_iCurrentIndex = 0;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
 		return E_FAIL;
 
 	m_pCurrNavigation = m_pNaviOutSideCom;
+
+	RELEASE_INSTANCE(CGameInstance);
 
 
 #ifdef _DEBUG
@@ -203,7 +212,7 @@ HRESULT CPlayer::Setup_Camera()
 
 	CGameObject* pCamera = nullptr;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Camera"), TEXT("Prototype_GameObject_Camera_FPS"), &pCamera, &CameraDesc)))
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Camera"), TEXT("Prototype_GameObject_Camera_FPS"), &pCamera, &CameraDesc)))
 		return E_FAIL;
 
 	static_cast<CCamera_FPS*>(pCamera)->Set_Target(m_pTransformCom);
@@ -215,7 +224,7 @@ HRESULT CPlayer::Setup_Camera()
 
 HRESULT CPlayer::Setup_Inventory()
 {
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Inventory"), TEXT("Prototype_GameObject_Inventory"), (CGameObject**)&m_pInventory, this)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Inventory"), TEXT("Prototype_GameObject_Inventory"), (CGameObject**)&m_pInventory, this)))
 		return E_FAIL;
 
 	return S_OK;

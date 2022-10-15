@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\KeyBoard.h" />
     <ClInclude Include="..\Public\LightBulb.h" />
     <ClInclude Include="..\Public\LightSwitch.h" />
+    <ClInclude Include="..\Public\Lobby.h" />
     <ClInclude Include="..\Public\Mouse.h" />
     <ClInclude Include="..\Public\Navigation_Mesh.h" />
     <ClInclude Include="..\Public\Note.h" />
@@ -228,7 +229,7 @@
     <ClInclude Include="..\Public\Level_Lobby.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Level_Logo.h" />
-    <ClInclude Include="..\Public\Level_Stage1.h" />
+    <ClInclude Include="..\Public\Level_Tutorial.h" />
     <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\Loading.h" />
     <ClInclude Include="..\Public\Lobby_AddItems.h" />
@@ -278,6 +279,7 @@
     <ClCompile Include="..\Private\KeyBoard.cpp" />
     <ClCompile Include="..\Private\LightBulb.cpp" />
     <ClCompile Include="..\Private\LightSwitch.cpp" />
+    <ClCompile Include="..\Private\Lobby.cpp" />
     <ClCompile Include="..\Private\Mouse.cpp" />
     <ClCompile Include="..\Private\Navigation_Mesh.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />
@@ -316,7 +318,7 @@
     <ClCompile Include="..\Private\Level_Lobby.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
-    <ClCompile Include="..\Private\Level_Stage1.cpp" />
+    <ClCompile Include="..\Private\Level_Tutorial.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\Loading.cpp" />
     <ClCompile Include="..\Private\Lobby_AddItems.cpp" />

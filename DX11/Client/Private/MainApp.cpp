@@ -83,7 +83,7 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	if (nullptr == pLevel_Loading)
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, pLevel_Loading)))
+	if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, pLevel_Loading, eLevelID)))
 		return E_FAIL;
 
 	return S_OK;

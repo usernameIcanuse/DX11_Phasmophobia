@@ -42,7 +42,7 @@ private:
 private:
 	void Set_Prototype();
 
-
+	void Tool_Lobby();
 	void Tool_Map();
 	void Tool_Light();
 	void Tool_Object();

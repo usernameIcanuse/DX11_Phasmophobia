@@ -68,15 +68,15 @@ HRESULT CCamera_Screen::Render()
 HRESULT CCamera_Screen::Setup_Component()
 {
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxNorTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VIBuffer_NorRect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_NorRect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
 
 	/* For.Com_CameraRenderer*/
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Camera_Renderer"), TEXT("Com_CameraRenderer"), (CComponent**)&m_pCameraRenderer,m_pCameraTransform)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Camera_Renderer"), TEXT("Com_CameraRenderer"), (CComponent**)&m_pCameraRenderer,m_pCameraTransform)))
 		return E_FAIL;
 
 	/*For.Com_Renderer*/

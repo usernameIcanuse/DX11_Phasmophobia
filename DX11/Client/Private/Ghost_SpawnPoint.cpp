@@ -207,7 +207,7 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST_AREA;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
 		return E_FAIL;
 
 	/* For.Com_Sphere*/
@@ -219,7 +219,7 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST_SPAWNPOINT;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_SpawnPoint"), (CComponent**)&m_pSpawnPointCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"), TEXT("Com_SpawnPoint"), (CComponent**)&m_pSpawnPointCom, &ColliderDesc)))
 		return E_FAIL;
 #ifdef _DEBUG
 	/* For.Com_Renderer*/
@@ -232,7 +232,7 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 HRESULT CGhost_SpawnPoint::Setup_GhostStatus()
 {
 	/*For. Ghost_Status*/
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost_Status"), TEXT("Prototype_GameObject_Ghost_Status"), (CGameObject**)&m_pGhost_Status, this)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost_Status"), TEXT("Prototype_GameObject_Ghost_Status"), (CGameObject**)&m_pGhost_Status, this)))
 		return E_FAIL;
 	return S_OK;
 

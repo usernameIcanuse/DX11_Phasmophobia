@@ -50,9 +50,10 @@ public: /* For.Input_Manager*/
 	bool Is_KeyState(KEY _Key, KEY_STATE _KeyState);
 
 public: /* For.Level_Manager */
-	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
+	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel, _uint iNextLevelID);
 	_uint	Get_Current_Level();
 	void	Set_Current_Level(_uint _iCurrentLevelID);
+	_uint	Get_Next_Level();
 
 public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);

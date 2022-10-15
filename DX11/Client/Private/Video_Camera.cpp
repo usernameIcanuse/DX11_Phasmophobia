@@ -217,7 +217,7 @@ HRESULT CVideo_Camera::Setup_Component()
         return E_FAIL;
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Video_Camera"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Video_Camera"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -230,11 +230,11 @@ HRESULT CVideo_Camera::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::CAMERA;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
     /*For.Com_Texture*/
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_VideoCam_Normal"), TEXT("Com_Texture"), (CComponent**)&m_pNormalTex)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VideoCam_Normal"), TEXT("Com_Texture"), (CComponent**)&m_pNormalTex)))
         return E_FAIL;
 
     return S_OK;
@@ -243,7 +243,7 @@ HRESULT CVideo_Camera::Setup_Component()
 HRESULT CVideo_Camera::Setup_TempModel()
 {
     /*For.TempModel*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempVideoCam"), (CGameObject**)&m_pTempCameraModel)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempVideoCam"), (CGameObject**)&m_pTempCameraModel)))
         return E_FAIL;
 
     m_pTempCameraModel->Set_Enable(false);
@@ -254,7 +254,7 @@ HRESULT CVideo_Camera::Setup_TempModel()
 HRESULT CVideo_Camera::Setup_Screen()
 {
     /*For.Screen*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Object"), TEXT("Prototype_GameObject_CameraScreen"), (CGameObject**)&m_pCameraScreen, m_pTransformCom)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_CameraScreen"), (CGameObject**)&m_pCameraScreen, m_pTransformCom)))
         return E_FAIL;
 
 

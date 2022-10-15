@@ -34,7 +34,7 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForLobbyLevel();
-	HRESULT Loading_ForStage1Level();
+	HRESULT Loading_ForTutorialLevel();
 
 public:
 	_float	Get_LoadingRatio()

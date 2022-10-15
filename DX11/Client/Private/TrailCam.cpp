@@ -137,7 +137,7 @@ HRESULT CTrailCam::Setup_Component()
 
 
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_TrailCam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_TrailCam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
     /* For.Com_OBB*/
@@ -150,7 +150,7 @@ HRESULT CTrailCam::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
     /* For.Com_Area*/
@@ -166,7 +166,7 @@ HRESULT CTrailCam::Setup_Component()
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM_AREA;
 
-    if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Area"), (CComponent**)&m_pAreaCom, &ColliderDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -175,7 +175,7 @@ HRESULT CTrailCam::Setup_Component()
 HRESULT CTrailCam::Setup_TempModel()
 {
     /*For.TempModel*/
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempTrailCam"), (CGameObject**)&m_pTempTrailCamModel)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_TempModel"), TEXT("Prototype_GameObject_TempTrailCam"), (CGameObject**)&m_pTempTrailCamModel)))
         return E_FAIL;
 
     m_pTempTrailCamModel->Set_Enable(false);

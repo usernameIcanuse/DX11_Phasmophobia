@@ -8,7 +8,7 @@ CLevel_Manager::CLevel_Manager()
 {
 }
 
-HRESULT CLevel_Manager::Open_Level(_uint iLevelID, CLevel * pLevel)
+HRESULT CLevel_Manager::Open_Level(_uint iLevelID, CLevel * pLevel, _uint iNextLevelID)
 {
 	/* 이전레벨에서 사용한 자원들을 모두 소거한다. */
 	if(nullptr != m_pCurrentLevel)
@@ -28,6 +28,8 @@ HRESULT CLevel_Manager::Open_Level(_uint iLevelID, CLevel * pLevel)
 	m_pCurrentLevel = pLevel;
 
 	m_iCurrentLevelID = iLevelID;
+
+	m_iNextLevel = iNextLevelID;
 
 	return S_OK;
 }

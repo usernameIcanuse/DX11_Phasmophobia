@@ -54,7 +54,7 @@ HRESULT CGhost::Initialize(void* pArg)
 		return E_FAIL;
 
 
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
 		return E_FAIL;
 
 	m_pHandPrint->Set_Enable(false);
@@ -315,7 +315,7 @@ HRESULT CGhost::Setup_Component()
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST_ATTACK;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
 		return E_FAIL;
 
 	m_pOBBCom->Set_Enable(false);
@@ -329,7 +329,7 @@ HRESULT CGhost::Setup_Component()
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Ghost"), (CComponent**)&m_pGhostCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Ghost"), (CComponent**)&m_pGhostCom, &ColliderDesc)))
 		return E_FAIL;
 
 	///* For.Com_Renderer*/
@@ -337,11 +337,11 @@ HRESULT CGhost::Setup_Component()
 		return E_FAIL;
 
 	/* For.Com_Ghost*/
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Model_Ghost_Girl"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Ghost_Girl"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
 		return E_FAIL;
 
 	/* For.Com_Shader*/
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 
@@ -350,7 +350,7 @@ HRESULT CGhost::Setup_Component()
 
 HRESULT CGhost::Setup_SpawnPoint()
 {
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost_SpawnPoint"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), (CGameObject**)&m_pSpawnPoint, this)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost_SpawnPoint"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), (CGameObject**)&m_pSpawnPoint, this)))
 		return E_FAIL;
 	return S_OK;
 }
@@ -358,7 +358,7 @@ HRESULT CGhost::Setup_SpawnPoint()
 HRESULT CGhost::Setup_Bahavior(_int iNaviIndex)
 {
 	
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_STAGE1, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior, &iNaviIndex)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior, &iNaviIndex)))
 		return E_FAIL;
 
 	m_pBehavior->Set_Owner(m_pTransformCom);

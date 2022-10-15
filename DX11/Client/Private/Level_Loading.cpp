@@ -3,7 +3,7 @@
 #include "Loader.h"
 #include "Level_Logo.h"
 #include "Level_Lobby.h"
-#include "Level_Stage1.h"
+#include "Level_Tutorial.h"
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -50,9 +50,9 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			//GAMEINSTANCE->Set_Current_Level(LEVEL_LOBBY);
 			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
 			break;
-		case LEVEL_STAGE1:
-			//GAMEINSTANCE->Set_Current_Level(LEVEL_STAGE1);
-			pLevel = CLevel_Stage1::Create(m_pDevice, m_pContext);
+		case LEVEL_GAMEPLAY:
+			//GAMEINSTANCE->Set_Current_Level(LEVEL_GAMEPLAY);
+			pLevel = CLevel_Tutorial::Create(m_pDevice, m_pContext);
 			break;
 		}
 
@@ -62,7 +62,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pLevel)))
+		if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pLevel, m_eNextLevel)))
 			return;
 
 		Safe_Release(pGameInstance);

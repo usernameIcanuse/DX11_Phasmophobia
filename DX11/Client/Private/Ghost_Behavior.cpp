@@ -38,7 +38,7 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	if (FAILED(Setup_Component(iNaviIndex)))
 		return E_FAIL;
 
-	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_STAGE1, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
+	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
 	Safe_AddRef(m_pPlayerTransform);
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
@@ -58,7 +58,7 @@ HRESULT CGhost_Behavior::Setup_Component(_int iNaviIndex)
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
 	NaviDesc.m_iCurrentIndex = iNaviIndex;
 
-	if (FAILED(__super::Add_Component(LEVEL_STAGE1, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
 
 #ifdef _DEBUG

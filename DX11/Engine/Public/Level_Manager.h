@@ -16,7 +16,7 @@ public:
 	virtual ~CLevel_Manager() = default;
 
 public:
-	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel);
+	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel, _uint iNextLevelID);
 	void Tick(_float fTimeDelta);
 	HRESULT Render();
 
@@ -26,12 +26,18 @@ public:
 	}
 	_uint	Get_Current_Level()
 	{
-		return m_iCurrentLevelID;
+		return m_iCurrentLevelID;//loading 레벨에서 호출하기 때문에
+	}
+	_uint Get_Next_Level()
+	{
+		return m_iNextLevel;
 	}
 
 private:
 	class CLevel*			m_pCurrentLevel = nullptr;
 	_uint					m_iCurrentLevelID = 0;
+
+	_uint					m_iNextLevel = 0;
 
 public:
 	virtual void Free() override;
