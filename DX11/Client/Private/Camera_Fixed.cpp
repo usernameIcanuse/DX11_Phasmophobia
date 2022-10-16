@@ -38,7 +38,7 @@ void CCamera_Fixed::Tick(_float fTimeDelta)
 	WorldMat.r[0] = XMVector3Normalize(WorldMat.r[0]);
 	WorldMat.r[1] = XMVector3Normalize(WorldMat.r[1]);
 	WorldMat.r[2] = XMVector3Normalize(WorldMat.r[2]);
-	WorldMat.r[3] = WorldMat.r[3] + WorldMat.r[2]*10.f;
+	WorldMat.r[3] = WorldMat.r[3] + WorldMat.r[2]*9.f;
 
 	m_pTransformCom->Set_WorldMatrix(WorldMat);
 	m_pTransformCom->LookAt(vLookPos);
@@ -55,7 +55,7 @@ void CCamera_Fixed::Set_Target(CTransform* _pTarget)
 	WorldMat.r[0] = XMVector3Normalize(WorldMat.r[0]);
 	WorldMat.r[1] = XMVector3Normalize(WorldMat.r[1]);
 	WorldMat.r[2] = XMVector3Normalize(WorldMat.r[2]);
-	WorldMat.r[3] = WorldMat.r[3] + WorldMat.r[2]*10.f;
+	WorldMat.r[3] = WorldMat.r[3] + WorldMat.r[2]*9.f;
 
 	m_pTransformCom->Set_WorldMatrix(WorldMat);
 	m_pTransformCom->LookAt(vLookPos);
