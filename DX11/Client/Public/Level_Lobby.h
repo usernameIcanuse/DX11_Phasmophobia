@@ -29,10 +29,6 @@ private:
 	HRESULT Ready_Lights();
 	HRESULT Load_Stage();
 
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_WaitingRoom(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Store(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_AddItems(const _tchar* pLayerTag);
 
 private://각 로비 저장할 용도로만
 	CGameObject* m_pLobby;

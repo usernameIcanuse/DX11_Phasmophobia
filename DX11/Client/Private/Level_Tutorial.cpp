@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Level_Tutorial.h"
 #include "GameInstance.h"
-#include "Camera_Free.h"
 #include "House.h"
 #include "Door.h"
 #include "Object_Collider.h"
@@ -42,6 +41,9 @@ HRESULT CLevel_Tutorial::Initialize()
 	if(FAILED(Load_Stage()))
 		return E_FAIL;
 
+	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -70,32 +72,6 @@ HRESULT CLevel_Tutorial::Ready_Layer_SkyBox(const _tchar* pLayerTag)
 
 	/* For.Lobby*/
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Sky"))))
-		return E_FAIL;
-
-
-	Safe_Release(pGameInstance);
-
-	return S_OK;
-}
-
-HRESULT CLevel_Tutorial::Ready_Layer_Camera(const _tchar* pLayerTag)
-{
-	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
-	CCamera::CAMERADESC			CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-
-	CameraDesc.vEye = _float4(0.0f, 20.f, -100.f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.TransformDesc.fSpeedPerSec = 20.f;
-	CameraDesc.TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
-
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayerTag, TEXT("Prototype_GameObject_Camera_Free"), nullptr,&CameraDesc)))
 		return E_FAIL;
 
 

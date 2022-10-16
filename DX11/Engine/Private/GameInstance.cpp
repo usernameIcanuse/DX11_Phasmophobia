@@ -16,6 +16,7 @@ CGameInstance::CGameInstance()
 	, m_pCollision_Manager(CCollision_Manager::Get_Instance())
 	, m_pFont_Manager(CFont_Manager::Get_Instance())
 	, m_pGame_Manager(CGame_Manager::Get_Instance())
+	, m_pCamera_Manager(CCamera_Manager::Get_Instance())
 	, m_pRenderer_Manager(CRenderer_Manager::Get_Instance())
 	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
 {	
@@ -33,6 +34,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pGame_Manager);
 	Safe_AddRef(m_pRenderer_Manager);
+	Safe_AddRef(m_pCamera_Manager);
 	Safe_AddRef(m_pTarget_Manager);
 }
 
@@ -72,6 +74,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pInput_Manager->SetUp_DeviceState();
 
+	m_pGame_Manager->Open_Level();
+
 	m_pLevel_Manager->Tick(fTimeDelta);	
 
 	m_pInput_Manager->Tick(fTimeDelta);
@@ -81,6 +85,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 
 	m_pGame_Manager->Tick(fTimeDelta);
+
+	m_pCamera_Manager->Tick(fTimeDelta);
 
 	m_pCollision_Manager->Tick();
 
@@ -253,6 +259,38 @@ _uint CGameInstance::Get_Next_Level()
 	if (nullptr == m_pLevel_Manager)
 		return -1;
 	return m_pLevel_Manager->Get_Next_Level();
+}
+
+HRESULT CGameInstance::Add_CameraObject(const _tchar* pCameraTag, CCamera* pObject)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Add_CameraObject(pCameraTag,pObject);
+}
+
+HRESULT CGameInstance::Change_Camera(const _tchar* pCameraTag)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Change_Camera(pCameraTag);
+}
+
+HRESULT CGameInstance::Current_Camera(const _tchar* pCameraTag)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Current_Camera(pCameraTag);
+}
+
+void CGameInstance::Clear_Cameras()
+{
+	if (nullptr == m_pCamera_Manager)
+		return ;
+
+	m_pCamera_Manager->Clear_Cameras();
 }
 
 HRESULT CGameInstance::Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype)
@@ -463,6 +501,13 @@ HRESULT CGameInstance::Add_EventObject(_int iIndex, CGameObject* pObject)
 	return m_pGame_Manager->Add_EventObject(iIndex,pObject);
 }
 
+HRESULT CGameInstance::Add_ReserveLevel(_uint iLevelID, CLevel* pLevel, _uint iNextLevelID)
+{
+	if (nullptr == m_pGame_Manager)
+		return E_FAIL;
+	return m_pGame_Manager->Add_ReserveLevel(iLevelID, pLevel, iNextLevelID);
+}
+
 void CGameInstance::Broadcast_Message(_int iIndex, const _tchar* pMessage)
 {
 	if (nullptr == m_pGame_Manager)
@@ -496,6 +541,8 @@ void CGameInstance::Release_Engine()
 	CRenderer_Manager::Get_Instance()->Destroy_Instance();
 
 	CTarget_Manager::Get_Instance()->Destroy_Instance();
+
+	CCamera_Manager::Get_Instance()->Destroy_Instance();
 
 	CObject_Manager::Get_Instance()->Destroy_Instance();
 
@@ -532,6 +579,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pRenderer_Manager);
 	Safe_Release(m_pGame_Manager);
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pLight_Manager);

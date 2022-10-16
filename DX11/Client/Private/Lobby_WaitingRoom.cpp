@@ -21,12 +21,20 @@ HRESULT CLobby_WaitingRoom::Initialize_Prototype()
 
 HRESULT CLobby_WaitingRoom::Initialize(void * pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
-
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
+
+
+	if (nullptr != pArg)
+	{
+		m_pTransformCom->Set_Scaled(_float3(12.5f, 9.2f, 1.f));
+
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+		_vector vPos = XMLoadFloat4((_float4*)pArg) - vLook * 0.3f;
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	}
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
@@ -34,41 +42,23 @@ HRESULT CLobby_WaitingRoom::Initialize(void * pArg)
 	if (FAILED(SetUp_Icon()))
 		return E_FAIL;
 
-
-	m_fSizeX = g_iWinCX;
-	m_fSizeY = g_iWinCY;
-	m_fX = g_iWinCX >> 1;
-	m_fY = g_iWinCY >> 1;
-
-	// XMMatrixPerspectiveFovLH()
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
-
   	return S_OK;
 }
 
 void CLobby_WaitingRoom::Tick(_float fTimeDelta)
 {
 
-	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
-
 	__super::Tick(fTimeDelta);
 }
 
 void CLobby_WaitingRoom::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 }
 
 HRESULT CLobby_WaitingRoom::Render()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pVIBufferCom)
-		return E_FAIL;
 
-	/* 셰이더 전역변수에 값을 던진다. */
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
 
 	m_pShaderCom->Begin(0);
 
@@ -103,18 +93,19 @@ HRESULT CLobby_WaitingRoom::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CLobby_WaitingRoom::SetUp_ShaderResource()
+HRESULT CLobby_WaitingRoom::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
-	if (nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pVIBufferCom)
 		return E_FAIL;
-	
+
 	/*if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
 		return E_FAIL;*/
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
 	_bool	bAlpha = false;
@@ -134,48 +125,84 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	CGameObject* pIcon;
+	CUIIcon* pIcon;
 
+	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
 	//의뢰 선택하기
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"),&pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(310.f, 560.f, 260.f, 70.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
+	_matrix IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 2.65f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f - IconWorld.r[0]*1.22f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//추가
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	////추가
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(760.f, 475.f, 150.f, 70.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 1.6f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.85f + IconWorld.r[0] * 0.75f;
+
+	pIcon->Set_Transform(IconWorld); pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//구입
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	////구입
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(940.f, 475.f, 150.f, 70.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 1.6f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.85f + IconWorld.r[0] * 1.85f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	//떠나기
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(955.f, 555.f, 170.f, 60.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 1.8f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f + IconWorld.r[0] * 1.7f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//준비
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	////준비
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(550.f, 555.f, 170.f, 60.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 2.f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f - IconWorld.r[0] * 0.3f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
-	//시작
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	////시작
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(750.f, 555.f, 170.f, 60.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 2.f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f + IconWorld.r[0] * 0.6f;
+
+	pIcon->Set_Transform(IconWorld); 
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	RELEASE_INSTANCE(CGameInstance);

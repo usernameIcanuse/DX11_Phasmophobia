@@ -27,6 +27,8 @@ public:
 	virtual HRESULT Render();
 
 	virtual void Set_Enable(_bool _bEnable);
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
 
 private:
 	CShader*				m_pShaderCom = nullptr;
@@ -42,12 +44,18 @@ public:
 		m_fSizeY = _fSizeY;
 	}
 
+	void Set_Transform(_matrix WorldMat);
+
 	_bool	Selected()
 	{
 		return m_bSelected;
 	}
 
 	void	Set_Texture(const _tchar* _pPrototypeTag);
+	void	Set_Lock(_bool bLock)
+	{
+		m_bLock = bLock;
+	}
 
 private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
@@ -55,10 +63,10 @@ private:
 
 	_bool			m_bSelected = false;
 	_bool			m_bOnMouse = false;
+	_bool			m_bLock = true;
 
 private:
 	HRESULT SetUp_Components();
-	HRESULT SetUp_ShaderResource();
 
 public:
 	static CUIIcon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

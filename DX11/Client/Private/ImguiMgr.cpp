@@ -295,6 +295,12 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeHouse.push_back(pTemp);
 
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_MenuScreen"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeHouse.push_back(pTemp);
+
+
 		
 
 		RELEASE_INSTANCE(CGameInstance);
@@ -343,7 +349,7 @@ void CImguiMgr::Tool_Lobby()
 	}
 
 
-	const char* items[] = { "Lobby" };
+	const char* items[] = { "Lobby","MenuScreen"};
 
 
 
@@ -1264,7 +1270,12 @@ void CImguiMgr::CollocateHouse()
 		case 0:
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Lobby"), &pTemp)))
 				return;
-			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+			tIndex = MODEL_TAG::FURNISHEDCABIN;
+			break;
+
+		case 1:
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_MenuScreen"), &pTemp)))
+				return;
 			tIndex = MODEL_TAG::FURNISHEDCABIN;
 			break;
 

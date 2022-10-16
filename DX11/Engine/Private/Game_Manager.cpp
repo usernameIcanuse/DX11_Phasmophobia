@@ -1,5 +1,8 @@
 #include "..\Public\Game_Manager.h"
 #include "GameObject.h"
+#include "Game_Manager.h"
+#include "GameInstance.h"
+#include "Level.h"
 
 IMPLEMENT_SINGLETON(CGame_Manager)
 
@@ -19,6 +22,15 @@ void CGame_Manager::Tick(_float fTimeDelta)
 	}
 }
 
+void CGame_Manager::Open_Level()
+{
+	for (auto& elem : m_LevelList)
+	{
+		GAMEINSTANCE->Open_Level(elem.iLevelID, elem.pLevel, elem.iNextLevelID);
+	}
+	m_LevelList.clear();
+}
+
 HRESULT CGame_Manager::Add_EventObject(_int iIndex,  CGameObject* pObject)
 {
 	if (EVENT_END <= iIndex)
@@ -26,6 +38,18 @@ HRESULT CGame_Manager::Add_EventObject(_int iIndex,  CGameObject* pObject)
 
 	m_ObjectList[iIndex].push_back(pObject);
 	Safe_AddRef(pObject);
+
+	return S_OK;
+}
+
+HRESULT CGame_Manager::Add_ReserveLevel(_uint iLevelID, CLevel* pLevel, _uint iNextLevelID)
+{
+	OPENLEVELDESC	OpenLevelDesc;
+	OpenLevelDesc.iLevelID = iLevelID;
+	OpenLevelDesc.pLevel = pLevel;
+	OpenLevelDesc.iNextLevelID = iNextLevelID;
+
+	m_LevelList.push_back(OpenLevelDesc);
 
 	return S_OK;
 }

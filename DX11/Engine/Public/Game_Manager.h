@@ -14,6 +14,12 @@ class CGame_Manager final : public CBase
 
 public:
 	enum EVENT {EVENT_ITEM,EVENT_GHOST, EVENT_END};
+	typedef struct
+	{
+		_uint iLevelID;
+		class CLevel* pLevel;
+		_uint iNextLevelID;
+	}OPENLEVELDESC;
 
 private:
 	CGame_Manager();
@@ -22,7 +28,10 @@ private:
 public:
 	void Tick(_float fTimeDelta);
 
+	void Open_Level();
+
 	HRESULT Add_EventObject(_int iIndex, class CGameObject* pObject);
+	HRESULT Add_ReserveLevel(_uint iLevelID,CLevel* pLevel, _uint iNextLevelID);
 	void Broadcast_Message(_int iIndex, const _tchar* pMessage);
 
 public:
@@ -32,7 +41,7 @@ public:
 
 private:
 	list<class CGameObject*>			m_ObjectList[EVENT_END];
-		
+	list<OPENLEVELDESC>					m_LevelList;
 
 
 public:

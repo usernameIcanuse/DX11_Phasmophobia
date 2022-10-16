@@ -20,12 +20,19 @@ HRESULT CLobby_Main::Initialize_Prototype()
 
 HRESULT CLobby_Main::Initialize(void * pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
+
+	if (nullptr != pArg)
+	{
+		m_pTransformCom->Set_Scaled(_float3(12.5f, 9.2f, 1.f));
+
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		_vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+		_vector vPos = XMLoadFloat4((_float4*)pArg) - vLook*0.3f;
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	}
 
 	if (FAILED(SetUp_Components()))
 		return E_FAIL;
@@ -34,22 +41,13 @@ HRESULT CLobby_Main::Initialize(void * pArg)
 		return E_FAIL;
 
 
-	m_fSizeX = g_iWinCX;
-	m_fSizeY = g_iWinCY;
-	m_fX = g_iWinCX >> 1;
-	m_fY = g_iWinCY >> 1;
-
-	// XMMatrixPerspectiveFovLH()
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
-
+	
   	return S_OK;
 }
 
 void CLobby_Main::Tick(_float fTimeDelta)
 {
 
-	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 	
 	__super::Tick(fTimeDelta);
 }
@@ -60,19 +58,11 @@ void CLobby_Main::LateTick(_float fTimeDelta)
 
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 }
 
 HRESULT CLobby_Main::Render()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pVIBufferCom)
-		return E_FAIL;
-
-	/* 셰이더 전역변수에 값을 던진다. */
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
-
 	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
@@ -108,18 +98,17 @@ HRESULT CLobby_Main::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CLobby_Main::SetUp_ShaderResource()
+HRESULT CLobby_Main::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
-	if (nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pVIBufferCom)
 		return E_FAIL;
 
-	/*if (FAILED(m_pShaderCom->Set_RawValue("g_WorldMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
-		return E_FAIL;*/
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
 	_bool	bAlpha = false;
@@ -138,34 +127,60 @@ HRESULT CLobby_Main::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	
-	CGameObject* pIcon;
+	CUIIcon* pIcon;
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"),&pIcon)))
+	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//싱글 플레이
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) - 110.f, 320.f, 65.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	_matrix IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2]*0.01f + IconWorld.r[1]*1.71f;
 
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//장비 상점
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) +42.f, 320.f, 65.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1]*0.65f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//옵션
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 112.f, 320.f, 65.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.8f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), &pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//게임종료
-	static_cast<CUIIcon*>(pIcon)->Set_IconPosition(g_iWinCX >> 1, (g_iWinCY >> 1) + 183.f, 320.f, 65.f);
-	static_cast<CUIIcon*>(pIcon)->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 2.9f;
+
+	pIcon->Set_Transform(IconWorld);
+	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 

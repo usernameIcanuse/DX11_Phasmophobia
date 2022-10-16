@@ -30,6 +30,7 @@ public:
 	virtual HRESULT Render();
 
 	virtual void Set_Enable(_bool _bEnable);
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 
 private:
@@ -41,7 +42,6 @@ private:
 
 private:
 	HRESULT SetUp_Components();
-	HRESULT SetUp_ShaderResource();
 	HRESULT SetUp_Icon();
 
 public:

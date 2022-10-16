@@ -69,13 +69,6 @@ struct PS_OUT
 	vector		vDepth : SV_TARGET2;
 };
 
-struct PS_OUT_NORMAL
-{
-	vector		vDiffuse : SV_TARGET0;
-	vector		vNormal : SV_TARGET1;
-	vector		vDepth : SV_TARGET2;
-};
-
 struct PS_OUT_EMISSIVE
 {
 	vector		vDiffuse : SV_TARGET0;
@@ -159,7 +152,7 @@ struct PS_IN_NORMAL
 };
 
 
-PS_OUT_NORMAL PS_MAIN_NORMAL(PS_IN_NORMAL In)
+PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
@@ -203,6 +196,22 @@ PS_OUT_EMISSIVE PS_MAIN_NORMALEMISSIVE(PS_IN_NORMAL In)
 	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
+	Out.vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vEmissive.a = 0.f;
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
+
+	return Out;
+}
+
+PS_OUT_EMISSIVE PS_MAIN_EMISSIVE(PS_IN_NORMAL In)
+{
+	PS_OUT_EMISSIVE		Out = (PS_OUT_EMISSIVE)0;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
 	Out.vEmissive = g_EmissiveTexture.Sample(DefaultSampler, In.vTexUV);
 	Out.vEmissive.a = 0.f;
 
@@ -258,5 +267,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMALEMISSIVE();
+	}
+
+	pass Emissive
+	{
+		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_EMISSIVE();
 	}
 }

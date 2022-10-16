@@ -61,8 +61,13 @@ HRESULT CLobby::Render()
             continue;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            iPassIndex = 0;
+            iPassIndex = 4;
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+            {
+                iPassIndex = 0;
+            }
         }
+
 
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
@@ -92,10 +97,7 @@ HRESULT CLobby::Setup_Component()
 
 void CLobby::On_Collision_Enter(CCollider* pCollider)
 {
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
-    {
-        int a = 10;
-    }
+
 }
 
 void CLobby::On_Collision_Stay(CCollider* pCollider)

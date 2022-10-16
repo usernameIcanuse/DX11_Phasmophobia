@@ -29,6 +29,8 @@ public:
 	{
 		return m_iSelectedMenu;
 	}
+	
+	void		Icon_Lock(_bool _bLock);
 
 
 protected:
@@ -37,7 +39,7 @@ protected:
 
 protected:
 	_uint		 m_iSelectedMenu =0;
-	vector<CGameObject*>	 m_vecUIIcon;
+	vector<CUIIcon*>	 m_vecUIIcon;
 
 
 public:

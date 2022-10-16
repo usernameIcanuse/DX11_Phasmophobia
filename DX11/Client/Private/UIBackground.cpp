@@ -52,13 +52,17 @@ void CUIBackground::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 
-	for (int i = 0; i < m_vecUIIcon.size(); ++i)
-		m_vecUIIcon[i]->Set_Enable(_bEnable);
+	for(auto& elem : m_vecUIIcon)
+		elem->Set_Enable(_bEnable);
 }
 
-
-
-
+void CUIBackground::Icon_Lock(_bool _bLock)
+{
+	for (auto& elem : m_vecUIIcon)
+	{
+		elem->Set_Lock(_bLock);
+	}
+}
 
 CUIBackground * CUIBackground::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {

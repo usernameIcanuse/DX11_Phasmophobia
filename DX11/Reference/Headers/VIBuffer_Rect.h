@@ -18,8 +18,8 @@ public:
 public:
 	virtual _uint3	Get_Indices(_uint iIndex)const
 	{
-		return _uint3(((FACEINDICES32*)m_pIndices)[iIndex]._1, ((FACEINDICES32*)m_pIndices)[iIndex]._2,
-			((FACEINDICES32*)m_pIndices)[iIndex]._3);
+		return _uint3(((FACEINDICES16*)m_pIndices)[iIndex]._1, ((FACEINDICES16*)m_pIndices)[iIndex]._2,
+			((FACEINDICES16*)m_pIndices)[iIndex]._3);
 	}
 
 

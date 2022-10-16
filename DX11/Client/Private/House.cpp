@@ -99,10 +99,7 @@ HRESULT CHouse::Setup_Component()
 
 void CHouse::On_Collision_Enter(CCollider* pCollider)
 {
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
-    {
-        int a = 10;
-    }
+
 }
 
 void CHouse::On_Collision_Stay(CCollider* pCollider)

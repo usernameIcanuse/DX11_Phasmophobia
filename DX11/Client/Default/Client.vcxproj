@@ -177,7 +177,7 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\CameraScreen.h" />
     <ClInclude Include="..\Public\Camera_FPS.h" />
-    <ClInclude Include="..\Public\Camera_Free.h" />
+    <ClInclude Include="..\Public\Camera_Fixed.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Computer.h" />
     <ClInclude Include="..\Public\Door.h" />
@@ -194,6 +194,7 @@
     <ClInclude Include="..\Public\LightBulb.h" />
     <ClInclude Include="..\Public\LightSwitch.h" />
     <ClInclude Include="..\Public\Lobby.h" />
+    <ClInclude Include="..\Public\MenuScreen.h" />
     <ClInclude Include="..\Public\Mouse.h" />
     <ClInclude Include="..\Public\Navigation_Mesh.h" />
     <ClInclude Include="..\Public\Note.h" />
@@ -269,7 +270,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\CameraScreen.cpp" />
     <ClCompile Include="..\Private\Camera_FPS.cpp" />
-    <ClCompile Include="..\Private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\Camera_Fixed.cpp" />
     <ClCompile Include="..\Private\Computer.cpp" />
     <ClCompile Include="..\Private\Door.cpp" />
     <ClCompile Include="..\Private\Ghost_Behavior.cpp" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\Private\LightBulb.cpp" />
     <ClCompile Include="..\Private\LightSwitch.cpp" />
     <ClCompile Include="..\Private\Lobby.cpp" />
+    <ClCompile Include="..\Private\MenuScreen.cpp" />
     <ClCompile Include="..\Private\Mouse.cpp" />
     <ClCompile Include="..\Private\Navigation_Mesh.cpp" />
     <ClCompile Include="..\Private\Object_Collider.cpp" />

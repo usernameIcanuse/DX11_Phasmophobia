@@ -40,23 +40,8 @@ void CCamera_FPS::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, matTarget.r[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matTarget.r[3] + XMVectorSet(0.f,12.f,0.f,0.f));
 
-	//	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vPos));
-
-
-
-	if (FAILED(Bind_PipeLine()))
-		return;
 }
 
-void CCamera_FPS::LateTick(_float fTimeDelta)
-{
-	__super::LateTick(fTimeDelta);
-}
-
-HRESULT CCamera_FPS::Render()
-{
-	return S_OK;
-}
 
 void CCamera_FPS::Set_Target(CTransform* _pTarget)
 {
@@ -69,9 +54,6 @@ void CCamera_FPS::Set_Target(CTransform* _pTarget)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, matTarget.r[2]);
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matTarget.r[3] + XMVectorSet(0.f, 12.f, 0.f, 0.f));
 
-
-	if (FAILED(Bind_PipeLine()))
-		return;
 }
 
 

@@ -163,6 +163,9 @@
     <ClInclude Include="..\Public\VIBuffer_NorRect.h">
       <Filter>01.Utility\03.Component\00.VIBuffer\Nor_Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>01.Utility\02.GameObject\Camera\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -311,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_NorRect.cpp">
       <Filter>01.Utility\03.Component\00.VIBuffer\Nor_Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Camera\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +487,9 @@
     </Filter>
     <Filter Include="01.Utility\07. Render_Target\Manager">
       <UniqueIdentifier>{56fe324f-3a79-46e1-a70d-1a066c9436c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Camera\Manager">
+      <UniqueIdentifier>{01fae24f-a95f-4866-900f-2c51139df226}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

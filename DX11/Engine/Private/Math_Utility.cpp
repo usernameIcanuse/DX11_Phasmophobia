@@ -107,3 +107,54 @@ RAY CMath_Utility::Get_MouseRayInWorldSpace()
 
 	return MouseRay;
 }
+
+RAY CMath_Utility::Get_MouseRayInWorldSpace(_float _fX, _float _fY)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	D3D11_VIEWPORT   ViewPort;
+	_uint			viewportCount = 1;
+	ZeroMemory(&ViewPort, sizeof(D3D11_VIEWPORT));
+	CONTEXT->RSGetViewports(&viewportCount, &ViewPort);
+
+	POINT  ptMouse;
+	GetCursorPos(&ptMouse);
+	ptMouse.x = (ViewPort.Width * _fX);
+	ptMouse.y = (ViewPort.Height * _fY);
+	//ScreenToClient(pGameInstance->Get_GraphicDesc().hWnd, &ptMouse);
+
+
+	/* 2. 투영 스페이스 상의 마우스 좌표 구하기 */
+	_float3  vProjPos;
+
+	vProjPos.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	vProjPos.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vProjPos.z = 0.0f;
+
+	/* 3.뷰스페이스상의 마우스 좌표를 구하자. */
+	_vector	vViewPos;
+
+	_matrix ProjMatrixInv = XMMatrixInverse(nullptr, pGameInstance->Get_Transform(CPipeLine::D3DTS_PROJ));
+	vViewPos = XMVector3TransformCoord(XMLoadFloat3(&vProjPos), ProjMatrixInv);
+
+	/* 4.마우스레이와 마우스Pos를구하자.  */
+	_vector	vRayDir, vRayPos;
+
+	vRayDir = vViewPos - XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+
+	/* 5.월드로가자. */
+	_matrix ViewMatrixInv = XMMatrixInverse(nullptr, pGameInstance->Get_Transform(CPipeLine::D3DTS_VIEW));
+
+	RAY MouseRay;
+
+	XMStoreFloat3(&MouseRay.vDir, XMVector3TransformNormal(vRayDir, ViewMatrixInv));
+	XMStoreFloat3(&MouseRay.vPos, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
+	MouseRay.fLength = 10000.0f; //무한
+
+	XMStoreFloat3(&MouseRay.vDir, XMVector3Normalize(XMLoadFloat3(&MouseRay.vDir)));
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return MouseRay;
+}

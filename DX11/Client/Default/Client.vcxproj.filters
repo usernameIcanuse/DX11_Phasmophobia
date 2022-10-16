@@ -38,13 +38,13 @@
       <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIBackground.h">
       <Filter>02.GameObject\UI\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_Main.h">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_Main</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_Main</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UIIcon.h">
       <Filter>02.GameObject\UI\Icon</Filter>
@@ -53,15 +53,15 @@
       <Filter>00.MainApp\01.Level\Lobby</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_AddItems.h">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_AddItems</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_AddItems</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby_Store.h">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_Store</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_Store</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Item.h">
       <Filter>02.GameObject\Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Free.h">
+    <ClInclude Include="..\Public\Camera_Fixed.h">
       <Filter>02.GameObject\Camera\Camera_Free</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Sky.h">
@@ -218,7 +218,10 @@
       <Filter>02.GameObject\Stage\House\Tutorial</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Lobby.h">
-      <Filter>02.GameObject\BackGround\Lobby</Filter>
+      <Filter>02.GameObject\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MenuScreen.h">
+      <Filter>02.GameObject\Lobby\Menu_Screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -253,27 +256,27 @@
       <Filter>00.MainApp\01.Level\Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_WaitingRoom</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_WaitingRoom</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIBackground.cpp">
       <Filter>02.GameObject\UI\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_Main.cpp">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_Main</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_Main</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UIIcon.cpp">
       <Filter>02.GameObject\UI\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_AddItems.cpp">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_AddItems</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_AddItems</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_Store.cpp">
-      <Filter>02.GameObject\BackGround\Lobby\Lobby_Store</Filter>
+      <Filter>02.GameObject\Lobby\Lobby_Store</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Item.cpp">
       <Filter>02.GameObject\Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Camera_Free.cpp">
+    <ClCompile Include="..\Private\Camera_Fixed.cpp">
       <Filter>02.GameObject\Camera\Camera_Free</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Sky.cpp">
@@ -424,7 +427,10 @@
       <Filter>02.GameObject\Stage\House\Tutorial</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby.cpp">
-      <Filter>02.GameObject\BackGround\Lobby</Filter>
+      <Filter>02.GameObject\Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MenuScreen.cpp">
+      <Filter>02.GameObject\Lobby\Menu_Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -454,23 +460,8 @@
     <Filter Include="03.ShaderFiles">
       <UniqueIdentifier>{d3a98933-0c07-4640-bc38-9a0b4f9abd9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\BackGround\Lobby">
-      <UniqueIdentifier>{db9771c6-ed05-4149-bd7a-aa8a17d244aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_WaitingRoom">
-      <UniqueIdentifier>{fc748823-651f-435a-86bd-459e6d18d002}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_Main">
-      <UniqueIdentifier>{0274cd69-4777-4ca3-9878-37152820be8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\BackGround\Loading">
       <UniqueIdentifier>{98268da5-d936-45a2-a853-506606e8aba6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_AddItems">
-      <UniqueIdentifier>{0e291708-5e83-42d0-a397-f32dc17c9d92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObject\BackGround\Lobby\Lobby_Store">
-      <UniqueIdentifier>{e9aea82a-f1e5-45af-be51-f58840590cb0}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObject\UI">
       <UniqueIdentifier>{f03a9b21-23f7-4cae-aa05-9ff33763f2ce}</UniqueIdentifier>
@@ -648,6 +639,24 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\House\Tutorial">
       <UniqueIdentifier>{93b37f4d-f68d-4d47-9811-aba221a590dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby">
+      <UniqueIdentifier>{db9771c6-ed05-4149-bd7a-aa8a17d244aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_WaitingRoom">
+      <UniqueIdentifier>{fc748823-651f-435a-86bd-459e6d18d002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_Main">
+      <UniqueIdentifier>{0274cd69-4777-4ca3-9878-37152820be8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_AddItems">
+      <UniqueIdentifier>{0e291708-5e83-42d0-a397-f32dc17c9d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_Store">
+      <UniqueIdentifier>{e9aea82a-f1e5-45af-be51-f58840590cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Menu_Screen">
+      <UniqueIdentifier>{4c74f67f-dd4b-47d8-8b55-c76e6e3000a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

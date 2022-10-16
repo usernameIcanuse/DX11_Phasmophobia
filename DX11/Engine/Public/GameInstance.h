@@ -15,6 +15,7 @@
 #include "Game_Manager.h"
 #include "Renderer_Manager.h"
 #include "Target_Manager.h"
+#include "Camera_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -54,6 +55,12 @@ public: /* For.Level_Manager */
 	_uint	Get_Current_Level();
 	void	Set_Current_Level(_uint _iCurrentLevelID);
 	_uint	Get_Next_Level();
+
+public:/*For.Camera_Manager*/
+	HRESULT Add_CameraObject(const _tchar* pCameraTag, class CCamera* pObject);
+	HRESULT Change_Camera(const _tchar* pCameraTag);
+	HRESULT Current_Camera(const _tchar* pCameraTag);
+	void Clear_Cameras();
 
 public: /* For.Object_Manager */
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
@@ -98,6 +105,7 @@ public:/* For.Font_Manager*/
 	HRESULT Render_Font(const _tchar* pFontTag, const _tchar* pString, _fvector vPosition, _fvector vColor, float rotation, _fvector vOrigin, _vector vScale);
 public:/*For.Game_Manager*/
 	HRESULT Add_EventObject(_int iIndex, class CGameObject* pObject);
+	HRESULT Add_ReserveLevel(_uint iLevelID, CLevel* pLevel, _uint iNextLevelID);
 	void Broadcast_Message(_int iIndex, const _tchar* pMessage);
 	void Clear_Layer(_int iIndex);
 	void Clear_List();
@@ -123,6 +131,7 @@ private:
 	CGame_Manager*					m_pGame_Manager = nullptr;
 	CRenderer_Manager*				m_pRenderer_Manager = nullptr;
 	CTarget_Manager*				m_pTarget_Manager = nullptr;
+	CCamera_Manager*				m_pCamera_Manager = nullptr;
 
 
 	GRAPHICDESC						m_tagGraphicDesc;

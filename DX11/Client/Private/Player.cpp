@@ -57,6 +57,11 @@ void CPlayer::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
+	{
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
 
 	m_pTransformCom->Reset_Direction();
 
@@ -113,7 +118,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
+	m_pTransformCom->Move(fTimeDelta/*,m_pCurrNavigation*/);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -216,6 +221,9 @@ HRESULT CPlayer::Setup_Camera()
 		return E_FAIL;
 
 	static_cast<CCamera_FPS*>(pCamera)->Set_Target(m_pTransformCom);
+
+	if (FAILED(pGameInstance->Add_CameraObject(TEXT("Camera_Player"), (CCamera*)pCamera)))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 

@@ -37,7 +37,8 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 	if (true == m_pLoader->is_Finished())
 	{
-		
+		GAMEINSTANCE->Clear_Cameras();
+		GAMEINSTANCE->Clear_List();
 		CLevel*			pLevel = nullptr;
 
 		switch (m_eNextLevel)
@@ -62,7 +63,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(m_eNextLevel, pLevel, m_eNextLevel)))
+		if (FAILED(pGameInstance->Add_ReserveLevel(m_eNextLevel, pLevel, m_eNextLevel)))
 			return;
 
 		Safe_Release(pGameInstance);

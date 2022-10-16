@@ -61,7 +61,13 @@ HRESULT CInventory::Initialize(void* pArg)
 void CInventory::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
+
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
+	{
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
 	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 
 
@@ -69,9 +75,6 @@ void CInventory::Tick(_float fTimeDelta)
 	{
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
 	}
-
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-
 
 	if (pGameInstance->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 	{

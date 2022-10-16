@@ -18,6 +18,8 @@
 #include "LightSwitch.h"
 #include "LightBulb.h"
 
+#include "MenuScreen.h"
+
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
@@ -36,7 +38,7 @@
 #include "Mouse.h"
 #include "KeyBoard.h"
 
-#include "Camera_Free.h"
+#include "Camera_Fixed.h"
 #include "Camera_FPS.h"
 #include "Thermometer.h"
 #include "TrailCam.h"
@@ -178,6 +180,12 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CCamera_FPS::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Camera_Fixed*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Fixed"),
+		CCamera_Fixed::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	
+
 	///* For.Prototype_GameObject_Player */
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pDevice, m_pContext))))
@@ -193,6 +201,11 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CSky::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/*For. Prototype_GameObject_MenuScreen*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_MenuScreen"),
+		CMenuScreen::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 #ifdef _DEBUG
 
 	/* For.Prototype_GameObject_Point*/
@@ -203,10 +216,9 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	
 	/*For, Prototype_GameObject_Lobby_Main*/
-	/*if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Lobby"),
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Main"),
 		CLobby_Main::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
-
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_WaitingRoom"),
 		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
@@ -222,7 +234,7 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
 		CUIIcon::Create(m_pDevice, m_pContext))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 
 #pragma endregion
@@ -313,6 +325,11 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lobby/", "Garage.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Model_Screen*/
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Screen"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
+		return E_FAIL;
 
 
 	/* For.Prototype_Component_Shader_VtxModel */
@@ -356,10 +373,6 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-	/* For.Prototype_GameObject_Camera_Free*/
-	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Camera_Free"),
-	//	CCamera_Free::Create(m_pDevice, m_pContext))))
-	//	return E_FAIL;
 
 	///*For. Prototype_GameObject_Navigation_Mesh*/
 	/*if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
@@ -626,9 +639,9 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Model_Note_Open*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Note_Open"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Note_Open"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
+	//	return E_FAIL;
 
 	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f))*XMMatrixTranslation(0.f,0.f,0.25f);
 

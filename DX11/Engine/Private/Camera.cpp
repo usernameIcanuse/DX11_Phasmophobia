@@ -32,18 +32,6 @@ HRESULT CCamera::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CCamera::Tick(_float fTimeDelta)
-{
-}
-
-void CCamera::LateTick(_float fTimeDelta)
-{
-}
-
-HRESULT CCamera::Render()
-{
-	return S_OK;
-}
 
 HRESULT CCamera::Bind_PipeLine()
 {
