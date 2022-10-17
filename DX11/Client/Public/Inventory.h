@@ -4,6 +4,9 @@
 
 BEGIN(Engine)
 class CCollider;
+class CVIBuffer_Rect;
+class CShader;
+class CRenderer;
 END
 
 
@@ -26,6 +29,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
+
 private:
 	void	Add_Item(CItem* pItem);
 	void	Drop_Item();//아이템 버리기
@@ -43,6 +48,15 @@ private:
 
 private:
 	CCollider* m_pRayCom = nullptr;
+	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
+	CShader* m_pShaderCom = nullptr;
+	CRenderer* m_pRendererCom = nullptr;
+	CTexture* m_pTextureCom = nullptr;
+	////직교투영////////////////////////
+	_float4x4  m_ViewMatrix, m_ProjMatrix;
+	_float m_fSizeX, m_fSizeY, m_fX, m_fY;
+	_bool		m_bOnMouse = true;
+	////////////////////////////////////
 
 	vector					<CItem*>	m_vInventory;
 	_uint					m_iIndex = 0;
@@ -61,6 +75,9 @@ private:
 
 	_bool			m_bGrab = false;
 	CGameObject* m_pTripod = nullptr;
+
+
+
 
 	
 public:

@@ -55,6 +55,18 @@ HRESULT CInventory::Initialize(void* pArg)
 	/* ax + by + cz + d =0*/
 	//(a,b,c,d) = XMPlaneFromPoints(p1,p2,p3)
 
+	m_fSizeX = 15.f;
+	m_fSizeY = 15.f;
+	m_fX = g_iWinCX >> 1;
+	m_fY = g_iWinCY >> 1;
+
+	// XMMatrixPerspectiveFovLH()
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
+
+	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
+
 	return S_OK;
 }
 
@@ -175,6 +187,7 @@ void CInventory::Tick(_float fTimeDelta)
 	m_vColliderLook = _float4(0.f, 1.f, 0.f, 0.f);
 	m_pTripod = nullptr;
 	m_pItem = nullptr;
+	m_bOnMouse = true;
 
 	if (!m_bGrab)
 		m_pDoor = nullptr;
@@ -185,10 +198,42 @@ void CInventory::Tick(_float fTimeDelta)
 void CInventory::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 }
 
 HRESULT CInventory::Render()
 {
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pVIBufferCom)
+		return E_FAIL;
+
+	if (FAILED(SetUp_ShaderResource(nullptr,nullptr)))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(1);
+
+	m_pVIBufferCom->Render();
+
+	return S_OK;
+}
+
+HRESULT CInventory::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
+{
+	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &m_bOnMouse, sizeof(_bool))))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -343,6 +388,18 @@ HRESULT CInventory::Setup_Component()
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
 		return E_FAIL;
 
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	if(FAILED(__super::Add_Component(LEVEL_STATIC,TEXT("Prototype_Component_Renderer"),TEXT("Com_Renderer"),(CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_White_Cursor"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -400,6 +457,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 			pOwner->Turn_Switch();
 		}
 	}
+	m_bOnMouse = false;
 }
 
 void CInventory::On_Collision_Exit(CCollider* pCollider)
@@ -437,5 +495,9 @@ void CInventory::Free()
 	__super::Free();
 
 	Safe_Release(m_pRayCom);
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTextureCom);
 
 }
