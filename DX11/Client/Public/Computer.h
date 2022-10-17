@@ -44,7 +44,9 @@ private:
 	CModel* m_pModelCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
 
-	class CScreen* m_pScreen = nullptr;
+
+	class CKeyBoard* m_pKeyBoard = nullptr;
+	class CMouse* m_pMouse = nullptr;
 	
 private:
 	list<class CVideo_Camera*> m_listCameraOff;//²¨Áø Ä«¸Þ¶ó
@@ -57,6 +59,7 @@ private:
 	virtual	HRESULT	Setup_Component();
 	HRESULT			Connect_Camera(_int _iNumCamera, _float4x4 _TruckMat);
 	HRESULT			Setup_Screen();
+	HRESULT			Setup_Computer(_float4x4 _TruckMat);
 
 public:
 	static CComputer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

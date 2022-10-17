@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Video_Camera.h"
 #include "Screen.h"
+#include "Mouse.h"
+#include "KeyBoard.h"
 
 CComputer::CComputer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -30,6 +32,9 @@ HRESULT CComputer::Initialize(void* pArg)
         m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&ComputerDesc.WorldMat));
 
         if(FAILED(Connect_Camera(ComputerDesc.iNumCamera,ComputerDesc.TruckMat)))
+            return E_FAIL;
+
+        if (FAILED(Setup_Computer(ComputerDesc.TruckMat)))
             return E_FAIL;
     }
 
@@ -70,18 +75,20 @@ void CComputer::Tick(_float fTimeDelta)
             ++iter;
     }
 
-    //if (/*키보드 눌림*/)
-    //{
-    //    ++m_iCurrCamIndex;
-    //    if (m_iCurrCamIndex == m_listCameraOn.size())
-    //        m_iCurrCamIndex = 0;
-    //}
-
+  
 }
 
 void CComputer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+    if (true == m_pKeyBoard->Is_Clicked())// 키보드 눌림
+    {
+        ++m_iCurrCamIndex;
+        if (m_iCurrCamIndex == m_listCameraOn.size())
+            m_iCurrCamIndex = 0;
+    }
+
 
     GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
@@ -124,8 +131,92 @@ HRESULT CComputer::Setup_Component()
 
 HRESULT	CComputer::Setup_Screen()
 {
-    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_ComputerScreen"), (CGameObject**)&m_pScreen, this)))
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_ComputerScreen"), nullptr, this)))
         return E_FAIL;
+
+
+    return S_OK;
+}
+
+HRESULT CComputer::Setup_Computer(_float4x4 _TruckMat)
+{
+    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+    char Filepath[255] =  "../Bin/Resources/Map/Default/KeyBoard_Default";
+    HANDLE hFile = CreateFileA(Filepath,
+        GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (INVALID_HANDLE_VALUE == hFile)
+    {
+        MSG_BOX("Failed to load file");
+        RELEASE_INSTANCE(CGameInstance);
+        return E_FAIL;
+    }
+
+    DWORD dwByteHouse = 0;
+    MAP_DATA tData;
+    ZeroMemory(&tData, sizeof(MAP_DATA));
+
+    while (true)
+    {
+        if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+        {
+            if (0 == dwByteHouse)
+            {
+                break;
+            }
+
+            _matrix LocalMat = tData.matWorld;
+            _float4x4 WorldMatrix;
+            XMStoreFloat4x4(&WorldMatrix, LocalMat * XMLoadFloat4x4(&_TruckMat));
+
+            if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_KeyBoard"), (CGameObject**)&m_pKeyBoard, &WorldMatrix))
+                return E_FAIL;
+            Safe_AddRef(m_pKeyBoard);
+        }
+    }
+
+    CloseHandle(hFile);
+
+    strcpy_s(Filepath, "../Bin/Resources/Map/Default/Mouse_Default");
+    hFile = CreateFileA(Filepath,
+        GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (INVALID_HANDLE_VALUE == hFile)
+    {
+        MSG_BOX("Failed to load file");
+        RELEASE_INSTANCE(CGameInstance);
+        return E_FAIL;
+    }
+
+    dwByteHouse = 0;
+    //MAP_DATA tData;
+    ZeroMemory(&tData, sizeof(MAP_DATA));
+
+    while (true)
+    {
+        if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+        {
+            if (0 == dwByteHouse)
+            {
+                break;
+            }
+
+            _matrix LocalMat = tData.matWorld;
+            _float4x4 WorldMatrix;
+            XMStoreFloat4x4(&WorldMatrix, LocalMat * XMLoadFloat4x4(&_TruckMat));
+
+            if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Mouse"), (CGameObject**)&m_pMouse, &WorldMatrix))
+                return E_FAIL;
+            Safe_AddRef(m_pMouse);
+        }
+    }
+
+    CloseHandle(hFile);
+
+    RELEASE_INSTANCE(CGameInstance);
+
+    return S_OK;
 }
 
 
@@ -174,6 +265,8 @@ HRESULT	CComputer::Connect_Camera(_int _iNumCamera, _float4x4 _TruckMat)
     CloseHandle(hFile);
 
     RELEASE_INSTANCE(CGameInstance);
+
+    return S_OK;
 }
 
 HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
@@ -248,6 +341,10 @@ void CComputer::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pOBBCom);
     Safe_Release(m_pModelCom);
+
+    Safe_Release(m_pMouse);
+    Safe_Release(m_pKeyBoard);
+
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }
