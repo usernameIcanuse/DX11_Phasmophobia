@@ -130,15 +130,15 @@ HRESULT		CLightBulb::Setup_Light()
     LIGHTDESC LightDesc;
 
     LightDesc.eType = LIGHTDESC::TYPE_POINT;
-    LightDesc.vDiffuse = m_vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.f);
+    LightDesc.vDiffuse = m_vDiffuse = _float4(0.4f, 0.4f, 0.4f, 1.f);
     LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
     LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
     XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     
-    LightDesc.fRange = 100.f;
+    LightDesc.fRange = 160.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.045f;
-    LightDesc.fAttenuation2 = 0.0075f;
+    LightDesc.fAttenuation1 = 0.027f;
+    LightDesc.fAttenuation2 = 0.0028f;
 
     m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
     if (nullptr == m_pLight)
