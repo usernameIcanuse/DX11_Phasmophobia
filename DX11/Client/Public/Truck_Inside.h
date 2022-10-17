@@ -6,7 +6,7 @@ BEGIN(Engine)
 class CShader;
 class CCollider;
 class CModel;
-
+class CLight;
 END
 
 BEGIN(Client)
@@ -32,10 +32,12 @@ private:
 	CCollider* m_pOBBCom = nullptr;
 	CModel* m_pModelCom = nullptr;
 
+	vector<CLight*> m_vecLight;
+
 
 private:
 	virtual	HRESULT	Setup_Component();
-
+	HRESULT		Setup_Light();
 
 public:
 	static CTruck_Inside* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

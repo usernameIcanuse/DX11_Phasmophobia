@@ -199,6 +199,11 @@ void CInventory::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if (FAILED(GAMEINSTANCE->Current_Camera(TEXT("Camera_Player"))))
+	{
+		return;
+	}
+
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 }
 

@@ -32,6 +32,9 @@ HRESULT CTruck_Inside::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    if (FAILED(Setup_Light()))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -39,19 +42,17 @@ void CTruck_Inside::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
+    
 }
 
 void CTruck_Inside::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
-        GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
-    //}
+    GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
+    for (auto& elem : m_vecLight)
+        GAMEINSTANCE->Add_Light(elem);
 }
 
 HRESULT CTruck_Inside::Render()
@@ -65,9 +66,13 @@ HRESULT CTruck_Inside::Render()
             return E_FAIL;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            iPassIndex = 0;
+            iPassIndex = 4;
+            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+            {
+                iPassIndex = 0;
+            }
         }
-        
+  
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
 
@@ -88,6 +93,49 @@ HRESULT CTruck_Inside::Setup_Component()
 
 
    
+    return S_OK;
+}
+
+HRESULT CTruck_Inside::Setup_Light()
+{
+    LIGHTDESC LightDesc;
+    LightDesc.eType = LIGHTDESC::TYPE_POINT;
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
+    LightDesc.vAmbient = _float4(0.9f, 0.9f, 0.9f, 1.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
+
+    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 20.f, 0.f, 0.f));
+
+    LightDesc.fRange = 65.f;
+    LightDesc.fAttenuation0 = 1.f;
+    LightDesc.fAttenuation1 = 0.08f;
+    LightDesc.fAttenuation2 = 0.02f;
+
+    CLight* pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+    if (nullptr == pLight)
+        return E_FAIL;
+
+    m_vecLight.push_back(pLight);
+
+    LightDesc.eType = LIGHTDESC::TYPE_POINT;
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
+    LightDesc.vAmbient = _float4(0.9f, 0.9f, 0.9f, 1.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
+
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 20.f, 0.f, 0.f)- vLook);
+
+    LightDesc.fRange = 65.f;
+    LightDesc.fAttenuation0 = 1.f;
+    LightDesc.fAttenuation1 = 0.08f;
+    LightDesc.fAttenuation2 = 0.02f;
+
+    pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
+    if (nullptr == pLight)
+        return E_FAIL;
+
+    m_vecLight.push_back(pLight);
+
     return S_OK;
 }
 
@@ -143,5 +191,7 @@ void CTruck_Inside::Free()
     Safe_Release(m_pOBBCom);
     Safe_Release(m_pModelCom);
    
+    for (auto& elem : m_vecLight)
+        Safe_Release(elem);
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

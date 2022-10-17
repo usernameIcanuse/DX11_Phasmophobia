@@ -27,7 +27,7 @@ HRESULT CTruck::Initialize(void* pArg)
         m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
     }
 
-    m_fCullingRange = 15.f;
+    m_fCullingRange = 20.f;
 
     if (FAILED(Setup_Component()))
         return E_FAIL;

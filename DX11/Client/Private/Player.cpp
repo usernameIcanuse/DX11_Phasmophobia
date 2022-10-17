@@ -85,7 +85,7 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_pTransformCom->Add_Direction(CTransform::RIGHT);
 	}
 
-	if (pGameInstance->Is_KeyState(KEY::LEFT, KEY_STATE::HOLD))
+	/*if (pGameInstance->Is_KeyState(KEY::LEFT, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f * fTimeDelta);
 	}
@@ -103,10 +103,10 @@ void CPlayer::Tick(_float fTimeDelta)
 	if (pGameInstance->Is_KeyState(KEY::DOWN, KEY_STATE::HOLD))
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta);
-	}
+	}*/
 
 	_long		MouseMove = 0;
-	/*
+	
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_X))
 	{
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
@@ -115,7 +115,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	if (MouseMove = pGameInstance->Get_DIMouseMoveState(MMS_Y))
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
-	}*/
+	}
 	RELEASE_INSTANCE(CGameInstance);
 
 	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);

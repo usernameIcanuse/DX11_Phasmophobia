@@ -20,11 +20,8 @@ HRESULT CSky::Initialize_Prototype()
 
 HRESULT CSky::Initialize(void* pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
-
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Components()))
@@ -48,8 +45,6 @@ void CSky::LateTick(_float fTimeDelta)
 	pGameInstance->Add_Object_For_Culling(this, CRenderer::RENDER_PRIORITY);
 
 	RELEASE_INSTANCE(CGameInstance);
-
-	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
 
 }
 
@@ -97,6 +92,8 @@ HRESULT CSky::SetUp_ShaderResource()
 		return E_FAIL;
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
 
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
