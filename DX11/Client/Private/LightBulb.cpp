@@ -185,7 +185,7 @@ void CLightBulb::MalFunction(_float fTimeDelta)
     if (m_bSwitch)
     {
         m_fBlinkTime += fTimeDelta;
-        if (0.08f < m_fBlinkTime)
+        if (0.1f < m_fBlinkTime)
         {
             std::random_device rd;
             std::mt19937 gen(rd());
