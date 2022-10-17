@@ -58,7 +58,7 @@ void CScreen::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
+   m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT,this);
 }
 
 HRESULT CScreen::Render()
@@ -86,6 +86,10 @@ HRESULT CScreen::Setup_Component()
 
     /*For.Com_Texture*/
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Black"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+        return E_FAIL;
+
+    /*For.Com_Renderer*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
         return E_FAIL;
   
 
@@ -149,6 +153,7 @@ void CScreen::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
+    Safe_Release(m_pRendererCom);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

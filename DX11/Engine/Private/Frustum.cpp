@@ -158,7 +158,7 @@ void CFrustum::Item_Update()
 
 	for (auto& pair = m_listFrustumDesc[FRUSTUM_ITEM].begin(); pair != m_listFrustumDesc[FRUSTUM_ITEM].end();)
 	{
-		_vector vItemPosition = pair->first->Get_State(CTransform::STATE_TRANSLATION);
+		/*_vector vItemPosition = pair->first->Get_State(CTransform::STATE_TRANSLATION);
 		if (View_Frustum_Culling(vItemPosition, 3.f))
 		{
 			_vector vItemLook = pair->first->Get_State(CTransform::STATE_LOOK);
@@ -171,7 +171,7 @@ void CFrustum::Item_Update()
 				pair = m_listFrustumDesc[FRUSTUM_ITEM].erase(pair);
 				continue;
 			}
-		}
+		}*/
 		/*ºä ¹æº¤ Á¤±ÔÈ­*/
 		_matrix		ViewMatrix = pair->first->Get_WorldMatrix();
 		ViewMatrix.r[0] = XMVector3Normalize(ViewMatrix.r[0]);

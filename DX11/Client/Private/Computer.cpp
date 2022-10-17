@@ -203,7 +203,7 @@ HRESULT CComputer::Set_Screen_RSV(CShader* _pShaderCom)
     for (_int i = 0; i < m_iCurrCamIndex; ++i)
         ++iter;
 
-    if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", (*iter)->Get_CameraScreen_SRV())))
+    if(FAILED(_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", (*iter)->Get_CameraScreen_SRV())))
         return E_FAIL;
 
     return S_OK;
