@@ -69,6 +69,11 @@ public:
 		return m_eType;
 	}
 
+	_bool	Get_Switch()
+	{
+		return m_bSwitch;
+	}
+
 
 protected:
 	CShader*    m_pShaderCom = nullptr;

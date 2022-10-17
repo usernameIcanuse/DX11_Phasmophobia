@@ -42,6 +42,7 @@ public:
 public:
 	void	Connect_Tripod(CTripod* pTripod);
 	void	Disconnect_Tripod();
+	ID3D11ShaderResourceView* Get_CameraScreen_SRV();
 
 private:
 	CTripod* m_pTripod = nullptr;

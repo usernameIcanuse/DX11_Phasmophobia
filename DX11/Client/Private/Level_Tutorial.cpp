@@ -4,6 +4,7 @@
 #include "House.h"
 #include "Door.h"
 #include "Object_Collider.h"
+#include "Computer.h"
 
 
 
@@ -549,11 +550,13 @@ HRESULT CLevel_Tutorial::Load_TruckProps()
 				break;
 			}
 
-			_matrix LocalMat = tData.matWorld;
-			_float4x4 WorldMatrix;
-			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+			CComputer::COMPUTERDESC ComputerDesc;
+			ComputerDesc.iNumCamera = 3;
+			XMStoreFloat4x4(&ComputerDesc.TruckMat, TruckWorldMat);
+			XMStoreFloat4x4(&ComputerDesc.WorldMat, tData.matWorld * TruckWorldMat);
 
-			if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Computer"), nullptr, &WorldMatrix))
+
+			if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_Computer"), nullptr, &ComputerDesc))
 				return E_FAIL;
 		}
 	}
@@ -972,41 +975,6 @@ HRESULT CLevel_Tutorial::Load_TruckProps()
 	}
 
 	CloseHandle(hFile);
-
-	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Video_Default");
-	hFile = CreateFileA(Filepath,
-		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	if (INVALID_HANDLE_VALUE == hFile)
-	{
-		MSG_BOX("Failed to load file");
-		RELEASE_INSTANCE(CGameInstance);
-		return E_FAIL;
-	}
-
-	dwByteHouse = 0;
-	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
-
-	while (true)
-	{
-		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
-		{
-			if (0 == dwByteHouse)
-			{
-				break;
-			}
-
-			_matrix LocalMat = tDataObj.matWorld;
-			_float4x4 WorldMatrix;
-			XMStoreFloat4x4(&WorldMatrix, LocalMat* TruckWorldMat);
-
-			if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Item"), TEXT("Prototype_GameObject_Video_Camera"), nullptr, &WorldMatrix))
-				return E_FAIL;
-		}
-	}
-
-	CloseHandle(hFile);
-
 	
 	RELEASE_INSTANCE(CGameInstance);
 

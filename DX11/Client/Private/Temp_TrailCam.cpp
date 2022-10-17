@@ -103,7 +103,27 @@ void CTempTrailCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
 
        
     }
+    else if (eType == COLLISION_TYPE::OBJECT || eType == COLLISION_TYPE::NAVIGATION)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+        _vector vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
 
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+        m_pTransformCom->Rotation(vecLook, XMConvertToRadians(180.f));
+
+
+    }
 }
 
 CTempTrailCam* CTempTrailCam::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

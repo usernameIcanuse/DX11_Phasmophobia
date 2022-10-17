@@ -118,7 +118,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	}*/
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta/*,m_pCurrNavigation*/);
+	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -141,9 +141,13 @@ HRESULT CPlayer::Render()
 
 _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 {
-	if(m_pCurrNavigation == m_pNaviHouseCom)
-		return m_pCurrNavigation->Picking_Mesh(tMouseRay, vPickedPos);
+	if (nullptr == m_pCurrNavigation)
+		return false;
 
+	if (m_pCurrNavigation == m_pNaviHouseCom)
+	{
+		return m_pCurrNavigation->Picking_Mesh(tMouseRay, vPickedPos);
+	}
 	return false;
 }
 
@@ -232,9 +236,11 @@ HRESULT CPlayer::Setup_Camera()
 
 HRESULT CPlayer::Setup_Inventory()
 {
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Inventory"), TEXT("Prototype_GameObject_Inventory"), (CGameObject**)&m_pInventory, this)))
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Inventory"), TEXT("Prototype_GameObject_Inventory"), (CGameObject**)&m_pInventory, this)))
 		return E_FAIL;
 
+	RELEASE_INSTANCE(CGameInstance)
 	return S_OK;
 }
 

@@ -223,6 +223,9 @@
     <ClInclude Include="..\Public\MenuScreen.h">
       <Filter>02.GameObject\Lobby\Menu_Screen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Screen.h">
+      <Filter>02.GameObject\Stage\Truck\Computer\Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -432,6 +435,9 @@
     <ClCompile Include="..\Private\MenuScreen.cpp">
       <Filter>02.GameObject\Lobby\Menu_Screen</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Screen.cpp">
+      <Filter>02.GameObject\Stage\Truck\Computer\Screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -631,9 +637,6 @@
     <Filter Include="02.GameObject\Stage\Truck\Computer\KeyBoard">
       <UniqueIdentifier>{27312646-bfcb-449a-8cb0-d5e8bafc3dbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Stage\Truck\Screen">
-      <UniqueIdentifier>{1eb7c1e1-033e-436e-a599-404ce57b0477}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Stage\Truck\Inside">
       <UniqueIdentifier>{c99f5251-0306-460e-ba26-d6d6e1b9face}</UniqueIdentifier>
     </Filter>
@@ -657,6 +660,9 @@
     </Filter>
     <Filter Include="02.GameObject\Lobby\Menu_Screen">
       <UniqueIdentifier>{4c74f67f-dd4b-47d8-8b55-c76e6e3000a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Stage\Truck\Computer\Screen">
+      <UniqueIdentifier>{1eb7c1e1-033e-436e-a599-404ce57b0477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

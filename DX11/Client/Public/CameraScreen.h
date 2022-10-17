@@ -32,7 +32,8 @@ public:
 
 public:
 	void Set_Position();
-
+	ID3D11ShaderResourceView* Get_SRV();
+	
 private:
 	CShader*				m_pShaderCom = nullptr;
 	CCamera_Renderer*		m_pCameraRenderer = nullptr;

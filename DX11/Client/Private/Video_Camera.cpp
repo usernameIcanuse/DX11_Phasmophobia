@@ -86,6 +86,11 @@ HRESULT CVideo_Camera::Render()
     return S_OK;
 }
 
+ID3D11ShaderResourceView* CVideo_Camera::Get_CameraScreen_SRV()
+{
+    return m_pCameraScreen->Get_SRV();
+}
+
 
 _bool CVideo_Camera::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem)
 {

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "../Public/Computer.h"
 #include "GameInstance.h"
+#include "Video_Camera.h"
+#include "Screen.h"
 
 CComputer::CComputer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -24,11 +26,20 @@ HRESULT CComputer::Initialize(void* pArg)
 
     if (nullptr != pArg)
     {
-        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
+        COMPUTERDESC ComputerDesc = *(COMPUTERDESC*)pArg;
+        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&ComputerDesc.WorldMat));
+
+        if(FAILED(Connect_Camera(ComputerDesc.iNumCamera,ComputerDesc.TruckMat)))
+            return E_FAIL;
     }
 
     if (FAILED(Setup_Component()))
         return E_FAIL;
+
+    if (FAILED(Setup_Screen()))
+        return E_FAIL;
+
+
 
     return S_OK;
 }
@@ -37,18 +48,42 @@ void CComputer::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
+    for (auto& iter = m_listCameraOff.begin(); iter != m_listCameraOff.end();)
+    {
+        if (true == (*iter)->Get_Switch())
+        {
+            m_listCameraOn.push_back(*iter);
+            iter = m_listCameraOff.erase(iter);
+        }
+        else
+            ++iter;
+    }
+
+    for (auto& iter = m_listCameraOn.begin(); iter != m_listCameraOn.end();)
+    {
+        if (false == (*iter)->Get_Switch())
+        {
+            m_listCameraOff.push_back(*iter);
+            iter = m_listCameraOn.erase(iter);
+        }
+        else
+            ++iter;
+    }
+
+    //if (/*키보드 눌림*/)
+    //{
+    //    ++m_iCurrCamIndex;
+    //    if (m_iCurrCamIndex == m_listCameraOn.size())
+    //        m_iCurrCamIndex = 0;
+    //}
+
 }
 
 void CComputer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
-        GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
-    //}
+    GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
 }
 
@@ -87,6 +122,60 @@ HRESULT CComputer::Setup_Component()
     return S_OK;
 }
 
+HRESULT	CComputer::Setup_Screen()
+{
+    if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_ComputerScreen"), (CGameObject**)&m_pScreen, this)))
+        return E_FAIL;
+}
+
+
+HRESULT	CComputer::Connect_Camera(_int _iNumCamera, _float4x4 _TruckMat)
+{
+    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+    char Filepath[255]= "../Bin/Resources/Map/Default/Video_Default";
+    HANDLE hFile = CreateFileA(Filepath,
+        GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (INVALID_HANDLE_VALUE == hFile)
+    {
+        MSG_BOX("Failed to load file");
+        RELEASE_INSTANCE(CGameInstance);
+        return E_FAIL;
+    }
+
+    DWORD dwByteHouse = 0;
+    OBJ_DATA tDataObj;
+    ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+
+    CVideo_Camera* pTemp = nullptr;
+
+    while (true)
+    {
+        if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+        {
+            if (0 == dwByteHouse)
+            {
+                break;
+            }
+
+            _matrix LocalMat = tDataObj.matWorld;
+            _float4x4 WorldMatrix;
+            XMStoreFloat4x4(&WorldMatrix, LocalMat * XMLoadFloat4x4(&_TruckMat));
+
+            if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Item"), TEXT("Prototype_GameObject_Video_Camera"), (CGameObject**) & pTemp, &WorldMatrix))
+                return E_FAIL;
+
+            m_listCameraOff.push_back(pTemp);
+            Safe_AddRef(pTemp);
+        }
+    }
+
+    CloseHandle(hFile);
+
+    RELEASE_INSTANCE(CGameInstance);
+}
+
 HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
     if (nullptr == m_pShaderCom||
@@ -101,6 +190,21 @@ HRESULT CComputer::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProj
     if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
         return E_FAIL;
 
+
+    return S_OK;
+}
+
+HRESULT CComputer::Set_Screen_RSV(CShader* _pShaderCom)
+{
+    if (m_listCameraOn.empty())
+        return E_FAIL;
+
+    auto& iter = m_listCameraOn.begin();
+    for (_int i = 0; i < m_iCurrCamIndex; ++i)
+        ++iter;
+
+    if(FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", (*iter)->Get_CameraScreen_SRV())))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -135,6 +239,12 @@ void CComputer::Free()
 {
     __super::Free();
     
+    for (auto& elem : m_listCameraOn)
+        Safe_Release(elem);
+
+    for (auto& elem : m_listCameraOff)
+        Safe_Release(elem);
+
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pOBBCom);
     Safe_Release(m_pModelCom);

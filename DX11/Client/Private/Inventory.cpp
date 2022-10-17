@@ -338,7 +338,7 @@ HRESULT CInventory::Setup_Component()
 	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
 	ColliderDesc.pOwner = this;
 	ColliderDesc.m_eObjID = COLLISION_TYPE::SIGHT;
-	ColliderDesc.fRayLength = 10.f;
+	ColliderDesc.fRayLength = 15.f;
 
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
 		return E_FAIL;

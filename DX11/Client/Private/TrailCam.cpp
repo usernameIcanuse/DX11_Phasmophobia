@@ -234,6 +234,34 @@ _bool CTrailCam::Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook,
 
         return true;
     }
+    
+    else if (COLLISION_TYPE::OBJECT == eType || eType == COLLISION_TYPE::NAVIGATION)
+    {
+        _float3 vScale = m_pTransformCom->Get_Scaled();
+        _vector vecLook = XMVector3Normalize(XMLoadFloat4(&vLook));
+        m_pTransformCom->Set_State(CTransform::STATE_LOOK, vecLook * vScale.z);
+        _vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+        _vector vUp = XMVector3Cross(XMLoadFloat4(&vLook), vRight);
+
+
+        vRight = XMVector3Normalize(vRight);
+        vUp = XMVector3Normalize(vUp);
+
+        m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight * vScale.x);
+        m_pTransformCom->Set_State(CTransform::STATE_UP, vUp * vScale.y);
+        m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(XMLoadFloat3(&vPosition), 1.f));
+
+        m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+        m_pTransformCom->Rotation(vecLook, XMConvertToRadians(180.f));
+
+        // m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
+
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+        m_pAreaCom->Set_Enable(true);
+
+        return true;
+    }
+
 
     return false;
 }

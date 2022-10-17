@@ -35,6 +35,7 @@
 #include "Truck.h"
 #include "Truck_Inside.h"
 #include "Computer.h"
+#include "Screen.h"
 #include "Mouse.h"
 #include "KeyBoard.h"
 
@@ -514,6 +515,13 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Computer"),
 		CComputer::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
+	/* For. Prototype_GameObject_ComputerScreen*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_ComputerScreen"),
+		CScreen::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
 	/* For. Prototype_GameObject_KeyBoard*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_KeyBoard"),
 		CKeyBoard::Create(m_pDevice, m_pContext))))
@@ -553,6 +561,11 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	/* For.Prototype_Component_Texture_HandPrint*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HandPrint"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/HandPrint/HandPrint1.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Black*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Black"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Black.png"), 1))))
 		return E_FAIL;
 
 

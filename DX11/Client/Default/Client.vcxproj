@@ -242,6 +242,7 @@
     <ClInclude Include="..\Public\Photo_Camera.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Point.h" />
+    <ClInclude Include="..\Public\Screen.h" />
     <ClInclude Include="..\Public\Sky.h" />
     <ClInclude Include="..\Public\SpiritBox.h" />
     <ClInclude Include="..\Public\Temp_DotsProjecter.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\Private\Photo_Camera.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Point.cpp" />
+    <ClCompile Include="..\Private\Screen.cpp" />
     <ClCompile Include="..\Private\Sky.cpp" />
     <ClCompile Include="..\Private\SpiritBox.cpp" />
     <ClCompile Include="..\Private\Temp_DotsProjecter.cpp" />

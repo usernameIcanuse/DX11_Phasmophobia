@@ -65,6 +65,12 @@ HRESULT CCamera_Screen::Render()
 	return S_OK;
 }
 
+ID3D11ShaderResourceView* CCamera_Screen::Get_SRV()
+{
+	return m_pCameraRenderer->Get_SRV();
+}
+
+
 HRESULT CCamera_Screen::Setup_Component()
 {
 	/* For.Com_Shader */
