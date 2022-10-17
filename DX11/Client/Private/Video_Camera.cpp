@@ -40,6 +40,7 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
 
     m_vAdjustpos = _float3(1.f, 1.f, 1.9f);
 
+    Turn_OnOff();
 
     return S_OK;
 }
@@ -164,7 +165,7 @@ void CVideo_Camera::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
     }
 }
 
-void CVideo_Camera::Turn_Switch()
+void CVideo_Camera::Turn_OnOff()
 {
     m_bSwitch = !m_bSwitch;
     m_pCameraScreen->Turn_Switch();
@@ -203,8 +204,10 @@ void CVideo_Camera::Disconnect_Tripod()
 
 void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
 {
-    __super::On_Collision_Enter(pCollider);
-
+    if (COLLISION_TYPE::TRUCK == pCollider->Get_Type())
+    {
+        Turn_OnOff();
+    }
 }
 
 void CVideo_Camera::On_Collision_Stay(CCollider* pCollider)
@@ -213,6 +216,10 @@ void CVideo_Camera::On_Collision_Stay(CCollider* pCollider)
 
 void CVideo_Camera::On_Collision_Exit(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::TRUCK == pCollider->Get_Type())
+    {
+        Turn_OnOff();
+    }
 }
 
 HRESULT CVideo_Camera::Setup_Component()

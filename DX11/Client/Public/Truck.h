@@ -6,7 +6,9 @@ BEGIN(Engine)
 class CShader;
 class CCollider;
 class CModel;
-
+#ifdef _DEBUG
+class CRenderer;
+#endif
 END
 
 BEGIN(Client)
@@ -31,6 +33,10 @@ private:
 	CShader* m_pShaderCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
 	CModel* m_pModelCom = nullptr;
+
+#ifdef _DEBUG
+	CRenderer* m_pRendererCom = nullptr;
+#endif
 
 
 private:

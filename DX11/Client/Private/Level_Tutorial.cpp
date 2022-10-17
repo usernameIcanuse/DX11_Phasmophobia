@@ -364,7 +364,7 @@ HRESULT CLevel_Tutorial::Load_Stage()
 
 			if (FAILED(pGameInstance->Add_GameObject(
 				LEVEL_GAMEPLAY,
-				TEXT("Layer_Light"),
+				TEXT("Layer_Ghost"),
 				TEXT("Prototype_GameObject_Ghost"),
 				nullptr, &tagData)))
 			{
@@ -377,6 +377,49 @@ HRESULT CLevel_Tutorial::Load_Stage()
 	}
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Items");
+
+	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Atmosphere");
+
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+
+			_float4x4 WorldMat;
+			XMStoreFloat4x4(&WorldMat, tDataObj.matWorld);
+		
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_GAMEPLAY,
+				TEXT("Layer_House"),
+				TEXT("Prototype_GameObject_Atmosphere"),
+				nullptr, &WorldMat)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+
+		}
+	}
+	CloseHandle(hFile);
 
 
 
@@ -391,7 +434,7 @@ HRESULT CLevel_Tutorial::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 

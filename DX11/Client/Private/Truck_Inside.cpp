@@ -119,16 +119,16 @@ HRESULT CTruck_Inside::Setup_Light()
 
     LightDesc.eType = LIGHTDESC::TYPE_POINT;
     LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
-    LightDesc.vAmbient = _float4(0.9f, 0.9f, 0.9f, 1.f);
-    LightDesc.vDiffuse = _float4(1.f, 1.f, 0.95f, 1.f);
+    LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 
     _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 20.f, 0.f, 0.f)- vLook);
+    XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 20.f, 0.f, 0.f)- vLook*1.5f);
 
-    LightDesc.fRange = 65.f;
+    LightDesc.fRange = 160.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.08f;
-    LightDesc.fAttenuation2 = 0.02f;
+    LightDesc.fAttenuation1 = 0.022f;
+    LightDesc.fAttenuation2 = 0.0019f;
 
     pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
     if (nullptr == pLight)

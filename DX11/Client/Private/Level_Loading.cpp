@@ -12,7 +12,7 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
+HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst)
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
@@ -24,8 +24,16 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Loading(TEXT("Layer_Loading"))))
-		return E_FAIL;
+	if (false == bFirst)
+	{
+		if (FAILED(Ready_Layer_Loading(TEXT("Layer_Loading"))))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(Ready_Layer_FirstLoading(TEXT("Layer_Loading"))))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -99,11 +107,30 @@ HRESULT CLevel_Loading::Ready_Layer_Loading(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)
+HRESULT CLevel_Loading::Ready_Layer_FirstLoading(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+
+	/* For.Prototype_Component_Texture_FirstLoading*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_Texture_FirstLoading"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Phasmophobia_Loading%d.png"),3))))
+		return E_FAIL;
+
+	/* For.FirstLoading */
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING, pLayerTag, TEXT("Prototype_GameObject_FirstLoading"))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst)
 {
 	CLevel_Loading*		pInstance = new CLevel_Loading(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevel)))
+	if (FAILED(pInstance->Initialize(eNextLevel, bFirst)))
 	{
 		MSG_BOX("Failed to Created : CLevel_Loading");
 		Safe_Release(pInstance);

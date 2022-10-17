@@ -183,6 +183,7 @@
     <ClInclude Include="..\Public\Door.h" />
     <ClInclude Include="..\Public\DotsProjecter.h" />
     <ClInclude Include="..\Public\EMF.h" />
+    <ClInclude Include="..\Public\FirstLoading.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
     <ClInclude Include="..\Public\Ghost.h" />
     <ClInclude Include="..\Public\Ghost_Behavior.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="..\Private\Camera_Fixed.cpp" />
     <ClCompile Include="..\Private\Computer.cpp" />
     <ClCompile Include="..\Private\Door.cpp" />
+    <ClCompile Include="..\Private\FirstLoading.cpp" />
     <ClCompile Include="..\Private\Ghost_Behavior.cpp" />
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />

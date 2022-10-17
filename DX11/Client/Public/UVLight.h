@@ -32,12 +32,17 @@ public:
 		m_bSwitch = !m_bSwitch;
 	}
 
-	virtual void MalFunction(_float fTimeDelta = 0.f) {}
-	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+	virtual void MalFunction(_float fTimeDelta = 0.f);
+	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 
 
 private:
 	CLight* m_pSpotLight;
+
+	_float4 m_vDiffuse;
+
+	_float4 m_vBlinkDiffuse;
+	_float m_fBlinkTime = 0.f;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

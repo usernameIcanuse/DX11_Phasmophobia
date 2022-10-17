@@ -16,19 +16,20 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	virtual HRESULT Initialize(LEVEL eNextLevel);
+	virtual HRESULT Initialize(LEVEL eNextLevel,_bool bFirst);
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
 private:
 	HRESULT Ready_Layer_Loading(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_FirstLoading(const _tchar* pLayerTag);
 
 private:
 	LEVEL			m_eNextLevel = LEVEL_END;
 	class CLoader*	m_pLoader = nullptr;
 
 public:
-	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel);
+	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,_bool bFirst = false);
 	virtual void Free() override;
 };
 

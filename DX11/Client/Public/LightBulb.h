@@ -53,7 +53,10 @@ private:
 #ifdef _DEBUG
 	CCollider* m_pOBBCom = nullptr;
 #endif
+	_float4		m_vDiffuse;
 
+	_float4 m_vBlinkDiffuse;
+	_float m_fBlinkTime = 0.f;
 
 	function<void(CLightBulb*, _float)> m_pEventFunc;
 

@@ -698,7 +698,7 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_RoomDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "RoomDoor.fbx", TransformMatrix))))
 		return E_FAIL;
-	TransformMatrix = XMMatrixScaling(0.07f, 0.05f, 0.05f) *XMMatrixTranslation(0.f,6.f,0.f);
+	TransformMatrix = XMMatrixScaling(0.1f, 0.05f, 0.05f) *XMMatrixTranslation(0.f,6.f,0.f);
 	/* For.Prototype_Component_Model_MainDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MainDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "MainDoor.fbx", TransformMatrix))))

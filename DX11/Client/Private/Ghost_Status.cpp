@@ -63,6 +63,11 @@ void CGhost_Status::Tick(_float fTimeDelta)
 	}
 	m_iEMF = 1; 
 
+	if (GAMEINSTANCE->Is_KeyState(KEY::F1, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Event"));
+		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+	}
 	
 	/*if(!m_bAttack)
 		m_fAttackCoolTime -= fTimeDelta;*/
@@ -175,7 +180,7 @@ void CGhost_Status::OnEventMessage(const _tchar* pMessage)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(60,100 );
+		std::uniform_int_distribution<int> dis(30,60);
 
 		m_bEvent = false;
 		m_bAttack = false;

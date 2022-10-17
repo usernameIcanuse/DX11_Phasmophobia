@@ -28,12 +28,12 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 	m_fTime -= fTimeDelta;
- if (0.f > m_fTime)
+	if (0.f > m_fTime)
 	{
 		CGameInstance*		pGameInstance = CGameInstance::Get_Instance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY), LEVEL_LOBBY)))
+		if (FAILED(pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY,true), LEVEL_LOBBY)))
 			return;
 
 		Safe_Release(pGameInstance);

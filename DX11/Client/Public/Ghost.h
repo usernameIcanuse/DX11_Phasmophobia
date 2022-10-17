@@ -64,7 +64,7 @@ private:
 	CRenderer*		m_pRendererCom = nullptr;
 
 	CGhost_Behavior* m_pBehavior = nullptr;
-	_int			m_iSpawnPointIndex = 0;
+
 
 #ifdef _DEBUG
 	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력
@@ -73,7 +73,7 @@ private:
 	class CHandPrint*	 m_pHandPrint = nullptr;
 
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
-	_float				m_fUpdatePointTime = 0.f;
+	_float				m_fUpdatePointTime = 1.f;
 
 	//ghost가 핸드 프린트 하나를 가지고 있고 시간 지나서 문 부딪힐 때마다 재활용
 	

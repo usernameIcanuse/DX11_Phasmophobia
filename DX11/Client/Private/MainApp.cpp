@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "Loading.h"
+#include "FirstLoading.h"
 #include "Engine_Defines.h"
 
 
@@ -122,6 +123,10 @@ HRESULT CMainApp::Ready_Loading_Background()
 {
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Loading"),
 		CLoading::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_FirstLoading"),
+		CFirstLoading::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

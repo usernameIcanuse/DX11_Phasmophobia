@@ -46,16 +46,12 @@ void CLoading::Tick(_float fTimeDelta)
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
  	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
-	//CGameInstance*		pGameInstance = GET_INSTANCE(CGameInstance);
 
-	//// pGameInstance->Get_Component(LEVEL_LOGO, TEXT("Layer_Test"), m_pTransformTag, 
-
-	//RELEASE_INSTANCE(CGameInstance);
 }
 
 void CLoading::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CLoading::Render()

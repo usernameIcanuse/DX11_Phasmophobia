@@ -32,8 +32,8 @@ public:
 		m_bSwitch = !m_bSwitch;
 	}
 
-	virtual void MalFunction(_float fTimeDelta = 0.f) {}
-	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+	virtual void MalFunction(_float fTimeDelta = 0.f);
+	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 	virtual void Change_Item(_bool _bFlag) 
 	{
 		m_bRenderModel = _bFlag;
@@ -43,6 +43,12 @@ private:
 	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
 	_bool	m_bRenderModel= true;
+	
+	_float4	m_vDiffuse;
+
+	_float4 m_vBlinkDiffuse;
+	_float m_fBlinkTime = 0.f;
+
 private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT	Setup_Light();

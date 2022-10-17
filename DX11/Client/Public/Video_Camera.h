@@ -24,7 +24,6 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-
 	//virtual void OnEventMessage(const _tchar* pMessage);
 
 public:
@@ -35,7 +34,6 @@ public:
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
-	virtual void Turn_Switch();
 
 	virtual void Set_Enable(_bool _bEnable);
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
@@ -59,6 +57,8 @@ private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT			Setup_TempModel();
 	HRESULT			Setup_Screen();
+	void Turn_OnOff();
+
 public:
 	static CVideo_Camera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

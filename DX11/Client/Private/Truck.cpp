@@ -38,20 +38,17 @@ HRESULT CTruck::Initialize(void* pArg)
 void CTruck::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
- 
+    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CTruck::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
-        GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 
-    //}
-
+    GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
+#ifdef _DEBUG
+    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+#endif
 }
 
 HRESULT CTruck::Render()
@@ -86,6 +83,24 @@ HRESULT CTruck::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Truck"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
         return E_FAIL;
 
+
+    /* For.Com_OBB*/
+    CCollider::COLLIDERDESC  ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+    ColliderDesc.vScale = _float3(5.f, 5.f, 7.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, ColliderDesc.vScale.z * -0.2f);
+    ColliderDesc.pOwner = this;
+    ColliderDesc.m_eObjID = COLLISION_TYPE::TRUCK;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+        return E_FAIL;
+
+#ifdef _DEBUG
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+        return E_FAIL;
+#endif
 
    
     return S_OK;
@@ -142,6 +157,10 @@ void CTruck::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pOBBCom);
     Safe_Release(m_pModelCom);
+
+#ifdef _DEBUG
+    Safe_Release(m_pRendererCom);
+#endif
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

@@ -230,6 +230,7 @@ namespace Engine
 	{
 		DEFAULT = 0,
 		PLAYER,
+		TRUCK,
 		HOUSE,
 		GHOST,
 		GHOST_ATTACK,
@@ -343,7 +344,7 @@ namespace Engine
 
 	typedef struct tagCharacterData
 	{
-		_float4x4 matWorld;
+		_float4x4	matWorld;
 		_int		iCurrentIndex;
 	}CHARACTERDATA;
 
@@ -352,6 +353,13 @@ namespace Engine
 		MODEL_TAG	tModelTag;
 		_matrix		matWorld;
 	}MAP_DATA;//layer 무조건 house
+
+	typedef struct tagDoorData
+	{
+		MODEL_TAG	tModelTag;
+		_matrix		matWorld;
+		_bool		bCCW;//
+	}DOOR_DATA;//layer 무조건 house
 
 	typedef struct tagCollider
 	{

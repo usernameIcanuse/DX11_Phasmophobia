@@ -34,8 +34,12 @@ HRESULT CGhost::Initialize(void* pArg)
 	
 	if (FAILED(__super::Initialize(&TransformDesc)))
 		return E_FAIL;
-
 	
+	if (FAILED(Setup_Component()))
+		return E_FAIL;
+
+	if (FAILED(Setup_SpawnPoint()))
+		return E_FAIL;
 
 	if (nullptr != pArg)
 	{
@@ -44,21 +48,12 @@ HRESULT CGhost::Initialize(void* pArg)
 
 		if (FAILED(Setup_Bahavior(tagData.iCurrentIndex)))
 			return E_FAIL;
-		m_iSpawnPointIndex = tagData.iCurrentIndex;
+
+		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
+			return E_FAIL;
+
+		m_pHandPrint->Set_Enable(false);
 	}
-
-	if (FAILED(Setup_Component()))
-		return E_FAIL;
-
-	if (FAILED(Setup_SpawnPoint()))
-		return E_FAIL;
-
-
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
-		return E_FAIL;
-
-	m_pHandPrint->Set_Enable(false);
-
 	m_pModelCom->Set_CurrentAnimation(1);
 
 
@@ -96,7 +91,7 @@ void CGhost::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+
 #ifdef _DEBUG
 	//m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 	//m_pRendererCom->Add_DebugRenderGroup(m_pGhostCom);
@@ -214,6 +209,7 @@ _bool CGhost::Check_GhostWriting()
 void CGhost::Stop_Updating_SpawnPoint()
 {
 	m_pSpawnPoint->Set_Ghost(nullptr);
+	m_pBehavior->Setup_SpawnPointIndex();
 }
 
 void CGhost::Light_Attack(_float fTimeDelta)
@@ -272,14 +268,13 @@ void CGhost::Normal_Operation(_float fTimeDelta)
 	if (35.f < XMVectorGetX(XMVector3Length(vSpawnPos - vPosition)))
 	{
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
-		m_pBehavior->Set_NaviIndex(m_iSpawnPointIndex);
+		m_pBehavior->Move_To_SpawnPoint();
 	}
 
 	if (m_bInDots)
 	{
-		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
-
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
+		m_pBehavior->Move_To_SpawnPoint();
 
 		m_fDotsTime -= fTimeDelta;
 		m_pModelCom->Play_Animation(fTimeDelta*2.f);
@@ -294,10 +289,6 @@ void CGhost::Normal_Operation(_float fTimeDelta)
 	if (m_bHandPrint)
 	{
 		m_fHandPrintCoolTime -= fTimeDelta;
-		if (0.f > m_fHandPrintCoolTime)
-		{
-			m_pHandPrint->Set_Enable(false);
-		}
 	}
 
 }

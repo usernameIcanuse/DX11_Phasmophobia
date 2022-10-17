@@ -34,11 +34,11 @@ HRESULT CScreen::Initialize(void* pArg)
         m_pTransformCom->Rotation(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(4.1f));
         _matrix WorldMat = m_pTransformCom->Get_WorldMatrix();
        
-        WorldMat.r[3] = WorldMat.r[3] - WorldMat.r[2]*0.008f- WorldMat.r[1]*0.05f;
+        WorldMat.r[3] = WorldMat.r[3] - WorldMat.r[2]*0.008f- WorldMat.r[1]*0.01f;
 
         m_pTransformCom->Set_WorldMatrix(WorldMat);
    
-        m_pTransformCom->Set_Scaled(_float3(5.5f, 3.3f, 1.f));
+        m_pTransformCom->Set_Scaled(_float3(5.5f, 3.2f, 1.f));
             
     }
 

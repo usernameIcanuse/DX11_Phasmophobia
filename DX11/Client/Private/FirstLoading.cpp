@@ -1,30 +1,27 @@
 #include "stdafx.h"
-#include "..\Public\BackGround.h"
+#include "..\Public\FirstLoading.h"
 
 #include "GameInstance.h"
 
-CBackGround::CBackGround(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CFirstLoading::CFirstLoading(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-CBackGround::CBackGround(const CBackGround & rhs)
+CFirstLoading::CFirstLoading(const CFirstLoading& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CBackGround::Initialize_Prototype()
+HRESULT CFirstLoading::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CBackGround::Initialize(void * pArg)
+HRESULT CFirstLoading::Initialize(void * pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_Components()))
@@ -38,30 +35,54 @@ HRESULT CBackGround::Initialize(void * pArg)
 	// XMMatrixPerspectiveFovLH()
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 
-	return S_OK;
+  	return S_OK;
 }
 
-void CBackGround::Tick(_float fTimeDelta)
+void CFirstLoading::Tick(_float fTimeDelta)
 {
 	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
-	m_fTime -= fTimeDelta;
+	m_fTime += fTimeDelta;
 	if (1.f > m_fTime)
 	{
-		m_fFade -= fTimeDelta * 1.5f;
-		if (0.f > m_fFade)
-			m_fFade = 0.f;
+		if (1.f > m_fFade)
+		{
+			m_fFade += fTimeDelta * 1.5f;
+			if (m_fFade > 1.f)
+				m_fFade = 1.f;
+		}
 	}
+	else if (3.f < m_fTime)
+	{
+		if (m_iTextureIndex < 2)
+		{
+			if (0.f < m_fFade)
+			{
+				m_fFade -= fTimeDelta * 1.5f;
+				if (0.f > m_fFade)
+					m_fFade = 0.f;
+			}
+		}
+	}
+	if (4.f < m_fTime)
+	{
+		if (m_iTextureIndex < 2)
+		{
+			++m_iTextureIndex;
+			m_fTime = 0.f;
+		}
+	}
+
 
 }
 
-void CBackGround::LateTick(_float fTimeDelta)
+void CFirstLoading::LateTick(_float fTimeDelta)
 {
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
-HRESULT CBackGround::Render()
+HRESULT CFirstLoading::Render()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -78,7 +99,7 @@ HRESULT CBackGround::Render()
 	return S_OK;
 }
 
-HRESULT CBackGround::SetUp_Components()
+HRESULT CFirstLoading::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -89,7 +110,7 @@ HRESULT CBackGround::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_LOADING, TEXT("Prototype_Component_Texture_FirstLoading"), TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -99,7 +120,7 @@ HRESULT CBackGround::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CBackGround::SetUp_ShaderResource()
+HRESULT CFirstLoading::SetUp_ShaderResource()
 {
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -116,40 +137,40 @@ HRESULT CBackGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom->Set_RawValue("g_fFade", &m_fFade, sizeof(_float))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_iTextureIndex)))
 		return E_FAIL;
 
 
 	return S_OK;
 }
 
-CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CFirstLoading * CFirstLoading::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CBackGround*		pInstance = new CBackGround(pDevice, pContext);
+	CFirstLoading*		pInstance = new CFirstLoading(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CBackGround");		
+		MSG_BOX("Failed to Created : CFirstLoading");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CBackGround::Clone(void * pArg)
+CGameObject * CFirstLoading::Clone(void * pArg)
 {
-	CBackGround*		pInstance = new CBackGround(*this);
+	CFirstLoading*		pInstance = new CFirstLoading(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CBackGround");
+		MSG_BOX("Failed to Cloned : CFirstLoading");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CBackGround::Free()
+void CFirstLoading::Free()
 {
 	__super::Free();
 

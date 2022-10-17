@@ -49,6 +49,7 @@ void CUVLight::Tick(_float fTimeDelta)
 void CUVLight::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
     if (m_bSwitch)
     {   //Update Lightdesc;
         LIGHTDESC* pLightDesc = m_pSpotLight->Get_LightDesc();
@@ -106,6 +107,37 @@ void CUVLight::On_Collision_Exit(CCollider* pCollider)
 {
 }
 
+void CUVLight::MalFunction(_float fTimeDelta)
+{
+    if (m_bSwitch)
+    {
+        m_fBlinkTime += fTimeDelta;
+        if (0.08f < m_fBlinkTime)
+        {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<int> dis(0, 100);
+
+            _float fRatio = dis(gen) * 0.01f;
+            XMStoreFloat4(&m_vBlinkDiffuse, XMLoadFloat4(&m_vDiffuse) * fRatio);
+            m_fBlinkTime = 0.f;
+        }
+        LIGHTDESC* pLightDesc = m_pSpotLight->Get_LightDesc();
+        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.3f);
+        XMStoreFloat4(&pLightDesc->vDiffuse, vLerpDiffuse);
+    }
+}
+
+void CUVLight::Normal_Operation(_float fTimeDelta)
+{
+    if (m_bSwitch)
+    {
+        LIGHTDESC* pLightDesc = m_pSpotLight->Get_LightDesc();
+        pLightDesc->vDiffuse = m_vDiffuse;
+
+    }
+}
+
 HRESULT CUVLight::Setup_Component()
 {
     if (FAILED(__super::Setup_Component()))
@@ -140,7 +172,7 @@ HRESULT CUVLight::Setup_Light()
     LightDesc.eType = tagLightDesc::TYPE_SPOTLIGHT;
     LightDesc.bUVLight = true;
 
-    LightDesc.vDiffuse = _float4(1.f, 0.f, 1.f, 1.f);
+    LightDesc.vDiffuse = m_vDiffuse=_float4(1.f, 0.f, 1.f, 1.f);
     LightDesc.vAmbient = _float4(0.3f, 0.f, 0.3f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 0.f, 1.f, 1.f);
 

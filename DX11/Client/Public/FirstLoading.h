@@ -12,12 +12,12 @@ END
 
 BEGIN(Client)
 
-class CBackGround final : public CGameObject
+class CFirstLoading final : public CGameObject
 {
 private:
-	CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CBackGround(const CBackGround& rhs);
-	virtual ~CBackGround() = default;
+	CFirstLoading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CFirstLoading(const CFirstLoading& rhs);
+	virtual ~CFirstLoading() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -36,15 +36,16 @@ private:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_float4x4		m_ProjMatrix;
 
-	_float m_fTime = 4.f;
-	_float m_fFade = 1.f;
+	_float			m_fTime = 0.f;
+	_float			m_fFade = 0.f;
+	_int			m_iTextureIndex = 0;
 
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_ShaderResource();
 
 public:
-	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CFirstLoading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

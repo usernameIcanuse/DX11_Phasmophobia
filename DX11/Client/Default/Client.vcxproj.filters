@@ -226,6 +226,9 @@
     <ClInclude Include="..\Public\Screen.h">
       <Filter>02.GameObject\Stage\Truck\Computer\Screen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\FirstLoading.h">
+      <Filter>02.GameObject\BackGround\FirstLoading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -437,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Screen.cpp">
       <Filter>02.GameObject\Stage\Truck\Computer\Screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FirstLoading.cpp">
+      <Filter>02.GameObject\BackGround\FirstLoading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -663,6 +669,9 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\Truck\Computer\Screen">
       <UniqueIdentifier>{1eb7c1e1-033e-436e-a599-404ce57b0477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\BackGround\FirstLoading">
+      <UniqueIdentifier>{06b8f9e5-3265-46c9-bc50-ff094469cab5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

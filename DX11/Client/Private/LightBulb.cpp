@@ -130,15 +130,15 @@ HRESULT		CLightBulb::Setup_Light()
     LIGHTDESC LightDesc;
 
     LightDesc.eType = LIGHTDESC::TYPE_POINT;
-    LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.f);
+    LightDesc.vDiffuse = m_vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.f);
     LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
     LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
     XMStoreFloat4(&LightDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
     
-    LightDesc.fRange = 65.f;
+    LightDesc.fRange = 100.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.08f;
-    LightDesc.fAttenuation2 = 0.02f;
+    LightDesc.fAttenuation1 = 0.045f;
+    LightDesc.fAttenuation2 = 0.0075f;
 
     m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
     if (nullptr == m_pLight)
@@ -182,12 +182,34 @@ void CLightBulb::Call_EventFunc(_float fTimeDelta)
 
 void CLightBulb::MalFunction(_float fTimeDelta)
 {
+    if (m_bSwitch)
+    {
+        m_fBlinkTime += fTimeDelta;
+        if (0.08f < m_fBlinkTime)
+        {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<int> dis(0, 100);
 
+            _float fRatio = dis(gen) * 0.01f;
+            XMStoreFloat4(&m_vBlinkDiffuse, XMLoadFloat4(&m_vDiffuse) * fRatio);
+            m_fBlinkTime = 0.f;
+        }
+        LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
+        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.3f);
+        XMStoreFloat4(&pLightDesc->vDiffuse,vLerpDiffuse);
+
+    }
 }
 
 void CLightBulb::Normal_Operation(_float fTimeDelta)
 {
+    if (m_bSwitch)
+    {
+        LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
+        pLightDesc->vDiffuse = m_vDiffuse;
 
+    }
 }
 
 void CLightBulb::On_Collision_Enter(CCollider* pCollider)

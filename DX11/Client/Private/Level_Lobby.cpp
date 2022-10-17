@@ -33,19 +33,6 @@ HRESULT CLevel_Lobby::Initialize()
 	if (FAILED(Load_Stage()))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Lobby"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_WaitingRoom(TEXT("Layer_WaitingRoom"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Store(TEXT("Layer_Store"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_AddItems(TEXT("Layer_AddItems"))))
-		return E_FAIL;*/
-
-
 	if(FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
 
@@ -126,9 +113,9 @@ HRESULT CLevel_Lobby::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.8f, 1.f);
-	LightDesc.vAmbient = _float4(0.8f, 0.8f, 0.8f, 1.f);
-	LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)

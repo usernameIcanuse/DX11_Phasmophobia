@@ -181,9 +181,14 @@ void CGhost_Behavior::Attack(_float fTimeDelta)
 	}
 }
 
-void CGhost_Behavior::Set_NaviIndex(_int iCurrentIndex)
+void CGhost_Behavior::Setup_SpawnPointIndex()
 {
-	m_pNavigationCom->Set_CurrentIndex(iCurrentIndex);
+	m_iSpawnPointIndex = m_pNavigationCom->Get_CurrentIndex();
+}
+
+void CGhost_Behavior::Move_To_SpawnPoint()
+{
+	m_pNavigationCom->Set_CurrentIndex(m_iSpawnPointIndex);
 }
 
 

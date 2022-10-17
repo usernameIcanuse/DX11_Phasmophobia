@@ -75,6 +75,11 @@ void CComputer::Tick(_float fTimeDelta)
             ++iter;
     }
 
+    if (m_iCurrCamIndex >0 && m_iCurrCamIndex >= m_listCameraOn.size())
+    {
+        m_iCurrCamIndex = m_listCameraOn.size()-1;
+    }
+
   
 }
 

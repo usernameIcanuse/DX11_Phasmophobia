@@ -230,6 +230,7 @@ namespace Engine
 	{
 		DEFAULT = 0,
 		PLAYER,
+		TRUCK,
 		HOUSE,
 		GHOST,
 		GHOST_ATTACK,

@@ -43,7 +43,8 @@ public:
 		m_pOwnerTransform = _pOwnerTransform;
 		Safe_AddRef(m_pOwnerTransform);
 	}
-	void Set_NaviIndex(_int iCurrentIndex);
+	void Setup_SpawnPointIndex();
+	void Move_To_SpawnPoint();
 
 private:
 	CTransform* m_pOwnerTransform = nullptr;
@@ -51,6 +52,8 @@ private:
 	CTransform* m_pPlayerTransform = nullptr;
 
 	CNavigation* m_pNavigationCom = nullptr;
+
+	_int			m_iSpawnPointIndex = 0;
 
 	function<void(CGhost_Behavior*, _float)> m_pEventFunc;
 
