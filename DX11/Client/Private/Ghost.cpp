@@ -37,24 +37,19 @@ HRESULT CGhost::Initialize(void* pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	if (FAILED(Setup_SpawnPoint()))
-		return E_FAIL;
-
 	if (nullptr != pArg)
 	{
-		CHARACTERDATA tagData = *(CHARACTERDATA*)pArg;
-		m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&tagData.matWorld));
+		m_pSpawnPoint = (CGhost_SpawnPoint*)pArg;
 
-		if (FAILED(Setup_Bahavior(tagData.iCurrentIndex)))
-			return E_FAIL;
-
-		
 	}
+	if (FAILED(Setup_Bahavior()))
+		return E_FAIL;
 	m_pModelCom->Set_CurrentAnimation(1);
 
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
-	GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
+	m_EventFunc = std::bind(&CGhost::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+
 	m_fUpdatePointTime = 5.f;
 
 	return S_OK;
@@ -66,16 +61,8 @@ void CGhost::Tick(_float fTimeDelta)
 
 	m_fTime += fTimeDelta;
 	m_fUpdatePointTime -= fTimeDelta;
-
 	
-
-	if (0.f > m_fUpdatePointTime)
-	{
-		Stop_Updating_SpawnPoint();
-	}
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
-
-	
 
 	m_pOBBCom->Update(matWorld);
 
@@ -144,8 +131,7 @@ HRESULT CGhost::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMat
 void CGhost::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
-
-	m_pSpawnPoint->Set_Enable(_bEnable);
+	m_pBehavior->Set_Enable(_bEnable);
 }
 
 void CGhost::OnEventMessage(const _tchar* pMessage)
@@ -185,13 +171,6 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 void CGhost::Call_EventFunc(_float fTimeDelta)
 {
 	m_EventFunc(this,fTimeDelta);
-}
-
-
-void CGhost::Stop_Updating_SpawnPoint()
-{
-	m_pSpawnPoint->Set_Ghost(nullptr);
-	m_pBehavior->Setup_SpawnPointIndex();
 }
 
 void CGhost::Light_Attack(_float fTimeDelta)
@@ -241,18 +220,19 @@ void CGhost::Attack(_float fTimeDelta)
 
 void CGhost::Normal_Operation(_float fTimeDelta)
 {
-	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-	m_pModelCom->Play_Animation(fTimeDelta);
-
-	_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
-	_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
-
-	if (35.f < XMVectorGetX(XMVector3Length(vSpawnPos - vPosition)))
-	{
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
-	}
 
 
+}
+
+void CGhost::DotsProjecter()
+{
+	
+}
+
+void CGhost::Move_To_SpawnPoint(_vector _pPosition, _int _iNaviIndex)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, _pPosition);
+	m_pBehavior->Set_Currindex(_iNaviIndex);
 }
 
 
@@ -290,23 +270,17 @@ HRESULT CGhost::Setup_Component()
 	return S_OK;
 }
 
-HRESULT CGhost::Setup_SpawnPoint()
-{
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost_SpawnPoint"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), (CGameObject**)&m_pSpawnPoint, this)))
-		return E_FAIL;
-	return S_OK;
-}
 
-HRESULT CGhost::Setup_Bahavior(_int iNaviIndex)
+HRESULT CGhost::Setup_Bahavior()
 {
 	
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior, &iNaviIndex)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior)))
 		return E_FAIL;
 
 	m_pBehavior->Set_Owner(m_pTransformCom);
 
 	return S_OK;
-}/**/
+}
 
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {

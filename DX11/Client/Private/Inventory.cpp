@@ -80,14 +80,21 @@ void CInventory::Tick(_float fTimeDelta)
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
-	POINT pt;
-	SetCursor(NULL);
-	pt.x = g_iWinCX / 2;
-	pt.y = g_iWinCY / 2;
-	ClientToScreen(g_hWnd, &pt);
-	SetCursorPos(pt.x, pt.y);
-	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+	
+	if (true == m_bLockCursor)
+	{
+		POINT pt;
+		SetCursor(NULL);
+		pt.x = g_iWinCX / 2;
+		pt.y = g_iWinCY / 2;
+		ClientToScreen(g_hWnd, &pt);
+		SetCursorPos(pt.x, pt.y);
+	}
+		m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
+	{
+		m_bLockCursor != m_bLockCursor;
+	}
 
 	if (m_vInventory[m_iIndex])
 	{
@@ -432,6 +439,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 		{
 			m_fDist = fCollisionDist;
 			m_pItem = pCollider->Get_Owner();
+			m_bOnMouse = false;
 		}
 	}
 	else if (COLLISION_TYPE::OBJECT == pCollider->Get_Type() || COLLISION_TYPE::WALL == pCollider->Get_Type() ||
@@ -448,6 +456,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 				XMStoreFloat4(&m_vColliderLook, static_cast<CTransform*>(pCollider->Get_Owner()->Get_Component(CGameObject::m_pTransformTag))->Get_State(CTransform::STATE_LOOK));
 			else if (COLLISION_TYPE::TRIPOD == pCollider->Get_Type())
 			{
+				m_bOnMouse = false;
 				BoundingBox* pBoundingBox = nullptr;
 				pBoundingBox = (BoundingBox*)pCollider->Get_Collider();
 				m_vColliderPos = pBoundingBox->Center;
@@ -459,6 +468,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 	else if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
 	{
 		m_pDoor = (CDoor*)pCollider->Get_Owner();
+		m_bOnMouse = false;
 	}
 	else if (COLLISION_TYPE::LIGHTSWITCH == pCollider->Get_Type())
 	{
@@ -467,8 +477,9 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 			CLightSwitch* pOwner = (CLightSwitch*)pCollider->Get_Owner();
 			pOwner->Turn_Switch();
 		}
+		m_bOnMouse = false;
 	}
-	m_bOnMouse = false;
+	
 }
 
 void CInventory::On_Collision_Exit(CCollider* pCollider)

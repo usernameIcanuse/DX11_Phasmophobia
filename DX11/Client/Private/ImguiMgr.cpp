@@ -222,7 +222,7 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
 
-		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeObject.push_back(pTemp);
@@ -1354,7 +1354,7 @@ void CImguiMgr::CollocateObject()
 		case 7:
 			tLayerIndex = LAYER::OBJECT;
 			tObjIndex = OBJ_TAG::GHOST;
-			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost"), &pTemp)))
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Object"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"), &pTemp)))
 				return;
 			break;
 
@@ -1764,7 +1764,7 @@ void CImguiMgr::Load_Object(const char* strStageName, const char* strFileName)
 				break;
 
 			case OBJ_TAG::GHOST:
-				strPrototypeTag = TEXT("Prototype_GameObject_Ghost");
+				strPrototypeTag = TEXT("Prototype_GameObject_Ghost_SpawnPoint");
 				break;
 
 			case OBJ_TAG::ATMOSPHERE:

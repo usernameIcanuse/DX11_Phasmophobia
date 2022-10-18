@@ -23,8 +23,8 @@ HRESULT CLevel_Tutorial::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 	//임구이 안 쓸 때
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 		return E_FAIL;
@@ -334,7 +334,7 @@ HRESULT CLevel_Tutorial::Load_Stage()
 
 	
 
-	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Ghost");
+	/*strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Ghost");
 
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -375,7 +375,7 @@ HRESULT CLevel_Tutorial::Load_Stage()
 
 		}
 	}
-	CloseHandle(hFile);
+	CloseHandle(hFile);*/
 	//MSG_BOX("Loaded Items");
 
 	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Atmosphere");
@@ -390,7 +390,7 @@ HRESULT CLevel_Tutorial::Load_Stage()
 		return E_FAIL;
 	}
 	dwByteHouse = 0;
-	
+	OBJ_DATA tDataObj;
 	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
 	while (true)
 	{
@@ -421,6 +421,10 @@ HRESULT CLevel_Tutorial::Load_Stage()
 	}
 	CloseHandle(hFile);
 
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
+		nullptr, TEXT("../Bin/Resources/Map/NormalHouse/"))))
+		return E_FAIL;
+
 
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -434,9 +438,9 @@ HRESULT CLevel_Tutorial::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
-	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)

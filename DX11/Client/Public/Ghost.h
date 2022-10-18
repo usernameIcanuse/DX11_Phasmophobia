@@ -20,11 +20,7 @@ class CGhost final: public CGameObject
 {
 	friend class CGhost_SpawnPoint;
 public:
-	typedef struct
-	{
-		_float4x4 matWorld;
-		_int iCurrentIndex;
-	}GHOST_LOADDATA;
+
 
 private:
 	CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -43,17 +39,16 @@ public:
 	virtual void Set_Enable(_bool _bEnable);
 	virtual void OnEventMessage(const _tchar* pMessage);
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
-	
-public:
-	_bool	Check_GhostWriting();
-	
-private:
-	void Stop_Updating_SpawnPoint(); //스폰포인트 고정
+
 
 private: /*기본 귀신 상호작용, 기능*/
 	void Light_Attack(_float fTimeDelta =0.f); //이벤트
 	void Attack(_float fTimeDelta = 0.f); //헌팅
 	void Normal_Operation(_float fTimeDelta = 0.f);
+
+	void DotsProjecter();
+
+	void Move_To_SpawnPoint(_vector _pPosition, _int _iNaviIndex);
 
 
 private:
@@ -85,8 +80,7 @@ private:
 
 private:
 	HRESULT	Setup_Component();
-	HRESULT Setup_SpawnPoint();
-	HRESULT Setup_Bahavior(_int iNaviIndex);
+	HRESULT Setup_Bahavior();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

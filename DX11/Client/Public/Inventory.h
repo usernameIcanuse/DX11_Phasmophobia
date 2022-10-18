@@ -76,6 +76,8 @@ private:
 	_bool			m_bGrab = false;
 	CGameObject* m_pTripod = nullptr;
 
+	_bool			m_bLockCursor = false;
+
 
 
 

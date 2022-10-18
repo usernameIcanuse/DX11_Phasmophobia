@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "../Public/Note.h"
 #include "GameInstance.h"
-#include "Ghost.h"
+#include "Ghost_SpawnPoint.h"
 CNote::CNote(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
 {
@@ -143,7 +143,7 @@ void CNote::Ghost_Writing()
 
 void CNote::On_Collision_Enter(CCollider* pCollider)
 {
-    if (COLLISION_TYPE::GHOST == pCollider->Get_Type())
+ /*   if (COLLISION_TYPE::GHOST == pCollider->Get_Type())
     {
         if (m_bInstalled)
         {
@@ -151,7 +151,7 @@ void CNote::On_Collision_Enter(CCollider* pCollider)
             if(pGhost->Check_GhostWriting())
                 Ghost_Writing();
         }
-    }
+    }*/
 
 }
 

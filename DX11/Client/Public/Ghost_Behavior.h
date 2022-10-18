@@ -43,17 +43,14 @@ public:
 		m_pOwnerTransform = _pOwnerTransform;
 		Safe_AddRef(m_pOwnerTransform);
 	}
-	void Setup_SpawnPointIndex();
 
+	void Set_Currindex(_int _iCurrentIndex);
 
 private:
 	CTransform* m_pOwnerTransform = nullptr;
 	/*플레이어도 미리 가지고 있음?*/
 	CTransform* m_pPlayerTransform = nullptr;
-
 	CNavigation* m_pNavigationCom = nullptr;
-
-	_int			m_iSpawnPointIndex = 0;
 
 	function<void(CGhost_Behavior*, _float)> m_pEventFunc;
 
@@ -65,7 +62,7 @@ private:
 	CRenderer* m_pRendererCom = nullptr;
 #endif
 private:
-	HRESULT Setup_Component(_int iNaviIndex);
+	HRESULT Setup_Component();
 
 public:
 	static CGhost_Behavior* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

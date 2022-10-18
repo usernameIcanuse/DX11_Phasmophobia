@@ -17,6 +17,14 @@ class CGhost_Status;
 class CGhost_SpawnPoint final: public CGameObject
 {
 	friend class CGhost;
+
+public:
+	typedef struct
+	{
+		_float4x4 matWorld;
+		_int iCurrentIndex;
+	}GHOST_LOADDATA;
+
 private:
 	CGhost_SpawnPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGhost_SpawnPoint(const CGhost_SpawnPoint& rhs);
@@ -30,9 +38,13 @@ public:
 	virtual HRESULT Render();
 
 	virtual void Set_Enable(_bool _bEnable);
+	virtual void OnEventMessage(const _tchar* pMessage);
+	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
 
 private:
-	void DotsProjecter();
+	void Light_Attack(_float fTimeDelta = 0.f); //¿Ã∫•∆Æ
+	void Attack(_float fTimeDelta = 0.f); //«Â∆√
+	void Normal_Operation(_float fTimeDelta = 0.f);
 
 public:
 	void	Add_Score(_int _iScoreIndex);
@@ -59,8 +71,12 @@ public:
 
 
 private:
+	function<void(CGhost_SpawnPoint*, _float)> m_EventFunc;
+
 	CCollider*		m_pAreaCom = nullptr;
 	CCollider*		m_pSpawnPointCom = nullptr;
+
+	_int			m_iSpawnPointIndex = 0;
 
 #ifdef _DEBUG
 	CRenderer*		m_pRendererCom = nullptr;
@@ -73,6 +89,9 @@ private:
 	CGhost*			m_pGhost = nullptr;
 	CGhost_Status* m_pGhost_Status = nullptr;
 
+	class CHandPrint* m_pHandPrint = nullptr;
+
+
 	_int	   m_iAreaDefaultTemperature = 0;
 	_int       m_iAreaTemperature = 0;
 
@@ -82,35 +101,32 @@ private:
 	_bool		m_bDotsProjecter = true;
 	_bool		m_bFreeze = true;
 	_bool		m_bGhostOrb = true;
+	_bool		m_bGhostWriting = false;
+	_bool		m_bHandPrint = true;
+
 
 	_bool		m_bCheckSpiritBox = true;
 	_bool		m_bCheckDotsProjecter = true;
 	_bool		m_bCheckFreeze = true;
 	_bool		m_bCheckGhostOrb = true;
+	_bool		m_bCheckGhostWriting = false;
+	_bool		m_bCheckHandPrint = false;
 
 	_float		m_fDotsProjecterTime = 2.f;
 	_float		m_fDotsProjecterCoolTime = 0.f;//5~20.f
-
-	_bool		m_bGhostWriting = false;
-	_bool		m_bHandPrint = true;
-	_bool		m_bDotsProjecter = true;
-
-	_bool		m_bCheckGhostWriting = false;
-	_bool		m_bCheckHandPrint = false;
-	_bool		m_bCheckDotsProjecter = false;
 
 	_float		m_fIdleTime = 3.f;
 	_float		m_fHandPrintCoolTime = -1.f;
 	_bool		m_bIsInDots = false;
 	_float		m_fDotsTime = 1.5f;
 
-	class CHandPrint* m_pHandPrint = nullptr;
-
 
 
 private:
 	HRESULT	Setup_Component();
+	HRESULT Setup_Ghost();
 	HRESULT Setup_GhostStatus();
+	HRESULT Load_Point(const _tchar* pFilePath);
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

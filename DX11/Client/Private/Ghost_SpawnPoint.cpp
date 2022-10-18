@@ -26,17 +26,19 @@ HRESULT CGhost_SpawnPoint::Initialize_Prototype()
 
 HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	if (pArg)
-		m_pGhost = (CGhost*)pArg;
-
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
 
+	if (nullptr != pArg)
+	{
+		if (FAILED(Load_Point((_tchar*)pArg)))
+			return E_FAIL;
+	}
 	if (FAILED(Setup_Component()))
+		return E_FAIL;
+
+	if (FAILED(Setup_Ghost()))
 		return E_FAIL;
 
 	if (FAILED(Setup_GhostStatus()))
@@ -61,6 +63,9 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 	m_lAnswerFrequency = dis(gen);
 
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
+	m_EventFunc = std::bind(&CGhost_SpawnPoint::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+
 	return S_OK;
 }
 
@@ -68,31 +73,8 @@ void CGhost_SpawnPoint::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
 	
-	if (nullptr != m_pGhost)
-	{
-		CTransform* matGhostTransform = (CTransform*)m_pGhost->Get_Component(CGameObject::m_pTransformTag);
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, matGhostTransform->Get_State(CTransform::STATE_TRANSLATION));
-	}
-	if (m_bIsInDots)
-	{/*µµÆ® ÄðÅ¸ÀÓ*/
-		m_fDotsProjecterTime -= fTimeDelta;
-		if(0.f > m_fDotsProjecterCoolTime)
-			m_fDotsProjecterCoolTime -= fTimeDelta;
-	}
-
-	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
-	m_pAreaCom->Update(matWorld);
-	m_pSpawnPointCom->Update(matWorld);
-
-	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
-
-#ifdef _DEBUG
-	m_fWhisperingTime -= fTimeDelta;
-#endif
-	m_fWhisperCoolTime -= fTimeDelta;
-
-	m_bIsInDots = false;
 }
 
 void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
@@ -124,25 +106,82 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 
+	m_pGhost->Set_Enable(_bEnable);
 	m_pGhost_Status->Set_Enable(_bEnable);
 }
 
-void CGhost_SpawnPoint::DotsProjecter()
+void CGhost_SpawnPoint::OnEventMessage(const _tchar* pMessage)
 {
-	if (0.f > m_fDotsProjecterCoolTime)
+	if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
 	{
-		/*±Í½Å ·»´õ*/
-		if (0.f > m_fDotsProjecterTime)
+
+	}
+	else if (0 == lstrcmp(TEXT("Event"), pMessage) || 0 == lstrcmp(TEXT("Event"), pMessage))
+	{
+		if (nullptr != m_pGhost)
 		{
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_int_distribution<int> dis(5, 30);
-
-			m_fDotsProjecterCoolTime = dis(gen);
-			m_fDotsProjecterTime = 1.f;
-
+			m_pGhost->Move_To_SpawnPoint(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),m_iSpawnPointIndex);
 		}
 	}
+}
+
+void CGhost_SpawnPoint::Call_EventFunc(_float fTimeDelta)
+{
+	m_EventFunc(this, fTimeDelta);
+}
+
+void CGhost_SpawnPoint::Light_Attack(_float fTimeDelta)
+{
+}
+
+void CGhost_SpawnPoint::Attack(_float fTimeDelta)
+{
+}
+
+void CGhost_SpawnPoint::Normal_Operation(_float fTimeDelta)
+{
+	if (m_bIsInDots)
+	{/*µµÆ® ÄðÅ¸ÀÓ*/
+		if (0.f < m_fDotsProjecterCoolTime)
+		{
+			m_fDotsProjecterCoolTime -= fTimeDelta;
+		}
+		else
+		{
+			m_fDotsProjecterTime -= fTimeDelta;
+			if (0.f > m_fDotsProjecterTime)
+			{
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<int> dis(5, 30);
+
+				m_fDotsProjecterCoolTime = dis(gen);
+				m_fDotsProjecterTime = 1.f;
+
+			}
+			else
+			{
+				if (nullptr != m_pGhost)
+				{
+					m_pGhost->DotsProjecter();
+				}
+			}
+		}
+
+	}
+
+	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+	m_pAreaCom->Update(matWorld);
+	m_pSpawnPointCom->Update(matWorld);
+
+	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
+
+#ifdef _DEBUG
+	m_fWhisperingTime -= fTimeDelta;
+#endif
+	m_fWhisperCoolTime -= fTimeDelta;
+
+	m_bIsInDots = false;
 }
 
 void CGhost_SpawnPoint::Add_Score(_int _iScoreIndex)
@@ -231,13 +270,74 @@ HRESULT CGhost_SpawnPoint::Setup_Component()
 	return S_OK;
 }
 
+HRESULT CGhost_SpawnPoint::Setup_Ghost()
+{
+	/*For. Ghost*/
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost"), (CGameObject**)&m_pGhost, this)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CGhost_SpawnPoint::Setup_GhostStatus()
 {
 	/*For. Ghost_Status*/
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost_Status"), TEXT("Prototype_GameObject_Ghost_Status"), (CGameObject**)&m_pGhost_Status, this)))
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Status"), (CGameObject**)&m_pGhost_Status, this)))
 		return E_FAIL;
 	return S_OK;
 
+}
+
+HRESULT CGhost_SpawnPoint::Load_Point(const _tchar* pFilePath)
+{
+	vector<OBJ_DATA>  listData;
+
+	_tchar FilePath[255];
+	lstrcpy(FilePath, pFilePath);
+	lstrcat(FilePath, TEXT("Ghost_SpawnPoint"));
+
+	HANDLE hFile = CreateFile(FilePath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	DWORD dwByteHouse = 0;
+	OBJ_DATA  tDataObj;
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+
+			listData.push_back(tDataObj);
+			
+
+		}
+	}
+	CloseHandle(hFile);
+
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(0, 50);
+
+	_int iSize = listData.size();
+	_int iIndex = dis(gen) % iSize;
+
+	OBJ_DATA tSelected = listData[iIndex];
+
+	m_pTransformCom->Set_WorldMatrix(tSelected.matWorld);
+
+	return S_OK;
 }
 
 
@@ -298,7 +398,7 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<int> dis(30, 70);
+			std::uniform_int_distribution<int> dis(10, 70);
 
 			_int	iValue = dis(gen);
 

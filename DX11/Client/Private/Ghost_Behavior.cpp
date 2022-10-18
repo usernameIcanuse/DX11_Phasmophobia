@@ -28,30 +28,26 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	
 	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
-	_int iNaviIndex;
 
-	if (nullptr != pArg)
-	{
-		iNaviIndex = *(_int*)pArg;
-	}
 
-	if (FAILED(Setup_Component(iNaviIndex)))
+	if (FAILED(Setup_Component()))
 		return E_FAIL;
-
+	 
 	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
 	Safe_AddRef(m_pPlayerTransform);
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
+	m_pEventFunc = std::bind(&CGhost_Behavior::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
 
 	return S_OK;
 }
 
-HRESULT CGhost_Behavior::Setup_Component(_int iNaviIndex)
+HRESULT CGhost_Behavior::Setup_Component()
 {
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
 	ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
-	NaviDesc.m_iCurrentIndex = iNaviIndex;
+	NaviDesc.m_iCurrentIndex = 0;
 
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
@@ -143,11 +139,10 @@ void CGhost_Behavior::Attack(_float fTimeDelta)
 	}
 }
 
-void CGhost_Behavior::Setup_SpawnPointIndex()
+void CGhost_Behavior::Set_Currindex(_int _iCurrentIndex)
 {
-
+	m_pNavigationCom->Set_CurrentIndex(_iCurrentIndex);
 }
-
 
 CGhost_Behavior* CGhost_Behavior::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
