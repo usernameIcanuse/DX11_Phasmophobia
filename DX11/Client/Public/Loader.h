@@ -31,7 +31,7 @@ public:
 	}
 
 public:
-	HRESULT Initialize(LEVEL eNextLevel);
+	HRESULT Initialize(LEVEL eNextLevel,_bool _bFirst);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForStaticProps();
 	HRESULT Loading_ForLobbyLevel();
@@ -48,6 +48,7 @@ private:
 	ID3D11DeviceContext*		m_pContext = nullptr;	
 	LEVEL						m_eNextLevel = LEVEL_END;
 
+
 private:
 	HANDLE					m_hThread;
 	CRITICAL_SECTION		m_CriticalSection;
@@ -56,11 +57,13 @@ private:
 
 	_float					m_fLoadingRatio = 0.f;
 
+
 public:
+	_bool					m_bFirst = false;
 
 	
 public:
-	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel);
+	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool _bFirst = false);
 	virtual void Free() override;
 };
 

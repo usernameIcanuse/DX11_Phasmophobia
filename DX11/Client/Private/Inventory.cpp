@@ -415,7 +415,7 @@ HRESULT CInventory::Setup_Component()
 	if(FAILED(__super::Add_Component(LEVEL_STATIC,TEXT("Prototype_Component_Renderer"),TEXT("Com_Renderer"),(CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_White_Cursor"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_White_Cursor"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	return S_OK;

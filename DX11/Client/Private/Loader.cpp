@@ -84,7 +84,10 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		hr = pLoader->Loading_ForLogoLevel();
 		break;
 	case LEVEL_LOBBY:
-		hr = pLoader->Loading_ForStaticProps();
+		if (pLoader->m_bFirst)
+		{
+			hr = pLoader->Loading_ForStaticProps();
+		}
 		hr = pLoader->Loading_ForLobbyLevel();
 		break;
 	case LEVEL_GAMEPLAY:
@@ -100,10 +103,11 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	return 0;
 }
 
-HRESULT CLoader::Initialize(LEVEL eNextLevel)
+HRESULT CLoader::Initialize(LEVEL eNextLevel, _bool _bFirst)
 {
 	m_eNextLevel = eNextLevel;
 
+	m_bFirst = _bFirst;
 
 	InitializeCriticalSection(&m_CriticalSection);
 
@@ -278,6 +282,19 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lobby/", "Garage.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	/*For.Prototype_Component_Texture_White_Cursor*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_White_Cursor"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/White_Cursor.dds")))))
+		return E_FAIL;
+
+
+	/*For.Prototype_Component_Model_Screen*/
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Screen"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
+		return E_FAIL;
+
+
 	RELEASE_INSTANCE(CGameInstance);
 
 }
@@ -398,10 +415,7 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
 		return E_FAIL;
-	/*For.Prototype_Component_Texture_White_Cursor*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_White_Cursor"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/White_Cursor.dds")))))
-		return E_FAIL;
+
 
 
 	/* For.Prototype_Component_Collider_AABB */
@@ -450,13 +464,6 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		return E_FAIL;
 
 
-	
-
-	/*For.Prototype_Component_Model_Screen*/
-	_matrix TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Screen"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
-		return E_FAIL;
 
 
 	/* For.Prototype_Component_Shader_VtxModel */
@@ -803,11 +810,11 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	return S_OK;
 }
 
-CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)
+CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,  _bool _bFirst)
 {
 	CLoader*		pInstance = new CLoader(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevel)))
+	if (FAILED(pInstance->Initialize(eNextLevel, _bFirst)))
 	{
 		MSG_BOX("Failed to Created : CLoader");
 		Safe_Release(pInstance);

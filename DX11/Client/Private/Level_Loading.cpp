@@ -20,7 +20,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst)
 
 	m_eNextLevel = eNextLevel;
 
-	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel);
+	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel, bFirst);
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 

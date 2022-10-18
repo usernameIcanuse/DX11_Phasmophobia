@@ -673,6 +673,9 @@
     <Filter Include="02.GameObject\BackGround\FirstLoading">
       <UniqueIdentifier>{06b8f9e5-3265-46c9-bc50-ff094469cab5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObject\Player\journal">
+      <UniqueIdentifier>{93dd2e81-9ac8-4735-a372-04138caef997}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
