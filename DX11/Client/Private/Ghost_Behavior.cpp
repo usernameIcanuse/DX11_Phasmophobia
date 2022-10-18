@@ -30,7 +30,7 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 		return E_FAIL;
 
 
-	if (FAILED(Setup_Component()))
+	if (FAILED(Setup_Component(pArg)))
 		return E_FAIL;
 	 
 	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
@@ -42,7 +42,7 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CGhost_Behavior::Setup_Component()
+HRESULT CGhost_Behavior::Setup_Component(void* pArg )
 {
 	/* For.Com_Navigation*/
 	CNavigation::NAVIDESC	NaviDesc;
@@ -51,6 +51,11 @@ HRESULT CGhost_Behavior::Setup_Component()
 
 	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_House"), TEXT("Com_Navigation"), (CComponent**)&m_pNavigationCom, &NaviDesc)))
 		return E_FAIL;
+
+	if (nullptr != pArg)
+	{
+		m_iSpawnPointIndex = m_pNavigationCom->Find_PosIndex(*(_vector*)pArg);
+	}
 
 #ifdef _DEBUG
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
@@ -104,7 +109,7 @@ void CGhost_Behavior::OnEventMessage(const _tchar* pMessage)
 	else if (0 == lstrcmp(TEXT("Event"), pMessage))
 	{
 		/*이벤트 그냥 소리 효과나 플레이어 주변에 정지한 상태로 바라보기?*/
-		//m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
+		m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
 		m_pEventFunc = std::bind(&CGhost_Behavior::Event, std::placeholders::_1, std::placeholders::_2);
 	}
 
@@ -135,13 +140,27 @@ void CGhost_Behavior::Attack(_float fTimeDelta)
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)
 	{
-		m_pOwnerTransform->Go_Straight(fTimeDelta * 1.3f, m_pNavigationCom);
+		m_pOwnerTransform->Go_Straight(fTimeDelta * 1.3f/*, m_pNavigationCom*/);
 	}
+
+	m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
 }
 
-void CGhost_Behavior::Set_Currindex(_int _iCurrentIndex)
+void CGhost_Behavior::Move(_float fTimeDelta)
 {
-	m_pNavigationCom->Set_CurrentIndex(_iCurrentIndex);
+	m_pOwnerTransform->Go_Straight(fTimeDelta*4.f, m_pNavigationCom);
+}
+
+void CGhost_Behavior::Set_SpawnPointindex()
+{
+	m_pNavigationCom->Set_CurrentIndex(m_iSpawnPointIndex);
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(0, 60);
+
+	_float fDegree = dis(gen) - 30;
+
+	m_pOwnerTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(fDegree));
 }
 
 CGhost_Behavior* CGhost_Behavior::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -37,7 +37,7 @@ HRESULT CGhost_Status::Initialize(void* pArg)
 #endif
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> dis(0, 20);
+	std::uniform_int_distribution<int> dis(20, 60);
 
 	Add_Score(PLAYER_IN_HOUSE);
 	
@@ -63,10 +63,18 @@ void CGhost_Status::Tick(_float fTimeDelta)
 	}
 	m_iEMF = 1; 
 
-	if (GAMEINSTANCE->Is_KeyState(KEY::F1, KEY_STATE::TAP))
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	if (pGameInstance->Is_KeyState(KEY::F1, KEY_STATE::TAP))
 	{
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Event"));
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Event"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::F2, KEY_STATE::TAP))
+	{
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Attack"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Attack"));
 	}
 	
 	/*if(!m_bAttack)
@@ -141,14 +149,15 @@ void CGhost_Status::Tick(_float fTimeDelta)
 					m_fTermBeforeEvent -= fTimeDelta;
 					if (0.f > m_fTermBeforeEvent)
 					{
-						GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, m_szEventMessage);
-						GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
+						pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, m_szEventMessage);
+						pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Event"));
 						m_bTerm = false;
 					}
 				}
 			}
 		}
 	}
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CGhost_Status::LateTick(_float fTimeDelta)
@@ -180,7 +189,7 @@ void CGhost_Status::OnEventMessage(const _tchar* pMessage)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(30,60);
+		std::uniform_int_distribution<int> dis(20, 60);
 
 		m_bEvent = false;
 		m_bAttack = false;

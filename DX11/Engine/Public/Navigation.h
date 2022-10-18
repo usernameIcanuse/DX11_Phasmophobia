@@ -33,6 +33,8 @@ public:
 		return m_NaviDesc.m_iCurrentIndex;
 	}
 
+	_int Find_PosIndex(_vector fPosition);
+
 #ifdef _DEBUG
 public:
 	HRESULT Add_Cell(_float3 vPointA, _float3 vPointB, _float3 vPointC);

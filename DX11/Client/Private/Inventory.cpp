@@ -265,7 +265,7 @@ void CInventory::Add_Item(CItem* pItem)
 	}
 	
 	_int	iEmptyIndex = -1;
-	for (int i = m_iIndex; i < 3; i=(++i)%3)
+	for (_int i = m_iIndex; i < 3; i=(++i)%3)
 	{
 		if (m_vInventory[i] == nullptr || m_vInventory[i] == pItem)
 		{

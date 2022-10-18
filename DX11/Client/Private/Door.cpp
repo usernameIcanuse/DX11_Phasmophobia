@@ -101,12 +101,9 @@ void CDoor::Tick(_float fTimeDelta)
 void CDoor::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-   /* _float4 vPosition;
-    XMStoreFloat4(&vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    if (GAMEINSTANCE->CheckPoint(vPosition.x, vPosition.y, vPosition.z))
-    {*/
+
    GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-    //}
+
 
 #ifdef _DEBUG
        //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);

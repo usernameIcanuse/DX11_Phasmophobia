@@ -46,7 +46,7 @@ HRESULT CItem::Render()
 
 void CItem::OnEventMessage(const _tchar* pMessage)
 {
-    if ( 0 == lstrcmp(TEXT("Event"),pMessage))
+    if (0 == lstrcmp(pMessage, TEXT("Attack")) || 0 == lstrcmp(pMessage, TEXT("Event")))
     {
         m_pEventFunc = std::bind(&CItem::MalFunction, std::placeholders::_1, std::placeholders::_2);
 

@@ -46,9 +46,9 @@ private: /*기본 귀신 상호작용, 기능*/
 	void Attack(_float fTimeDelta = 0.f); //헌팅
 	void Normal_Operation(_float fTimeDelta = 0.f);
 
-	void DotsProjecter();
+	void DotsProjecter(_float fTimeDelta);
 
-	void Move_To_SpawnPoint(_vector _pPosition, _int _iNaviIndex);
+	void Move_To_SpawnPoint(_vector _pPosition);
 
 
 private:
@@ -77,6 +77,9 @@ private:
 	_float				m_fAttackTime = 10.f;
 
 	_float				m_fIdleTime = 0.f;
+
+	_float				m_fRenderModel = 0.f;
+	_float				m_fHideModel = 0.f;
 
 private:
 	HRESULT	Setup_Component();

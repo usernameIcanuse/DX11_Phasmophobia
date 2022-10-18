@@ -5,6 +5,7 @@
 #include "Ghost.h"
 #include "Door.h"
 #include "HandPrint.h"
+#include "TrailCam.h"
 
 CGhost_SpawnPoint::CGhost_SpawnPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -34,15 +35,16 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	{
 		if (FAILED(Load_Point((_tchar*)pArg)))
 			return E_FAIL;
+
+		if (FAILED(Setup_Ghost()))
+			return E_FAIL;
+
+		if (FAILED(Setup_GhostStatus()))
+			return E_FAIL;
 	}
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	if (FAILED(Setup_Ghost()))
-		return E_FAIL;
-
-	if (FAILED(Setup_GhostStatus()))
-		return E_FAIL;
 
 	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
 		return E_FAIL;
@@ -62,6 +64,10 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 
 	m_lAnswerFrequency = dis(gen);
+
+	m_fHandPrintCoolTime = 30.f;
+	m_fTrailCamCoolTime = 30.f;
+	m_fDotsProjecterCoolTime = 30.f;
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	m_EventFunc = std::bind(&CGhost_SpawnPoint::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
@@ -106,8 +112,10 @@ void CGhost_SpawnPoint::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 
-	m_pGhost->Set_Enable(_bEnable);
-	m_pGhost_Status->Set_Enable(_bEnable);
+	if(nullptr != m_pGhost)
+		m_pGhost->Set_Enable(_bEnable);
+	if(nullptr != m_pGhost)
+		m_pGhost_Status->Set_Enable(_bEnable);
 }
 
 void CGhost_SpawnPoint::OnEventMessage(const _tchar* pMessage)
@@ -120,7 +128,7 @@ void CGhost_SpawnPoint::OnEventMessage(const _tchar* pMessage)
 	{
 		if (nullptr != m_pGhost)
 		{
-			m_pGhost->Move_To_SpawnPoint(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION),m_iSpawnPointIndex);
+			m_pGhost->Move_To_SpawnPoint(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
 		}
 	}
 }
@@ -142,32 +150,35 @@ void CGhost_SpawnPoint::Normal_Operation(_float fTimeDelta)
 {
 	if (m_bIsInDots)
 	{/*µµÆ® ÄðÅ¸ÀÓ*/
-		if (0.f < m_fDotsProjecterCoolTime)
-		{
-			m_fDotsProjecterCoolTime -= fTimeDelta;
-		}
-		else
+		
+		m_fDotsProjecterCoolTime -= fTimeDelta;
+		
+		if(true == m_bPlayDots)
 		{
 			m_fDotsProjecterTime -= fTimeDelta;
 			if (0.f > m_fDotsProjecterTime)
 			{
-				std::random_device rd;
-				std::mt19937 gen(rd());
-				std::uniform_int_distribution<int> dis(5, 30);
-
-				m_fDotsProjecterCoolTime = dis(gen);
-				m_fDotsProjecterTime = 1.f;
+				m_fDotsProjecterTime = 0.5f;
+				m_bPlayDots = false;
 
 			}
-			else
+			else if(0.f < m_fDotsProjecterTime)
 			{
 				if (nullptr != m_pGhost)
 				{
-					m_pGhost->DotsProjecter();
+					m_pGhost->DotsProjecter(fTimeDelta);
 				}
 			}
 		}
 
+	}
+
+	m_fHandPrintCoolTime -= fTimeDelta;
+
+	m_fTrailCamCoolTime -= fTimeDelta;
+	if (0.f > m_fTrailCamCoolTime)
+	{
+		m_fTrailCamTime -= fTimeDelta;
 	}
 
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
@@ -186,24 +197,30 @@ void CGhost_SpawnPoint::Normal_Operation(_float fTimeDelta)
 
 void CGhost_SpawnPoint::Add_Score(_int _iScoreIndex)
 {
-	m_pGhost_Status->Add_Score(_iScoreIndex);
+	if(nullptr !=m_pGhost_Status)
+		m_pGhost_Status->Add_Score(_iScoreIndex);
 }
 
 _int CGhost_SpawnPoint::Get_Anger()
 {
-	return m_pGhost_Status->m_iScore;
+	if(nullptr != m_pGhost_Status)
+		return m_pGhost_Status->m_iScore;
+
+	return -1;
 }
 
 _uint CGhost_SpawnPoint::Get_EMFLevel()
 {
-	return m_pGhost_Status->m_iEMF;
+	if(nullptr != m_pGhost_Status)
+		return m_pGhost_Status->m_iEMF;
 }
 
 _int   CGhost_SpawnPoint::Get_SpawnPointTemperature()
 {
 	if (m_bCheckFreeze)
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
 		m_bCheckFreeze = false;
 	}
 	return m_iAreaTemperature - 4;
@@ -225,7 +242,8 @@ void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 			m_lAnswerFrequency = dis(gen);
 			if (m_bCheckSpiritBox)
 			{
-				m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
+				if (nullptr != m_pGhost_Status)
+					m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
 				m_bCheckSpiritBox = false;
 			}
 		}
@@ -346,24 +364,29 @@ void CGhost_SpawnPoint::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::PLAYER_IN_AREA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::PLAYER_IN_AREA);
 	}
 	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::ITEM_IN_AREA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::ITEM_IN_AREA);
 	}
 
 	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::SPIRITBOX);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::SPIRITBOX);
 	}
 	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::DOTSPROJECTER);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::DOTSPROJECTER);
 	}
 	else if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Add_Score(CGhost_Status::CAMERA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Add_Score(CGhost_Status::CAMERA);
 	}
 	
 }
@@ -423,34 +446,76 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 		if (m_bDotsProjecter)
 		{
 			m_bIsInDots = true;
-			m_fDotsTime = 1.f;
+			if (0.f > m_fDotsProjecterCoolTime)
+			{
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<int> dis(5, 90);
+
+				if (nullptr != m_pGhost)
+				{
+					m_pGhost->m_pModelCom->Set_CurrentAnimation(1);
+					m_pGhost->Move_To_SpawnPoint(m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+				}
+				m_fDotsProjecterCoolTime = dis(gen);
+				m_bPlayDots = true;
+			}
 		}
 	}
 
+	else if (COLLISION_TYPE::ITEM_AREA == pCollider->Get_Type())
+	{
+		if (0.f > m_fTrailCamCoolTime)
+		{
+
+			if (0.f < m_fTrailCamTime)
+			{
+				CTrailCam* pTrailCam = (CTrailCam*)pCollider->Get_Owner();
+				pTrailCam->Sensor_Activating(true);
+			}
+			else if (0.f > m_fTrailCamTime)
+			{
+				CTrailCam* pTrailCam = (CTrailCam*)pCollider->Get_Owner();
+				pTrailCam->Sensor_Activating(false);
+
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<int> dis(10, 100);
+
+				m_fTrailCamCoolTime = dis(gen);
+				m_fTrailCamTime = dis(gen) % 10 + 3;
+			}
+		}
+	}
 }
 
 void CGhost_SpawnPoint::On_Collision_Exit(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Subtract_Score(CGhost_Status::PLAYER_IN_AREA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Subtract_Score(CGhost_Status::PLAYER_IN_AREA);
 	}
 	else if (COLLISION_TYPE::ITEM == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Subtract_Score(CGhost_Status::ITEM_IN_AREA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Subtract_Score(CGhost_Status::ITEM_IN_AREA);
 	}
 
 	else if (COLLISION_TYPE::SPIRITBOX == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Subtract_Score(CGhost_Status::SPIRITBOX);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Subtract_Score(CGhost_Status::SPIRITBOX);
 	}
 	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Subtract_Score(CGhost_Status::DOTSPROJECTER);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Subtract_Score(CGhost_Status::DOTSPROJECTER);
 	}
 	else if (COLLISION_TYPE::CAMERA == pCollider->Get_Type())
 	{
-		m_pGhost_Status->Subtract_Score(CGhost_Status::CAMERA);
+		if (nullptr != m_pGhost_Status)
+			m_pGhost_Status->Subtract_Score(CGhost_Status::CAMERA);
 	}
 }
 

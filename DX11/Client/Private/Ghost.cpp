@@ -27,7 +27,7 @@ HRESULT CGhost::Initialize_Prototype()
 HRESULT CGhost::Initialize(void* pArg)
 {
 	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 5.f;
+	TransformDesc.fSpeedPerSec = 10.f;
 	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
 	
@@ -44,6 +44,7 @@ HRESULT CGhost::Initialize(void* pArg)
 	}
 	if (FAILED(Setup_Bahavior()))
 		return E_FAIL;
+
 	m_pModelCom->Set_CurrentAnimation(1);
 
 
@@ -158,6 +159,9 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
 	
 		m_pModelCom->Set_CurrentAnimation(0);
+
+		m_fRenderModel = 0.5f;
+		m_fHideModel = 1.f;
 	}
 	else if (0 == lstrcmp(TEXT("Normal_Operation"), pMessage))
 	{
@@ -175,6 +179,7 @@ void CGhost::Call_EventFunc(_float fTimeDelta)
 
 void CGhost::Light_Attack(_float fTimeDelta)
 {
+
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 	m_pModelCom->Play_Animation(fTimeDelta);
 
@@ -195,7 +200,28 @@ void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
 
-	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dis(0, 10);
+
+	_int iValue = dis(gen);
+
+	
+	if (0.f > m_fHideModel)
+	{
+		m_fRenderModel -= fTimeDelta;
+		if (0.f > m_fRenderModel)
+		{
+			m_fHideModel = 1.f;
+		}
+		GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+	}
+	else if (0.f < m_fHideModel)
+	{
+		m_fHideModel -= fTimeDelta;
+		if (0.f > m_fHideModel)
+			m_fRenderModel = 0.5f;
+	}
 #ifdef _DEBUG
 	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
@@ -216,23 +242,30 @@ void CGhost::Attack(_float fTimeDelta)
 		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
 		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 	}
+
+	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
+
+	m_pOBBCom->Update(matWorld);
+
 }
 
 void CGhost::Normal_Operation(_float fTimeDelta)
 {
 
-
 }
 
-void CGhost::DotsProjecter()
+void CGhost::DotsProjecter(_float fTimeDelta)
 {
-	
+	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+
+	m_pModelCom->Play_Animation(fTimeDelta * 2.f);
+	m_pBehavior->Move(fTimeDelta);
 }
 
-void CGhost::Move_To_SpawnPoint(_vector _pPosition, _int _iNaviIndex)
+void CGhost::Move_To_SpawnPoint(_vector _pPosition)
 {
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, _pPosition);
-	m_pBehavior->Set_Currindex(_iNaviIndex);
+	m_pBehavior->Set_SpawnPointindex();
 }
 
 
@@ -274,7 +307,10 @@ HRESULT CGhost::Setup_Component()
 HRESULT CGhost::Setup_Bahavior()
 {
 	
-	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior)))
+	CTransform* pSpawnPointTransform = (CTransform*)m_pSpawnPoint->Get_Component(CGameObject::m_pTransformTag);
+	_vector vPos = pSpawnPointTransform->Get_State(CTransform::STATE_TRANSLATION);
+
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_Behavior"), (CGameObject**)&m_pBehavior,&vPos)))
 		return E_FAIL;
 
 	m_pBehavior->Set_Owner(m_pTransformCom);

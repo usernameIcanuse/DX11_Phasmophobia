@@ -220,6 +220,25 @@ _bool CNavigation::Picking_Mesh(RAY _tMouseRay, _float4& vPickedPos)
 
 #ifdef _DEBUG
 
+_int CNavigation::Find_PosIndex(_vector fPosition)
+{
+	if (m_Cells.empty())
+		return false;
+	
+	_int iCellIndex = 0;
+//그냥 변수 채우는 용도
+
+	for (auto& elem : m_Cells)
+	{
+		if (true == elem->isIn(fPosition))
+			return iCellIndex;
+		
+		++iCellIndex;
+	}
+
+	return -1;
+}
+
 HRESULT CNavigation::Add_Cell(_float3 vPointA, _float3 vPointB, _float3 vPointC)
 {
 	_float3 vPoints[3] = { vPointA,vPointB,vPointC };

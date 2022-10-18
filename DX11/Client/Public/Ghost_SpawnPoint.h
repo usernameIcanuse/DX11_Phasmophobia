@@ -76,8 +76,6 @@ private:
 	CCollider*		m_pAreaCom = nullptr;
 	CCollider*		m_pSpawnPointCom = nullptr;
 
-	_int			m_iSpawnPointIndex = 0;
-
 #ifdef _DEBUG
 	CRenderer*		m_pRendererCom = nullptr;
 	_tchar		m_szWhispering[MAX_PATH] = TEXT("");
@@ -112,13 +110,17 @@ private:
 	_bool		m_bCheckGhostWriting = false;
 	_bool		m_bCheckHandPrint = false;
 
-	_float		m_fDotsProjecterTime = 2.f;
+	_float		m_fDotsProjecterTime = 0.5f;
 	_float		m_fDotsProjecterCoolTime = 0.f;//5~20.f
 
 	_float		m_fIdleTime = 3.f;
 	_float		m_fHandPrintCoolTime = -1.f;
 	_bool		m_bIsInDots = false;
+	_bool		m_bPlayDots = false;
 	_float		m_fDotsTime = 1.5f;
+
+	_float		m_fTrailCamTime = 0.f;
+	_float      m_fTrailCamCoolTime = 0.f;
 
 
 

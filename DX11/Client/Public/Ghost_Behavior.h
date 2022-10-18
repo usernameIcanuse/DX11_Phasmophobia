@@ -36,6 +36,7 @@ public:
 	void Normal_Operation(_float fTimeDelta);
 	void Event(_float fTimeDelta);
 	void Attack(_float fTimeDelta);
+	void Move(_float fTimeDelta);
 
 public:
 	void Set_Owner(CTransform* _pOwnerTransform)
@@ -44,7 +45,7 @@ public:
 		Safe_AddRef(m_pOwnerTransform);
 	}
 
-	void Set_Currindex(_int _iCurrentIndex);
+	void Set_SpawnPointindex();
 
 private:
 	CTransform* m_pOwnerTransform = nullptr;
@@ -54,6 +55,9 @@ private:
 
 	function<void(CGhost_Behavior*, _float)> m_pEventFunc;
 
+	_int			m_iSpawnPointIndex = 0;
+
+
 	//_float		m_fChangeDir = 0.f;
 	//_float		m_fRadian = 0.f;
 	_float		m_fIdleTime = 3.f;
@@ -62,7 +66,7 @@ private:
 	CRenderer* m_pRendererCom = nullptr;
 #endif
 private:
-	HRESULT Setup_Component();
+	HRESULT Setup_Component(void * pArg = nullptr);
 
 public:
 	static CGhost_Behavior* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

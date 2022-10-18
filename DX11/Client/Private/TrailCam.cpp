@@ -62,9 +62,9 @@ void CTrailCam::LateTick(_float fTimeDelta)
     {
         LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
 
-        _vector vUp= m_pTransformCom->Get_State(CTransform::STATE_UP);
+        _vector vLook= m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 
-        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vUp);
+        XMStoreFloat4(&pLightDesc->vPosition, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) + vLook*0.3f);
 
         GAMEINSTANCE->Add_Light(m_pLight);
     }
@@ -107,7 +107,7 @@ void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 {
     if (!m_bInstalled)
         return;
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() )
     {
         m_bSwitch = true;
     }
@@ -124,7 +124,7 @@ void CTrailCam::On_Collision_Exit(CCollider* pCollider)
 {
     if (!m_bInstalled)
         return;
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() || COLLISION_TYPE::GHOST == pCollider->Get_Type())
+    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
     {
         m_bSwitch = false;
     }
@@ -273,6 +273,14 @@ void CTrailCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _floa
         m_pTempTrailCamModel->Set_Enable(true);
         m_pTempTrailCamModel->Set_TempModel_Pos(vPosition, eType, vLook, pConnectItem);
     }
+}
+
+void CTrailCam::Sensor_Activating(_bool _bSwitch)
+{
+    if (!m_bInstalled)
+        return;
+
+    m_bSwitch = _bSwitch;
 }
 
 CTrailCam* CTrailCam::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

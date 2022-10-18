@@ -149,7 +149,7 @@ HRESULT		CLightBulb::Setup_Light()
 
 void CLightBulb::OnEventMessage(const _tchar* pMessage)
 {
-    if (0 == lstrcmp(pMessage, TEXT("Event")))
+    if (0 == lstrcmp(pMessage, TEXT("Attack"))|| 0 == lstrcmp(pMessage, TEXT("Event")))
     {
         m_pEventFunc = std::bind(&CLightBulb::MalFunction, std::placeholders::_1, std::placeholders::_2);
     }

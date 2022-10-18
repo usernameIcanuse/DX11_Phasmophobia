@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_FPS.h"
 #include "Inventory.h"
-
+#include "Level_Loading.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -118,7 +118,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	//}
 	RELEASE_INSTANCE(CGameInstance);
 
-	m_pTransformCom->Move(fTimeDelta/*,m_pCurrNavigation*/);
+	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 }
@@ -248,9 +248,12 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 {
 	if (COLLISION_TYPE::GHOST_ATTACK == pCollider->Get_Type())
 	{
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
-		/*Game_End()*/
+		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
+		
+		pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY), LEVEL_LOBBY);
 	}
 
 	else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())

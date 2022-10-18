@@ -27,6 +27,9 @@ public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
+public:
+	void Sensor_Activating(_bool _bSwitch);
+
 private:
 	CCollider* m_pAreaCom = nullptr; //모션 인식
 	CLight* m_pLight  =  nullptr;//인식시 불 켜짐

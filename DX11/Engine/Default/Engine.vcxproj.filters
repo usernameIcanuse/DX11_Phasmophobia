@@ -491,6 +491,9 @@
     <Filter Include="01.Utility\02.GameObject\Camera\Manager">
       <UniqueIdentifier>{01fae24f-a95f-4866-900f-2c51139df226}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03.Component\07. RigidBody">
+      <UniqueIdentifier>{8e5cbf0c-3cff-4071-92bd-3be380af75b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\Client\Bin\ShaderFiles\Shader_Cell.hlsl">
