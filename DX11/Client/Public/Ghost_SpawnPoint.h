@@ -90,7 +90,24 @@ private:
 
 	_float		m_fDotsProjecterTime = 2.f;
 	_float		m_fDotsProjecterCoolTime = 0.f;//5~20.f
+
+	_bool		m_bGhostWriting = false;
+	_bool		m_bHandPrint = true;
+	_bool		m_bDotsProjecter = true;
+
+	_bool		m_bCheckGhostWriting = false;
+	_bool		m_bCheckHandPrint = false;
+	_bool		m_bCheckDotsProjecter = false;
+
+	_float		m_fIdleTime = 3.f;
+	_float		m_fHandPrintCoolTime = -1.f;
 	_bool		m_bIsInDots = false;
+	_float		m_fDotsTime = 1.5f;
+
+	class CHandPrint* m_pHandPrint = nullptr;
+
+
+
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_GhostStatus();

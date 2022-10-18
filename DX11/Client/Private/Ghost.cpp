@@ -3,9 +3,8 @@
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
-#include "HandPrint.h"
 #include "Ghost_Behavior.h"
-#include "Door.h"
+
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -49,10 +48,7 @@ HRESULT CGhost::Initialize(void* pArg)
 		if (FAILED(Setup_Bahavior(tagData.iCurrentIndex)))
 			return E_FAIL;
 
-		if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
-			return E_FAIL;
-
-		m_pHandPrint->Set_Enable(false);
+		
 	}
 	m_pModelCom->Set_CurrentAnimation(1);
 
@@ -82,8 +78,6 @@ void CGhost::Tick(_float fTimeDelta)
 	
 
 	m_pOBBCom->Update(matWorld);
-	m_pGhostCom->Update(matWorld);
-
 
 }
 
@@ -193,18 +187,6 @@ void CGhost::Call_EventFunc(_float fTimeDelta)
 	m_EventFunc(this,fTimeDelta);
 }
 
-_bool CGhost::Check_GhostWriting()
-{
-	if (m_bCheckGhostWriting)
-	{
-		m_pSpawnPoint->Add_Score(CGhost_Status::FIND_EVIDENCE);
-		m_bCheckGhostWriting = false;
-	}
-
-
-	return m_bGhostWriting;
-}
-
 
 void CGhost::Stop_Updating_SpawnPoint()
 {
@@ -268,28 +250,8 @@ void CGhost::Normal_Operation(_float fTimeDelta)
 	if (35.f < XMVectorGetX(XMVector3Length(vSpawnPos - vPosition)))
 	{
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
-		m_pBehavior->Move_To_SpawnPoint();
 	}
 
-	if (m_bInDots)
-	{
-		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
-		m_pBehavior->Move_To_SpawnPoint();
-
-		m_fDotsTime -= fTimeDelta;
-		m_pModelCom->Play_Animation(fTimeDelta*2.f);
-		GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-		if (0.f > m_fDotsTime)
-		{
-			m_bInDots = false;
-		}
-
-	}
-
-	if (m_bHandPrint)
-	{
-		m_fHandPrintCoolTime -= fTimeDelta;
-	}
 
 }
 
@@ -311,17 +273,6 @@ HRESULT CGhost::Setup_Component()
 
 	m_pOBBCom->Set_Enable(false);
 
-	/* For.Com_Ghost*/
-	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-	ColliderDesc.vScale = _float3(3.f, 10.f, 3.f);
-	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-	ColliderDesc.pOwner = this;
-	ColliderDesc.m_eObjID = COLLISION_TYPE::GHOST;
-
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_Ghost"), (CComponent**)&m_pGhostCom, &ColliderDesc)))
-		return E_FAIL;
 
 	///* For.Com_Renderer*/
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
@@ -359,42 +310,7 @@ HRESULT CGhost::Setup_Bahavior(_int iNaviIndex)
 
 void CGhost::On_Collision_Enter(CCollider* pCollider)
 {
-	if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
-	{ 
-		if (0.f > m_fHandPrintCoolTime)
-		{
-			CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
-
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_int_distribution<int> dis(30, 70);
-
-			_int	iValue = dis(gen);
-
-			pDoor->Open_Door((_float)iValue);
-			if (m_bHandPrint)
-			{
-				m_bCheckHandPrint = true;//증거 한 번만 찾도록
-
-				m_pHandPrint->Set_Enable(true);				
-
-				CTransform* pObjectTransform = (CTransform*)pDoor->Get_Component(CGameObject::m_pTransformTag);
-
-				m_pHandPrint->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-
-			}
-			m_fHandPrintCoolTime = 20.f;
-		}
-	}
-
-	if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
-	{
-		if (m_bDotsProjecter)
-		{
-			m_bInDots = true;
-			m_fDotsTime = 1.f;
-		}
-	}
+	
 }
 
 void CGhost::On_Collision_Stay(CCollider* pCollider)
@@ -437,7 +353,6 @@ void CGhost::Free()
 	__super::Free();
 
 	Safe_Release(m_pOBBCom);
-	Safe_Release(m_pGhostCom);
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);

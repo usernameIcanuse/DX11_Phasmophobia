@@ -44,7 +44,7 @@ public:
 		Safe_AddRef(m_pOwnerTransform);
 	}
 	void Setup_SpawnPointIndex();
-	void Move_To_SpawnPoint();
+
 
 private:
 	CTransform* m_pOwnerTransform = nullptr;
@@ -57,8 +57,8 @@ private:
 
 	function<void(CGhost_Behavior*, _float)> m_pEventFunc;
 
-	_float		m_fChangeDir = 0.f;
-	_float		m_fRadian = 0.f;
+	//_float		m_fChangeDir = 0.f;
+	//_float		m_fRadian = 0.f;
 	_float		m_fIdleTime = 3.f;
 
 #ifdef _DEBUG

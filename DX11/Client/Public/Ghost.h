@@ -58,7 +58,7 @@ private: /*기본 귀신 상호작용, 기능*/
 
 private:
 	CCollider*		m_pOBBCom = nullptr; // attack
-	CCollider*		m_pGhostCom = nullptr;  //ghost
+
 	CModel*			m_pModelCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
@@ -69,9 +69,6 @@ private:
 #ifdef _DEBUG
 	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력
 #endif
-
-	class CHandPrint*	 m_pHandPrint = nullptr;
-
 	CGhost_SpawnPoint* m_pSpawnPoint = nullptr;
 	_float				m_fUpdatePointTime = 1.f;
 
@@ -84,20 +81,8 @@ private:
 	_float				m_fEventTime = 10.f;
 	_float				m_fAttackTime = 10.f;
 
-	_bool				m_bGhostWriting = false;
-	_bool				m_bHandPrint = true;
-	_bool				m_bDotsProjecter = true;
+	_float				m_fIdleTime = 0.f;
 
-	_bool				m_bCheckGhostWriting = false;
-	_bool				m_bCheckHandPrint = false;
-	_bool				m_bCheckDotsProjecter = false;
-
-	_float				m_fIdleTime = 3.f;
-	_float				m_fHandPrintCoolTime = -1.f;
-	_bool				m_bInDots = false;
-	_float				m_fDotsTime = 1.5f;
-
-	
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_SpawnPoint();

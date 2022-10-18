@@ -3,6 +3,8 @@
 #include "Ghost_Status.h"
 #include "GameInstance.h"
 #include "Ghost.h"
+#include "Door.h"
+#include "HandPrint.h"
 
 CGhost_SpawnPoint::CGhost_SpawnPoint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -39,6 +41,11 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 	if (FAILED(Setup_GhostStatus()))
 		return E_FAIL;
+
+	if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_HandPrint"), TEXT("Prototype_GameObject_HandPrint"), (CGameObject**)&m_pHandPrint)))
+		return E_FAIL;
+
+	m_pHandPrint->Set_Enable(false);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -283,12 +290,40 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 			}
 		}
 	}
+	else if (COLLISION_TYPE::DOOR == pCollider->Get_Type())
+	{
+		if (0.f > m_fHandPrintCoolTime)
+		{
+			CDoor* pDoor = (CDoor*)pCollider->Get_Owner();
+
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dis(30, 70);
+
+			_int	iValue = dis(gen);
+
+			pDoor->Open_Door((_float)iValue);
+			if (m_bHandPrint)
+			{
+				m_bCheckHandPrint = true;//증거 한 번만 찾도록
+
+				m_pHandPrint->Set_Enable(true);
+
+				CTransform* pObjectTransform = (CTransform*)pDoor->Get_Component(CGameObject::m_pTransformTag);
+
+				m_pHandPrint->Set_Position(pObjectTransform, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+
+			}
+			m_fHandPrintCoolTime = 20.f;
+		}
+	}
+
 	else if (COLLISION_TYPE::DOTSPROJECTER == pCollider->Get_Type())
 	{
 		if (m_bDotsProjecter)
 		{
-			DotsProjecter();//일정 시간동안만 외곽선 렌더링
 			m_bIsInDots = true;
+			m_fDotsTime = 1.f;
 		}
 	}
 

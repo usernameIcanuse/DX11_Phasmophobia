@@ -43,11 +43,6 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 
-	m_fChangeDir = 5.f;
-	m_fRadian = XMConvertToRadians(10.f);
-	/*생성과 동시에 플레이어 위치를 알고 있음?
-	근데 만약에 플레이어 생성 전에 얘가 만들어지면 안됨 순서를 맞춰줘야함?*/
-
 	return S_OK;
 }
 
@@ -71,8 +66,6 @@ HRESULT CGhost_Behavior::Setup_Component(_int iNaviIndex)
 void CGhost_Behavior::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	m_fChangeDir -= fTimeDelta;
 	
 }
 
@@ -133,36 +126,7 @@ void CGhost_Behavior::OnEventMessage(const _tchar* pMessage)
 
 void CGhost_Behavior::Normal_Operation(_float fTimeDelta)
 {
-	_float fRadian = m_fRadian * 0.05f;
-	m_fRadian -= fRadian;
-	if (0.f > m_fRadian)
-		m_fRadian = 0.f;
 
-	m_pOwnerTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), fRadian);
-	if (FAILED(m_pOwnerTransform->Go_Straight(fTimeDelta, m_pNavigationCom)))
-	{
-		m_fRadian = XMConvertToRadians(35.f);
-		fRadian = m_fRadian * 0.1f;
-		m_fRadian -= fRadian;
-
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(0, 180);
-
-		m_fChangeDir = (_float)(dis(gen) % 6 + 1);
-	}
-	
-	if (0.f > m_fChangeDir)
-	{
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<int> dis(0, 360);
-
-		_int iValue = dis(gen) % 6 + 1;
-		m_fChangeDir = (_float)abs(iValue);
- 		m_fRadian = XMConvertToRadians(dis(gen));
-		m_fRadian -= XMConvertToRadians(180.f);
-	}
 }
 
 void CGhost_Behavior::Event(_float fTimeDelta)
@@ -172,8 +136,6 @@ void CGhost_Behavior::Event(_float fTimeDelta)
 
 void CGhost_Behavior::Attack(_float fTimeDelta)
 {
-	//m_pOwnerTransform->LookAt(m_pPlayerTransform->Get_State(CTransform::STATE_TRANSLATION));
-
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)
 	{
@@ -183,12 +145,7 @@ void CGhost_Behavior::Attack(_float fTimeDelta)
 
 void CGhost_Behavior::Setup_SpawnPointIndex()
 {
-	m_iSpawnPointIndex = m_pNavigationCom->Get_CurrentIndex();
-}
 
-void CGhost_Behavior::Move_To_SpawnPoint()
-{
-	m_pNavigationCom->Set_CurrentIndex(m_iSpawnPointIndex);
 }
 
 
