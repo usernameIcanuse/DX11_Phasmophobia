@@ -166,6 +166,9 @@
     <ClInclude Include="..\Public\Camera_Manager.h">
       <Filter>01.Utility\02.GameObject\Camera\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Event_Manager.h">
+      <Filter>01.Utility\02.GameObject\Manager\Event_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -317,6 +320,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Manager.cpp">
       <Filter>01.Utility\02.GameObject\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Manager.cpp">
+      <Filter>01.Utility\02.GameObject\Manager\Event_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +499,9 @@
     </Filter>
     <Filter Include="01.Utility\03.Component\07. RigidBody">
       <UniqueIdentifier>{8e5cbf0c-3cff-4071-92bd-3be380af75b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObject\Manager\Event_Manager">
+      <UniqueIdentifier>{a8c52939-7d11-43d6-8125-3f8d868edada}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

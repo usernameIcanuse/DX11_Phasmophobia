@@ -266,6 +266,16 @@ namespace Engine
 
 	};
 
+	typedef struct tagStageDesc
+	{
+		_float  fTotalPlayTime;
+		_float	fInHouseTime;
+		_float  fAroundGhostTime;
+		_int	iEventCnt;
+		_int	iInteractionCnt;
+	}STAGEDESC;
+
+
 	/*For Object Load & Save*/
 	enum class LAYER
 	{

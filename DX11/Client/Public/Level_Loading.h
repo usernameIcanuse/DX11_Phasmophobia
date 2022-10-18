@@ -11,6 +11,7 @@ BEGIN(Client)
 
 class CLevel_Loading final : public CLevel
 {
+
 private:
 	CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual ~CLevel_Loading() = default;
@@ -30,6 +31,7 @@ private:
 
 public:
 	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,_bool bFirst = false);
+	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel)
 	virtual void Free() override;
 };
 
