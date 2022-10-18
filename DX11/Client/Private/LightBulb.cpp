@@ -191,12 +191,18 @@ void CLightBulb::MalFunction(_float fTimeDelta)
             std::mt19937 gen(rd());
             std::uniform_int_distribution<int> dis(0, 100);
 
-            _float fRatio = dis(gen) * 0.01f;
-            XMStoreFloat4(&m_vBlinkDiffuse, XMLoadFloat4(&m_vDiffuse) * fRatio);
+            _int iValue = dis(gen);
+            _int iRatio;
+            if (iValue % 2 == 0)
+                iRatio = 0;
+            else
+                iRatio = 1;
+
+            XMStoreFloat4(&m_vBlinkDiffuse, XMLoadFloat4(&m_vDiffuse) * iRatio);
             m_fBlinkTime = 0.f;
         }
         LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
-        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.3f);
+        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.5f);
         XMStoreFloat4(&pLightDesc->vDiffuse,vLerpDiffuse);
 
     }

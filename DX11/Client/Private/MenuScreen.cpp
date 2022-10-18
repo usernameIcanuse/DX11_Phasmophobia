@@ -237,7 +237,7 @@ HRESULT CMenuScreen::Setup_Camera()
 
     _float4		vPos, vAt;
     XMStoreFloat4(&vPos, m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
-    XMStoreFloat4(&vAt, m_pTransformCom->Get_State(CTransform::STATE_LOOK) + m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION));
+    XMStoreFloat4(&vAt, m_pTransformCom->Get_State(CTransform::STATE_LOOK) + m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION) * 0.5f);
 
     CameraDesc.vEye = vPos;
     CameraDesc.vAt = vAt;
