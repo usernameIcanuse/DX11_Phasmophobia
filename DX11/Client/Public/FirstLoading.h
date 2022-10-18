@@ -37,7 +37,7 @@ private:
 	_float4x4		m_ProjMatrix;
 
 	_float			m_fTime = 0.f;
-	_float			m_fFade = 0.f;
+	_float			m_fFade = 1.f;
 	_int			m_iTextureIndex = 0;
 
 private:

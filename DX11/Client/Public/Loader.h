@@ -33,6 +33,7 @@ public:
 public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
+	HRESULT Loading_ForStaticProps();
 	HRESULT Loading_ForLobbyLevel();
 	HRESULT Loading_ForTutorialLevel();
 

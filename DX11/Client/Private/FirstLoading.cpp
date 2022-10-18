@@ -55,7 +55,7 @@ void CFirstLoading::Tick(_float fTimeDelta)
 	}
 	else if (3.f < m_fTime)
 	{
-		if (m_iTextureIndex < 2)
+		if (m_iTextureIndex <3)
 		{
 			if (0.f < m_fFade)
 			{
@@ -67,7 +67,7 @@ void CFirstLoading::Tick(_float fTimeDelta)
 	}
 	if (4.f < m_fTime)
 	{
-		if (m_iTextureIndex < 2)
+		if (m_iTextureIndex < 3)
 		{
 			++m_iTextureIndex;
 			m_fTime = 0.f;

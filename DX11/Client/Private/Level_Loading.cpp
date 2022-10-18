@@ -114,7 +114,7 @@ HRESULT CLevel_Loading::Ready_Layer_FirstLoading(const _tchar* pLayerTag)
 
 	/* For.Prototype_Component_Texture_FirstLoading*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_Component_Texture_FirstLoading"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Phasmophobia_Loading%d.png"),3))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Phasmophobia_Loading%d.png"),4))))
 		return E_FAIL;
 
 	/* For.FirstLoading */

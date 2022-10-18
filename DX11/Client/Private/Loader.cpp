@@ -84,6 +84,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		hr = pLoader->Loading_ForLogoLevel();
 		break;
 	case LEVEL_LOBBY:
+		hr = pLoader->Loading_ForStaticProps();
 		hr = pLoader->Loading_ForLobbyLevel();
 		break;
 	case LEVEL_GAMEPLAY:
@@ -156,6 +157,131 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	return S_OK;
 }
+
+HRESULT CLoader::Loading_ForStaticProps()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_matrix TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationX(XMConvertToRadians(270.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.5f, 0.f);
+
+	/*For. Prototype_Component_Model_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_DotsProjecter"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/DotsProjecter/", "DotsProjecter.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f) * XMMatrixTranslation(0.f, 0.35f, 0.f);
+
+	/* For.Prototype_Component_Model_FlashLight*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_FlashLight"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.07f) * XMMatrixTranslation(0.f, 0.35f, 0.f);
+
+	/* For.Prototype_Component_Model_UVLight*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_UVLight"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "UVLight.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.07f, 0.07f, 0.07f);
+
+
+	/* For.Prototype_Component_Model_Thermometer*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Thermometer"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Thermometer/", "Thermometer.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.06f, 0.06f, 0.06f) * XMMatrixTranslation(0.f, 0.6f, 0.f);
+
+	/* For.Prototype_Component_Model_EMF*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_EMF"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixTranslation(-0.7f, 0.f, 0.f) * XMMatrixRotationX(XMConvertToRadians(270.0f));
+	/* For.Prototype_Component_Model_Note*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Note"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Note_Open*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Note_Open"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
+	//	return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixTranslation(0.f, 0.f, 0.25f);
+
+	/* For.Prototype_Component_Model_TrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_TrailCam"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TrailCam/", "TrailCam.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f);
+
+	/* For.Prototype_Component_Model_SpiritBox*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_SpiritBox"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/SpiritBox/", "SpiritBox.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
+
+	/* For.Prototype_Component_Model_Video_Camera*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Video_Camera"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
+		return E_FAIL;
+	/*For.Prototype_Component_VideoCam_Normal*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VideoCam_Normal"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/Video_Camera/Camera 1 Normal.png")))))
+		return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	/* For.Prototype_Component_Model_Tripod*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Tripod"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
+		return E_FAIL;
+
+
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+
+	///* For.Prototype_Component_Model_MapleTree*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MapleTree"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/MapleTree/", "Maple.fbx", TransformMatrix))))
+	//	return E_FAIL;
+
+	/* For.Prototype_Component_Model_Truck*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Truck"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Truck.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Truck_Inside*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Truck_Inside"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Garage.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Model_Computer*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Computer"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Monitor_1.fbx", TransformMatrix))))
+		return E_FAIL;
+	/* For.Prototype_Component_Model_Mouse*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Mouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Mouse.fbx", TransformMatrix))))
+		return E_FAIL;
+	/* For.Prototype_Component_Model_KeyBoard*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_KeyBoard"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Keyboard.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_Lobby*/
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Lobby"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lobby/", "Garage.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	RELEASE_INSTANCE(CGameInstance);
+
+}
+
 
 HRESULT CLoader::Loading_ForLobbyLevel()
 {
@@ -324,15 +450,10 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		return E_FAIL;
 
 
-	/*For.Prototype_Component_Model_Lobby*/
-	_matrix			TransformMatrix;
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	if(FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY,TEXT("Prototype_Component_Model_Lobby"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lobby/", "Garage.fbx", TransformMatrix))))
-		return E_FAIL;
+	
 
 	/*For.Prototype_Component_Model_Screen*/
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
+	_matrix TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Screen"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
 		return E_FAIL;
@@ -614,85 +735,6 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 	//	return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)  * XMMatrixRotationX(XMConvertToRadians(270.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.5f, 0.f);
-
-	/*For. Prototype_Component_Model_DotsProjecter*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_DotsProjecter"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/DotsProjecter/", "DotsProjecter.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f)* XMMatrixTranslation(0.f, 0.35f, 0.f);
-
-	/* For.Prototype_Component_Model_FlashLight*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FlashLight"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "FlashLight.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.07f) * XMMatrixTranslation(0.f, 0.35f, 0.f);
-
-	/* For.Prototype_Component_Model_UVLight*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_UVLight"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/FlashLight/", "UVLight.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.07f, 0.07f, 0.07f);
-
-
-	/* For.Prototype_Component_Model_Thermometer*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Thermometer"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Thermometer/", "Thermometer.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.06f, 0.06f, 0.06f)*XMMatrixTranslation(0.f,0.6f,0.f);
-
-	/* For.Prototype_Component_Model_EMF*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_EMF"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/EMF/", "EMF.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixTranslation(-0.7f, 0.f, 0.f)* XMMatrixRotationX(XMConvertToRadians(270.0f));
-	/* For.Prototype_Component_Model_Note*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Note"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Note/", "Notepad.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Note_Open*/
-	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Note_Open"),
-	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Note/", "Notepad_Open.fbx", TransformMatrix))))
-	//	return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.08f, 0.08f, 0.08f) * XMMatrixRotationY(XMConvertToRadians(180.f))*XMMatrixTranslation(0.f,0.f,0.25f);
-
-	/* For.Prototype_Component_Model_TrailCam*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_TrailCam"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TrailCam/", "TrailCam.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.09f, 0.09f, 0.09f);
-
-	/* For.Prototype_Component_Model_SpiritBox*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_SpiritBox"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/SpiritBox/", "SpiritBox.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-
-
-	/* For.Prototype_Component_Model_Video_Camera*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Video_Camera"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Video_Camera/", "Video_Camera.fbx", TransformMatrix))))
-		return E_FAIL;
-	/*For.Prototype_Component_VideoCam_Normal*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VideoCam_Normal"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/Video_Camera/Camera 1 Normal.png")))))
-		return E_FAIL;
-
-	TransformMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	/* For.Prototype_Component_Model_Tripod*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Tripod"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Tripod/", "Tripod.fbx", TransformMatrix))))
-		return E_FAIL;
-	
 	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f)/** XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
 	/* For.Prototype_Component_Model_RoomDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_RoomDoor"),
@@ -706,43 +748,8 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 
 
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-
-	/* For.Prototype_Component_Model_MapleTree*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MapleTree"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/MapleTree/", "Maple.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Truck*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Truck"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Truck.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Truck_Inside*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Truck_Inside"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Truck/", "Garage.fbx", TransformMatrix))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_Computer*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Computer"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Monitor_1.fbx", TransformMatrix))))
-		return E_FAIL;
-	/* For.Prototype_Component_Model_Mouse*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Mouse"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Mouse.fbx", TransformMatrix))))
-		return E_FAIL;
-	/* For.Prototype_Component_Model_KeyBoard*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_KeyBoard"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Keyboard.fbx", TransformMatrix))))
-		return E_FAIL;
 
 
-	
-//	/* For.Prototype_Component_Model_AbandonedMarket*/
-//	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_AbandonedMarket"),
-//		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/AbandonedMarket/", "AbandonedMarket.fbx", TransformMatrix))))
-//		return E_FAIL;
-//	
 	/* For.Prototype_Component_Model_FurnishedCabin*/
 		if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_FurnishedCabin"),
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/", "FurnishedCabin.fbx", TransformMatrix))))
@@ -755,13 +762,6 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse1.fbx", TransformMatrix))))
 		return E_FAIL;*/
 
-	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-
-//	/* For.Prototype_Component_Model_Garage 됨/중간 물건들 텍스처문제*/
-//	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Garage"),
-//		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/Garage/", "Garage.fbx", TransformMatrix))))
-//		return E_FAIL;
-	
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더추가.  "));
 

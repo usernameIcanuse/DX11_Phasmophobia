@@ -93,7 +93,7 @@ void CInventory::Tick(_float fTimeDelta)
 		m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
 	{
-		m_bLockCursor != m_bLockCursor;
+		m_bLockCursor = !m_bLockCursor;
 	}
 
 	if (m_vInventory[m_iIndex])

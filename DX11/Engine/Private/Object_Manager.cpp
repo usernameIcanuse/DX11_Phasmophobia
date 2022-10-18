@@ -32,8 +32,11 @@ HRESULT CObject_Manager::Reserve_Container(_uint iNumLevels)
 
 HRESULT CObject_Manager::Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype)
 {
-	if (nullptr != Find_Prototype(pPrototypeTag))
-		return E_FAIL;
+	if (nullptr != Find_Prototype(pPrototypeTag))//만약에 만들어져 있다면
+	{
+		Safe_Release(pPrototype);
+		return S_OK;
+	}
 
 	m_Prototypes.emplace(pPrototypeTag, pPrototype);
 

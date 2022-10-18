@@ -213,6 +213,8 @@ _uint CGhost_SpawnPoint::Get_EMFLevel()
 {
 	if(nullptr != m_pGhost_Status)
 		return m_pGhost_Status->m_iEMF;
+
+	return 0;
 }
 
 _int   CGhost_SpawnPoint::Get_SpawnPointTemperature()

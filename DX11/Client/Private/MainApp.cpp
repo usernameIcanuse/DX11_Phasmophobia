@@ -39,7 +39,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	
-	if (FAILED(Open_Level(LEVEL_LOGO)))
+	if (FAILED(Open_Level(LEVEL_LOBBY)))
 		return E_FAIL;
 	
 
@@ -80,7 +80,7 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 
-	CLevel_Loading*		pLevel_Loading = CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID);
+	CLevel_Loading*		pLevel_Loading = CLevel_Loading::Create(m_pDevice, m_pContext, eLevelID,true);
 	if (nullptr == pLevel_Loading)
 		return E_FAIL;
 
