@@ -47,7 +47,7 @@ void CTruck::LateTick(_float fTimeDelta)
 
     GAMEINSTANCE->Add_Object_For_Culling(this,CRenderer::RENDER_NONALPHABLEND);
 #ifdef _DEBUG
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+  //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 }
 
@@ -76,7 +76,7 @@ HRESULT CTruck::Render()
 HRESULT CTruck::Setup_Component()
 {
     /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
     /* For.Com_Model*/

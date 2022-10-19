@@ -42,6 +42,7 @@ HRESULT CVideo_Camera::Initialize(void* pArg)
 
     Turn_OnOff();
 
+
     return S_OK;
 }
 

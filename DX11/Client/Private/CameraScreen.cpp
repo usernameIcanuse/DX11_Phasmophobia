@@ -36,6 +36,10 @@ HRESULT CCamera_Screen::Initialize(void * pArg)
 	m_pTransformCom->Set_Scaled(_float3(0.76f, 0.5f, 1.f));
 	GAMEINSTANCE->Add_Renderer(CRenderer_Manager::VIDEO_CAMERA, m_pCameraRenderer);
 
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+	m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+
+
 	return S_OK;
 }
 

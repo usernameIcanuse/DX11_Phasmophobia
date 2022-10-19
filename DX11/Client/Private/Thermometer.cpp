@@ -34,6 +34,10 @@ HRESULT CThermometer::Initialize(void* pArg)
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
+    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+    m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
+
+
     return S_OK;
 }
 

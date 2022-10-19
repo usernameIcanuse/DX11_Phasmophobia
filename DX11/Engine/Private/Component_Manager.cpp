@@ -29,7 +29,7 @@ HRESULT CComponent_Manager::Add_Prototype(_uint iLevelIndex, const _tchar * pPro
 	if (nullptr != Find_Components(iLevelIndex, pPrototypeTag))//이미 있다면
 	{
 		Safe_Release(pPrototype);
-		return E_FAIL;
+		return S_OK;
 	}
 	m_pPrototypes[iLevelIndex].emplace(pPrototypeTag, pPrototype);
 	

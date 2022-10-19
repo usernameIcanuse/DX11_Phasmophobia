@@ -22,9 +22,6 @@ HRESULT CItem::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
-    m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
-
     return S_OK;
 }
 
@@ -81,7 +78,7 @@ HRESULT CItem::Setup_Component()
         return E_FAIL;
 
     /* For.Com_Shader*/
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
 
  

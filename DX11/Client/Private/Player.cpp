@@ -153,6 +153,7 @@ _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 
 HRESULT CPlayer::Setup_Component()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	/* For.Com_AABB*/
 	CCollider::COLLIDERDESC ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
@@ -164,10 +165,9 @@ HRESULT CPlayer::Setup_Component()
 	ColliderDesc.m_eObjID = COLLISION_TYPE::PLAYER;
 	ColliderDesc.fRayLength = 10.f;
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Collider_AABB"), TEXT("Com_AABB"), (CComponent**)&m_pAABBCom, &ColliderDesc)))
 		return E_FAIL;
 	
-	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 
 	/* For.Com_Navigation*/

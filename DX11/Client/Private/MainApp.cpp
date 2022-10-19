@@ -9,10 +9,10 @@
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
-	, m_pImguiMgr(CImguiMgr::Get_Instance())
+	//, m_pImguiMgr(CImguiMgr::Get_Instance())
 {
 	Safe_AddRef(m_pGameInstance);
-	Safe_AddRef(m_pImguiMgr);
+	//Safe_AddRef(m_pImguiMgr);
 }
 
 HRESULT CMainApp::Initialize()
@@ -30,7 +30,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;	
 
-	m_pImguiMgr->Init(m_pDevice, m_pContext);
+	//m_pImguiMgr->Init(m_pDevice, m_pContext);
 	
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
@@ -41,6 +41,11 @@ HRESULT CMainApp::Initialize()
 	
 	if (FAILED(Open_Level(LEVEL_LOBBY)))
 		return E_FAIL;
+
+#ifdef _DEBUG
+	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Dream"), TEXT("../Bin/Resources/Fonts/128.spriteFont"))))
+		return E_FAIL;
+#endif
 	
 
 	return S_OK;
@@ -50,9 +55,11 @@ void CMainApp::Tick(float fTimeDelta)
 {
 	if (nullptr == m_pGameInstance)
 		return;
-
+#ifdef _DEBUG
+	m_fTimeAcc += fTimeDelta;
+#endif
 	m_pGameInstance->Tick_Engine(fTimeDelta);
-	m_pImguiMgr->Tick(fTimeDelta);
+	//m_pImguiMgr->Tick(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -64,8 +71,22 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 	
 	m_pGameInstance->Render_Engine();
+#ifdef _DEBUG
 
-	m_pImguiMgr->Render();
+	++m_iNumRender;
+
+
+	if (m_fTimeAcc >= 1.f)
+	{
+		wsprintf(m_szFPS, TEXT("에프피에스 : %d"), m_iNumRender);
+		m_fTimeAcc = 0.f;
+		m_iNumRender = 0;
+	}
+	// MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
+	m_pGameInstance->Render_Font(TEXT("Font_Dream"), m_szFPS, _float2(600.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+#endif
+
+	//m_pImguiMgr->Render();
 
 	m_pGameInstance->Present();
 
@@ -153,8 +174,8 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);		
-	Safe_Release(m_pImguiMgr);
+	//Safe_Release(m_pImguiMgr);
 
-	CImguiMgr::Destroy_Instance();
+	//CImguiMgr::Destroy_Instance();
 	CGameInstance::Release_Engine();	
 }

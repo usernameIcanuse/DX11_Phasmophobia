@@ -33,6 +33,7 @@ HRESULT CPhoto_Camera::Initialize(void* pArg)
     m_vAdjustpos = _float3(1.f, 1.f, 1.9f);
 
 
+
     return S_OK;
 }
 

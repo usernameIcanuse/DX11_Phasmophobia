@@ -403,7 +403,7 @@ HRESULT CInventory::Setup_Component()
 	ColliderDesc.m_eObjID = COLLISION_TYPE::SIGHT;
 	ColliderDesc.fRayLength = 15.f;
 
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
+	if (FAILED(__super::Add_Component(GAMEINSTANCE->Get_Next_Level(), TEXT("Prototype_Component_Collider_Ray"), TEXT("Com_Ray"), (CComponent**)&m_pRayCom, &ColliderDesc)))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))

@@ -67,8 +67,9 @@ HRESULT CPoint::Render()
 
 HRESULT CPoint::SetUp_Components()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxPointInstance"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Shader_VtxPointInstance"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	/* For.Com_Renderer */
@@ -76,9 +77,9 @@ HRESULT CPoint::SetUp_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Point_Instance"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+	if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_VIBuffer_Point_Instance"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 		return E_FAIL;
-
+	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
 }
