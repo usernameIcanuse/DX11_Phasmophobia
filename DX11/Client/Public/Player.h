@@ -31,7 +31,10 @@ public:
 public:
 	_bool	Picking_Navigation(RAY tMouseRay, _float4& vPickedPos);
 	_int	Get_CurrentIndex();
-
+	_bool*	IsInHouse()
+	{
+		return &m_bIsInHouse;
+	}
 #ifdef _DEBUG
 	CNavigation* Get_Navigation()
 	{
@@ -51,6 +54,8 @@ private:
 #endif
 
 	CInventory* m_pInventory = nullptr;
+
+	_bool		m_bIsInHouse = false;
 
 private:
 	HRESULT	Setup_Component();

@@ -317,6 +317,14 @@ CComponent * CGameInstance::Get_Component(_uint iLevelIndex, const _tchar * pLay
 	return m_pObject_Manager->Get_Component(iLevelIndex, pLayerTag, pComponentTag, iIndex);	
 }
 
+CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_GameObject(iLevelIndex,pLayerTag,iIndex);
+}
+
 void CGameInstance::Clear_Layer(_uint iLevelIndex, const _tchar* pLayerTag)
 {
 	if (nullptr == m_pObject_Manager)

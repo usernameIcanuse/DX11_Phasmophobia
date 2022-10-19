@@ -31,8 +31,6 @@ public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 
-	virtual void MalFunction(_float fTimeDelta = 0.f) {}
-	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 	virtual void Drop_Item(_vector vPower);
 
 	virtual void Set_Enable(_bool _bEnable);

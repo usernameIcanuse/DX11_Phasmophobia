@@ -15,6 +15,16 @@ CComponent * CLayer::Get_Component(const _tchar * pComponentTag, _uint iIndex)
 	return (*iter)->Get_Component(pComponentTag);	
 }
 
+CGameObject* CLayer::Get_GameObject(_uint iIndex)
+{
+	auto	iter = m_GameObjects.begin();
+
+	for (_uint i = 0; i < iIndex; ++i)
+		++iter;
+
+	return *iter;
+}
+
 HRESULT CLayer::Initialize()
 {
 

@@ -124,6 +124,16 @@ void CCamera_Screen::Turn_Switch()
 		m_pCameraRenderer->Clear_RenderTarget();
 }
 
+void CCamera_Screen::MalFunction(_float fTimeDelta)
+{
+	if (false == m_bIsInHouse)
+		return;
+}
+
+void CCamera_Screen::Normal_Operation(_float fTimeDelta)
+{
+}
+
 void CCamera_Screen::Set_Position()
 {
 	_vector vPosition = m_pCameraTransform->Get_State(CTransform::STATE_TRANSLATION);

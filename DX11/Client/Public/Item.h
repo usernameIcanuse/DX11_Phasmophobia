@@ -96,6 +96,8 @@ protected:
 
 	_bool		m_bSwitch = false;
 	_bool		m_bInstalled = false;
+	_bool		m_bIsInHouse = false;
+
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);
 
 	ITEM		m_eType = ITEM_END;

@@ -16,7 +16,7 @@ private:
 
 public:
 	class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
-
+	class CGameObject* Get_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex = 0);
 public:
 	HRESULT Reserve_Container(_uint iNumLevels);
 

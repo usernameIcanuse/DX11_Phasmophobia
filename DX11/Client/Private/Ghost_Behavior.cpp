@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Ghost_Behavior.h"
 #include "GameInstance.h"
+#include "Player.h"
 
 
 CGhost_Behavior::CGhost_Behavior(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -33,7 +34,9 @@ HRESULT CGhost_Behavior::Initialize(void* pArg)
 	if (FAILED(Setup_Component(pArg)))
 		return E_FAIL;
 	 
-	m_pPlayerTransform = (CTransform*)GAMEINSTANCE->Get_Component(LEVEL_GAMEPLAY, TEXT("Layer_Player"), CGameObject::m_pTransformTag);
+	CPlayer* pPlayer = (CPlayer*)GAMEINSTANCE->Get_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Player"));
+	m_pPlayerInHouse = pPlayer->IsInHouse();
+	m_pPlayerTransform = (CTransform*)pPlayer->Get_Component(CGameObject:: m_pTransformTag);
 	Safe_AddRef(m_pPlayerTransform);
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
@@ -137,6 +140,9 @@ void CGhost_Behavior::Event(_float fTimeDelta)
 
 void CGhost_Behavior::Attack(_float fTimeDelta)
 {
+	if (false == (*m_pPlayerInHouse))
+		return;
+
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)
 	{

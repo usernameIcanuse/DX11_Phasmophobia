@@ -297,6 +297,8 @@ HRESULT CLoader::Loading_ForStaticProps()
 
 	RELEASE_INSTANCE(CGameInstance);
 
+	return S_OK;
+
 }
 
 

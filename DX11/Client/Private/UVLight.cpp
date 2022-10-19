@@ -103,6 +103,7 @@ void CUVLight::On_Collision_Enter(CCollider* pCollider)
     if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviHouseCom;
+        m_bIsInHouse = true;
     }
 }
 
@@ -115,11 +116,14 @@ void CUVLight::On_Collision_Exit(CCollider* pCollider)
     if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviOutSideCom;
+        m_bIsInHouse = false;
     }
 }
 
 void CUVLight::MalFunction(_float fTimeDelta)
 {
+    if (false == m_bIsInHouse)
+        return;
     if (m_bSwitch)
     {
         m_fBlinkTime += fTimeDelta;

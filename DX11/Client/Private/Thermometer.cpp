@@ -144,6 +144,9 @@ HRESULT CThermometer::Render()
 
 void CThermometer::MalFunction(_float fTimeDelta)
 {
+    if (false == m_bIsInHouse)
+        return;
+
     if (m_fTimeAcc >= 0.1f)
     {
         std::random_device rd;
@@ -185,6 +188,7 @@ void CThermometer::On_Collision_Enter(CCollider* pCollider)
     if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviHouseCom;
+        m_bIsInHouse = true;
     }
 }
 
@@ -215,6 +219,7 @@ void CThermometer::On_Collision_Exit(CCollider* pCollider)
     if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviOutSideCom;
+        m_bIsInHouse = false;
     }
 }
 

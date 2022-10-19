@@ -167,6 +167,7 @@ void CVideo_Camera::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _
     }
 }
 
+
 void CVideo_Camera::Turn_OnOff()
 {
     m_bSwitch = !m_bSwitch;
@@ -227,6 +228,7 @@ void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
     else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviHouseCom;
+        m_bIsInHouse = true;
     }
 }
 
@@ -243,6 +245,7 @@ void CVideo_Camera::On_Collision_Exit(CCollider* pCollider)
     else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
         m_pCurrNavigation = m_pNaviOutSideCom;
+        m_bIsInHouse = false;
     }
 }
 

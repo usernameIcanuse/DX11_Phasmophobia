@@ -61,6 +61,7 @@ private:
 	//_float		m_fChangeDir = 0.f;
 	//_float		m_fRadian = 0.f;
 	_float		m_fIdleTime = 3.f;
+	_bool*		m_pPlayerInHouse = nullptr;
 
 #ifdef _DEBUG
 	CRenderer* m_pRendererCom = nullptr;

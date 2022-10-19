@@ -270,6 +270,7 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 	else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
 	{
 		m_pCurrNavigation = m_pNaviHouseCom;
+		m_bIsInHouse = true;
 	}
 
 }
@@ -295,6 +296,7 @@ void CPlayer::On_Collision_Exit(CCollider* pCollider)
 	if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
 	{
 		m_pCurrNavigation = m_pNaviOutSideCom;
+		m_bIsInHouse = false;
 	}
 }
 
