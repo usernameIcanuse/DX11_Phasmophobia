@@ -43,22 +43,10 @@ void CRigidBody::Add_Power(_vector _vPower)
 
 void CRigidBody::Update(_float fTimeDelta, CNavigation* pCurNavi)
 {
-	//Compute_Power();
 	Gravity(fTimeDelta);
 	Friction();
 	Apply_Transform(fTimeDelta, pCurNavi);
-
-	XMStoreFloat4(&m_vPower, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-}
-
-void CRigidBody::Compute_Power()
-{
-	_vector vCurPower = XMLoadFloat4(&m_vCurPower);
-	_vector vPower = XMLoadFloat4(&m_vPower);
-
-	vCurPower += vPower;
-
-	XMStoreFloat4(&m_vCurPower, vCurPower);
+	
 }
 
 void CRigidBody::Gravity(_float ftimeDelta)

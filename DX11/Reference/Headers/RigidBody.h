@@ -29,7 +29,6 @@ public:
 	void Update(_float fTimeDelta, CNavigation* pCurNavi);
 
 private:
-	void Compute_Power();
 	void Gravity(_float ftimeDelta);
 	void Friction();
 	void Apply_Transform(_float fTimeDelta, CNavigation* pCurNavi);
