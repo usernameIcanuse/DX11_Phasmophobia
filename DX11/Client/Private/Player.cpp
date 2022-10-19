@@ -254,6 +254,8 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 		
 		pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY), LEVEL_LOBBY);
+
+		RELEASE_INSTANCE(CGameInstance);
 	}
 
 	else if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())

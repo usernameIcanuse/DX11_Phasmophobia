@@ -82,6 +82,9 @@ void CMenuScreen::Tick(_float fTimeDelta)
 			m_pStore->Set_Enable(true);
 			break;
 
+        case 4:
+            break;
+
 		}
 	}
 #pragma endregion Lobby_Main

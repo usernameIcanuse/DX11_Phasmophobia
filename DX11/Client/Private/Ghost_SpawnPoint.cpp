@@ -322,7 +322,6 @@ HRESULT CGhost_SpawnPoint::Load_Point(const _tchar* pFilePath)
 	if (INVALID_HANDLE_VALUE == hFile)
 	{
 		MSG_BOX("Failed to load file");
-		RELEASE_INSTANCE(CGameInstance);
 		return E_FAIL;
 	}
 	DWORD dwByteHouse = 0;
