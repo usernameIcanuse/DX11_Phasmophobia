@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\Ghost_Status.h" />
     <ClInclude Include="..\Public\HandPrint.h" />
     <ClInclude Include="..\Public\Inventory.h" />
+    <ClInclude Include="..\Public\Journal.h" />
     <ClInclude Include="..\Public\KeyBoard.h" />
     <ClInclude Include="..\Public\LightBulb.h" />
     <ClInclude Include="..\Public\LightSwitch.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\HandPrint.cpp" />
+    <ClCompile Include="..\Private\Journal.cpp" />
     <ClCompile Include="..\Private\KeyBoard.cpp" />
     <ClCompile Include="..\Private\LightBulb.cpp" />
     <ClCompile Include="..\Private\LightSwitch.cpp" />

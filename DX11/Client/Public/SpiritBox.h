@@ -40,6 +40,11 @@ private:
 	CRenderTarget* m_pEmissive = nullptr;
 	CShader* m_pShaderTexCom = nullptr;
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 	_long		m_lFrequency = 100;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력
 

@@ -48,6 +48,11 @@ private:
 	CCamera_Screen* m_pCameraScreen = nullptr;
 	CTexture* m_pNormalTex = nullptr;
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);

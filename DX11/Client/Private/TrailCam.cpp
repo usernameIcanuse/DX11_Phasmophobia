@@ -109,10 +109,16 @@ HRESULT CTrailCam::Render()
 
 void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 {
-    if (!m_bInstalled)
-        return;
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() )
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
+        m_pCurrNavigation = m_pNaviHouseCom;
+    }
+
+    else if (COLLISION_TYPE::PLAYER == pCollider->Get_Type() )
+    {
+
+        if (!m_bInstalled)
+            return;
         m_bSwitch = true;
     }
   
@@ -126,10 +132,15 @@ void CTrailCam::On_Collision_Stay(CCollider* pCollider)
 
 void CTrailCam::On_Collision_Exit(CCollider* pCollider)
 {
-    if (!m_bInstalled)
-        return;
-    if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
     {
+        m_pCurrNavigation = m_pNaviOutSideCom;
+    }
+
+    else if (COLLISION_TYPE::PLAYER == pCollider->Get_Type())
+    {
+        if (!m_bInstalled)
+            return;
         m_bSwitch = false;
     }
 }
@@ -139,6 +150,23 @@ HRESULT CTrailCam::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
+
+    /* For.Com_Navigation*/
+    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+    CNavigation::NAVIDESC	NaviDesc;
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
+        return E_FAIL;
+
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
+        return E_FAIL;
+
+    RELEASE_INSTANCE(CGameInstance);
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_TrailCam"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -318,4 +346,7 @@ void CTrailCam::Free()
     __super::Free();
     Safe_Release(m_pAreaCom);
     Safe_Release(m_pLight);
+
+    Safe_Release(m_pNaviHouseCom);
+    Safe_Release(m_pNaviOutSideCom);
 }

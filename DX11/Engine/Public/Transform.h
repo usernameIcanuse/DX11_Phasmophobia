@@ -70,6 +70,7 @@ public:
 	}
 
 	HRESULT Move(_float fTimeDelta, class CNavigation* pNaviCom = nullptr);
+	HRESULT Move(_vector vAccel, _float fTimeDelta, class CNavigation* pNaviCom);
 	HRESULT Slide_Object(_float3 vContactDirection, CNavigation* pNaviCom);
 
 	void Turn(_fvector vAxis, _float fTimeDelta);

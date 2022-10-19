@@ -38,6 +38,11 @@ private:
 	CLight*		m_pLight = nullptr;//설치 시 불 켜짐
 	CCollider* m_pAreaCom = nullptr;
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 	CItem* m_pTempDotsModel = nullptr;
 
 public:

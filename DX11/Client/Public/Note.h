@@ -29,6 +29,10 @@ private:
 	CItem* m_pTempNoteModel = nullptr;
 
 	CModel* m_pNoteOpenModel = nullptr;
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
 
 	_bool	m_bFirst = true;
 

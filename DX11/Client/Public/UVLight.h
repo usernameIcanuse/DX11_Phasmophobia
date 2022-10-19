@@ -44,6 +44,11 @@ private:
 	_float4 m_vBlinkDiffuse;
 	_float m_fBlinkTime = 0.f;
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 private:
 	virtual	HRESULT	Setup_Component() override;
 	HRESULT	Setup_Light();

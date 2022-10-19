@@ -35,6 +35,11 @@ private:
 	CLight* m_pLight  =  nullptr;//인식시 불 켜짐
 	CItem* m_pTempTrailCamModel = nullptr;
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);

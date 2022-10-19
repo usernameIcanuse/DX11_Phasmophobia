@@ -42,6 +42,10 @@ public:
 private:
 	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
 	_bool	m_bRenderModel= true;
 	
 	_float4	m_vDiffuse;

@@ -81,6 +81,7 @@ protected:
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pOBBCom = nullptr;
 
+
 	_bool		m_bSwitch = false;
 	_bool		m_bInstalled = false;
 	_float3		m_vAdjustpos = _float3(1.f,1.5f,2.f);

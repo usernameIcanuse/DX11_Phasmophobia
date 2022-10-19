@@ -229,6 +229,9 @@
     <ClInclude Include="..\Public\FirstLoading.h">
       <Filter>02.GameObject\BackGround\FirstLoading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Journal.h">
+      <Filter>02.GameObject\Player\journal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -443,6 +446,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\FirstLoading.cpp">
       <Filter>02.GameObject\BackGround\FirstLoading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Journal.cpp">
+      <Filter>02.GameObject\Player\journal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -675,6 +681,12 @@
     </Filter>
     <Filter Include="02.GameObject\Player\journal">
       <UniqueIdentifier>{93dd2e81-9ac8-4735-a372-04138caef997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Player\journal\Evidence">
+      <UniqueIdentifier>{7a5eb7cc-ce61-4bcb-aebd-38f26bfaf4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Player\journal\Option">
+      <UniqueIdentifier>{9e42e23d-e6b4-4303-ae32-8abb5657c4d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

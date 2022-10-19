@@ -254,6 +254,35 @@ HRESULT CTransform::Move(_float fTimeDelta, CNavigation* pNaviCom)
 	return S_OK;
 }
 
+HRESULT CTransform::Move(_vector vAccel, _float fTimeDelta, class CNavigation* pNaviCom)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+
+
+	if (nullptr != pNaviCom)
+	{
+		_float fPositionY = 0.f;
+		_vector vMovedPosition = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		if (pNaviCom->isMove(vPosition, fPositionY, vAccel, vMovedPosition))
+		{
+			_float4 vPos;
+			XMStoreFloat4(&vPos, vMovedPosition);
+			vPos.y = fPositionY;
+			vPosition = XMLoadFloat4(&vPos);
+		}
+		else
+			return E_FAIL;
+
+	}
+	else
+	{
+		vPosition += vAccel;
+	}
+	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+
+	return S_OK;
+}
+
 HRESULT CTransform::Slide_Object(_float3 vContactDirection, CNavigation* pNaviCom)
 {
 	_vector vDir = XMLoadFloat3(&m_vMoveDir);

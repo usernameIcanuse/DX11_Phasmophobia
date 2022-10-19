@@ -43,6 +43,11 @@ private:
 	_uint		m_iEMFLevel = 1;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//임시 emf레벨 출력
 
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
+
 private:
 	virtual	HRESULT	Setup_Component() override;
 

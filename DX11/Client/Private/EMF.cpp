@@ -103,7 +103,10 @@ void CEMF::OnEventMessage(const _tchar* pMessage)
 
 void CEMF::On_Collision_Enter(CCollider* pCollider)
 {
-    __super::On_Collision_Enter(pCollider);
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+    {
+        m_pCurrNavigation = m_pNaviHouseCom;
+    }
 }
 
 void CEMF::On_Collision_Stay(CCollider* pCollider)
@@ -116,6 +119,10 @@ void CEMF::On_Collision_Stay(CCollider* pCollider)
 
 void CEMF::On_Collision_Exit(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+    {
+        m_pCurrNavigation = m_pNaviOutSideCom;
+    }
 }
 
 HRESULT CEMF::Setup_Component()
@@ -123,6 +130,22 @@ HRESULT CEMF::Setup_Component()
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
 
+    /* For.Com_Navigation*/
+    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+    CNavigation::NAVIDESC	NaviDesc;
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
+        return E_FAIL;
+
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
+        return E_FAIL;
+
+    RELEASE_INSTANCE(CGameInstance);
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_EMF"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -174,4 +197,6 @@ CGameObject* CEMF::Clone(void* pArg)
 void CEMF::Free()
 {
     __super::Free();
+    Safe_Release(m_pNaviHouseCom);
+    Safe_Release(m_pNaviOutSideCom);
 }

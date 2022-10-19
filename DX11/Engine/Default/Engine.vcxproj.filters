@@ -169,6 +169,9 @@
     <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>01.Utility\02.GameObject\Manager\Event_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RigidBody.h">
+      <Filter>01.Utility\03.Component\07. RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Component.cpp">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>01.Utility\02.GameObject\Manager\Event_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RigidBody.cpp">
+      <Filter>01.Utility\03.Component\07. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

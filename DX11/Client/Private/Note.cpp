@@ -152,6 +152,10 @@ void CNote::On_Collision_Enter(CCollider* pCollider)
                 Ghost_Writing();
         }
     }*/
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+    {
+        m_pCurrNavigation = m_pNaviHouseCom;
+    }
 
 }
 
@@ -162,12 +166,33 @@ void CNote::On_Collision_Stay(CCollider* pCollider)
 
 void CNote::On_Collision_Exit(CCollider* pCollider)
 {
+    if (COLLISION_TYPE::HOUSE == pCollider->Get_Type())
+    {
+        m_pCurrNavigation = m_pNaviOutSideCom;
+    }
 }
 
 HRESULT CNote::Setup_Component()
 {
     if (FAILED(__super::Setup_Component()))
         return E_FAIL;
+
+    /* For.Com_Navigation*/
+    CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+    CNavigation::NAVIDESC	NaviDesc;
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_House"), TEXT("Com_NaviHouse"), (CComponent**)&m_pNaviHouseCom, &NaviDesc)))
+        return E_FAIL;
+
+    ZeroMemory(&NaviDesc, sizeof(CNavigation::NAVIDESC));
+    NaviDesc.m_iCurrentIndex = 0;
+
+    if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
+        return E_FAIL;
+
+    RELEASE_INSTANCE(CGameInstance);
 
 
     /* For.Com_Model */
@@ -237,4 +262,6 @@ void CNote::Free()
     __super::Free();
 
     Safe_Release(m_pNoteOpenModel);
+    Safe_Release(m_pNaviHouseCom);
+    Safe_Release(m_pNaviOutSideCom);
 }

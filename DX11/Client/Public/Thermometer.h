@@ -39,6 +39,10 @@ private:
 	CRenderTarget* m_pEmissive = nullptr;
 
 	CShader* m_pShaderTexCom = nullptr;
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
 
 	_int		m_iDegree = 0;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//온도 출력
