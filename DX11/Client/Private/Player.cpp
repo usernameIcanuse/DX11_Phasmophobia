@@ -151,6 +151,15 @@ _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)
 	return false;
 }
 
+_int CPlayer::Get_CurrentIndex()
+{
+	if (nullptr != m_pCurrNavigation)
+	{
+		return m_pCurrNavigation->Get_CurrentIndex();
+	}
+	return -1;
+}
+
 HRESULT CPlayer::Setup_Component()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);

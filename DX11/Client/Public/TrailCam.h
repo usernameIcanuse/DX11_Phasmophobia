@@ -26,7 +26,7 @@ public:
 public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
-
+	virtual void Drop_Item(_vector vPower);
 public:
 	void Sensor_Activating(_bool _bSwitch);
 
@@ -35,10 +35,7 @@ private:
 	CLight* m_pLight  =  nullptr;//인식시 불 켜짐
 	CItem* m_pTempTrailCamModel = nullptr;
 
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
 
-	CNavigation* m_pCurrNavigation = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

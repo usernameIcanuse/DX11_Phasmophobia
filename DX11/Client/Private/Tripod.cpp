@@ -53,6 +53,7 @@ void CTripod::Tick(_float fTimeDelta)
     }
     m_pOBBCom->Update(matWorld);
     m_pTripodCom->Update(matWorld);
+    m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
 
 }
 
@@ -114,6 +115,20 @@ void	CTripod::Update_Collider()
     }
 }
 
+void CTripod::Drop_Item(_vector vPower)
+{
+    _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    _vector vRight = XMVector3Cross(vUp, vLook);
+    vLook = XMVector3Cross(vRight, vUp);
+
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    Add_Power(XMVectorSet(0.f,0.f,0.f,0.f));
+}
+
 
 void CTripod::On_Collision_Enter(CCollider* pCollider)
 {
@@ -156,6 +171,16 @@ HRESULT CTripod::Setup_Component()
         return E_FAIL;
 
     RELEASE_INSTANCE(CGameInstance);
+    m_pCurrNavigation = m_pNaviOutSideCom;
+
+    /*For.Com_RigidBody*/
+    CRigidBody::RIGIDBODYDESC RigidBodyDesc;
+    ZeroMemory(&RigidBodyDesc, sizeof(CRigidBody::RIGIDBODYDESC));
+    RigidBodyDesc.fWeight = 1.f;
+    RigidBodyDesc.pOwnerTransform = m_pTransformCom;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"), TEXT("Com_RigidBody"), (CComponent**)&m_pRigidBodyCom, &RigidBodyDesc)))
+        return E_FAIL;
  
 
     /* For.Com_Model */
@@ -226,4 +251,5 @@ void CTripod::Free()
 
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
+    Safe_Release(m_pRigidBodyCom);
 }

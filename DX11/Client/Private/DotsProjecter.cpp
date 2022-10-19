@@ -54,6 +54,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     }
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+    m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
     if (m_bInstalled)
     {
         m_pAreaCom->Update(m_pTransformCom->Get_WorldMatrix());
@@ -192,6 +193,20 @@ void CDotsProjecter::Normal_Operation(_float fTimeDelta)
     /*±Í½Å ·»´õ?*/ 
 }
 
+void CDotsProjecter::Drop_Item(_vector vPower)
+{
+    _vector vLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+    _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    _vector vRight = XMVector3Cross(vLook, vUp);
+    vUp = XMVector3Cross(vLook, vRight);
+
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    Add_Power(vPower);
+}
+
 
 void CDotsProjecter::On_Collision_Enter(CCollider* pCollider)
 {
@@ -235,6 +250,16 @@ HRESULT CDotsProjecter::Setup_Component()
         return E_FAIL;
 
     RELEASE_INSTANCE(CGameInstance);
+    m_pCurrNavigation = m_pNaviOutSideCom;
+
+    /*For.Com_RigidBody*/
+    CRigidBody::RIGIDBODYDESC RigidBodyDesc;
+    ZeroMemory(&RigidBodyDesc, sizeof(CRigidBody::RIGIDBODYDESC));
+    RigidBodyDesc.fWeight = 1.f;
+    RigidBodyDesc.pOwnerTransform = m_pTransformCom;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"), TEXT("Com_RigidBody"), (CComponent**)&m_pRigidBodyCom, &RigidBodyDesc)))
+        return E_FAIL;
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_DotsProjecter"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -347,4 +372,6 @@ void CDotsProjecter::Free()
 
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
+
+    Safe_Release(m_pRigidBodyCom);
 }

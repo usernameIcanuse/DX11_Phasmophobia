@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CLight;
+class CRigidBody;
 END
 
 
@@ -39,13 +40,12 @@ public:
 		m_bRenderModel = _bFlag;
 	} 
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
+	virtual void Drop_Item(_vector vPower);
 private:
+	
 	CLight* m_pSpotLight = nullptr;
 	CTransform* m_pAdjustTransform = nullptr;
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
 
-	CNavigation* m_pCurrNavigation = nullptr;
 	_bool	m_bRenderModel= true;
 	
 	_float4	m_vDiffuse;

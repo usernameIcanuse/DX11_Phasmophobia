@@ -99,6 +99,7 @@ void CInventory::Tick(_float fTimeDelta)
 	if (m_vInventory[m_iIndex])
 	{
 		m_vInventory[m_iIndex]->Adjust_Item(m_pPlayerTransform);
+		m_vInventory[m_iIndex]->Set_CurrentIndex(m_pPlayer->Get_CurrentIndex());
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
@@ -308,6 +309,9 @@ void CInventory::Drop_Item()
 		return;
 
 	/*던지는 물리*/
+	_vector vPower = XMVector3Normalize(m_pPlayerTransform->Get_State(CTransform::STATE_LOOK));
+	m_vInventory[m_iIndex]->Drop_Item(vPower);
+
 	if (m_pSpotLight == m_vInventory[m_iIndex])
 		m_pSpotLight = nullptr;
 

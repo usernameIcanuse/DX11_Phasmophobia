@@ -27,7 +27,7 @@ public:
 		m_bSwitch = !m_bSwitch;
 	}
 
-	
+	virtual void Drop_Item(_vector vPower);
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
@@ -43,10 +43,6 @@ private:
 	_uint		m_iEMFLevel = 1;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//임시 emf레벨 출력
 
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

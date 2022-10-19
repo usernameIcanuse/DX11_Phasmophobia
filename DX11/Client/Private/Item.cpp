@@ -140,6 +140,21 @@ void	CItem::Adjust_Item(CTransform* _pPlayerTransform)
     Update_Collider();
 }
 
+void CItem::Add_Power(_vector vPower)
+{
+    m_pRigidBodyCom->Add_Power(vPower);
+}
+
+void CItem::Set_CurrentIndex(_int iNaviIndex)
+{
+    if (nullptr != m_pCurrNavigation)
+    {
+        m_pCurrNavigation->Set_CurrentIndex(iNaviIndex);
+    }
+}
+
+
+
 
 void CItem::Free()
 {

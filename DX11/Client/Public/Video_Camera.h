@@ -33,7 +33,7 @@ public:
 
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
-
+	virtual void Drop_Item(_vector vPower);
 
 	virtual void Set_Enable(_bool _bEnable);
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
@@ -48,10 +48,6 @@ private:
 	CCamera_Screen* m_pCameraScreen = nullptr;
 	CTexture* m_pNormalTex = nullptr;
 
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

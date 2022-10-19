@@ -34,20 +34,15 @@ public:
 
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
-
+	virtual void Drop_Item(_vector vPower);
 
 private:
 	CLight* m_pSpotLight;
-
 	_float4 m_vDiffuse;
 
 	_float4 m_vBlinkDiffuse;
 	_float m_fBlinkTime = 0.f;
 
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

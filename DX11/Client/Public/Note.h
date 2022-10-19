@@ -22,17 +22,14 @@ public:
 public:
 	virtual _bool Install(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
 	virtual void Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _float4 vLook, CItem* pConnectItem = nullptr);
-
+	virtual void Drop_Item(_vector vPower);
 private:
 	void	Ghost_Writing();
 private:
 	CItem* m_pTempNoteModel = nullptr;
 
 	CModel* m_pNoteOpenModel = nullptr;
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
 
-	CNavigation* m_pCurrNavigation = nullptr;
 
 	_bool	m_bFirst = true;
 

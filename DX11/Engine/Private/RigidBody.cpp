@@ -34,18 +34,21 @@ HRESULT CRigidBody::Initialize(void * pArg)
 
 void CRigidBody::Add_Power(_vector _vPower)
 {
-	_vector vPower = XMLoadFloat4(&m_vPower);
-
+	_vector vPower = XMLoadFloat4(&m_vCurPower);
+	
 	vPower += _vPower;
-	XMStoreFloat4(&m_vPower, vPower);
+	XMStoreFloat4(&m_vCurPower, vPower);
+	m_bGetPower = true;
 }
 
 void CRigidBody::Update(_float fTimeDelta, CNavigation* pCurNavi)
 {
-	Compute_Power();
-	Gravity();
+	//Compute_Power();
+	Gravity(fTimeDelta);
 	Friction();
 	Apply_Transform(fTimeDelta, pCurNavi);
+
+	XMStoreFloat4(&m_vPower, XMVectorSet(0.f, 0.f, 0.f, 0.f));
 }
 
 void CRigidBody::Compute_Power()
@@ -58,35 +61,36 @@ void CRigidBody::Compute_Power()
 	XMStoreFloat4(&m_vCurPower, vCurPower);
 }
 
-void CRigidBody::Gravity()
+void CRigidBody::Gravity(_float ftimeDelta)
 {
-	if (false == m_bOnGround)
+	if (true == m_bGetPower && false == m_bOnGround)
 	{
-		_vector vGravity = XMVectorSet(0.f, 1.f, 0.f, 0.f) * 9.8f;
+		_vector vGravity = XMVectorSet(0.f, 1.f, 0.f, 0.f) * -9.8f*ftimeDelta;
 
 		_vector vCurPower = XMLoadFloat4(&m_vCurPower);
 		vCurPower += vGravity;
-
-		//if (/*네비 메쉬에 딱 맞게 안착했다면*/)
-		//{
-
-		//}
+		XMStoreFloat4(&m_vCurPower, vCurPower);
 	}
+
 }
 
 void CRigidBody::Friction()
 {
-	_vector vFriction = XMLoadFloat4(&m_vCurPower)*-0.5f;
-
-	_vector vCurPower = XMLoadFloat4(&m_vCurPower);
-	vCurPower += vFriction;
-
-	if (0.01f > XMVectorGetX(XMVector3Length(vCurPower)))
+	if (true == m_bGetPower && true == m_bOnGround)
 	{
-		vCurPower = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		_vector vFriction = XMLoadFloat4(&m_vCurPower) * -0.5f;
+
+		_vector vCurPower = XMLoadFloat4(&m_vCurPower);
+		vCurPower += vFriction;
+
+		if (0.01f > XMVectorGetX(XMVector3Length(vCurPower)))
+		{
+			vCurPower = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+			m_bGetPower = false;
+		}
+
+		XMStoreFloat4(&m_vCurPower, vCurPower);
 	}
-	
-	XMStoreFloat4(&m_vCurPower, vCurPower);
 }
 
 void CRigidBody::Apply_Transform(_float fTimeDelta, CNavigation* pCurNavi)
@@ -95,7 +99,7 @@ void CRigidBody::Apply_Transform(_float fTimeDelta, CNavigation* pCurNavi)
 	if (DBL_EPSILON < m_RigidBodyDesc.fWeight)
 		vCurPower /= m_RigidBodyDesc.fWeight;
 
-	m_RigidBodyDesc.pOwnerTransform->Move(vCurPower, fTimeDelta, pCurNavi);
+	m_RigidBodyDesc.pOwnerTransform->Move(vCurPower, fTimeDelta, m_bOnGround,pCurNavi);
 }
 
 

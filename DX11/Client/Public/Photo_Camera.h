@@ -25,11 +25,6 @@ public:
 	virtual void MalFunction(_float fTimeDelta = 0.f) {}
 	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
 
-private:
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

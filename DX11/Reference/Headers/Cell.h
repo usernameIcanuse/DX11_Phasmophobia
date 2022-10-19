@@ -39,6 +39,7 @@ public:
 
 	_bool isPicked(RAY _tMouseRay, _int* pNeighborIndex, _float4& vPickedPos);
 
+
 #ifdef _DEBUG
 public:
 	HRESULT Render();

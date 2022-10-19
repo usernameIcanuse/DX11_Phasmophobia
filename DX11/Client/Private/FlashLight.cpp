@@ -50,7 +50,7 @@ void CFlashLight::Tick(_float fTimeDelta)
         Adjust_Item(nullptr);
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+    m_pRigidBodyCom->Update(fTimeDelta,m_pCurrNavigation);
 }
 
 void CFlashLight::LateTick(_float fTimeDelta)
@@ -166,6 +166,21 @@ void CFlashLight::Adjust_Item(CTransform* _pPlayerTransform)
     __super::Adjust_Item(m_pAdjustTransform);
 }
 
+void CFlashLight::Drop_Item(_vector vPower)
+{
+    _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    _vector vRight = XMVector3Cross(vUp, vLook);
+    vLook = XMVector3Cross(vRight, vUp);
+
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    Add_Power(vPower);
+}
+
+
 HRESULT CFlashLight::Setup_Component()
 {
     if (FAILED(__super::Setup_Component()))
@@ -186,6 +201,8 @@ HRESULT CFlashLight::Setup_Component()
     if (FAILED(__super::Add_Component(pGameInstance->Get_Next_Level(), TEXT("Prototype_Component_Navigation_OutSide"), TEXT("Com_NaviOutSide"), (CComponent**)&m_pNaviOutSideCom, &NaviDesc)))
         return E_FAIL;
 
+    m_pCurrNavigation = m_pNaviOutSideCom;
+
     RELEASE_INSTANCE(CGameInstance);
 
     /* For.Com_Model */
@@ -203,6 +220,15 @@ HRESULT CFlashLight::Setup_Component()
     ColliderDesc.m_eObjID = COLLISION_TYPE::ITEM;
 
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
+        return E_FAIL;
+
+    /*For.Com_RigidBody*/
+    CRigidBody::RIGIDBODYDESC RigidBodyDesc;
+    ZeroMemory(&RigidBodyDesc, sizeof(CRigidBody::RIGIDBODYDESC));
+    RigidBodyDesc.fWeight = 1.f;
+    RigidBodyDesc.pOwnerTransform = m_pTransformCom;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"), TEXT("Com_RigidBody"), (CComponent**)&m_pRigidBodyCom, &RigidBodyDesc)))
         return E_FAIL;
 
     return S_OK;
@@ -280,4 +306,5 @@ void CFlashLight::Free()
     Safe_Release(m_pSpotLight);
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
+    Safe_Release(m_pRigidBodyCom);
 }

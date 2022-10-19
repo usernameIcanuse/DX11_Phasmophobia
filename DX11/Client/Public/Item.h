@@ -8,6 +8,8 @@ class CTexture;
 class CRenderer;
 class CModel;
 class CCollider;
+class CRigidBody;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -59,6 +61,10 @@ public:
 	}
 	
 	virtual void Adjust_Item(CTransform* _pPlayerTransform);
+
+	virtual void Drop_Item(_vector vPower) {}
+	virtual void Add_Power(_vector vPower);
+	virtual void Set_CurrentIndex(_int iNaviIndex);
 public:
 	void	Set_Install(_bool _bInstall)
 	{
@@ -81,6 +87,12 @@ protected:
 	CModel*     m_pModelCom = nullptr;
 	CCollider*  m_pOBBCom = nullptr;
 
+	CRigidBody* m_pRigidBodyCom = nullptr;
+
+	CNavigation* m_pNaviHouseCom = nullptr;
+	CNavigation* m_pNaviOutSideCom = nullptr;
+
+	CNavigation* m_pCurrNavigation = nullptr;
 
 	_bool		m_bSwitch = false;
 	_bool		m_bInstalled = false;

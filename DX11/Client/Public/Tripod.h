@@ -26,6 +26,7 @@ public:
 		return false;
 	}
 	
+	virtual void Drop_Item(_vector vPower);
 
 public:
 	void    Connect_Camera(CVideo_Camera* pCamera)
@@ -46,10 +47,6 @@ private:
 	CVideo_Camera* m_pConnectedCamera = nullptr;
 	CCollider*	   m_pTripodCom = nullptr;
 
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

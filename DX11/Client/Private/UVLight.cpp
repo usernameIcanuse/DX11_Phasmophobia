@@ -47,7 +47,7 @@ void CUVLight::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+    m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
 }
 
 void CUVLight::LateTick(_float fTimeDelta)
@@ -149,6 +149,23 @@ void CUVLight::Normal_Operation(_float fTimeDelta)
     }
 }
 
+void CUVLight::Drop_Item(_vector vPower)
+{
+    _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+    _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    _vector vRight = XMVector3Cross(vUp, vLook);
+    vLook = XMVector3Cross(vRight, vUp);
+
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
+    Add_Power(vPower);
+
+   
+}
+
+
 HRESULT CUVLight::Setup_Component()
 {
     if (FAILED(__super::Setup_Component()))
@@ -172,6 +189,15 @@ HRESULT CUVLight::Setup_Component()
     RELEASE_INSTANCE(CGameInstance);
 
     m_pCurrNavigation = m_pNaviOutSideCom;
+
+    /*For.Com_RigidBody*/
+    CRigidBody::RIGIDBODYDESC RigidBodyDesc;
+    ZeroMemory(&RigidBodyDesc, sizeof(CRigidBody::RIGIDBODYDESC));
+    RigidBodyDesc.fWeight = 1.f;
+    RigidBodyDesc.pOwnerTransform = m_pTransformCom;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"), TEXT("Com_RigidBody"), (CComponent**)&m_pRigidBodyCom, &RigidBodyDesc)))
+        return E_FAIL;
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_UVLight"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -264,4 +290,5 @@ void CUVLight::Free()
     Safe_Release(m_pSpotLight);
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
+    Safe_Release(m_pRigidBodyCom);
 }

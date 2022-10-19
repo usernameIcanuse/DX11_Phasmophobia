@@ -49,7 +49,7 @@ void CSpiritBox::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
-
+    m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
     if (m_bSwitch)
     {
         m_fTimeAcc += fTimeDelta;
@@ -195,6 +195,21 @@ void CSpiritBox::Frequency_Control(_long lMouseMove)
     m_lFrequency += lMouseMove;
 }
 
+void CSpiritBox::Drop_Item(_vector vPower)
+{
+    _vector vLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+    _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+    _vector vRight = XMVector3Cross(vLook, vUp);
+    vUp = XMVector3Cross(vLook, vRight);
+
+    m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
+    m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+    m_pTransformCom->Rotation(vLook, XMConvertToRadians(180.f));
+
+    Add_Power(vPower);
+}
+
 void CSpiritBox::On_Collision_Enter(CCollider* pCollider)
 {
     if (m_bSwitch)
@@ -260,6 +275,16 @@ HRESULT CSpiritBox::Setup_Component()
         return E_FAIL;
 
     RELEASE_INSTANCE(CGameInstance);
+    m_pCurrNavigation = m_pNaviOutSideCom;
+
+    /*For.Com_RigidBody*/
+    CRigidBody::RIGIDBODYDESC RigidBodyDesc;
+    ZeroMemory(&RigidBodyDesc, sizeof(CRigidBody::RIGIDBODYDESC));
+    RigidBodyDesc.fWeight = 1.f;
+    RigidBodyDesc.pOwnerTransform = m_pTransformCom;
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"), TEXT("Com_RigidBody"), (CComponent**)&m_pRigidBodyCom, &RigidBodyDesc)))
+        return E_FAIL;
 
     /* For.Com_Model */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_SpiritBox"), TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
@@ -328,4 +353,5 @@ void CSpiritBox::Free()
 
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
+    Safe_Release(m_pRigidBodyCom);
 }

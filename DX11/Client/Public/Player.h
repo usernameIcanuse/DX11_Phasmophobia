@@ -30,7 +30,7 @@ public:
 
 public:
 	_bool	Picking_Navigation(RAY tMouseRay, _float4& vPickedPos);
-
+	_int	Get_CurrentIndex();
 
 #ifdef _DEBUG
 	CNavigation* Get_Navigation()

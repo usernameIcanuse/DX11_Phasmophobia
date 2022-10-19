@@ -33,15 +33,11 @@ public:
 	
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
+	virtual void Drop_Item(_vector vPower);
 
 private:
 	CLight*		m_pLight = nullptr;//설치 시 불 켜짐
 	CCollider* m_pAreaCom = nullptr;
-
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
-
-	CNavigation* m_pCurrNavigation = nullptr;
 
 	CItem* m_pTempDotsModel = nullptr;
 

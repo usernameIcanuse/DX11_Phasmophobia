@@ -33,16 +33,12 @@ public:
 
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
-
+	virtual void Drop_Item(_vector vPower);
 private:
 	CRenderTarget* m_pDiffuse = nullptr;
 	CRenderTarget* m_pEmissive = nullptr;
-
 	CShader* m_pShaderTexCom = nullptr;
-	CNavigation* m_pNaviHouseCom = nullptr;
-	CNavigation* m_pNaviOutSideCom = nullptr;
 
-	CNavigation* m_pCurrNavigation = nullptr;
 
 	_int		m_iDegree = 0;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//온도 출력
