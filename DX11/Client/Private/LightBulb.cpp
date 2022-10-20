@@ -202,7 +202,7 @@ void CLightBulb::MalFunction(_float fTimeDelta)
             m_fBlinkTime = 0.f;
         }
         LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
-        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.5f);
+        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.3f);
         XMStoreFloat4(&pLightDesc->vDiffuse,vLerpDiffuse);
 
     }

@@ -5,8 +5,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 
 
-float2 g_ScanLineJitter = float2(0.2f,0.5f); // (displacement, threshold)
-float2 g_VerticalJump = float2(0.5f,0.f);   // (amount, time)
+float2 g_ScanLineJitter = float2(0.2f,0.9f); // (displacement, threshold)
+float2 g_VerticalJump = float2(0.5f,0.1f);   // (amount, time)
 float g_HorizontalShake = 0.2f;
 float2 g_ColorDrift = float2(0.3f,0.1f);     // (amount, time)
 float g_Time = 3.f;
@@ -100,13 +100,13 @@ PS_OUT PS_MAIN_GLITCH(PS_IN In)
 	float shake=(nrand(g_Time,2) - 0.5) * g_HorizontalShake;
 
 	// Color drift
-	float drift = sin(jitter + g_ColorDrift.y) * g_ColorDrift.x;
+	//float drift = sin(jump*0.5f + g_ColorDrift.y) * g_ColorDrift.x;
 
-	vector src1 = g_Texture.Sample(DefaultSampler, frac(float2(u /*+ jitter*/ + shake, jump)));
-	vector src2 = g_Texture.Sample(DefaultSampler, frac(float2(u /*+ jitter*/+  shake + drift, jump)));
+	//vector src1 = g_Texture.Sample(DefaultSampler, frac(float2(u + jitter + shake, jump)));
+	//vector src2 = g_Texture.Sample(DefaultSampler, frac(float2(u + jitter +  shake + drift, jump)));
 
-	Out.vColor = vector(src1.r, src2.g, src1.b, 1);
-
+	//Out.vColor = vector(src1.r, src2.g, src1.b, 1);
+	Out.vColor = g_Texture.Sample(DefaultSampler, frac(float2(u + jitter + shake, jump)));
 	return Out;
 
 }

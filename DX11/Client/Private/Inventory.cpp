@@ -75,12 +75,21 @@ void CInventory::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
+
+	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
+	{
+		m_bLockCursor = !m_bLockCursor;
+	}
+
 	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
 	{
+	
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
-	
+
 	if (true == m_bLockCursor)
 	{
 		POINT pt;
@@ -89,11 +98,6 @@ void CInventory::Tick(_float fTimeDelta)
 		pt.y = g_iWinCY / 2;
 		ClientToScreen(g_hWnd, &pt);
 		SetCursorPos(pt.x, pt.y);
-	}
-		m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
-	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
-	{
-		m_bLockCursor = !m_bLockCursor;
 	}
 
 	if (m_vInventory[m_iIndex])
