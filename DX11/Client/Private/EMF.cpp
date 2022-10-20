@@ -105,9 +105,9 @@ void CEMF::OnEventMessage(const _tchar* pMessage)
 void CEMF::Drop_Item(_vector vPower)
 {
     _vector vLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
-    _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-    _vector vRight = XMVector3Cross(vLook, vUp);
-    vUp = XMVector3Cross(vLook, vRight);
+    _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+    _vector vUp = XMVector3Cross(vLook, vRight);
+    // vUp = XMVector3Cross(vLook, vRight);
 
     m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
     m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);

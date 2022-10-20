@@ -279,7 +279,7 @@ HRESULT CTransform::Move(_vector vAccel, _float fTimeDelta, _bool& bOnGround,CNa
 		return E_FAIL;
 
 	
-	vPosition += vAccel;
+	//vPosition += vAccel*fTimeDelta;
 	
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 

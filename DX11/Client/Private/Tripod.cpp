@@ -117,6 +117,8 @@ void	CTripod::Update_Collider()
 
 void CTripod::Drop_Item(_vector vPower)
 {
+    _float3 vScale = m_pTransformCom->Get_Scaled();
+
     _vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
     _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
     _vector vRight = XMVector3Cross(vUp, vLook);

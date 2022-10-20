@@ -82,7 +82,8 @@ void CMenuScreen::Tick(_float fTimeDelta)
 			m_pStore->Set_Enable(true);
 			break;
 
-        case 4:
+        case 4:/*Á¾·á*/
+            DestroyWindow(g_hWnd);
             break;
 
 		}

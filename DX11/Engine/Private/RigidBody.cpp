@@ -53,7 +53,7 @@ void CRigidBody::Gravity(_float ftimeDelta)
 {
 	if (true == m_bGetPower && false == m_bOnGround)
 	{
-		_vector vGravity = XMVectorSet(0.f, 1.f, 0.f, 0.f) * -9.8f*ftimeDelta;
+		_vector vGravity = XMVectorSet(0.f, 1.f, 0.f, 0.f) * -98.f*ftimeDelta*2;
 
 		_vector vCurPower = XMLoadFloat4(&m_vCurPower);
 		vCurPower += vGravity;

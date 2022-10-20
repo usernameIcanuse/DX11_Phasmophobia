@@ -266,13 +266,16 @@ void CInventory::Add_Item(CItem* pItem)
 	}
 	
 	_int	iEmptyIndex = -1;
-	for (_int i = m_iIndex; i < 3; i=(++i)%3)
+	_int	iCurIndex = m_iIndex;
+
+	for (_int i = 0; i < 3; ++i)
 	{
-		if (m_vInventory[i] == nullptr || m_vInventory[i] == pItem)
+		if (m_vInventory[iCurIndex] == nullptr || m_vInventory[iCurIndex] == pItem)
 		{
-			iEmptyIndex = i;
+			iEmptyIndex = iCurIndex;
 			break;
 		}
+		iCurIndex = (++iCurIndex) % 3;
 	}
 
 	if (-1 == iEmptyIndex)
@@ -309,7 +312,7 @@ void CInventory::Drop_Item()
 		return;
 
 	/*던지는 물리*/
-	_vector vPower = XMVector3Normalize(m_pPlayerTransform->Get_State(CTransform::STATE_LOOK));
+	_vector vPower = XMVector3Normalize(m_pPlayerTransform->Get_State(CTransform::STATE_LOOK))*50.f;
 	m_vInventory[m_iIndex]->Drop_Item(vPower);
 
 	if (m_pSpotLight == m_vInventory[m_iIndex])

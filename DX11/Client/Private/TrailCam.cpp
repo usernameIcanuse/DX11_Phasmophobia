@@ -320,13 +320,13 @@ void CTrailCam::Set_TempModel_Pos(_float3 vPosition, COLLISION_TYPE eType, _floa
 void CTrailCam::Drop_Item(_vector vPower)
 {
     _vector vLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
-    _vector vUp = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-    _vector vRight = XMVector3Cross(vLook, vUp);
-    vUp = XMVector3Cross(vLook, vRight);
-
+    _vector vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+    _vector vUp = XMVector3Cross(vLook, vRight);
+    
     m_pTransformCom->Set_State(CTransform::STATE_RIGHT, vRight);
     m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
     m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+
     m_pTransformCom->Rotation(vUp, XMConvertToRadians(180.f));
 
     Add_Power(vPower);

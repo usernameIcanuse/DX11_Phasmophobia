@@ -180,6 +180,8 @@ void CThermometer::Drop_Item(_vector vPower)
     m_pTransformCom->Set_State(CTransform::STATE_UP, vUp);
     m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 
+    m_pTransformCom->Rotation(vUp, XMConvertToRadians(90.f));
+
     Add_Power(vPower);
 }
 

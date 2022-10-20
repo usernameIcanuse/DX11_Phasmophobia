@@ -233,6 +233,7 @@ void CGhost::Attack(_float fTimeDelta)
 	else
 		m_pModelCom->Set_CurrentAnimation(0);
 
+
 	m_pModelCom->Play_Animation(fTimeDelta*1.3f);
 
 	m_fAttackTime -= fTimeDelta;
