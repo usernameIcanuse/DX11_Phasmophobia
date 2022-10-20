@@ -159,7 +159,10 @@ void CHouse::Free()
     __super::Free();
     
     Safe_Release(m_pShaderCom);
+
+#ifdef _DEBUG
     Safe_Release(m_pRendererCom);
+#endif
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);
    

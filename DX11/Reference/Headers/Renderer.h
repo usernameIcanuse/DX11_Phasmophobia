@@ -74,6 +74,13 @@ protected:
 
 	class CShader*				m_pShader = nullptr;
 	class CVIBuffer_Rect*		m_pVIBuffer = nullptr;
+////////////////post processing////////////////////
+	CShader* m_pShaderPostProcess = nullptr;
+
+	CRenderTarget* m_pRenderScreen = nullptr;
+	_float m_fTimeDelta = 0.f;
+
+	_int	m_iPassIndex = 0;
 
 #ifdef _DEBUG
 

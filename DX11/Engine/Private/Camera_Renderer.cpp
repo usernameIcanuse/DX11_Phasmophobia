@@ -404,8 +404,5 @@ void CCamera_Renderer::Free()
 	__super::Free();
 
 	Safe_Release(m_pCameraScreen);
-	Safe_Release(m_pRenderScreen);
 	Safe_Release(m_pOwnerTransform);
-
-	Safe_Release(m_pShaderPostProcess);
 }

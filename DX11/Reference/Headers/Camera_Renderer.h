@@ -45,14 +45,10 @@ private:
 	virtual void End_Environment();
 
 private:
-	CRenderTarget* m_pRenderScreen = nullptr;
 	CRenderTarget* m_pCameraScreen = nullptr;
-	CShader* m_pShaderPostProcess = nullptr;
 	class CTransform* m_pOwnerTransform = nullptr;
 
-	_float m_fTimeDelta = 0.f;
 
-	_int	m_iPassIndex = 0;
 
 public:
 	static CCamera_Renderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

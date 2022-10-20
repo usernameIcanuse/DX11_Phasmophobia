@@ -132,6 +132,7 @@ HRESULT CRenderer::Initialize_Prototype()
 		return E_FAIL;
 
 #endif // _DEBUG
+	m_pRenderScreen = CRenderTarget::Create(m_pDevice, m_pContext, ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f));
 
 	_matrix			WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width, 0.f, 0.f, 0.f);
@@ -145,6 +146,10 @@ HRESULT CRenderer::Initialize_Prototype()
 
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_Deferred.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 	if (nullptr == m_pShader)
+		return E_FAIL;
+
+	m_pShaderPostProcess = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_PostProcessing.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+	if (nullptr == m_pShaderPostProcess)
 		return E_FAIL;
 
 	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
@@ -547,6 +552,9 @@ void CRenderer::Free()
 #endif
 	Safe_Release(m_pShader);
 	Safe_Release(m_pVIBuffer);
+
+	Safe_Release(m_pRenderScreen);
+	Safe_Release(m_pShaderPostProcess);
 
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pTarget_Manager);

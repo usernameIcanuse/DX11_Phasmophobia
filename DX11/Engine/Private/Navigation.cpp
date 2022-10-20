@@ -218,8 +218,6 @@ _bool CNavigation::Picking_Mesh(RAY _tMouseRay, _float4& vPickedPos)
 	return S_OK;
 }
 
-#ifdef _DEBUG
-
 _int CNavigation::Find_PosIndex(_vector fPosition)
 {
 	if (m_Cells.empty())
@@ -238,6 +236,8 @@ _int CNavigation::Find_PosIndex(_vector fPosition)
 
 	return -1;
 }
+#ifdef _DEBUG
+
 
 HRESULT CNavigation::Add_Cell(_float3 vPointA, _float3 vPointB, _float3 vPointC)
 {
