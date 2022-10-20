@@ -16,7 +16,7 @@ public:
 
 public:
 	HRESULT Add_Renderer(_uint eListIndex,CRenderer* pRenderer);
-	HRESULT Draw_RenderGroup();
+	HRESULT Draw_RenderGroup(_float fTimeDelta);
 	void Clear_RendererIndex(_uint eListIndex);
 private:
 	list<CRenderer*>		m_RendererList[RENDERER_END];

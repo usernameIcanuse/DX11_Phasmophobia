@@ -128,10 +128,13 @@ void CCamera_Screen::MalFunction(_float fTimeDelta)
 {
 	if (false == m_bIsInHouse)
 		return;
+
+	m_pCameraRenderer->Post_Processing_Pass(1);
 }
 
 void CCamera_Screen::Normal_Operation(_float fTimeDelta)
 {
+	m_pCameraRenderer->Post_Processing_Pass(0);
 }
 
 void CCamera_Screen::Set_Position()

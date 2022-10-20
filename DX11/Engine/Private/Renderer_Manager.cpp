@@ -20,14 +20,14 @@ HRESULT CRenderer_Manager::Add_Renderer(_uint eListIndex, CRenderer* pRenderer)
 	return S_OK;
 }
 
-HRESULT CRenderer_Manager::Draw_RenderGroup()
+HRESULT CRenderer_Manager::Draw_RenderGroup(_float fTimeDelta)
 {
 	for (_uint i = 0; i < RENDERER_END; ++i)
 	{
 		for (auto& elem : m_RendererList[i])
 		{
 			if(nullptr != elem)
-				elem->Draw_RenderGroup();
+				elem->Draw_RenderGroup(fTimeDelta);
 		}
 	}
 

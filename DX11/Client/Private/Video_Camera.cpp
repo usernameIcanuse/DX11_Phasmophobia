@@ -229,6 +229,7 @@ void CVideo_Camera::On_Collision_Enter(CCollider* pCollider)
     {
         m_pCurrNavigation = m_pNaviHouseCom;
         m_bIsInHouse = true;
+        m_pCameraScreen->isIn_House(true);
     }
 }
 
@@ -246,6 +247,7 @@ void CVideo_Camera::On_Collision_Exit(CCollider* pCollider)
     {
         m_pCurrNavigation = m_pNaviOutSideCom;
         m_bIsInHouse = false;
+        m_pCameraScreen->isIn_House(false);
     }
 }
 

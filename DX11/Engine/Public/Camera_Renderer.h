@@ -21,7 +21,6 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-public:
 	virtual		HRESULT Render_Priority();
 	virtual		HRESULT Render_NonAlphaBlend();
 	virtual		HRESULT Render_Decal();
@@ -29,12 +28,13 @@ public:
 	virtual		HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
 	virtual		HRESULT Render_NonLight();
 	virtual		HRESULT Render_AlphaBlend();
-	virtual		HRESULT Render_UI();
-	virtual HRESULT Draw_RenderGroup();
-public:
-	ID3D11ShaderResourceView* Get_SRV();
+	virtual		HRESULT Post_Processing(_float fTimeDelta);
 
 	virtual void	Clear_RenderTarget() override;
+	virtual HRESULT Draw_RenderGroup(_float fTimeDelta);
+public:
+	ID3D11ShaderResourceView* Get_SRV();
+	void	Post_Processing_Pass(_uint iPassIndex);
 
 
 private:
@@ -45,8 +45,14 @@ private:
 	virtual void End_Environment();
 
 private:
+	CRenderTarget* m_pRenderScreen = nullptr;
 	CRenderTarget* m_pCameraScreen = nullptr;
+	CShader* m_pShaderPostProcess = nullptr;
 	class CTransform* m_pOwnerTransform = nullptr;
+
+	_float m_fTimeDelta = 0.f;
+
+	_int	m_iPassIndex = 0;
 
 public:
 	static CCamera_Renderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

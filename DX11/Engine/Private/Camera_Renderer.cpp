@@ -29,6 +29,7 @@ HRESULT CCamera_Renderer::Initialize(void* pArg)
 
 	m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
 
+	m_pRenderScreen = CRenderTarget::Create(m_pDevice, m_pContext, ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f));
 	m_pCameraScreen = CRenderTarget::Create(m_pDevice, m_pContext, ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f,0.f,0.f,1.f));
 	
 	if (nullptr != pArg)
@@ -51,6 +52,10 @@ HRESULT CCamera_Renderer::Initialize(void* pArg)
 	if (nullptr == m_pShader)
 		return E_FAIL;
 
+	m_pShaderPostProcess = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Shaderfiles/Shader_PostProcessing.hlsl"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+	if (nullptr == m_pShaderPostProcess)
+		return E_FAIL;
+
 	m_pVIBuffer = CVIBuffer_Rect::Create(m_pDevice, m_pContext);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
@@ -58,7 +63,7 @@ HRESULT CCamera_Renderer::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CCamera_Renderer::Draw_RenderGroup()
+HRESULT CCamera_Renderer::Draw_RenderGroup(_float fTimeDelta)
 {
 	Set_Environment();
 
@@ -76,7 +81,7 @@ HRESULT CCamera_Renderer::Draw_RenderGroup()
 		return E_FAIL;
 	if (FAILED(Render_AlphaBlend()))
 		return E_FAIL;
-	if (FAILED(Render_UI()))
+	if (FAILED(Post_Processing(fTimeDelta)))
 		return E_FAIL;
 
 	End_Environment();
@@ -261,23 +266,43 @@ HRESULT CCamera_Renderer::Render_AlphaBlend()
 	return S_OK;
 }
 
-HRESULT CCamera_Renderer::Render_UI()
+HRESULT CCamera_Renderer::Post_Processing(_float fTimeDelta)
 {
-	for (auto& pGameObject : m_RenderObjects[RENDER_UI])
-	{
-		if (nullptr != pGameObject)
-			pGameObject->Render();
+	m_pTarget_Manager->End_MRT_For_Texture(m_pContext, m_pCameraScreen);
 
-		Safe_Release(pGameObject);
+	if (FAILED(m_pShaderPostProcess->Set_ShaderResourceView("g_Texture", m_pRenderScreen->Get_SRV())))
+		return E_FAIL;
+	static _float fTimeAcc = 0.f;
+	fTimeAcc += fTimeDelta;
+	if (fTimeAcc > 0.05f)
+	{
+		fTimeAcc = 0.f;
+		m_fTimeDelta = fTimeDelta;
 	}
-	m_RenderObjects[RENDER_UI].clear();
+	if (FAILED(m_pShaderPostProcess->Set_RawValue("g_Time", &m_fTimeDelta, sizeof(_float))))
+		return E_FAIL;
+
+	m_pShaderPostProcess->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShaderPostProcess->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShaderPostProcess->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShaderPostProcess->Begin(m_iPassIndex);
+
+	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
+	m_pVIBuffer->Render();
 
 	return S_OK;
 }
 
+
 ID3D11ShaderResourceView* CCamera_Renderer::Get_SRV()
 {
 	return m_pCameraScreen->Get_SRV();
+}
+
+void CCamera_Renderer::Post_Processing_Pass(_uint iPassIndex)
+{
+	m_iPassIndex = iPassIndex;
 }
 
 void CCamera_Renderer::Clear_RenderTarget()
@@ -296,7 +321,7 @@ HRESULT CCamera_Renderer::Begin_RenderTarget(const _tchar* _pMRTTag)
 
 HRESULT CCamera_Renderer::End_RenderTarget()
 {
-	if (FAILED(m_pTarget_Manager->End_MRT_For_Texture(m_pContext, m_pCameraScreen)))
+	if (FAILED(m_pTarget_Manager->End_MRT_For_Texture(m_pContext, m_pRenderScreen)))
 		return E_FAIL;
 
 	return S_OK;
@@ -306,10 +331,11 @@ void CCamera_Renderer::Set_Environment()
 {
 	m_pTarget_Manager->Store_BackBuffer(m_pContext);
 
+	m_pRenderScreen->Clear();
 	m_pCameraScreen->Clear();
 	GAMEINSTANCE->Clear_DepthStencil_View();
 
-	if (FAILED(m_pTarget_Manager->End_MRT_For_Texture(m_pContext, m_pCameraScreen)))
+	if (FAILED(m_pTarget_Manager->End_MRT_For_Texture(m_pContext, m_pRenderScreen)))
 		return;
 
 	_matrix		ViewMatrix= m_pOwnerTransform->Get_WorldMatrix();
@@ -378,5 +404,8 @@ void CCamera_Renderer::Free()
 	__super::Free();
 
 	Safe_Release(m_pCameraScreen);
+	Safe_Release(m_pRenderScreen);
 	Safe_Release(m_pOwnerTransform);
+
+	Safe_Release(m_pShaderPostProcess);
 }

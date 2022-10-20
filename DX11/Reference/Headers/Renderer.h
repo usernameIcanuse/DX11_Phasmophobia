@@ -52,7 +52,7 @@ protected:
 	virtual void End_Environment() {};
 
 public:
-	virtual HRESULT Draw_RenderGroup();
+	virtual HRESULT Draw_RenderGroup(_float fTimeDelta);
 
 public:
 	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex,RENDERFONT& RenderFont, const _tchar* pTexttag);
@@ -90,6 +90,7 @@ public:
 	virtual HRESULT Render_NonLight();
 	virtual HRESULT Render_AlphaBlend();
 	virtual HRESULT Render_UI();
+	virtual HRESULT Post_Processing(_float fTimeDelta) { return S_OK; }
 
 public:
 	ID3D11ShaderResourceView* Get_SRV(const _tchar* pTargetTag);

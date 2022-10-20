@@ -101,13 +101,13 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CGameInstance::Render_Engine()
+HRESULT CGameInstance::Render_Engine(_float fTimeDelta)
 {
 	
 	if (nullptr == m_pRenderer_Manager)
 		return E_FAIL;
 
-	m_pRenderer_Manager->Draw_RenderGroup();
+	m_pRenderer_Manager->Draw_RenderGroup(fTimeDelta);
 
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
@@ -128,12 +128,12 @@ HRESULT CGameInstance::Add_Renderer(_uint eListIndex, CRenderer* pRenderer)
 	return m_pRenderer_Manager->Add_Renderer(eListIndex,pRenderer);
 }
 
-HRESULT CGameInstance::Draw_RenderGroup()
+HRESULT CGameInstance::Draw_RenderGroup(_float fTimeDelta)
 {
 	if (nullptr == m_pRenderer_Manager)
 		return E_FAIL;
 
-	return m_pRenderer_Manager->Draw_RenderGroup();
+	return m_pRenderer_Manager->Draw_RenderGroup(fTimeDelta);
 }
 
 void CGameInstance::Clear_RendererIndex(_uint eListIndex)

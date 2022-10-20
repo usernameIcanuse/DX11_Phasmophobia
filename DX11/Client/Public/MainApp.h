@@ -38,6 +38,7 @@ private:
 	_tchar					m_szFPS[MAX_PATH] = TEXT("");
 	_float					m_fTimeAcc = 0.f;
 #endif
+	_float					m_fTimeDelta;
 
 public:
 	static CMainApp* Create();

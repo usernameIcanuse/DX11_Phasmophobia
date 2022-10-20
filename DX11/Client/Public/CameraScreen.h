@@ -32,8 +32,13 @@ public:
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 
+
 public:
 	void Set_Position();
+	void isIn_House(_bool _bIsInHouse)
+	{
+		m_bIsInHouse = _bIsInHouse;
+	}
 	ID3D11ShaderResourceView* Get_SRV();
 	
 private:

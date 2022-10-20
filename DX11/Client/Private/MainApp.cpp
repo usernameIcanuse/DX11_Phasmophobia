@@ -59,6 +59,7 @@ void CMainApp::Tick(float fTimeDelta)
 	m_fTimeAcc += fTimeDelta;
 #endif
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+	m_fTimeDelta = fTimeDelta;
 	//m_pImguiMgr->Tick(fTimeDelta);
 }
 
@@ -70,7 +71,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 	
-	m_pGameInstance->Render_Engine();
+	m_pGameInstance->Render_Engine(m_fTimeDelta);
 #ifdef _DEBUG
 
 	++m_iNumRender;

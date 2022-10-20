@@ -33,7 +33,7 @@ public:
 public: /* 엔진 라이브럴를 사용할때 필요한 초기화 과정으르 거칠거야. */
 	HRESULT Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut);
 	HRESULT Tick_Engine(_float fTimeDelta);
-	HRESULT Render_Engine();
+	HRESULT Render_Engine(_float fTimeDelta);
 	HRESULT Clear(_uint iLevelID);
 
 public: /* For.Graphic_Device */	
@@ -113,7 +113,7 @@ public:/*For.Game_Manager*/
 
 public:/* For.Renderer_Manager*/
 	HRESULT Add_Renderer(_uint eListIndex, CRenderer* pRenderer);
-	HRESULT Draw_RenderGroup();
+	HRESULT Draw_RenderGroup(_float fTimeDelta);
 	void Clear_RendererIndex(_uint eListIndex);
 
 

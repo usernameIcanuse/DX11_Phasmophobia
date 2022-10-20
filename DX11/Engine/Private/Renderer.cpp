@@ -197,7 +197,7 @@ void CRenderer::Set_Environment()
 
 }
 
-HRESULT CRenderer::Draw_RenderGroup()
+HRESULT CRenderer::Draw_RenderGroup(_float fTimeDelta)
 {
 	Set_Environment();
 
