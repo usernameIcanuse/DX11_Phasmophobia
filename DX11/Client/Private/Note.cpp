@@ -224,8 +224,8 @@ HRESULT CNote::Setup_Component()
         return E_FAIL;
 
     /* For.Com_ModelOpen */
-  /*  if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Note_Open"), TEXT("Com_ModelOpen"), (CComponent**)&m_pNoteOpenModel)))
-        return E_FAIL;*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Model_Note_Open"), TEXT("Com_ModelOpen"), (CComponent**)&m_pNoteOpenModel)))
+        return E_FAIL;
 
     /* For.Com_OBB*/
     CCollider::COLLIDERDESC			ColliderDesc;
