@@ -21,6 +21,8 @@ float		g_fAttenuation2;
 float		g_fTheta;
 float		g_fPhi;
 
+matrix		g_DotsView;
+matrix		g_DotsProj;
 
 
 vector		g_vCamPosition;
@@ -37,6 +39,8 @@ texture2D	g_EmissiveTexture;
 texture2D	g_ShadeTexture;
 texture2D	g_UVLightTexture;
 texture2D	g_Texture;
+
+textureCUBE g_DotsTexture;
 
 sampler DefaultSampler = sampler_state
 {
@@ -132,6 +136,8 @@ float CutOff(vector vPosToLight)
 
 	return fSpot;
 }
+
+
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
@@ -231,6 +237,61 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	return Out;
 }
 
+PS_OUT_LIGHT PS_MAIN_LIGHT_DOTS(PS_IN In)
+{
+	PS_OUT_LIGHT		Out = (PS_OUT_LIGHT)1;
+
+	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
+	vector			vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	float			fViewZ = vDepthDesc.y * g_fFar;
+	vector			vDiffuseDesc = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	/* 0 -> -1, 1 -> 1*/
+	vector			vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+
+	vector			vWorldPos;
+
+	/* 투영스페이스 상의 위치르 ㄹ구한다. */
+	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+	vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+	vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+	vWorldPos.z = vDepthDesc.x;
+	vWorldPos.w = 1.0f;
+
+	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+	vWorldPos *= fViewZ;
+
+	/* 뷰스페이스 상  위치를 구한다. */
+	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+
+	/* 월드페이스 상  위치를 구한다. */
+	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+
+	vector vPosToLight = g_vLightPos - vWorldPos;
+	float3 vCubeTex = -1.f*vPosToLight.xyz;
+	
+	vector			vDotsColor = g_DotsTexture.Sample(DefaultSampler, normalize(vCubeTex));
+	if (0.1f > vDotsColor.a)
+		discard;
+
+	float fAtt = Attenuation(vPosToLight);
+
+	Out.vShade = g_vLightDiffuse * saturate(saturate(dot(normalize(vPosToLight), vNormal)) + (g_vLightAmbient * vDiffuseDesc)) * fAtt;
+	Out.vShade.a = 1.f;
+
+	vector			vReflect = reflect(normalize(vPosToLight), vNormal);
+
+	vector			vLook = normalize(vWorldPos - g_vCamPosition);
+
+	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 30.f) * fAtt;
+	Out.vSpecular.a = 0.f;
+
+
+	return Out;
+}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
 {
@@ -455,6 +516,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_SPOTLIGHT_STENCIL();
+	}
+
+	pass Light_DotsProjecter
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_LIGHT_DOTS();
 	}
 
 	pass Blend

@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CCollider;
 class CLight;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -38,6 +39,7 @@ public:
 private:
 	CLight*		m_pLight = nullptr;//설치 시 불 켜짐
 	CCollider* m_pAreaCom = nullptr;
+	CTexture* m_pDotsTexture = nullptr;
 
 	CItem* m_pTempDotsModel = nullptr;
 

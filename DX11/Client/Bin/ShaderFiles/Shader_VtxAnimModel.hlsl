@@ -6,6 +6,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
 
+vector		g_vCamPosition;
+
 struct		tagBoneMatrix
 {
 	matrix		BoneMatrices[256];
@@ -141,6 +143,7 @@ struct PS_OUT
 	vector		vDepth : SV_TARGET2;
 };
 
+
 PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -179,6 +182,38 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	return Out;
 }
 
+
+PS_OUT PS_MAIN_DEPTH(PS_IN_NORMAL In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	/* 0 ~ 1 */
+	float3		vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+	/* -1 ~ 1 */
+	vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+	vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+	
+	vector vCamToPos = g_vCamPosition- In.vWorldPos;
+
+	float dotValue = dot(normalize(vCamToPos), vPixelNormal);
+
+	if (0.05f > dotValue && 0.f < dotValue)
+	{
+		Out.vDiffuse = vector(1.f, 1.f, 1.f, 0.5f);
+		Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+		Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+	}
+	else
+		discard;
+
+	return Out;
+}
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -200,5 +235,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+	}
+
+	pass DepthNormalMapping
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DEPTH();
 	}
 }

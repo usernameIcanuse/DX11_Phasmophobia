@@ -299,6 +299,13 @@ HRESULT CDotsProjecter::Setup_Component()
         return E_FAIL;
 
     m_pAreaCom->Set_Enable(false);
+
+    /* For.Com_Texture*/
+
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DotsProjecter"), TEXT("Com_Texture"), (CComponent**)&m_pDotsTexture)))
+        return E_FAIL;
+
+
    
 
     return S_OK;
@@ -325,10 +332,12 @@ HRESULT CDotsProjecter::Setup_Light()
     LightDesc.vAmbient = _float4(0.f, 1.f, 0.f, 1.f);
     LightDesc.vSpecular = _float4(0.f, 1.f, 0.f, 1.f);
 
-    LightDesc.fRange = 20.f;
+    LightDesc.fRange = 100.f;
     LightDesc.fAttenuation0 = 1.f;
-    LightDesc.fAttenuation1 = 0.22f;
-    LightDesc.fAttenuation2 = 0.20f;
+    LightDesc.fAttenuation1 = 0.045f;
+    LightDesc.fAttenuation2 = 0.0075f;
+
+    LightDesc.bDotsProjecter = true;
 
     _vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 
@@ -337,6 +346,8 @@ HRESULT CDotsProjecter::Setup_Light()
     m_pLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
     if (nullptr == m_pLight)
         return E_FAIL;
+
+    m_pLight->Set_DotsTexture(m_pDotsTexture);
 
     return S_OK;
 }
@@ -378,4 +389,6 @@ void CDotsProjecter::Free()
     Safe_Release(m_pNaviOutSideCom);
 
     Safe_Release(m_pRigidBodyCom);
+
+    Safe_Release(m_pDotsTexture);
 }

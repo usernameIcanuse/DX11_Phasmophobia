@@ -1,6 +1,8 @@
 #include "..\Public\Light.h"
 #include "Shader.h"
 #include "VIBuffer_Rect.h"
+#include "RenderTarget.h"
+#include "Texture.h"
 
 CLight::CLight(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -13,6 +15,19 @@ CLight::CLight(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 HRESULT CLight::Initialize(const LIGHTDESC & LightDesc)
 {
 	m_LightDesc = LightDesc;
+
+	//D3D11_VIEWPORT			ViewPortDesc;
+	//ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+
+	//_uint		iNumViewports = 1;
+
+	//m_pContext->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	//if (m_LightDesc.eType == LIGHTDESC::TYPE_POINT)
+	//{
+	//	for(_int i =0;i<6;++i)
+	//		m_pDepthBuffer[i] = CRenderTarget::Create(m_pDevice, m_pContext, ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 1.f));
+	//}
 
 	return S_OK;
 }
@@ -33,6 +48,14 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 	else if(LIGHTDESC::TYPE_POINT == m_LightDesc.eType)
 	{
 		iPassIndex = 2;
+		//if (true == m_LightDesc.bDotsProjecter)
+		//{
+		//	iPassIndex = 5;
+		//	if (FAILED(m_pDotsTexture->Set_ShaderResourceView(pShader, "g_DotsTexture")))
+		//		return E_FAIL;
+
+	
+		//}
 
 		if (FAILED(pShader->Set_RawValue("g_vLightPos", &m_LightDesc.vPosition, sizeof(_float4))))
 			return E_FAIL;
@@ -129,4 +152,10 @@ void CLight::Free()
 {
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
+
+	/*if (m_LightDesc.eType == LIGHTDESC::TYPE_POINT)
+	{
+		for(_int i=0;i<6;++i)
+			Safe_Release(m_pDepthBuffer);
+	}*/
 }

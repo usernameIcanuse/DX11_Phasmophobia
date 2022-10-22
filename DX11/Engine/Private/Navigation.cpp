@@ -224,8 +224,6 @@ _int CNavigation::Find_PosIndex(_vector fPosition)
 		return false;
 	
 	_int iCellIndex = 0;
-//그냥 변수 채우는 용도
-
 	for (auto& elem : m_Cells)
 	{
 		if (true == elem->isIn(fPosition))

@@ -59,7 +59,7 @@ HRESULT CGhost::Initialize(void* pArg)
 void CGhost::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
+	static _float fTime = -1.f;
 	m_fTime += fTimeDelta;
 	m_fUpdatePointTime -= fTimeDelta;
 	
@@ -67,6 +67,14 @@ void CGhost::Tick(_float fTimeDelta)
 
 	m_pOBBCom->Update(matWorld);
 
+	if (GAMEINSTANCE->Is_KeyState(KEY::F3, KEY_STATE::TAP))
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, m_pSpawnPoint->Get_SpawnPoint());
+		fTime = 5.f;
+	}
+	fTime -= fTimeDelta;
+	if(0.f < fTime)
+		DotsProjecter(fTimeDelta);
 }
 
 void CGhost::LateTick(_float fTimeDelta)
@@ -89,7 +97,7 @@ HRESULT CGhost::Render()
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		_int	iPassIndex = 1;
+		_int	iPassIndex = m_iPassIndex;
 
 		if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
@@ -124,6 +132,17 @@ HRESULT CGhost::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMat
 	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
+	if (2 == m_iPassIndex)
+	{
+		_matrix ViewMatrix = XMLoadFloat4x4(pViewMatrix);
+		_matrix ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrix);
+		_float4 vCamPositoin;
+		XMStoreFloat4(&vCamPositoin, ViewMatrixInv.r[3]);
+
+		if (FAILED(m_pShaderCom->Set_RawValue("g_vCamPosition",&vCamPositoin,sizeof(_float4))))
+			return E_FAIL;
+	}
+
 	return S_OK;
 
 }
@@ -144,7 +163,7 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 		
 		m_fEventTime = 10.f + m_pSpawnPoint->Get_Anger() / 6;
 		m_EventFunc = std::bind(&CGhost::Light_Attack, std::placeholders::_1, std::placeholders::_2);
-	
+		m_iPassIndex = 1;
 		m_pModelCom->Set_CurrentAnimation(0);
 
 	}
@@ -159,7 +178,7 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 		m_EventFunc = std::bind(&CGhost::Attack, std::placeholders::_1, std::placeholders::_2);
 	
 		m_pModelCom->Set_CurrentAnimation(0);
-
+		m_iPassIndex = 1;
 		m_fRenderModel = 0.5f;
 		m_fHideModel = 1.f;
 	}
@@ -259,6 +278,7 @@ void CGhost::DotsProjecter(_float fTimeDelta)
 {
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
+	m_iPassIndex = 2;
 	m_pModelCom->Play_Animation(fTimeDelta * 2.f);
 	m_pBehavior->Move(fTimeDelta);
 }

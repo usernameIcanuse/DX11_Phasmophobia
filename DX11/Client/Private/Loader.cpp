@@ -698,6 +698,21 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/HandPrint/HandPrint1.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DotsProjecter"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Dots/Dots.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_XIcon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_XIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/X Icon.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GhostIcon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_GhostIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/SpiritBox_Ghost.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Black*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Black"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Black.png"), 1))))

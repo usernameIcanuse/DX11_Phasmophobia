@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CRenderTarget;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -39,6 +40,9 @@ private:
 	CRenderTarget*	m_pDiffuse= nullptr;
 	CRenderTarget* m_pEmissive = nullptr;
 	CShader* m_pShaderTexCom = nullptr;
+
+	CTexture* m_pXIcon = nullptr;
+	CTexture* m_pGhostIcon = nullptr;
 
 
 	_long		m_lFrequency = 100;

@@ -359,4 +359,7 @@ void CSpiritBox::Free()
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
     Safe_Release(m_pRigidBodyCom);
+
+    Safe_Release(m_pXIcon);
+    Safe_Release(m_pGhostIcon);
 }

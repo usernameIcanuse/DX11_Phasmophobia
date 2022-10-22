@@ -21,14 +21,8 @@ public:
 	}RENDERFONT;
 
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN,RENDER_NONALPHABLEND, RENDER_DECAL,RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
-	/* Emissive를 위한 렌더타겟 하나 더 만들어서 NONALPHABLEND에서 칠하고 BLEND에서 같이 섞어주기*/
-	/*
-	* 텍스처에 그려야 하는 경우, 텍스처 크기 2048 2048로 같음 근데 다른 사이즈가 있을 수 있으니까
-	* 기본 텍스처 렌더러 만들 때, 렌더타겟 만들고 지움
-	* 렌더 돌기 전에 mainapp에서 m_pRenderer->Render_On_Texture() <- 작업을 해줌
-	* 
-	*/
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_TERRAIN, RENDER_NONALPHABLEND, RENDER_DECAL, RENDER_NONLIGHT, RENDER_ALPHABLEND, RENDER_UI, RENDER_END };
+
 protected:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CRenderer(const CRenderer& rhs);

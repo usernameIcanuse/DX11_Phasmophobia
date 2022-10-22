@@ -60,6 +60,7 @@ private:
 
 	CGhost_Behavior* m_pBehavior = nullptr;
 
+	_int			m_iPassIndex = 0;
 
 #ifdef _DEBUG
 	_tchar		m_szEvent[MAX_PATH] = TEXT("");//이벤트 출력

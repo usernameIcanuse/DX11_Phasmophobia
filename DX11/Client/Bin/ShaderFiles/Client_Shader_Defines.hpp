@@ -6,6 +6,7 @@ sampler PointSampler = sampler_state
 	AddressV = wrap;
 };
 
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;

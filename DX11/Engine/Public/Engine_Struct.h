@@ -49,6 +49,7 @@ namespace Engine
 		float			fPhi;
 
 		_bool			bUVLight;
+		_bool			bDotsProjecter;
 
 	}LIGHTDESC;
 

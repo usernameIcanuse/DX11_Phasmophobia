@@ -399,7 +399,7 @@ HRESULT CRenderer::Render_Blend()
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pShader->Begin(5);
+	m_pShader->Begin(6);
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
 	m_pVIBuffer->Render();
