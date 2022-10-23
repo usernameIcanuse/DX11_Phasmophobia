@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "..\Public\UIIcon.h"
+#include "..\Public\Icon.h"
 
 #include "GameInstance.h"
 
-CUIIcon::CUIIcon(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
-	: CIcon(pDevice, pContext)
+CIcon::CIcon(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+	: CGameObject(pDevice, pContext)
 {
 }
 
-CUIIcon::CUIIcon(const CUIIcon& rhs)
-	: CIcon(rhs)
+CIcon::CIcon(const CIcon& rhs)
+	: CGameObject(rhs)
 {
 }
 
-HRESULT CUIIcon::Initialize_Prototype()
+HRESULT CIcon::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CUIIcon::Initialize(void * pArg)
+HRESULT CIcon::Initialize(void * pArg)
 {
 
 
@@ -34,35 +34,33 @@ HRESULT CUIIcon::Initialize(void * pArg)
   	return S_OK;
 }
 
-void CUIIcon::Tick(_float fTimeDelta)
+void CIcon::Tick(_float fTimeDelta)
 {
-	m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
-	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
-	RECT rect{ m_fX - (m_fSizeX * 0.5f), m_fY - (m_fSizeY * 0.5f),m_fX + (m_fSizeX * 0.5f), m_fY + (m_fSizeY * 0.5f) };
-	POINT pt{};
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
 	m_bSelected = false;
 	m_bOnMouse = false;
 
-	if (PtInRect(&rect, pt))
+	if (false == m_bLock)
 	{
-		m_bOnMouse = true;
-		if (CGameInstance::Get_Instance()->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+		_float4 fPosition;
+		if (CMath_Utility::Picking(m_pVIBufferCom,m_pTransformCom,&fPosition))
 		{
-			m_bSelected = true;
+			m_bOnMouse = true;
+			if (CGameInstance::Get_Instance()->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
+			{
+				m_bSelected = true;
+			}
 		}
 	}
 	
 }
 
-void CUIIcon::LateTick(_float fTimeDelta)
+void CIcon::LateTick(_float fTimeDelta)
 {
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 }
 
-HRESULT CUIIcon::Render()
+HRESULT CIcon::Render()
 {	
 	m_pShaderCom->Begin(1);
 
@@ -71,13 +69,24 @@ HRESULT CUIIcon::Render()
 	return S_OK;
 }
 
-void CUIIcon::Set_Enable(_bool _bEnable)
+void CIcon::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 }
 
+void CIcon::Set_Transform(_matrix WorldMat)
+{
+	m_pTransformCom->Set_WorldMatrix(WorldMat);
+}
 
-HRESULT CUIIcon::SetUp_Components()
+void CIcon::Set_Texture(_uint iLevelIndex,const _tchar* _pPrototypeTag)
+{
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(iLevelIndex, _pPrototypeTag, TEXT("Com_Texture "), (CComponent**)&m_pTextureCom)))
+		return;
+}
+
+HRESULT CIcon::SetUp_Components()
 {
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
@@ -95,7 +104,7 @@ HRESULT CUIIcon::SetUp_Components()
 	return S_OK;
 }
 
-HRESULT CUIIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
+HRESULT CIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pVIBufferCom)
@@ -103,9 +112,9 @@ HRESULT CUIIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMa
 
 	if (FAILED(m_pTransformCom->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", &XMMatrixIdentity(), sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ViewMatrix", pViewMatrix, sizeof(_float4x4))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
+	if (FAILED(m_pShaderCom->Set_RawValue("g_ProjMatrix", pProjMatrix, sizeof(_float4x4))))
 		return E_FAIL;
 
 
@@ -119,33 +128,33 @@ HRESULT CUIIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMa
 	return S_OK;
 }
 
-CUIIcon * CUIIcon::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
+CIcon * CIcon::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 {
-	CUIIcon*		pInstance = new CUIIcon(pDevice, pContext);
+	CIcon*		pInstance = new CIcon(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CUIIcon");		
+		MSG_BOX("Failed to Created : CIcon");		
 		Safe_Release(pInstance);
 	}
 
 	return pInstance; 
 }
 
-CGameObject * CUIIcon::Clone(void * pArg)
+CGameObject * CIcon::Clone(void * pArg)
 {
-	CUIIcon*		pInstance = new CUIIcon(*this);
+	CIcon*		pInstance = new CIcon(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CUIIcon");
+		MSG_BOX("Failed to Cloned : CIcon");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CUIIcon::Free()
+void CIcon::Free()
 {
 	__super::Free();
 

@@ -98,6 +98,7 @@ void CInventory::Tick(_float fTimeDelta)
 		pt.y = g_iWinCY / 2;
 		ClientToScreen(g_hWnd, &pt);
 		SetCursorPos(pt.x, pt.y);
+
 	}
 
 	if (m_vInventory[m_iIndex])

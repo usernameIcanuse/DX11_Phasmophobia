@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Icon.h"
 
 BEGIN(Engine)
 class CShader;
@@ -12,7 +12,7 @@ END
 
 BEGIN(Client)
 
-class CUIIcon final : public CGameObject
+class CUIIcon final : public CIcon
 {
 private:
 	CUIIcon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -35,35 +35,6 @@ private:
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-public:
-	void	Set_IconPosition(_float _fX, _float _fY, _float _fSizeX, _float _fSizeY)
-	{
-		m_fX = _fX;
-		m_fY = _fY;
-		m_fSizeX = _fSizeX;
-		m_fSizeY = _fSizeY;
-	}
-
-	void Set_Transform(_matrix WorldMat);
-
-	_bool	Selected()
-	{
-		return m_bSelected;
-	}
-
-	void	Set_Texture(const _tchar* _pPrototypeTag);
-	void	Set_Lock(_bool bLock)
-	{
-		m_bLock = bLock;
-	}
-
-private:
-	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4		m_ProjMatrix;
-
-	_bool			m_bSelected = false;
-	_bool			m_bOnMouse = false;
-	_bool			m_bLock = true;
 
 private:
 	HRESULT SetUp_Components();

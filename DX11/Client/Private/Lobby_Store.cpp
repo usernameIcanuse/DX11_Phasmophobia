@@ -135,34 +135,34 @@ HRESULT CLobby_Store::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	CUIIcon* pIcon;
+	CIcon* pIcon;
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//의뢰 선택하기
 	pIcon->Set_IconPosition(310.f, 560.f, 260.f, 70.f);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Large_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//추가
 	pIcon->Set_IconPosition(760.f, 475.f, 150.f, 70.f);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//구입
 	pIcon->Set_IconPosition(940.f, 475.f, 150.f, 70.f);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//떠나기
 	pIcon->Set_IconPosition(955.f, 555.f, 170.f, 60.f);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	RELEASE_INSTANCE(CGameInstance);

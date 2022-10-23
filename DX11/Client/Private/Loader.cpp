@@ -20,6 +20,10 @@
 
 #include "MenuScreen.h"
 
+#include "Main.h"
+#include "Journal.h"
+#include "Evidence.h"
+
 #include "Ghost.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
@@ -166,6 +170,26 @@ HRESULT CLoader::Loading_ForStaticProps()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
+
+	/*For. Prototype_GameObject_UIMain*/
+	if(FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIMain"),
+		CMain::Create(m_pDevice,m_pContext))))
+		return E_FAIL;
+
+	/*For. Prototype_GameObject_UIEvidence*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIEvidence"),
+		CEvidence::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/*For. Prototype_GameObject_UIIcon*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UIIcon"),
+		CUIIcon::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/*For. Prototype_GameObject_Journal*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Journal"),
+		CJournal::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	_matrix TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationX(XMConvertToRadians(270.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixTranslation(0.f, 0.5f, 0.f);
 
 	/*For. Prototype_Component_Model_DotsProjecter*/
@@ -295,6 +319,25 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"), VTXMODEL_DECLARATION::Element, VTXMODEL_DECLARATION::iNumElements))))
 		return E_FAIL;
 
+
+	/*For.Prototype_Component_Texture_Journal_Main*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Main"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_main.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_Evidence*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Evidence"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_evidence.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_Photo*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Photo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_photo.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_Icon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_icon.png")))))
+		return E_FAIL;
+
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -379,8 +422,9 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		return E_FAIL;
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
-		CUIIcon::Create(m_pDevice, m_pContext))))
+		CIcon::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
+
 
 
 #pragma endregion
@@ -676,6 +720,20 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	/* For. Prototype_GameObject_LightBulb*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LightBulb"),
 		CLightBulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For. Prototype_GameObject_Journal*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Journal"),
+		CJournal::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Main*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Main"),
+		CMain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Evidence*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Evidence"),
+		CEvidence::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 

@@ -11,7 +11,7 @@ class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
-class CUIIcon;
+class CIcon;
 
 
 class CLobby_Main final : public CUIBackground

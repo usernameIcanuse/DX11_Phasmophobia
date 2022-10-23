@@ -183,6 +183,7 @@
     <ClInclude Include="..\Public\Door.h" />
     <ClInclude Include="..\Public\DotsProjecter.h" />
     <ClInclude Include="..\Public\EMF.h" />
+    <ClInclude Include="..\Public\Evidence.h" />
     <ClInclude Include="..\Public\FirstLoading.h" />
     <ClInclude Include="..\Public\FlashLight.h" />
     <ClInclude Include="..\Public\Ghost.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="..\Public\Ghost_SpawnPoint.h" />
     <ClInclude Include="..\Public\Ghost_Status.h" />
     <ClInclude Include="..\Public\HandPrint.h" />
+    <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\Journal.h" />
     <ClInclude Include="..\Public\KeyBoard.h" />
@@ -241,6 +243,7 @@
     <ClInclude Include="..\Public\Lobby_WaitingRoom.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\Object_Collider.h" />
+    <ClInclude Include="..\Public\Main.h" />
     <ClInclude Include="..\Public\Photo_Camera.h" />
     <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Point.h" />
@@ -259,7 +262,7 @@
     <ClInclude Include="..\Public\Truck_Inside.h" />
     <ClInclude Include="..\Public\Tutorial.h" />
     <ClInclude Include="..\Public\UIBackground.h" />
-    <ClInclude Include="..\Public\UIIcon.h" />
+    <ClInclude Include="..\Public\Icon.h" />
     <ClInclude Include="..\Public\UVLight.h" />
     <ClInclude Include="..\Public\Video_Camera.h" />
     <ClInclude Include="..\Public\Wall_Collider.h" />
@@ -276,11 +279,13 @@
     <ClCompile Include="..\Private\Camera_Fixed.cpp" />
     <ClCompile Include="..\Private\Computer.cpp" />
     <ClCompile Include="..\Private\Door.cpp" />
+    <ClCompile Include="..\Private\Evidence.cpp" />
     <ClCompile Include="..\Private\FirstLoading.cpp" />
     <ClCompile Include="..\Private\Ghost_Behavior.cpp" />
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\HandPrint.cpp" />
+    <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\Journal.cpp" />
     <ClCompile Include="..\Private\KeyBoard.cpp" />
     <ClCompile Include="..\Private\LightBulb.cpp" />
@@ -333,6 +338,7 @@
     <ClCompile Include="..\Private\Lobby_Store.cpp" />
     <ClCompile Include="..\Private\Lobby_WaitingRoom.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
+    <ClCompile Include="..\Private\Main.cpp" />
     <ClCompile Include="..\Private\Photo_Camera.cpp" />
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Point.cpp" />
@@ -351,7 +357,7 @@
     <ClCompile Include="..\Private\Truck_Inside.cpp" />
     <ClCompile Include="..\Private\Tutorial.cpp" />
     <ClCompile Include="..\Private\UIBackground.cpp" />
-    <ClCompile Include="..\Private\UIIcon.cpp" />
+    <ClCompile Include="..\Private\Icon.cpp" />
     <ClCompile Include="..\Private\UVLight.cpp" />
     <ClCompile Include="..\Private\Video_Camera.cpp" />
     <ClCompile Include="..\Private\Wall_Collider.cpp" />

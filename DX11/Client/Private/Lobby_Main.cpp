@@ -127,7 +127,7 @@ HRESULT CLobby_Main::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	
-	CUIIcon* pIcon;
+	CIcon* pIcon;
 
 	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
 
@@ -141,7 +141,7 @@ HRESULT CLobby_Main::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2]*0.01f + IconWorld.r[1]*1.71f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
@@ -154,7 +154,7 @@ HRESULT CLobby_Main::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1]*0.65f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
@@ -167,7 +167,7 @@ HRESULT CLobby_Main::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.8f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
@@ -180,7 +180,7 @@ HRESULT CLobby_Main::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 2.9f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_OutLine"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_OutLine"));
 	m_vecUIIcon.push_back(pIcon);
 
 

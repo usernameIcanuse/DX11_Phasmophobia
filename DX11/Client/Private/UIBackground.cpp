@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\UIBackground.h"
 #include "GameInstance.h"
-#include "UIIcon.h"
+#include "Icon.h"
 
 CUIBackground::CUIBackground(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CGameObject(pDevice, pContext)
@@ -33,7 +33,7 @@ void CUIBackground::Tick(_float fTimeDelta)
 	
 	for (int i = 0; i < m_vecUIIcon.size(); ++i)
 	{
-		if (static_cast<CUIIcon*>(m_vecUIIcon[i])->Selected())
+		if (m_vecUIIcon[i]->Selected())
 			m_iSelectedMenu = i + 1;
 	}
 }

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_FPS.h"
 #include "Inventory.h"
+#include "Journal.h"
 #include "Level_Loading.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,7 +48,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(Setup_Inventory()))
 		return E_FAIL;
-
+	if (FAILED(Setup_Journal()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -58,6 +60,19 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
+	{
+		RELEASE_INSTANCE(CGameInstance);
+		return;
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
+	{
+		m_bLockCursor = !m_bLockCursor;
+		m_pJournal->Set_Enable(!m_bLockCursor);
+		m_pJournal->Main_On(!m_bLockCursor);
+	}
+
+	if (false == m_bLockCursor)//UIÄ×À» ¶§
 	{
 		RELEASE_INSTANCE(CGameInstance);
 		return;
@@ -250,6 +265,19 @@ HRESULT CPlayer::Setup_Inventory()
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance)
+	return S_OK;
+}
+
+HRESULT CPlayer::Setup_Journal()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UI"), TEXT("Prototype_GameObject_Journal"), (CGameObject**)&m_pJournal)))
+		return E_FAIL;
+
+	m_pJournal->Set_Enable(false);
+
+	RELEASE_INSTANCE(CGameInstance)
+
 	return S_OK;
 }
 

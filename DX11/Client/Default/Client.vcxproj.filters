@@ -46,7 +46,7 @@
     <ClInclude Include="..\Public\Lobby_Main.h">
       <Filter>02.GameObject\Lobby\Lobby_Main</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UIIcon.h">
+    <ClInclude Include="..\Public\Icon.h">
       <Filter>02.GameObject\UI\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Lobby.h">
@@ -232,6 +232,15 @@
     <ClInclude Include="..\Public\Journal.h">
       <Filter>02.GameObject\Player\journal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Main.h">
+      <Filter>02.GameObject\Player\journal\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Evidence.h">
+      <Filter>02.GameObject\Player\journal\Evidence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UIIcon.h">
+      <Filter>02.GameObject\UI\Icon\UIIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -273,7 +282,7 @@
     <ClCompile Include="..\Private\Lobby_Main.cpp">
       <Filter>02.GameObject\Lobby\Lobby_Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UIIcon.cpp">
+    <ClCompile Include="..\Private\Icon.cpp">
       <Filter>02.GameObject\UI\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Lobby_AddItems.cpp">
@@ -449,6 +458,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Journal.cpp">
       <Filter>02.GameObject\Player\journal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Main.cpp">
+      <Filter>02.GameObject\Player\journal\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Evidence.cpp">
+      <Filter>02.GameObject\Player\journal\Evidence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UIIcon.cpp">
+      <Filter>02.GameObject\UI\Icon\UIIcon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -685,8 +703,11 @@
     <Filter Include="02.GameObject\Player\journal\Evidence">
       <UniqueIdentifier>{7a5eb7cc-ce61-4bcb-aebd-38f26bfaf4aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObject\Player\journal\Option">
+    <Filter Include="02.GameObject\Player\journal\Main">
       <UniqueIdentifier>{9e42e23d-e6b4-4303-ae32-8abb5657c4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\UI\Icon\UIIcon">
+      <UniqueIdentifier>{c376274b-ed00-4c67-b79b-9d7ac864a52a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

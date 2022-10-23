@@ -5,7 +5,7 @@
 
 
 BEGIN(Client)
-class CUIIcon;
+class CIcon;
 
 
 class CUIBackground : public CGameObject
@@ -39,7 +39,7 @@ protected:
 
 protected:
 	_uint		 m_iSelectedMenu =0;
-	vector<CUIIcon*>	 m_vecUIIcon;
+	vector<CIcon*>	 m_vecUIIcon;
 
 
 public:

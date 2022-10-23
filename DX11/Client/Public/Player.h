@@ -54,13 +54,16 @@ private:
 #endif
 
 	CInventory* m_pInventory = nullptr;
-
+	class CJournal* m_pJournal = nullptr;
 	_bool		m_bIsInHouse = false;
+
+	_bool			m_bLockCursor = true;
 
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_Camera();
 	HRESULT Setup_Inventory();
+	HRESULT Setup_Journal();
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

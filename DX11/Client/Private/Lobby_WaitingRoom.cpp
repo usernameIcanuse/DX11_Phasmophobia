@@ -125,7 +125,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	CUIIcon* pIcon;
+	CIcon* pIcon;
 
 	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
 	//의뢰 선택하기
@@ -138,7 +138,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f - IconWorld.r[0]*1.22f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Large_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Large_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	////추가
@@ -150,7 +150,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.85f + IconWorld.r[0] * 0.75f;
 
-	pIcon->Set_Transform(IconWorld); pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Transform(IconWorld); pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	////구입
@@ -163,7 +163,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 1.85f + IconWorld.r[0] * 1.85f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	//떠나기
@@ -176,7 +176,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f + IconWorld.r[0] * 1.7f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	////준비
@@ -189,7 +189,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f - IconWorld.r[0] * 0.3f;
 
 	pIcon->Set_Transform(IconWorld);
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	////시작
@@ -202,7 +202,7 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f - IconWorld.r[1] * 3.2f + IconWorld.r[0] * 0.6f;
 
 	pIcon->Set_Transform(IconWorld); 
-	pIcon->Set_Texture(TEXT("Prototype_Component_Texture_Small_outline"));
+	pIcon->Set_Texture(LEVEL_LOBBY,TEXT("Prototype_Component_Texture_Small_outline"));
 	m_vecUIIcon.push_back(pIcon);
 
 	RELEASE_INSTANCE(CGameInstance);

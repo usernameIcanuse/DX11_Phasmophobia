@@ -10,7 +10,7 @@ class CUIIcon;
 
 class CJournal final : public CUIBackground
 {
-protected:
+private:
 	CJournal(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CJournal(const CJournal& rhs);
 	virtual ~CJournal() = default;
@@ -25,21 +25,18 @@ public:
 	virtual void Set_Enable(_bool _bEnable);
 
 public:
-	_uint	Selected_Menu()
-	{
-		return m_iSelectedMenu;
-	}
+	void	Main_On(_bool _bEnable);
+	void	Evidence_On(_bool _bEnable);
+
+private:
+	class CMain* m_pMain = nullptr;
+	class CEvidence* m_pEvidence = nullptr;
+
+private:
+	HRESULT Setup_UI();
+	HRESULT Setup_Icon();
+
 	
-	void		Icon_Lock(_bool _bLock);
-
-
-protected:
-	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
-	_float4x4		m_ProjMatrix;
-
-protected:
-	_uint		 m_iSelectedMenu =0;
-	vector<CUIIcon*>	 m_vecUIIcon;
 
 
 public:
