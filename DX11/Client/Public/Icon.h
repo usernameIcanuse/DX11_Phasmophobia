@@ -42,6 +42,9 @@ public:
 		m_fY = _fY;
 		m_fSizeX = _fSizeX;
 		m_fSizeY = _fSizeY;
+
+		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
+
 	}
 
 	void Set_Transform(_matrix WorldMat);
@@ -56,6 +59,10 @@ public:
 	{
 		m_bLock = bLock;
 	}
+	void Set_PassIndex(_int iPassIndex)
+	{
+		m_iPassIndex = iPassIndex;
+	}
 
 protected:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
@@ -65,8 +72,10 @@ protected:
 	_bool			m_bOnMouse = false;
 	_bool			m_bLock = true;
 
+	_int			m_iPassIndex = 1;
+
 protected:
-	HRESULT SetUp_Components();
+	virtual HRESULT SetUp_Components();
 
 public:
 	static CIcon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

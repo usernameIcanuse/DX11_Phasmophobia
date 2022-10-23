@@ -70,6 +70,8 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_bLockCursor = !m_bLockCursor;
 		m_pJournal->Set_Enable(!m_bLockCursor);
 		m_pJournal->Main_On(!m_bLockCursor);
+		if (true == m_bLockCursor)
+			m_pJournal->Off_AllUI();
 	}
 
 	if (false == m_bLockCursor)//UIÄ×À» ¶§

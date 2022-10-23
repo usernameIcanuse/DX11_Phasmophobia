@@ -26,8 +26,8 @@ HRESULT CMain::Initialize(void * pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	m_fSizeX = 950.f;
-	m_fSizeY = 650.f;
+	m_fSizeX = 900.f;
+	m_fSizeY = 600.f;
 	m_fX = g_iWinCX >> 1;
 	m_fY = g_iWinCY >> 1;
 

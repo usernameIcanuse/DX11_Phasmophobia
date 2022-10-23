@@ -28,6 +28,9 @@ HRESULT CJournal::Initialize(void * pArg)
 	if (FAILED(Setup_UI()))
 		return E_FAIL;
 
+	if (FAILED(Setup_Icon()))
+		return E_FAIL;
+
   	return S_OK;
 }
 
@@ -35,9 +38,8 @@ void CJournal::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_int iSelectedIndex = Selected_Menu();
-
-	switch (iSelectedIndex)
+	
+	switch (m_iSelectedMenu)
 	{
 	case 1:
 		m_pMain->Set_Enable(true);
@@ -45,11 +47,12 @@ void CJournal::Tick(_float fTimeDelta)
 		break;
 
 	case 2:
-		m_pMain->Set_Enable(false);
-		m_pEvidence->Set_Enable(true);
+		
 		break;
 
 	case 3:
+		m_pMain->Set_Enable(false);
+		m_pEvidence->Set_Enable(true);
 		break;
 	}
 
@@ -84,6 +87,19 @@ void	CJournal::Evidence_On(_bool _bEnable)
 	m_pEvidence->Set_Enable(_bEnable);
 }
 
+void	CJournal::Off_AllUI()
+{
+	if (true == m_pMain->Get_Enable())
+	{
+		m_pMain->Set_Enable(false);
+	}
+
+	if (true == m_pEvidence->Get_Enable())
+	{
+		m_pEvidence->Set_Enable(false);
+	}
+}
+
 HRESULT CJournal::Setup_UI()
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
@@ -108,12 +124,29 @@ HRESULT CJournal::Setup_Icon()
 
 	CUIIcon* pIcon = nullptr;
 
-	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//메뉴
 	m_vecUIIcon.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"));
-	
+	pIcon->Set_IconPosition(330, 55, 200, 40);
+	pIcon->Set_PassIndex(3);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//사진
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"));
+	pIcon->Set_IconPosition(750, 57, 200, 40);
+	pIcon->Set_PassIndex(3);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//증거
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"));
+	pIcon->Set_IconPosition(950, 57, 200, 40);
+	pIcon->Set_PassIndex(3);
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;

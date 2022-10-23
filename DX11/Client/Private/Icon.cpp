@@ -62,7 +62,7 @@ void CIcon::LateTick(_float fTimeDelta)
 
 HRESULT CIcon::Render()
 {	
-	m_pShaderCom->Begin(1);
+	m_pShaderCom->Begin(m_iPassIndex);
 
 	m_pVIBufferCom->Render();
 

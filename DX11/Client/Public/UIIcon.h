@@ -30,15 +30,6 @@ public:
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 
-private:
-	CShader*				m_pShaderCom = nullptr;
-	CTexture*				m_pTextureCom = nullptr;
-	CRenderer*				m_pRendererCom = nullptr;		
-	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
-
-private:
-	HRESULT SetUp_Components();
-
 public:
 	static CUIIcon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

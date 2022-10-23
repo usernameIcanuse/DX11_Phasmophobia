@@ -27,6 +27,7 @@ public:
 public:
 	void	Main_On(_bool _bEnable);
 	void	Evidence_On(_bool _bEnable);
+	void	Off_AllUI();
 
 private:
 	class CMain* m_pMain = nullptr;

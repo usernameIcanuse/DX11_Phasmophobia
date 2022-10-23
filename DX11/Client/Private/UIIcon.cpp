@@ -21,13 +21,8 @@ HRESULT CUIIcon::Initialize_Prototype()
 HRESULT CUIIcon::Initialize(void * pArg)
 {
 
-
 	if (FAILED(__super::Initialize(nullptr)))
 		return E_FAIL;
-
-	if (FAILED(SetUp_Components()))
-		return E_FAIL;
-
 
 
 	
@@ -64,7 +59,10 @@ void CUIIcon::LateTick(_float fTimeDelta)
 
 HRESULT CUIIcon::Render()
 {	
-	m_pShaderCom->Begin(1);
+	if (FAILED(SetUp_ShaderResource(nullptr, nullptr)))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(m_iPassIndex);
 
 	m_pVIBufferCom->Render();
 
@@ -76,24 +74,6 @@ void CUIIcon::Set_Enable(_bool _bEnable)
 	__super::Set_Enable(_bEnable);
 }
 
-
-HRESULT CUIIcon::SetUp_Components()
-{
-	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
-	/* For.Com_Renderer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-
-	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
-		return E_FAIL;
-
-	return S_OK;
-}
 
 HRESULT CUIIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix)
 {
@@ -148,11 +128,5 @@ CGameObject * CUIIcon::Clone(void * pArg)
 void CUIIcon::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pVIBufferCom);
-
 
 }
