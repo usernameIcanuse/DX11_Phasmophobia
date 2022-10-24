@@ -241,6 +241,9 @@
     <ClInclude Include="..\Public\UIIcon.h">
       <Filter>02.GameObject\UI\Icon\UIIcon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Lobby_GameResult.h">
+      <Filter>02.GameObject\Lobby\Lobby_GameResult</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -467,6 +470,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIIcon.cpp">
       <Filter>02.GameObject\UI\Icon\UIIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Lobby_GameResult.cpp">
+      <Filter>02.GameObject\Lobby\Lobby_GameResult</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -708,6 +714,9 @@
     </Filter>
     <Filter Include="02.GameObject\UI\Icon\UIIcon">
       <UniqueIdentifier>{c376274b-ed00-4c67-b79b-9d7ac864a52a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Lobby\Lobby_GameResult">
+      <UniqueIdentifier>{89f81f01-9e8d-4574-a69b-a2c749166b38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

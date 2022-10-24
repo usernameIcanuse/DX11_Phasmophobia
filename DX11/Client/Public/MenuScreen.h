@@ -43,8 +43,9 @@ private:
 	/////////////////////////screen////////////////////////////
 	class CLobby_Main* m_pMain = nullptr;
 	class CLobby_WaitingRoom* m_pWaitingRoom = nullptr;
-	class CLobby_Store* m_pStore = nullptr;
-	class CLobby_AddItems *m_pAddItems = nullptr;
+	class CLobby_GameResult* m_pGameResult = nullptr;
+	//class CLobby_Store* m_pStore = nullptr;
+	//class CLobby_AddItems *m_pAddItems = nullptr;
 
 	class CUIBackground* m_pCurUI = nullptr;
 
@@ -52,7 +53,7 @@ private:
 
 private:
 	virtual	HRESULT	Setup_Component();
-	HRESULT		Setup_Screen();
+	HRESULT		Setup_Screen(_bool bGameResult);
 	HRESULT		Setup_Camera();
 
 public:

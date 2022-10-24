@@ -5,8 +5,9 @@
 #include "Lobby_Main.h"
 #include "UIIcon.h"
 #include "Lobby_WaitingRoom.h"
-#include "Lobby_AddItems.h"
-#include "Lobby_Store.h"
+#include "Lobby_GameResult.h"
+//#include "Lobby_AddItems.h"
+//#include "Lobby_Store.h"
 #include "Object_Collider.h"
 #include "Wall_Collider.h"
 #include "Navigation_Mesh.h"
@@ -413,13 +414,17 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 		CLobby_WaitingRoom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Store"),
-		CLobby_Store::Create(m_pDevice, m_pContext))))
+	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_GameResult"),
+		CLobby_GameResult::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_AddItems"),
-		CLobby_AddItems::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	//if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_Store"),
+	//	CLobby_Store::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
+
+	//if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_AddItems"),
+	//	CLobby_AddItems::Create(m_pDevice, m_pContext))))
+	//	return E_FAIL;
 
 	if (FAILED(CGameInstance::Get_Instance()->Add_Prototype(TEXT("Prototype_GameObject_LobbyIcon"),
 		CIcon::Create(m_pDevice, m_pContext))))
@@ -443,6 +448,10 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_WaitingRoom"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/WaitingRoom.dds")))))
+		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_GameResult"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/GameResult/GameResult.dds")))))
 		return E_FAIL;
 
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Large_outline"),

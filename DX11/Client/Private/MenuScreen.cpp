@@ -3,8 +3,9 @@
 #include "GameInstance.h"
 #include "Lobby_Main.h"
 #include "Lobby_WaitingRoom.h"
-#include "Lobby_Store.h"
-#include "Lobby_AddItems.h"
+#include "Lobby_GameResult.h"
+//#include "Lobby_Store.h"
+//#include "Lobby_AddItems.h"
 #include "Level_Loading.h"
 #include "Camera_Fixed.h"
 #include "UIBackGround.h"
@@ -35,8 +36,9 @@ HRESULT CMenuScreen::Initialize(void* pArg)
 
         m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&tDesc.WorldMat));
 
+        _bool bGameResult = tDesc.bGamePlay;
 
-        if (FAILED(Setup_Screen()))
+        if (FAILED(Setup_Screen(bGameResult)))
             return E_FAIL;
 
         if (FAILED(Setup_Camera()))
@@ -44,6 +46,9 @@ HRESULT CMenuScreen::Initialize(void* pArg)
 
         if (true == tDesc.bGamePlay)
         {
+            m_pMain->Set_Enable(false);
+            m_pCurUI = (CUIBackground*)m_pGameResult;
+            m_pCurUI->Set_Enable(true);
             m_bLock = false;
             m_pCurUI->Icon_Lock(m_bLock);
         }
@@ -73,69 +78,89 @@ void CMenuScreen::Tick(_float fTimeDelta)
         }
         //이게 맞냐
 #pragma region Lobby_Main
-	if (m_pMain->Get_Enable())//로비
-	{
-		_uint iSelectedMenu = static_cast<CUIBackground*>(m_pMain)->Selected_Menu();
+	    if (m_pMain->Get_Enable())//로비
+	    {
+	    	_uint iSelectedMenu = static_cast<CUIBackground*>(m_pMain)->Selected_Menu();
 
-		switch (iSelectedMenu)
-		{
-		case 1:
-			SetWindowText(g_hWnd, TEXT("Level_Lobby_WaitingRoom. "));
-            m_pMain->Set_Enable(false);
-			m_pWaitingRoom->Set_Enable(true);
-            m_pCurUI = (CUIBackground*)m_pWaitingRoom;
-            m_pCurUI->Icon_Lock(m_bLock);
-			break;
+	    	switch (iSelectedMenu)
+	    	{
+	    	case 1:
+	    		SetWindowText(g_hWnd, TEXT("Level_Lobby_WaitingRoom. "));
+                m_pMain->Set_Enable(false);
+	    		m_pWaitingRoom->Set_Enable(true);
+                m_pCurUI = (CUIBackground*)m_pWaitingRoom;
+                m_pCurUI->Icon_Lock(m_bLock);
+	    		break;
 
-		case 2:
-			SetWindowText(g_hWnd, TEXT("Level_Lobby_Store. "));
-            m_pMain->Set_Enable(false);
-			m_pStore->Set_Enable(true);
-			break;
+	    	case 2:
+	    		/*SetWindowText(g_hWnd, TEXT("Level_Lobby_Store. "));
+                m_pMain->Set_Enable(false);
+	    		m_pStore->Set_Enable(true);*/
+	    		break;
 
-        case 4:/*종료*/
-            DestroyWindow(g_hWnd);
-            break;
+            case 4:/*종료*/
+                DestroyWindow(g_hWnd);
+                break;
 
-		}
-	}
+	    	}
+	    }
 #pragma endregion Lobby_Main
 
 #pragma region  WaitingRoom
-	else if (m_pWaitingRoom->Get_Enable())//대기실
-	{
-		_uint iSelectedMenu = static_cast<CUIBackground*>(m_pWaitingRoom)->Selected_Menu();
+	    else if (m_pWaitingRoom->Get_Enable())//대기실
+	    {
+	    	_uint iSelectedMenu = static_cast<CUIBackground*>(m_pWaitingRoom)->Selected_Menu();
 
-		switch (iSelectedMenu)
-		{
-		case 2://추가
-			SetWindowText(g_hWnd, TEXT("Level_Lobby_AddItems. "));
-			m_pWaitingRoom->Set_Enable(false);
-			m_pAddItems->Set_Enable(true);
-			break;
+	    	switch (iSelectedMenu)
+	    	{
+	    	case 2://추가
+	    	/*	SetWindowText(g_hWnd, TEXT("Level_Lobby_AddItems. "));
+	    		m_pWaitingRoom->Set_Enable(false);
+	    		m_pAddItems->Set_Enable(true);*/
+	    		break;
 
-		case 3://구입
-			SetWindowText(g_hWnd, TEXT("Level_Lobby_Store. "));
-			m_pWaitingRoom->Set_Enable(false);
-			m_pStore->Set_Enable(true);
-			break;
+	    	case 3://구입
+	    	/*	SetWindowText(g_hWnd, TEXT("Level_Lobby_Store. "));
+	    		m_pWaitingRoom->Set_Enable(false);
+	    		m_pStore->Set_Enable(true);*/
+	    		break;
 
-		case 4://떠나기
-			SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
-            m_pMain->Set_Enable(true);
-			m_pWaitingRoom->Set_Enable(false);
-            m_pCurUI = (CUIBackground*)m_pMain;
-            m_pCurUI->Icon_Lock(m_bLock);
-			break;
+	    	case 4://떠나기
+	    		SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
+                m_pMain->Set_Enable(true);
+	    		m_pWaitingRoom->Set_Enable(false);
+                m_pCurUI = (CUIBackground*)m_pMain;
+                m_pCurUI->Icon_Lock(m_bLock);
+	    		break;
 
-		case 6://시작
-			m_pWaitingRoom->Set_Enable(false);
-			if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY), LEVEL_GAMEPLAY)))
-				return;
-			break;
-		}
-	}
+	    	case 6://시작
+	    		m_pWaitingRoom->Set_Enable(false);
+	    		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY), LEVEL_GAMEPLAY)))
+	    			return;
+	    		break;
+	    	}
+	    }
 #pragma endregion  WaitingRoom
+
+#pragma region GameResult
+        else if (nullptr != m_pGameResult)
+        {
+            if (true == m_pGameResult->Get_Enable())
+            {
+                _uint iSelectedMenu = static_cast<CUIBackground*>(m_pGameResult)->Selected_Menu();
+
+                switch (iSelectedMenu)
+                {
+                case 1://돌아가기
+                    m_pGameResult->Set_Enable(false);
+                    m_pWaitingRoom->Set_Enable(true);
+                    m_pCurUI = (CUIBackground*)m_pWaitingRoom;
+                    m_pCurUI->Icon_Lock(m_bLock);
+                    break;
+                }
+            }
+        }
+#pragma endregion GameResult
  
     }
 }
@@ -209,7 +234,7 @@ HRESULT CMenuScreen::Setup_Component()
     return S_OK;
 }
 
-HRESULT CMenuScreen::Setup_Screen()
+HRESULT CMenuScreen::Setup_Screen(_bool bGameResult)
 {
     CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -228,6 +253,15 @@ HRESULT CMenuScreen::Setup_Screen()
         return E_FAIL;
     m_pWaitingRoom->Icon_Lock(m_bLock);
     m_pWaitingRoom->Set_Enable(false);
+
+    if (true == bGameResult)
+    {
+        /* For.WaitingRoom*/
+        if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Screen"), TEXT("Prototype_GameObject_GameResult"), (CGameObject**)&m_pGameResult, &WorldPos)))
+            return E_FAIL;
+        m_pGameResult->Icon_Lock(m_bLock);
+        m_pGameResult->Set_Enable(false);
+    }
 
     ///* For.Store*/
     //if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Screen"), TEXT("Prototype_GameObject_Store"), (CGameObject**)&m_pStore)))
