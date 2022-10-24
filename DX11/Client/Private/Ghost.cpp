@@ -53,6 +53,8 @@ HRESULT CGhost::Initialize(void* pArg)
 
 	m_fUpdatePointTime = 5.f;
 
+	GAMEINSTANCE->Set_GhostName(TEXT("ªÏ∑¡¡‡"));
+
 	return S_OK;
 }
 

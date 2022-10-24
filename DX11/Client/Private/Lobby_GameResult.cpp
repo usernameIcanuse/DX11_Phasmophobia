@@ -41,6 +41,21 @@ HRESULT CLobby_GameResult::Initialize(void * pArg)
 	if (FAILED(SetUp_Icon()))
 		return E_FAIL;
 
+	STAGEDESC tDesc = *GAMEINSTANCE->Get_StageDesc();
+
+	m_iTotalMinute = (_int)tDesc.fTotalPlayTime / 60;
+	m_iTotalSecond = (_int)tDesc.fTotalPlayTime % 60;
+
+	m_iHouseMinute = (_int)tDesc.fInHouseTime / 60;
+	m_iHouseSecond = (_int)tDesc.fInHouseTime % 60;
+
+	m_iGhostMinute = (_int)tDesc.fAroundGhostTime / 60;
+	m_iGhostSecond = (_int)tDesc.fAroundGhostTime % 60;
+
+	m_iEventCnt = tDesc.iEventCnt;
+	m_iInteractionCnt = tDesc.iInteractionCnt;
+
+	lstrcpy(m_szGhostName, GAMEINSTANCE->Get_GhostName());
 
   	return S_OK;
 }
@@ -64,9 +79,31 @@ HRESULT CLobby_GameResult::Render()
 
 	m_pVIBufferCom->Render();
 
-	return S_OK;
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	_tchar	m_szTime[100];
+
+	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iTotalMinute,m_iTotalSecond);
+	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iHouseMinute, m_iHouseSecond);
+	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 200.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iGhostMinute, m_iGhostSecond);
+	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 300.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	wsprintf(m_szTime, TEXT("%02d 회"), m_iEventCnt);
+	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 400.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+	wsprintf(m_szTime, TEXT("%02d 회"), m_iInteractionCnt);
+	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 500.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
 
 	return S_OK;
+
 }
 
 void CLobby_GameResult::Set_Enable(_bool _bEnable)

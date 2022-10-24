@@ -161,6 +161,29 @@ STAGEDESC* CGameInstance::Get_StageDesc()
 	return m_pEvent_Manager->Get_StageDesc();
 }
 
+_tchar* CGameInstance::Get_GhostName()
+{
+	if(nullptr == m_pEvent_Manager)
+		return nullptr;
+
+	return m_pEvent_Manager->Get_GhostName();
+}
+
+void CGameInstance::Set_GhostName(const _tchar* _szGhostName)
+{
+	if (nullptr == m_pEvent_Manager)
+		return;
+
+	m_pEvent_Manager->Set_GhostName(_szGhostName);
+}
+
+void CGameInstance::Clear_Desc()
+{
+	if (nullptr == m_pEvent_Manager)
+		return;
+	m_pEvent_Manager->Clear_Desc();
+}
+
 
 HRESULT CGameInstance::Clear(_uint iLevelID)
 {

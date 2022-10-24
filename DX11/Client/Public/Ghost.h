@@ -82,6 +82,7 @@ private:
 	_float				m_fRenderModel = 0.f;
 	_float				m_fHideModel = 0.f;
 
+
 private:
 	HRESULT	Setup_Component();
 	HRESULT Setup_Bahavior();

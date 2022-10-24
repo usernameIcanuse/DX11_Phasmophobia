@@ -120,6 +120,9 @@ public:/* For.Renderer_Manager*/
 public:/* For.Event_Manager*/
 	void Add_Desc(_uint eType, _float fValue);
 	STAGEDESC* Get_StageDesc();
+	_tchar* Get_GhostName();
+	void Set_GhostName(const _tchar* _szGhostName);
+	void Clear_Desc();
 	
 
 

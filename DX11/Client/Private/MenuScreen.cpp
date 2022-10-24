@@ -137,6 +137,7 @@ void CMenuScreen::Tick(_float fTimeDelta)
 	    		m_pWaitingRoom->Set_Enable(false);
 	    		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY), LEVEL_GAMEPLAY)))
 	    			return;
+                GAMEINSTANCE->Clear_Desc();
 	    		break;
 	    	}
 	    }

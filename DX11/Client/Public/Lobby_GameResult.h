@@ -38,6 +38,21 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
+private:
+	_int				m_iTotalMinute;
+	_int				m_iTotalSecond;
+
+	_int				m_iHouseMinute;
+	_int				m_iHouseSecond;
+
+	_int				m_iGhostMinute;
+	_int				m_iGhostSecond;
+
+	_int				m_iEventCnt;
+	_int				m_iInteractionCnt;
+
+	_tchar				m_szGhostName[20];
+
 
 private:
 	HRESULT SetUp_Components();

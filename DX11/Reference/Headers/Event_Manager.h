@@ -13,7 +13,7 @@ class CEvent_Manager final : public CBase
 	DECLARE_SINGLETON(CEvent_Manager)
 
 public:
-	enum STAGE_TYPE { PLAYTIME, HOUSETIME,AROUNDGHOST,EVENT,INTERACTION};
+	enum STAGE_TYPE { PLAYTIME, HOUSETIME, AROUNDGHOST, EVENT, INTERACTION };
 private:
 	CEvent_Manager();
 	virtual ~CEvent_Manager() = default;
@@ -24,15 +24,18 @@ public:
 public:
 	void Clear_Desc();
 
-	STAGEDESC*	Get_StageDesc()
+	STAGEDESC* Get_StageDesc()
 	{
 		return &m_StageDesc;
 	}
-
+	_tchar* Get_GhostName()
+	{
+		return m_szGhostName;
+	}
 
 private:
 	STAGEDESC		m_StageDesc;
-	_tchar			m_szGhostName[10];
+	_tchar			m_szGhostName[20];
 
 public:
 	virtual void Free() override;
