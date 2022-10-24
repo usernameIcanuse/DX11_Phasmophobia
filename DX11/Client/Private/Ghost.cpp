@@ -158,6 +158,8 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 {
 	if (0 == lstrcmp(TEXT("Event"), pMessage))
 	{
+		GAMEINSTANCE->Add_Desc(CEvent_Manager::EVENT, 1.f);
+
 		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
 		
@@ -170,6 +172,8 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 	 
 	else if (0 == lstrcmp(TEXT("Attack"), pMessage))
 	{
+		GAMEINSTANCE->Add_Desc(CEvent_Manager::EVENT, 1.f);
+
 		_vector vSpawnPos = m_pSpawnPoint->Get_SpawnPoint();
 		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, vSpawnPos);
 
@@ -218,6 +222,7 @@ void CGhost::Light_Attack(_float fTimeDelta)
 void CGhost::Attack(_float fTimeDelta)
 {
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -233,7 +238,7 @@ void CGhost::Attack(_float fTimeDelta)
 		{
 			m_fHideModel = 1.f;
 		}
-		GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
+		pGameInstance->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 	}
 	else if (0.f < m_fHideModel)
 	{
@@ -259,13 +264,14 @@ void CGhost::Attack(_float fTimeDelta)
 	if (0.f > m_fAttackTime)
 	{
 		m_pOBBCom->Set_Enable(false);
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
-		GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
+		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 	}
 
 	_matrix matWorld = m_pTransformCom->Get_WorldMatrix();
 
 	m_pOBBCom->Update(matWorld);
+	RELEASE_INSTANCE(CGameInstance);
 
 }
 

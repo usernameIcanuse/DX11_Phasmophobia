@@ -19,6 +19,7 @@ CGameInstance::CGameInstance()
 	, m_pCamera_Manager(CCamera_Manager::Get_Instance())
 	, m_pRenderer_Manager(CRenderer_Manager::Get_Instance())
 	, m_pTarget_Manager(CTarget_Manager::Get_Instance())
+	, m_pEvent_Manager(CEvent_Manager::Get_Instance())
 {	
 
 	Safe_AddRef(m_pTimer_Manager);
@@ -36,6 +37,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pRenderer_Manager);
 	Safe_AddRef(m_pCamera_Manager);
 	Safe_AddRef(m_pTarget_Manager);
+	Safe_AddRef(m_pEvent_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDeviceOut, ID3D11DeviceContext** ppDeviceContextOut)
@@ -142,6 +144,21 @@ void CGameInstance::Clear_RendererIndex(_uint eListIndex)
 		return;
 
 	m_pRenderer_Manager->Clear_RendererIndex(eListIndex);
+}
+
+void CGameInstance::Add_Desc(_uint eType, _float fValue)
+{
+	if (nullptr == m_pEvent_Manager)
+		return;
+	m_pEvent_Manager->Add_Desc(eType, fValue);
+}
+
+STAGEDESC* CGameInstance::Get_StageDesc()
+{
+	if (nullptr == m_pEvent_Manager)
+		return nullptr;
+
+	return m_pEvent_Manager->Get_StageDesc();
 }
 
 
@@ -574,6 +591,8 @@ void CGameInstance::Release_Engine()
 
 	CGame_Manager::Get_Instance()->Destroy_Instance();
 	
+	CEvent_Manager::Get_Instance()->Destroy_Instance();
+
 	CGraphic_Device::Get_Instance()->Destroy_Instance();
 
 	
@@ -592,6 +611,7 @@ void CGameInstance::Free()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Manager);
+	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pFrustum);

@@ -53,6 +53,7 @@ void CLevel_Tutorial::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
+	GAMEINSTANCE->Add_Desc(CEvent_Manager::PLAYTIME, fTimeDelta);
 
 }
 

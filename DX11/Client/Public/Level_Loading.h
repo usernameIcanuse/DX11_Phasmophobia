@@ -17,7 +17,7 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	virtual HRESULT Initialize(LEVEL eNextLevel,_bool bFirst);
+	virtual HRESULT Initialize(LEVEL eNextLevel,_bool bFirst, _bool bLobby = false);
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
@@ -29,9 +29,11 @@ private:
 	LEVEL			m_eNextLevel = LEVEL_END;
 	class CLoader*	m_pLoader = nullptr;
 
+	_bool			m_bLobby = false;
+
 public:
-	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,_bool bFirst = false);
-	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, STAGEDESC tagStageDesc);
+	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst = false, _bool bLobby = false);
+
 	virtual void Free() override;
 };
 

@@ -274,6 +274,7 @@ namespace Engine
 		_float  fAroundGhostTime;
 		_int	iEventCnt;
 		_int	iInteractionCnt;
+		_int	iGhostName;
 	}STAGEDESC;
 
 

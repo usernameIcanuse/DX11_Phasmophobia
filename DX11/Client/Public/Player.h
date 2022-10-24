@@ -58,6 +58,7 @@ private:
 	_bool		m_bIsInHouse = false;
 
 	_bool			m_bLockCursor = true;
+	_bool			m_bIsInGhostArea = false;
 
 private:
 	HRESULT	Setup_Component();

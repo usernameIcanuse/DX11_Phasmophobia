@@ -31,17 +31,28 @@ HRESULT CMenuScreen::Initialize(void* pArg)
 
     if (nullptr != pArg)
     {
-        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
+        SCREENDESC tDesc = *(SCREENDESC*)pArg;
+
+        m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4(&tDesc.WorldMat));
+
+
+        if (FAILED(Setup_Screen()))
+            return E_FAIL;
+
+        if (FAILED(Setup_Camera()))
+            return E_FAIL;
+
+        if (true == tDesc.bGamePlay)
+        {
+            m_bLock = false;
+            m_pCurUI->Icon_Lock(m_bLock);
+        }
     }
 
     if (FAILED(Setup_Component()))
         return E_FAIL;
 
-    if (FAILED(Setup_Screen()))
-        return E_FAIL;
-   
-    if (FAILED(Setup_Camera()))
-        return E_FAIL;
+
 
     return S_OK;
 }

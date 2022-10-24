@@ -16,6 +16,7 @@
 #include "Renderer_Manager.h"
 #include "Target_Manager.h"
 #include "Camera_Manager.h"
+#include "Event_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -116,6 +117,11 @@ public:/* For.Renderer_Manager*/
 	HRESULT Draw_RenderGroup(_float fTimeDelta);
 	void Clear_RendererIndex(_uint eListIndex);
 
+public:/* For.Event_Manager*/
+	void Add_Desc(_uint eType, _float fValue);
+	STAGEDESC* Get_StageDesc();
+	
+
 
 private:
 	CGraphic_Device*				m_pGraphic_Device = nullptr;
@@ -133,6 +139,7 @@ private:
 	CRenderer_Manager*				m_pRenderer_Manager = nullptr;
 	CTarget_Manager*				m_pTarget_Manager = nullptr;
 	CCamera_Manager*				m_pCamera_Manager = nullptr;
+	CEvent_Manager*					m_pEvent_Manager = nullptr;
 
 
 	GRAPHICDESC						m_tagGraphicDesc;

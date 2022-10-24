@@ -242,6 +242,7 @@ void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 		{
 			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Answer"));
 			m_lAnswerFrequency = dis(gen);
+			GAMEINSTANCE->Add_Desc(CEvent_Manager::INTERACTION, 1.f);
 			if (m_bCheckSpiritBox)
 			{
 				if (nullptr != m_pGhost_Status)
@@ -429,6 +430,8 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 			pDoor->Open_Door((_float)iValue);
 			if (m_bHandPrint)
 			{
+				GAMEINSTANCE->Add_Desc(CEvent_Manager::INTERACTION, 1.f);
+
 				m_bCheckHandPrint = true;//증거 한 번만 찾도록
 
 				m_pHandPrint->Set_Enable(true);
@@ -449,6 +452,8 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 			m_bIsInDots = true;
 			if (0.f > m_fDotsProjecterCoolTime)
 			{
+				GAMEINSTANCE->Add_Desc(CEvent_Manager::INTERACTION, 1.f);
+
 				std::random_device rd;
 				std::mt19937 gen(rd());
 				std::uniform_int_distribution<int> dis(5, 90);
@@ -473,11 +478,13 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 			{
 				CTrailCam* pTrailCam = (CTrailCam*)pCollider->Get_Owner();
 				pTrailCam->Sensor_Activating(true);
+				
 			}
 			else if (0.f > m_fTrailCamTime)
 			{
 				CTrailCam* pTrailCam = (CTrailCam*)pCollider->Get_Owner();
 				pTrailCam->Sensor_Activating(false);
+				GAMEINSTANCE->Add_Desc(CEvent_Manager::INTERACTION, 1.f);
 
 				std::random_device rd;
 				std::mt19937 gen(rd());

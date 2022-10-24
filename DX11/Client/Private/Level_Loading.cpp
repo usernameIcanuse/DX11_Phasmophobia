@@ -12,13 +12,14 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst)
+HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst, _bool bLobby)
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
 
 	m_eNextLevel = eNextLevel;
+	m_bLobby = bLobby;
 
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel, bFirst);
 	if (nullptr == m_pLoader)
@@ -57,7 +58,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			break;
 		case LEVEL_LOBBY:
 			//GAMEINSTANCE->Set_Current_Level(LEVEL_LOBBY);
-			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext);
+			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext, m_bLobby);
 			break;
 		case LEVEL_GAMEPLAY:
 			//GAMEINSTANCE->Set_Current_Level(LEVEL_GAMEPLAY);
@@ -126,11 +127,11 @@ HRESULT CLevel_Loading::Ready_Layer_FirstLoading(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst)
+CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst, _bool bLobby)
 {
 	CLevel_Loading*		pInstance = new CLevel_Loading(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevel, bFirst)))
+	if (FAILED(pInstance->Initialize(eNextLevel, bFirst, bLobby)))
 	{
 		MSG_BOX("Failed to Created : CLevel_Loading");
 		Safe_Release(pInstance);

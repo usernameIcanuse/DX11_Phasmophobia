@@ -133,11 +133,21 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	}
-	RELEASE_INSTANCE(CGameInstance);
 
 	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
+	if (true == m_bIsInHouse)
+	{
+		pGameInstance->Add_Desc(CEvent_Manager::HOUSETIME, fTimeDelta);
+	}
+
+	if (true == m_bIsInGhostArea)
+	{
+		pGameInstance->Add_Desc(CEvent_Manager::AROUNDGHOST, fTimeDelta);
+	}
+
+	RELEASE_INSTANCE(CGameInstance);
 }
 
 void CPlayer::LateTick(_float fTimeDelta)
@@ -292,7 +302,7 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Normal_Operation"));
 		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 		
-		pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY), LEVEL_LOBBY);
+		pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY,false,true), LEVEL_LOBBY);
 
 		RELEASE_INSTANCE(CGameInstance);
 	}
@@ -301,6 +311,11 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 	{
 		m_pCurrNavigation = m_pNaviHouseCom;
 		m_bIsInHouse = true;
+	}
+
+	else if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+	{
+		m_bIsInGhostArea = true;
 	}
 
 }
@@ -327,6 +342,10 @@ void CPlayer::On_Collision_Exit(CCollider* pCollider)
 	{
 		m_pCurrNavigation = m_pNaviOutSideCom;
 		m_bIsInHouse = false;
+	}
+	else if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
+	{
+		m_bIsInGhostArea = false;
 	}
 }
 

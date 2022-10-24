@@ -17,7 +17,7 @@ private:
 	virtual ~CLevel_Lobby() = default;
 
 public:
-	virtual HRESULT Initialize();
+	virtual HRESULT Initialize(_bool bGamePlay);
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
@@ -38,8 +38,10 @@ private://각 로비 저장할 용도로만
 
 	CLight* m_pBaseLight = nullptr;
 
+
+	_bool	m_bGamePlay = false;
 public:
-	static CLevel_Lobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CLevel_Lobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool bGamePlay);
 	virtual void Free() override;
 };
 

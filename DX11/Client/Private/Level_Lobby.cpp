@@ -2,6 +2,7 @@
 #include "..\Public\Level_Lobby.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "MenuScreen.h"
 
 
 
@@ -12,8 +13,10 @@ CLevel_Lobby::CLevel_Lobby(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 }
 
-HRESULT CLevel_Lobby::Initialize()
+HRESULT CLevel_Lobby::Initialize( _bool bGamePlay)
 {
+	m_bGamePlay = bGamePlay;
+
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
@@ -33,8 +36,16 @@ HRESULT CLevel_Lobby::Initialize()
 	if (FAILED(Load_Stage()))
 		return E_FAIL;
 
-	if(FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
-		return E_FAIL;
+	if (false == bGamePlay)
+	{
+		if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
+			return E_FAIL;
+	}
+	else
+	{
+		if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Fixed"))))
+			return E_FAIL;
+	}
 
 	SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
 	return S_OK;
@@ -185,9 +196,12 @@ HRESULT CLevel_Lobby::Load_Stage()
 			}
 
 			XMStoreFloat4x4(&WorldMat, tLobbyPos.matWorld);
+			CMenuScreen::SCREENDESC tDesc;
+			tDesc.WorldMat = WorldMat;
+			tDesc.bGamePlay = m_bGamePlay;
 
 			if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_MenuScreen"),
-				nullptr, &WorldMat)))
+				nullptr, &tDesc)))
 				return E_FAIL;
 		}
 	}
@@ -201,11 +215,11 @@ HRESULT CLevel_Lobby::Load_Stage()
 
 
 
-CLevel_Lobby * CLevel_Lobby::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Lobby * CLevel_Lobby::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool bGamePlay)
 {
 	CLevel_Lobby*		pInstance = new CLevel_Lobby(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(bGamePlay)))
 	{
 		MSG_BOX("Failed to Created : CLevel_Lobby");
 		Safe_Release(pInstance);

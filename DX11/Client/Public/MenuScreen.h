@@ -13,6 +13,12 @@ BEGIN(Client)
 
 class CMenuScreen final : public CGameObject
 {
+public:
+	typedef struct tagMenuscreenDesc
+	{
+		_float4x4 WorldMat;
+		_bool bGamePlay;
+	}SCREENDESC;
 protected:
 	CMenuScreen(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMenuScreen(const CMenuScreen& rhs);
