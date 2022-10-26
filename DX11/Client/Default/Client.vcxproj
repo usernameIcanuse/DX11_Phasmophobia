@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\Ghost_SpawnPoint.h" />
     <ClInclude Include="..\Public\Ghost_Status.h" />
     <ClInclude Include="..\Public\HandPrint.h" />
+    <ClInclude Include="..\Public\KeyPad.h" />
     <ClInclude Include="..\Public\Lobby_GameResult.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\Inventory.h" />
@@ -286,6 +287,7 @@
     <ClCompile Include="..\Private\Ghost_SpawnPoint.cpp" />
     <ClCompile Include="..\Private\Ghost_Status.cpp" />
     <ClCompile Include="..\Private\HandPrint.cpp" />
+    <ClCompile Include="..\Private\KeyPad.cpp" />
     <ClCompile Include="..\Private\Lobby_GameResult.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\Journal.cpp" />

@@ -90,16 +90,16 @@ void CInventory::Tick(_float fTimeDelta)
 		return;
 	}
 
-	if (true == m_bLockCursor)
-	{
-		POINT pt;
-		SetCursor(NULL);
-		pt.x = g_iWinCX / 2;
-		pt.y = g_iWinCY / 2;
-		ClientToScreen(g_hWnd, &pt);
-		SetCursorPos(pt.x, pt.y);
+	//if (true == m_bLockCursor)
+	//{
+	//	POINT pt;
+	//	SetCursor(NULL);
+	//	pt.x = g_iWinCX / 2;
+	//	pt.y = g_iWinCY / 2;
+	//	ClientToScreen(g_hWnd, &pt);
+	//	SetCursorPos(pt.x, pt.y);
 
-	}
+	//}
 
 	if (m_vInventory[m_iIndex])
 	{

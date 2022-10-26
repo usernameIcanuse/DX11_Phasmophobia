@@ -43,6 +43,7 @@
 #include "Screen.h"
 #include "Mouse.h"
 #include "KeyBoard.h"
+#include "KeyPad.h"
 
 #include "Camera_Fixed.h"
 #include "Camera_FPS.h"
@@ -301,6 +302,12 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Keyboard.fbx", TransformMatrix))))
 		return E_FAIL;
 
+	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
+	/* For.Prototype_Component_Model_KeyPad*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_KeyPad"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "KeyPad.fbx", TransformMatrix))))
+		return E_FAIL;
+
 
 	/*For.Prototype_Component_Texture_White_Cursor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_White_Cursor"),
@@ -312,6 +319,16 @@ HRESULT CLoader::Loading_ForStaticProps()
 	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(90.f));
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Screen"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/*For.Prototype_Component_Model_StreetHouse*/
+	/*TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_StreetHouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse2.fbx", TransformMatrix))))
+		return E_FAIL;*/
+	TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_StreetHouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse1.fbx", TransformMatrix))))
 		return E_FAIL;
 
 
@@ -709,6 +726,11 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	/* For. Prototype_GameObject_Mouse*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mouse"),
 		CMouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_KeyPad*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_KeyPad"),
+		CKeyPad::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	///* For.Prototype_GameObject_Effect */

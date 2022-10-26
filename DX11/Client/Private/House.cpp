@@ -27,6 +27,7 @@ HRESULT CHouse::Initialize(void* pArg)
         m_pTransformCom->Set_WorldMatrix(XMLoadFloat4x4((_float4x4*)pArg));
     }
 
+
     m_fCullingRange = 100.f;
    
 
@@ -36,7 +37,8 @@ HRESULT CHouse::Initialize(void* pArg)
 void CHouse::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
+    if(nullptr != m_pOBBCom)
+        m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
  
 }
 
@@ -47,7 +49,8 @@ void CHouse::LateTick(_float fTimeDelta)
     GAMEINSTANCE->Add_Object_For_Culling( this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+    if(nullptr != m_pOBBCom)
+        m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }
@@ -73,10 +76,13 @@ HRESULT CHouse::Render()
     return S_OK;
 }
 
-HRESULT CHouse::SetUp_ModelCom(const _tchar* pPrototypeTag)
+HRESULT CHouse::SetUp_ModelCom(const _tchar* pPrototypeTag, _uint iLevelIndex)
 {
     /* For.Com_Model */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+    if (FAILED(__super::Add_Component(iLevelIndex, pPrototypeTag, TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
+        return E_FAIL;
+
+    if (FAILED(Setup_Component()))
         return E_FAIL;
 
     return S_OK;

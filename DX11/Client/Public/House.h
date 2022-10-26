@@ -29,7 +29,7 @@ public:
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 public:
-	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag );
+	HRESULT	SetUp_ModelCom(const _tchar* pPrototypeTag, _uint iLevelIndex = LEVEL_GAMEPLAY );
 
 protected:
 	CShader* m_pShaderCom = nullptr;

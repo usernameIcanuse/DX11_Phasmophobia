@@ -248,6 +248,10 @@ void CImguiMgr::Set_Prototype()
 		m_vecPrototypeObject.push_back(pTemp);
 
 		/* House */ 
+		if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_House"),
+			CHouse::Create(m_pDevice, m_pContext))))
+			return;
+
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Truck"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
@@ -284,6 +288,11 @@ void CImguiMgr::Set_Prototype()
 		pTemp->Set_Enable(false);
 		m_vecPrototypeHouse.push_back(pTemp);
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
+			return;
+		pTemp->Set_Enable(false);
+		m_vecPrototypeHouse.push_back(pTemp);
+
+		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_KeyPad"), &pTemp)))
 			return;
 		pTemp->Set_Enable(false);
 		m_vecPrototypeHouse.push_back(pTemp);
@@ -441,7 +450,7 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse"};
+	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse","KeyPad"};
 							
 
 
@@ -1267,6 +1276,11 @@ void CImguiMgr::CollocateHouse()
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
 				return;
 			tIndex = MODEL_TAG::MOUSE;
+
+		case 8:
+			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Mouse"), &pTemp)))
+				return;
+			tIndex = MODEL_TAG::KEYPAD;
 /////////////LEVEL_LOBBY////////////////////////
 		/*case 0:
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_Lobby"), &pTemp)))
@@ -1527,7 +1541,7 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				break;
 				
 			case MODEL_TAG::TRUCK_INSIDE:
-				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck_Inside"));
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Truck_Inside"),LEVEL_STATIC);
 				break;
 			case MODEL_TAG::COMPUTER:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Computer"));
@@ -1537,6 +1551,9 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				break;
 			case MODEL_TAG::MOUSE:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_Mouse"));
+				break;
+			case MODEL_TAG::KEYPAD:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_KeyPad"));
 				break;
 			}
 

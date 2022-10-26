@@ -343,6 +343,7 @@ namespace Engine
 		COMPUTER,
 		KEYBOARD,
 		MOUSE,
+		KEYPAD,
 		MODEL_END
 	};
 
