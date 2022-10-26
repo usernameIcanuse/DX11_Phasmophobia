@@ -328,7 +328,7 @@ HRESULT CLoader::Loading_ForStaticProps()
 		return E_FAIL;*/
 	TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_StreetHouse"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse1.fbx", TransformMatrix))))
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse2.fbx", TransformMatrix))))
 		return E_FAIL;
 
 
