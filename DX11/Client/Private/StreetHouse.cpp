@@ -37,9 +37,9 @@ HRESULT CStreetHouse::Setup_Component()
     CCollider::COLLIDERDESC  ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 
-    ColliderDesc.vScale = _float3(11.f, 5.f, 16.f);
+    ColliderDesc.vScale = _float3(15.f, 10.f, 10.f);
     ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y*0.5f, -ColliderDesc.vScale.z * 0.16f);
+    ColliderDesc.vTranslation = _float3(-ColliderDesc.vScale.x*0.1f, 0.f, -ColliderDesc.vScale.z * 0.5f);
     ColliderDesc.pOwner = this;
     ColliderDesc.m_eObjID = COLLISION_TYPE::HOUSE;
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom,&ColliderDesc)))

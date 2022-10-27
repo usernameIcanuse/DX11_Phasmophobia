@@ -140,14 +140,14 @@ void CImguiMgr::Set_Prototype()
 	if (!bFirst)
 	{
 		CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
-//
-//		if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Current_Level(), TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Player"), &m_pPlayer)))
-//			return;
-//
-//		m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
-//#ifdef _DEBUG
-//		m_pNavigationCom = static_cast<CPlayer*>(m_pPlayer)->Get_Navigation();
-//#endif
+
+
+		//m_pRayCom = (CCollider*)m_pPlayer->Get_Component(TEXT("Com_Ray"));
+#ifdef _DEBUG
+		m_pNavigationCom = (CNavigation*)pGameInstance->Get_Component(pGameInstance->Get_Current_Level(), TEXT("Layer_Player"), TEXT("Com_NaviHouse"), 0);
+
+#endif
+		
 		CGameObject* pPoints = nullptr;
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Point"), TEXT("Prototype_GameObject_Point"), &pPoints)))
 			return;
@@ -906,42 +906,19 @@ void CImguiMgr::Tool_Collider()
 		m_pSelectedTransform = (CTransform*)m_WallPrototype->Get_Component(CGameObject::m_pTransformTag);
 
 	}
-#pragma region Translation
-	if (m_pSelectedObject)
-	{
-
-		if (GAMEINSTANCE->Is_KeyState(KEY::P, KEY_STATE::TAP))
-		{
-			m_vSelectedOffSet += XMVectorSet(0.f, 0.05f, 0.f, 0.f);
-		}
-		else if (GAMEINSTANCE->Is_KeyState(KEY::O, KEY_STATE::TAP))
-		{
-			m_vSelectedOffSet -= XMVectorSet(0.f, 0.05f, 0.f, 0.f);
-		}
-
-	}
-#pragma endregion Translation
-
-#pragma region Rotation
-	static int Rotation = 0;
-
-
-	if (m_pSelectedObject)
-	{
-		if (ImGui::InputInt("input int", &Rotation))
-		{
-			m_pSelectedTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(Rotation));
-		}
-	}
-#pragma region Rotaion
-
+	Translation();
+	Rotation();
 	static float Scale[4] = { 1.f, 1.f, 1.f, 0.44f };
-	ImGui::InputFloat3("input float3", Scale);
+	ImGui::InputFloat3("Scale", Scale);
 
 	if (m_pSelectedObject)
 	{
 		m_pSelectedTransform->Set_Scaled(_float3(Scale[0], Scale[1], Scale[2]));
 	}
+
+	if (GAMEINSTANCE->Is_KeyState(KEY::SPACE, KEY_STATE::TAP))
+		CollocateCollider();
+
 
 	ImGui::End();
 

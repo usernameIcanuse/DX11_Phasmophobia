@@ -1316,12 +1316,12 @@ HRESULT CLoader::Loading_ForStreetHouseLevel()
 
 	/* For. Prototype_Component_Navigation_House*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_House"),
-		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation4.dat"))))
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/StreetHouse/Navigation2.dat"))))
 		return E_FAIL;
 
 	/* For. Prototype_Component_Navigation_OutSide*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_OutSide"),
-		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation_Outside.dat"))))
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/StreetHouse/Navigation_Outside.dat"))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));

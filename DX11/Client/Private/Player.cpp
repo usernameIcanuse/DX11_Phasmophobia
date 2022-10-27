@@ -134,7 +134,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	//	m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	//}
 
-	m_pTransformCom->Move(fTimeDelta/*,m_pCurrNavigation*/);
+	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 	if (true == m_bIsInHouse)
@@ -155,7 +155,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	m_pRendererCom->Add_DebugRenderGroup(m_pNaviOutSideCom);
+	m_pRendererCom->Add_DebugRenderGroup(m_pCurrNavigation);
 #endif
 	
 }

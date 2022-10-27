@@ -23,8 +23,8 @@ HRESULT CLevel_StreetHouse::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 	//임구이 안 쓸 때
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 		return E_FAIL;
@@ -86,7 +86,7 @@ HRESULT CLevel_StreetHouse::Ready_Layer_Player(const _tchar* pLayertag)
 {
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	_float4 vPosition = _float4(118.f, 20.f, 26.f, 1.f);
+	_float4 vPosition = _float4(59.3f, 7.f, 44.2f, 1.f);
 
 	if(FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, pLayertag, TEXT("Prototype_GameObject_Player"),nullptr,&vPosition)))
 		return E_FAIL;
@@ -201,8 +201,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	}
 
 	CloseHandle(hFile);
-	RELEASE_INSTANCE(CGameInstance);
-	return S_OK;
+
 	//Load Collider
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -250,6 +249,8 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Collider");
+	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
 
 	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Wall");
 	hFile = CreateFileA(Filepath,
