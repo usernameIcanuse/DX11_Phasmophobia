@@ -1267,12 +1267,13 @@ HRESULT CLoader::Loading_ForStreetHouseLevel()
 	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
 	//	return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f)/** XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
+	TransformMatrix = XMMatrixScaling(0.028f, 0.028f, 0.028f) * XMMatrixRotationY(XMConvertToRadians(90.0f))/* * XMMatrixTranslation(-6.f, 0.f, 0.f)*/;
 	/* For.Prototype_Component_Model_RoomDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_RoomDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "RoomDoor.fbx", TransformMatrix))))
 		return E_FAIL;
-	TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f);
+
+	TransformMatrix = XMMatrixScaling(0.028f, 0.028f, 0.028f) * XMMatrixRotationY(XMConvertToRadians(90.0f)) * XMMatrixTranslation(-6.f, 0.f, 0.f);
 	/* For.Prototype_Component_Model_MainDoor*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MainDoor"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "MainDoor.fbx", TransformMatrix))))

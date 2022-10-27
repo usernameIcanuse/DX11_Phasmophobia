@@ -36,11 +36,11 @@ HRESULT CLevel_StreetHouse::Initialize()
 	//if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Dream"), TEXT("../Bin/Resources/Fonts/128.spriteFont"))))
 	//	return E_FAIL;
 
-	//if (FAILED(Load_TruckProps()))
-	//	return E_FAIL;
+	if (FAILED(Load_TruckProps()))
+		return E_FAIL;
 
-	//if(FAILED(Load_Stage()))
-	//	return E_FAIL;
+	if(FAILED(Load_Stage()))
+		return E_FAIL;
 
 	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
@@ -101,7 +101,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 
-	char Filepath[255] = "../Bin/Resources/Map/NormalHouse/House"; 
+	char Filepath[255] = "../Bin/Resources/Map/StreetHouse/House"; 
 	
 	HANDLE hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -131,7 +131,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 			if (FAILED(pGameInstance->Add_GameObject(
 				LEVEL_GAMEPLAY,
 				TEXT("Layer_House"),
-				TEXT("Prototype_GameObject_Tutorial"),
+				TEXT("Prototype_GameObject_StreetHouse"),
 				nullptr,&WorldMat)))
 			{
 				MSG_BOX("Fail");
@@ -145,7 +145,8 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Map");
 
-	strcpy_s(Filepath,"../Bin/Resources/Map/NormalHouse/Door");
+
+	strcpy_s(Filepath,"../Bin/Resources/Map/StreetHouse/Door");
 
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -200,11 +201,12 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	}
 
 	CloseHandle(hFile);
-
+	RELEASE_INSTANCE(CGameInstance);
+	return S_OK;
 	//Load Collider
 	///////////////////////////////////////////////////////////////////////////////
 
-	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Object_Collider");
+	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Object_Collider");
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -249,7 +251,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Collider");
 
-	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Wall");
+	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Wall");
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -294,7 +296,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 
 
-	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/LightSwitch");
+	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/LightSwitch");
 	
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -379,7 +381,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);*/
 	//MSG_BOX("Loaded Items");
 
-	strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Atmosphere");
+	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Atmosphere");
 
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -423,7 +425,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
-		nullptr, TEXT("../Bin/Resources/Map/NormalHouse/"))))
+		nullptr, TEXT("../Bin/Resources/Map/StreetHouse/"))))
 		return E_FAIL;
 
 
@@ -471,7 +473,7 @@ HRESULT CLevel_StreetHouse::Load_TruckProps()
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	char Filepath[255] = "../Bin/Resources/Map/NormalHouse/Truck_Position";
+	char Filepath[255] = "../Bin/Resources/Map/StreetHouse/Truck_Position";
 	HANDLE hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (INVALID_HANDLE_VALUE == hFile)
