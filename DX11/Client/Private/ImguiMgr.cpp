@@ -258,7 +258,10 @@ void CImguiMgr::Set_Prototype()
 		m_vecPrototypeHouse.push_back(pTemp);
 
 		if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_Tutorial"), &pTemp)))
-			return;
+		{
+			if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Prototype"), TEXT("Prototype_GameObject_StreetHouse"), &pTemp)))
+				return;
+		}
 		pTemp->Set_Enable(false);
 		m_vecPrototypeHouse.push_back(pTemp);
 
@@ -450,7 +453,7 @@ void CImguiMgr::Tool_Map()
 	}
 
 
-	const char* items[] = { "Truck","FurnishedCabin","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse","KeyPad"};
+	const char* items[] = { "Truck","House","RoomDoor","MainDoor","Truck_Inside","Computer","KeyBoard","Mouse","KeyPad"};
 							
 
 
@@ -1239,7 +1242,14 @@ void CImguiMgr::CollocateHouse()
 		case 1:
 			if (FAILED(GAMEINSTANCE->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_House"), TEXT("Prototype_GameObject_House"), &pTemp)))
 				return;
-			static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+			if (FAILED(static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"))))
+			{
+				if (FAILED(static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_StreetHouse"))))
+				{
+					return;
+				}
+				tIndex = MODEL_TAG::STREETHOUSE;
+			}
 			tIndex = MODEL_TAG::FURNISHEDCABIN;
 			break;
 
@@ -1531,6 +1541,11 @@ void CImguiMgr::Load_Map(const char* strStageName, const char* strFileName)
 				break;
 			case MODEL_TAG::FURNISHEDCABIN:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_FurnishedCabin"));
+				break;
+
+			case MODEL_TAG::STREETHOUSE:
+				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_StreetHouse"));
+				break;
 
 			case MODEL_TAG::ROOMDOOR:
 				static_cast<CHouse*>(pTemp)->SetUp_ModelCom(TEXT("Prototype_Component_Model_RoomDoor"));

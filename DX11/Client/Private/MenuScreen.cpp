@@ -133,9 +133,16 @@ void CMenuScreen::Tick(_float fTimeDelta)
                 m_pCurUI->Icon_Lock(m_bLock);
 	    		break;
 
+            case 5://준비
+                m_pWaitingRoom->Set_Enable(false);
+                if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY, false, false, STREETHOUSE), LEVEL_GAMEPLAY)))
+                    return;
+                GAMEINSTANCE->Clear_Desc();
+                break;
+
 	    	case 6://시작
 	    		m_pWaitingRoom->Set_Enable(false);
-	    		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY), LEVEL_GAMEPLAY)))
+	    		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY,false,false,TUTORIAL), LEVEL_GAMEPLAY)))
 	    			return;
                 GAMEINSTANCE->Clear_Desc();
 	    		break;

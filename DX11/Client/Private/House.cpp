@@ -64,7 +64,9 @@ HRESULT CHouse::Render()
         _int        iPassIndex = 2;
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        {
+            //return E_FAIL;
+        }
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
             iPassIndex = 0;

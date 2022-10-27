@@ -31,11 +31,12 @@ public:
 	}
 
 public:
-	HRESULT Initialize(LEVEL eNextLevel,_bool _bFirst);
+	HRESULT Initialize(LEVEL eNextLevel,_bool _bFirst, STAGE eStage = STAGE_END);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForStaticProps();
 	HRESULT Loading_ForLobbyLevel();
 	HRESULT Loading_ForTutorialLevel();
+	HRESULT Loading_ForStreetHouseLevel();
 
 public:
 	_float	Get_LoadingRatio()
@@ -60,10 +61,10 @@ private:
 
 public:
 	_bool					m_bFirst = false;
-
+	STAGE					m_eStage = STAGE_END;
 	
 public:
-	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool _bFirst = false);
+	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool _bFirst = false, STAGE eStage = STAGE_END);
 	virtual void Free() override;
 };
 

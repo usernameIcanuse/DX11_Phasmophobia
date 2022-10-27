@@ -51,6 +51,7 @@
 #include "TrailCam.h"
 #include "Tripod.h"
 #include "Tutorial.h"
+#include "StreetHouse.h"
 #include "Door.h"
 //#include "LightSwitch.h"
 #include "EMF.h"
@@ -97,7 +98,11 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		hr = pLoader->Loading_ForLobbyLevel();
 		break;
 	case LEVEL_GAMEPLAY:
-		hr = pLoader->Loading_ForTutorialLevel();
+		if(TUTORIAL == pLoader->m_eStage)
+			hr = pLoader->Loading_ForTutorialLevel();
+		if(STREETHOUSE == pLoader->m_eStage)	
+			hr = pLoader->Loading_ForStreetHouseLevel();
+
 		break;
 	}	
 
@@ -109,11 +114,12 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	return 0;
 }
 
-HRESULT CLoader::Initialize(LEVEL eNextLevel, _bool _bFirst)
+HRESULT CLoader::Initialize(LEVEL eNextLevel, _bool _bFirst, STAGE eStage)
 {
 	m_eNextLevel = eNextLevel;
 
 	m_bFirst = _bFirst;
+	m_eStage = eStage;
 
 	InitializeCriticalSection(&m_CriticalSection);
 
@@ -320,17 +326,6 @@ HRESULT CLoader::Loading_ForStaticProps()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_Screen"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "TVScreen.fbx", TransformMatrix))))
 		return E_FAIL;
-
-	/*For.Prototype_Component_Model_StreetHouse*/
-	/*TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_StreetHouse"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse2.fbx", TransformMatrix))))
-		return E_FAIL;*/
-	TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_StreetHouse"),
-		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse2.fbx", TransformMatrix))))
-		return E_FAIL;
-
 
 	/* For.Prototype_Component_Shader_VtxModel */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"),
@@ -969,11 +964,409 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 	return S_OK;
 }
 
-CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,  _bool _bFirst)
+HRESULT CLoader::Loading_ForStreetHouseLevel()
+{
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+
+
+	///*For. Prototype_GameObject_Navigation_Mesh*/
+	/*if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Navigation_Mesh"),
+		CNavigation_Mesh::Create(m_pDevice, m_pContext))))
+		return E_FAIL;*/
+
+
+		/* For.Prototype_GameObject_Ghost*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
+		CGhost::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ghost_SpawnPoint*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
+		CGhost_SpawnPoint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ghost_Status*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_Status"),
+		CGhost_Status::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ghost_Behavior*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost_Behavior"),
+		CGhost_Behavior::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HandPrint*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_HandPrint"),
+		CHandPrint::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_DotsProjecter"),
+		CDotsProjecter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_FlashLight*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_FlashLight"),
+		CFlashLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_UVLight*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_UVLight"),
+		CUVLight::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_Thermometer*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Thermometer"),
+		CThermometer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_EMF*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_EMF"),
+		CEMF::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Note*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Note"),
+		CNote::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_TrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TrailCam"),
+		CTrailCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tripod*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Tripod"),
+		CTripod::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_SpiritBox*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_SpiritBox"),
+		CSpiritBox::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Video_Camera*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Video_Camera"),
+		CVideo_Camera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Collider*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Collider"),
+		CObject_Collider::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Wall*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Wall"),
+		CWall_Collider::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Door*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Door"),
+		CDoor::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_StreetHouse*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_StreetHouse"),
+		CStreetHouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Atmosphere*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Atmosphere"),
+		CAtmosphere::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_TempDotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempDotsProjecter"),
+		CTempDotsProjecter::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_TempNote*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempNote"),
+		CTempNote::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_TempVideoCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempVideoCam"),
+		CTempVideoCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_TempTrailCam*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_TempTrailCam"),
+		CTempTrailCam::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Truck*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Truck"),
+		CTruck::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Truck_Inside*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Truck_Inside"),
+		CTruck_Inside::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_Computer*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Computer"),
+		CComputer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_ComputerScreen*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_ComputerScreen"),
+		CScreen::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For. Prototype_GameObject_KeyBoard*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_KeyBoard"),
+		CKeyBoard::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Mouse*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Mouse"),
+		CMouse::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_KeyPad*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_KeyPad"),
+		CKeyPad::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	///* For.Prototype_GameObject_Effect */
+	//if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Effect"),
+	//	CEffect::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+
+	/* For. Prototype_GameObject_CameraScreen*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_CameraScreen"),
+		CCamera_Screen::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_LightSwitch*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LightSwitch"),
+		CLightSwitch::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For. Prototype_GameObject_LightBulb*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_LightBulb"),
+		CLightBulb::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	/* For. Prototype_GameObject_Journal*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Journal"),
+		CJournal::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Main*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Main"),
+		CMain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+	/* For. Prototype_GameObject_Evidence*/
+	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Evidence"),
+		CEvidence::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+
+#pragma endregion
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중이비낟. "));
+
+	/* For.Prototype_Component_Texture_Sky */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Terrain */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), 2))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_HandPrint*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_HandPrint"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/HandPrint/HandPrint1.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_DotsProjecter*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_DotsProjecter"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Dots/Dots.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_XIcon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_XIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/X Icon.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GhostIcon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_GhostIcon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/SpiritBox_Ghost.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Black*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Black"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Black.png"), 1))))
+		return E_FAIL;
+
+
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중이비낟. "));
+
+	/* For.Prototype_Component_VIBuffer_Terrain */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height2.bmp")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_RigidBody*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_RigidBody"),
+		CRigidBody::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_NorRect*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_NorRect"),
+		CVIBuffer_NorRect::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Point_Instance*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Point_Instance"),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, 200))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_CameraRenderer*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Camera_Renderer"),
+		CCamera_Renderer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+
+	_matrix			TransformMatrix;
+	TransformMatrix = XMMatrixScaling(0.05f, 0.05f, 0.05f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	/*For. Prototype_Component_Model_LightSwitch*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LightSwitch"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/LightSwitch/", "Push_Lightswitch.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/*For. Prototype_Component_Model_LightBulb*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_LightBulb"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/FurnishedCabin/LightSwitch/", "LightBulb.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	/*For. Prototype_Component_Model_Ghost_Girl*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Ghost_Girl"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_ANIM, "../Bin/Resources/Meshes/Ghost/Ghost_Girl/", "Ghost_Girl.fbx", TransformMatrix))))
+		return E_FAIL;
+
+	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+
+	///* For.Prototype_Component_Model_Lighter*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Lighter"),
+	//	CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/Lighter/", "Lighter.fbx", TransformMatrix))))
+	//	return E_FAIL;
+
+	TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f)/** XMMatrixRotationY(XMConvertToRadians(180.0f))*/;
+	/* For.Prototype_Component_Model_RoomDoor*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_RoomDoor"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "RoomDoor.fbx", TransformMatrix))))
+		return E_FAIL;
+	TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f);
+	/* For.Prototype_Component_Model_MainDoor*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_MainDoor"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "MainDoor.fbx", TransformMatrix))))
+		return E_FAIL;
+
+
+
+
+	/*For.Prototype_Component_Model_StreetHouse*/
+	TransformMatrix = TransformMatrix = XMMatrixScaling(0.005f, 0.005f, 0.005f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_StreetHouse"),
+		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/House/SuburbanHouse/", "SuburbanHouse2.fbx", TransformMatrix))))
+		return E_FAIL;
+
+
+
+	lstrcpy(m_szLoadingText, TEXT("콜라이더추가.  "));
+
+
+	/* For.Prototype_Component_Collider_AABB */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_AABB"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_AABB))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Collider_OBB */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_OBB))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_Ray*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_Ray"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_RAY))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Collider_SPHERE */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_SPHERE"),
+		CCollider::Create(m_pDevice, m_pContext, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Navigation_House*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_House"),
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation4.dat"))))
+		return E_FAIL;
+
+	/* For. Prototype_Component_Navigation_OutSide*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Navigation_OutSide"),
+		CNavigation::Create(m_pDevice, m_pContext, "../Bin/Resources/Map/NormalHouse/Navigation_Outside.dat"))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중이빈다. "));
+
+	/* For.Prototype_Component_Shader_Decals */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_Decals"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Decals.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxAnimModel */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimModel"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxCubeTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxCubeTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxNorTex */
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX_DECLARATION::Element, VTXNORTEX_DECLARATION::iNumElements))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VtxPointInstance*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxPointInstance"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"), VTXPOINT_INSTANCE_DECLARATION::Element, VTXPOINT_INSTANCE_DECLARATION::iNumElement))))
+		return E_FAIL;
+
+
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+
+	RELEASE_INSTANCE(CGameInstance);
+
+	return S_OK;
+}
+
+CLoader * CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel,  _bool _bFirst, STAGE eStage)
 {
 	CLoader*		pInstance = new CLoader(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevel, _bFirst)))
+	if (FAILED(pInstance->Initialize(eNextLevel, _bFirst,eStage)))
 	{
 		MSG_BOX("Failed to Created : CLoader");
 		Safe_Release(pInstance);

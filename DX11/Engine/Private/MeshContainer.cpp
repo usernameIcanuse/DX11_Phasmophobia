@@ -103,9 +103,10 @@ HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatr
 		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));	
 		XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), TransformMatrix)));
 
-		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
+		if (nullptr != pAIMesh->mTangents)
+			memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 
-		if (pAIMesh->mTextureCoords[0])
+		if (nullptr != pAIMesh->mTextureCoords[0])
 			memcpy(&pVertices[i].vTexUV, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
 		else
 			pVertices[i].vTexUV = _float2(0.f, 0.f);

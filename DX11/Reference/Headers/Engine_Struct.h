@@ -344,6 +344,7 @@ namespace Engine
 		KEYBOARD,
 		MOUSE,
 		KEYPAD,
+		STREETHOUSE,
 		MODEL_END
 	};
 

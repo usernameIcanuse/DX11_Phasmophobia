@@ -4,6 +4,7 @@
 #include "Level_Logo.h"
 #include "Level_Lobby.h"
 #include "Level_Tutorial.h"
+#include "Level_StreetHouse.h"
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -12,7 +13,7 @@ CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst, _bool bLobby)
+HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst, _bool bLobby,STAGE eStage)
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
@@ -20,8 +21,9 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel, _bool bFirst, _bool bLobby)
 
 	m_eNextLevel = eNextLevel;
 	m_bLobby = bLobby;
+	m_eStage = eStage;
 
-	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel, bFirst);
+	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevel, bFirst,eStage);
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
@@ -61,8 +63,10 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			pLevel = CLevel_Lobby::Create(m_pDevice, m_pContext, m_bLobby);
 			break;
 		case LEVEL_GAMEPLAY:
-			//GAMEINSTANCE->Set_Current_Level(LEVEL_GAMEPLAY);
-			pLevel = CLevel_Tutorial::Create(m_pDevice, m_pContext);
+			if(TUTORIAL == m_eStage)
+				pLevel = CLevel_Tutorial::Create(m_pDevice, m_pContext);
+			if (STREETHOUSE == m_eStage)
+				pLevel = CLevel_StreetHouse::Create(m_pDevice, m_pContext);
 			break;
 		}
 
@@ -127,11 +131,11 @@ HRESULT CLevel_Loading::Ready_Layer_FirstLoading(const _tchar* pLayerTag)
 	return S_OK;
 }
 
-CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst, _bool bLobby)
+CLevel_Loading * CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVEL eNextLevel, _bool bFirst, _bool bLobby,STAGE eStage)
 {
 	CLevel_Loading*		pInstance = new CLevel_Loading(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(eNextLevel, bFirst, bLobby)))
+	if (FAILED(pInstance->Initialize(eNextLevel, bFirst, bLobby,eStage)))
 	{
 		MSG_BOX("Failed to Created : CLevel_Loading");
 		Safe_Release(pInstance);
