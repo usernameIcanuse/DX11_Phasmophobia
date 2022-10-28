@@ -46,7 +46,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Dream"), TEXT("../Bin/Resources/Fonts/128.spriteFont"))))
 		return E_FAIL;
 #endif
-	
+	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Digital"), TEXT("../Bin/Resources/Fonts/DigitalFont.spriteFont"))))
+		return E_FAIL;
 
 	return S_OK;
 }

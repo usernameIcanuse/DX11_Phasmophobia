@@ -26,22 +26,13 @@ HRESULT CGhost::Initialize_Prototype()
 
 HRESULT CGhost::Initialize(void* pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
-
 	
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 	
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	if (nullptr != pArg)
-	{
-		m_pSpawnPoint = (CGhost_SpawnPoint*)pArg;
-
-	}
 	if (FAILED(Setup_Bahavior()))
 		return E_FAIL;
 
@@ -53,7 +44,6 @@ HRESULT CGhost::Initialize(void* pArg)
 
 	m_fUpdatePointTime = 5.f;
 
-	GAMEINSTANCE->Set_GhostName(TEXT("ªÏ∑¡¡‡"));
 
 	return S_OK;
 }

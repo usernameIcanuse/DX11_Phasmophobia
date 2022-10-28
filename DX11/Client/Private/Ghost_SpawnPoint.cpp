@@ -57,10 +57,7 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 
 
 	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
-	if (m_bFreeze && m_iAreaDefaultTemperature - 4 > 0)
-	{
-		m_iAreaDefaultTemperature -=7;
-	}
+
 
 
 	m_lAnswerFrequency = dis(gen);
@@ -255,6 +252,21 @@ void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 
 	}
 	
+}
+
+void CGhost_SpawnPoint::Set_Evidence(_bool SpiritBox, _bool DotsProjecter, _bool Freeze, _bool HandPrint, _bool EMF)
+{
+	m_bSpiritBox = SpiritBox;
+	m_bDotsProjecter = DotsProjecter;
+	m_bFreeze = Freeze;
+	m_bHandPrint = HandPrint;
+
+	m_pGhost_Status->Set_EMF(EMF);
+	
+	if (m_bFreeze && m_iAreaDefaultTemperature - 4 > 0)
+	{
+		m_iAreaDefaultTemperature -= 7;
+	}
 }
 
 HRESULT CGhost_SpawnPoint::Setup_Component()

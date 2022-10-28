@@ -345,11 +345,119 @@ HRESULT CLoader::Loading_ForStaticProps()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Photo"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_photo.png")))))
 		return E_FAIL;
-	/*For.Prototype_Component_Texture_Journal_Icon*/
-	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_icon.png")))))
+	///*For.Prototype_Component_Texture_Journal_Icon*/
+	//if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/ui_icon.png")))))
+	//	return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_Icon_Menu*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Menu"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/icon_menu.png")))))
 		return E_FAIL;
-
+	/*For.Prototype_Component_Texture_Journal_Icon_Evidence*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/icon_evidence.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_Icon_Photo*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Photo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/icon_photo.png")))))
+		return E_FAIL;
+	//////////////////////////////////////////////////////////////////
+	/*For.Prototype_Component_Texture_Journal_GhostName_banshee*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_banshee"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/banshee.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_demon*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_demon"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/demon.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_deogen*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_deogen"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/deogen.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_goryo*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_goryo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/goryo.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_hantu*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_hantu"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/hantu.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_jinn*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_jinn"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/jinn.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_mare*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_mare"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/mare.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_mimic*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_mimic"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/mimic.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_moroi*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_moroi"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/moroi.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_myling*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_myling"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/myling.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_obake*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_obake"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/obake.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_oni*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_oni"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/oni.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_onryo*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_onryo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/onryo.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_phantom*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_phantom"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/phantom.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_poltergeist*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_poltergeist"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/poltergeist.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_raiju*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_raiju"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/raiju.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_revenant*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_revenant"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/revenant.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_shade*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_shade"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/shade.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_spirit*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_spirit"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/spirit.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_thaye*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_thaye"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/thaye.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_twins*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_twins"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/twins.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_wraith*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_wraith"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/wraith.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_yokai*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_yokai"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/yokai.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Texture_Journal_GhostName_yurei*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_yurei"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/yurei.png")))))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 

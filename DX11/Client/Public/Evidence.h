@@ -37,6 +37,7 @@ public:
 	}
 	
 	void		Icon_Lock(_bool _bLock);
+	HRESULT Setup_Icon();
 
 private:
 	CShader* m_pShaderCom = nullptr;
@@ -45,8 +46,10 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = nullptr;
 
 private:
+	vector<CUIIcon*>	m_IconEvidence;
+
+private:
 	HRESULT Setup_Component();
-	HRESULT Setup_Icon();
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 

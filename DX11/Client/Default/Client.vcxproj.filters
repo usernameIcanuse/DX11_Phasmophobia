@@ -253,6 +253,21 @@
     <ClInclude Include="..\Public\StreetHouse.h">
       <Filter>02.GameObject\Stage\House\StreetHouse</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Jinn.h">
+      <Filter>02.GameObject\Ghost\Jinn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Goryo.h">
+      <Filter>02.GameObject\Ghost\Goryo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Oni.h">
+      <Filter>02.GameObject\Ghost\Oni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Phantom.h">
+      <Filter>02.GameObject\Ghost\Phantom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Wraith.h">
+      <Filter>02.GameObject\Ghost\Wraith</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -491,6 +506,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\StreetHouse.cpp">
       <Filter>02.GameObject\Stage\House\StreetHouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Jinn.cpp">
+      <Filter>02.GameObject\Ghost\Jinn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Goryo.cpp">
+      <Filter>02.GameObject\Ghost\Goryo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Oni.cpp">
+      <Filter>02.GameObject\Ghost\Oni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Phantom.cpp">
+      <Filter>02.GameObject\Ghost\Phantom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Wraith.cpp">
+      <Filter>02.GameObject\Ghost\Wraith</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -744,6 +774,21 @@
     </Filter>
     <Filter Include="02.GameObject\Stage\House\StreetHouse">
       <UniqueIdentifier>{87a3e086-39ad-4fc2-b337-8ea4484a07ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Wraith">
+      <UniqueIdentifier>{2ece2886-9124-4604-8d81-a99ffa10cc16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Phantom">
+      <UniqueIdentifier>{01f99870-681a-46ee-973f-1e2773442c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Jinn">
+      <UniqueIdentifier>{9f970449-a8d2-4958-9d59-cb2a45f352a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Oni">
+      <UniqueIdentifier>{53f11b63-649b-4885-92a6-a22ce84f3e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObject\Ghost\Goryo">
+      <UniqueIdentifier>{494ca3c7-42cd-4777-b033-60f93c01a92b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

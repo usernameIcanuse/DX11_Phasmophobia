@@ -16,13 +16,13 @@ BEGIN(Client)
 class CGhost_SpawnPoint;
 class CGhost_Behavior;
 
-class CGhost final: public CGameObject
+class CGhost : public CGameObject
 {
 	friend class CGhost_SpawnPoint;
 public:
 
 
-private:
+protected:
 	CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGhost(const CGhost& rhs);
 	virtual ~CGhost() = default;
@@ -41,7 +41,7 @@ public:
 	virtual void Call_EventFunc(_float fTimeDelta = 0.f);
 
 
-private: /*기본 귀신 상호작용, 기능*/
+protected: /*기본 귀신 상호작용, 기능*/
 	void Light_Attack(_float fTimeDelta =0.f); //이벤트
 	void Attack(_float fTimeDelta = 0.f); //헌팅
 	void Normal_Operation(_float fTimeDelta = 0.f);
@@ -51,7 +51,7 @@ private: /*기본 귀신 상호작용, 기능*/
 	void Move_To_SpawnPoint(_vector _pPosition);
 
 
-private:
+protected:
 	CCollider*		m_pOBBCom = nullptr; // attack
 
 	CModel*			m_pModelCom = nullptr;
@@ -83,7 +83,7 @@ private:
 	_float				m_fHideModel = 0.f;
 
 
-private:
+protected:
 	HRESULT	Setup_Component();
 	HRESULT Setup_Bahavior();
 

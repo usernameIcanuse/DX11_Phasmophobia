@@ -80,13 +80,13 @@ void CSpiritBox::LateTick(_float fTimeDelta)
             RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
             RenderFont.vScale = XMVectorSet(1.f, 1.f, 1.f, 0.f);
 
-            m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Dream"));
+            m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
 
         }
         pTexture = m_pModelCom->Get_SRV(0, aiTextureType_EMISSIVE);
         if (nullptr != pTexture)
         {
-            m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Dream"));
+            m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
         }
     }
 

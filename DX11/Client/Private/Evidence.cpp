@@ -27,6 +27,9 @@ HRESULT CEvidence::Initialize(void * pArg)
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
+	//if (FAILED(Setup_Icon()))
+	//	return E_FAIL;
+
 	m_fSizeX = 900.f;
 	m_fSizeY = 600.f;
 	m_fX = g_iWinCX >> 1;
@@ -68,6 +71,9 @@ void CEvidence::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
 
+	for (auto& elem : m_IconEvidence)
+		elem->Set_Enable(_bEnable);
+
 	for(auto& elem : m_vecUIIcon)
 		elem->Set_Enable(_bEnable);
 }
@@ -102,6 +108,263 @@ HRESULT CEvidence::Setup_Component()
 
 HRESULT CEvidence::Setup_Icon()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	/*Evidence Icon*/
+
+	CUIIcon* pIcon = nullptr;
+//#pragma region 증거
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//emf
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Menu"));
+//	pIcon->Set_IconPosition(330, 60, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//도트
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Photo"));
+//	pIcon->Set_IconPosition(750, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//손자국
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
+//	pIcon->Set_IconPosition(950, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//오브
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
+//	pIcon->Set_IconPosition(950, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//라이팅
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
+//	pIcon->Set_IconPosition(950, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//주파수
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
+//	pIcon->Set_IconPosition(950, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+//		return E_FAIL;
+//	//서늘함
+//	m_vecUIIcon.push_back(pIcon);
+//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
+//	pIcon->Set_IconPosition(950, 62, 200, 35);
+//	pIcon->Set_PassIndex(3);
+//
+//#pragma endregion 증거
+
+	/*GhostName_Icon*/
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//스피릿
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_spirit"));
+	pIcon->Set_IconPosition(720, 370, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//레이스
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_wraith"));
+	pIcon->Set_IconPosition(845, 370, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//팬텀
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_phantom"));
+	pIcon->Set_IconPosition(970, 370, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//폴터가이스트
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_poltergeist"));
+	pIcon->Set_IconPosition(720, 400, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//밴시
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_banshee"));
+	pIcon->Set_IconPosition(845, 400, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//진
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_jinn"));
+	pIcon->Set_IconPosition(970, 400, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//메어
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_mare"));
+	pIcon->Set_IconPosition(720, 430, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//레버넌트
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_revenant"));
+	pIcon->Set_IconPosition(845, 430, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//셰이드
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_shade"));
+	pIcon->Set_IconPosition(970, 430, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//데몬
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_demon"));
+	pIcon->Set_IconPosition(720, 460, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//유레이
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_yurei"));
+	pIcon->Set_IconPosition(845, 460, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//오니
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_oni"));
+	pIcon->Set_IconPosition(970, 460, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//요괴
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_yokai"));
+	pIcon->Set_IconPosition(720, 490, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//한투
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_hantu"));
+	pIcon->Set_IconPosition(845, 490, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//고료
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_goryo"));
+	pIcon->Set_IconPosition(970, 490, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//마일링
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_myling"));
+	pIcon->Set_IconPosition(720, 520, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//원령
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_onryo"));
+	pIcon->Set_IconPosition(845, 520, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//트윈스
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_twins"));
+	pIcon->Set_IconPosition(970, 520, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//라이주
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_raiju"));
+	pIcon->Set_IconPosition(720, 550, 110, 30);
+	pIcon->Set_PassIndex(4); 
+	
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//오바케
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_obake"));
+	pIcon->Set_IconPosition(845, 550, 110, 30);
+	pIcon->Set_PassIndex(4); 
+	
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//미믹
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_mimic"));
+	pIcon->Set_IconPosition(970, 550, 110, 30);
+	pIcon->Set_PassIndex(4); 
+	
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//모로이
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_moroi"));
+	pIcon->Set_IconPosition(720, 580, 110, 30);
+	pIcon->Set_PassIndex(4); 
+	
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//데오겐
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_deogen"));
+	pIcon->Set_IconPosition(845, 580, 110, 30);
+	pIcon->Set_PassIndex(4); 
+	
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//타예
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_thaye"));
+	pIcon->Set_IconPosition(970, 580, 110, 30);
+	pIcon->Set_PassIndex(4);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 

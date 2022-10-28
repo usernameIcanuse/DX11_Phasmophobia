@@ -68,6 +68,7 @@ public:
 	{
 		return m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);			
 	}
+	void Set_Evidence(_bool SpiritBox, _bool DotsProjecter, _bool Freeze, _bool HandPrint, _bool EMF);
 
 
 private:
@@ -98,7 +99,7 @@ private:
 	_bool		m_bSpiritBox = true;
 	_bool		m_bDotsProjecter = true;
 	_bool		m_bFreeze = true;
-	_bool		m_bGhostOrb = true;
+	_bool		m_bGhostOrb = false;
 	_bool		m_bGhostWriting = false;
 	_bool		m_bHandPrint = true;
 

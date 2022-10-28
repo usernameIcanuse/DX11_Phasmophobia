@@ -62,6 +62,8 @@ HRESULT CUIIcon::Render()
 	if (FAILED(SetUp_ShaderResource(nullptr, nullptr)))
 		return E_FAIL;
 
+	if (m_iPassIndex == 4)
+		int a = 10;
 	m_pShaderCom->Begin(m_iPassIndex);
 
 	m_pVIBufferCom->Render();
@@ -91,8 +93,10 @@ HRESULT CUIIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMa
 
 	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &m_bOnMouse, sizeof(_bool))))
 		return E_FAIL;
+	if (FAILED(m_pShaderCom->Set_RawValue("g_bExcept", &m_bExcepted, sizeof(_bool))))
+		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_iTexIndex)))
 		return E_FAIL;
 
 
