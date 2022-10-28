@@ -134,7 +134,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	//	m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
 	//}
 
-	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
+	m_pTransformCom->Move(fTimeDelta/*,m_pCurrNavigation*/);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
 	
 	if (true == m_bIsInHouse)

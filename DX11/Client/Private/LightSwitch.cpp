@@ -51,7 +51,7 @@ void CLightSwitch::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
  
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-    //m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
+   // m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 
 }
 

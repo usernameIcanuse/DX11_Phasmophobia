@@ -249,8 +249,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Collider");
-	RELEASE_INSTANCE(CGameInstance);
-	return S_OK;
+
 
 	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Wall");
 	hFile = CreateFileA(Filepath,
@@ -297,6 +296,50 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 
 
+	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Atmosphere");
+
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+	dwByteHouse = 0;
+	OBJ_DATA tDataObj;
+	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+
+			_float4x4 WorldMat;
+			XMStoreFloat4x4(&WorldMat, tDataObj.matWorld);
+
+
+			if (FAILED(pGameInstance->Add_GameObject(
+				LEVEL_GAMEPLAY,
+				TEXT("Layer_House"),
+				TEXT("Prototype_GameObject_Atmosphere"),
+				nullptr, &WorldMat)))
+			{
+				MSG_BOX("Fail");
+				RELEASE_INSTANCE(CGameInstance);
+				return E_FAIL;
+			}
+
+		}
+	}
+	CloseHandle(hFile);
+
+
 	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/LightSwitch");
 	
 	hFile = CreateFileA(Filepath,
@@ -336,94 +379,7 @@ HRESULT CLevel_StreetHouse::Load_Stage()
 	CloseHandle(hFile);
 	//MSG_BOX("Loaded Items");
 
-	
 
-	/*strcpy_s(Filepath, "../Bin/Resources/Map/NormalHouse/Ghost");
-
-	hFile = CreateFileA(Filepath,
-		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	if (INVALID_HANDLE_VALUE == hFile)
-	{
-		MSG_BOX("Failed to load file");
-		RELEASE_INSTANCE(CGameInstance);
-		return E_FAIL;
-	}
-	dwByteHouse = 0;
-	OBJ_DATA  tDataObj;
-	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
-	while (true)
-	{
-		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
-		{
-			if (0 == dwByteHouse)
-			{
-				break;
-			}
-			
-
-			CHARACTERDATA tagData;
-			XMStoreFloat4x4(&tagData.matWorld, tDataObj.matWorld);
-			tagData.iCurrentIndex = 49;
-
-			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_GAMEPLAY,
-				TEXT("Layer_Ghost"),
-				TEXT("Prototype_GameObject_Ghost"),
-				nullptr, &tagData)))
-			{
-				MSG_BOX("Fail");
-				RELEASE_INSTANCE(CGameInstance);
-				return E_FAIL;
-			}
-
-		}
-	}
-	CloseHandle(hFile);*/
-	//MSG_BOX("Loaded Items");
-
-	strcpy_s(Filepath, "../Bin/Resources/Map/StreetHouse/Atmosphere");
-
-	hFile = CreateFileA(Filepath,
-		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	if (INVALID_HANDLE_VALUE == hFile)
-	{
-		MSG_BOX("Failed to load file");
-		RELEASE_INSTANCE(CGameInstance);
-		return E_FAIL;
-	}
-	dwByteHouse = 0;
-	OBJ_DATA tDataObj;
-	ZeroMemory(&tDataObj, sizeof(OBJ_DATA));
-	while (true)
-	{
-		if (TRUE == ReadFile(hFile, &tDataObj, sizeof(OBJ_DATA), &dwByteHouse, nullptr))
-		{
-			if (0 == dwByteHouse)
-			{
-				break;
-			}
-
-
-			_float4x4 WorldMat;
-			XMStoreFloat4x4(&WorldMat, tDataObj.matWorld);
-		
-
-			if (FAILED(pGameInstance->Add_GameObject(
-				LEVEL_GAMEPLAY,
-				TEXT("Layer_House"),
-				TEXT("Prototype_GameObject_Atmosphere"),
-				nullptr, &WorldMat)))
-			{
-				MSG_BOX("Fail");
-				RELEASE_INSTANCE(CGameInstance);
-				return E_FAIL;
-			}
-
-		}
-	}
-	CloseHandle(hFile);
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Ghost"), TEXT("Prototype_GameObject_Ghost_SpawnPoint"),
 		nullptr, TEXT("../Bin/Resources/Map/StreetHouse/"))))
