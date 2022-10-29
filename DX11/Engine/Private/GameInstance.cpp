@@ -255,6 +255,21 @@ bool CGameInstance::Is_KeyState(KEY _Key, KEY_STATE _KeyState)
 	return m_pInput_Manager->Get_KeyState(_Key) == _KeyState;
 }
 
+void CGameInstance::Set_Mouse_Lock()
+{
+	if (nullptr == m_pInput_Manager)
+		return;
+	m_pInput_Manager->Set_Mouse_Lock();
+}
+
+_bool CGameInstance::Get_Mouse_Lock()
+{
+	if (nullptr == m_pInput_Manager)
+		return false;
+
+	m_pInput_Manager->Get_Mouse_Lock();
+}
+
 _byte CGameInstance::Get_DIMouseKeyState(MOUSEBUTTON eMouseButtonID)
 {
 	if (nullptr == m_pInput_Manager)

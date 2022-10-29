@@ -212,7 +212,7 @@ HRESULT CEvidence::Setup_Icon()
 	m_IconEvidence.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
 	pIcon->Set_IconPosition(755, 165, 180, 35);
-	pIcon->Set_PassIndex(3);
+	pIcon->Set_PassIndex(4);
 
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
@@ -227,7 +227,7 @@ HRESULT CEvidence::Setup_Icon()
 	//손자국
 	m_IconEvidence.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
-	pIcon->Set_IconPosition(755, 195, 180, 35);
+	pIcon->Set_IconPosition(755, 199, 180, 35);
 	pIcon->Set_PassIndex(4);
 
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
@@ -235,21 +235,21 @@ HRESULT CEvidence::Setup_Icon()
 	//오브
 	m_IconEvidence.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
-	pIcon->Set_IconPosition(935, 195, 180, 35);
+	pIcon->Set_IconPosition(935, 199, 180, 35);
 	pIcon->Set_PassIndex(4);
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//라이팅
 	m_IconEvidence.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
-	pIcon->Set_IconPosition(755, 225, 180, 35);
+	pIcon->Set_IconPosition(755, 229, 180, 35);
 	pIcon->Set_PassIndex(4);
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//주파수
 	m_IconEvidence.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
-	pIcon->Set_IconPosition(935, 225, 180, 35);
+	pIcon->Set_IconPosition(935, 229, 180, 35);
 	pIcon->Set_PassIndex(4);
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;

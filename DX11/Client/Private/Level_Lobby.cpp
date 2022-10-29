@@ -57,9 +57,6 @@ void CLevel_Lobby::Tick(_float fTimeDelta)
 	
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 
-
-
-
 }
 
 HRESULT CLevel_Lobby::Render()

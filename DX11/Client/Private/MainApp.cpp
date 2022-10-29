@@ -48,6 +48,8 @@ HRESULT CMainApp::Initialize()
 #endif
 	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Digital"), TEXT("../Bin/Resources/Fonts/DigitalFont.spriteFont"))))
 		return E_FAIL;
+	if (FAILED(GAMEINSTANCE->Add_Font(m_pDevice, m_pContext, TEXT("Font_Gothic"), TEXT("../Bin/Resources/Fonts/¸¼Àº°íµñ.spriteFont"))))
+		return E_FAIL;
 
 	return S_OK;
 }

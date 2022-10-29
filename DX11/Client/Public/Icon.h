@@ -63,6 +63,10 @@ public:
 	{
 		m_iPassIndex = iPassIndex;
 	}
+	void Set_MultiTex_Index(_uint _iTexIndex)
+	{
+		m_iTexIndex = _iTexIndex;
+	}
 
 protected:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;
@@ -73,6 +77,7 @@ protected:
 	_bool			m_bLock = true;
 
 	_int			m_iPassIndex = 1;
+	_uint			m_iTexIndex = 0;
 
 protected:
 	virtual HRESULT SetUp_Components();

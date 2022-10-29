@@ -47,13 +47,20 @@ void CJournal::Tick(_float fTimeDelta)
 		break;
 
 	case 2:
-		
-		break;
-
-	case 3:
 		m_pMain->Set_Enable(false);
 		m_pEvidence->Set_Enable(true);
 		break;
+	}
+	if (m_pMain->Get_Enable())
+	{
+		_uint iSelectedMenu = m_pMain->Selected_Menu();
+		if (1 == iSelectedMenu)
+		{
+			Set_Enable(false);
+			Main_On(false);
+			Off_AllUI();
+			GAMEINSTANCE->Set_Mouse_Lock();
+		}
 	}
 
 }
@@ -107,6 +114,7 @@ HRESULT CJournal::Setup_UI()
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Main"), TEXT("Prototype_GameObject_UIMain"), (CGameObject**)&m_pMain)))
 		return E_FAIL;
 	
+	m_pMain->Setup_Icon();
 	m_pMain->Set_Enable(false);
 	/*For. Evidence*/
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIEvidence"), (CGameObject**)&m_pEvidence)))
@@ -137,13 +145,13 @@ HRESULT CJournal::Setup_Icon()
 	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//사진
-	m_vecUIIcon.push_back(pIcon);
-	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Photo"));
-	pIcon->Set_IconPosition(750, 62, 200, 35);
-	pIcon->Set_PassIndex(3);
+	//m_vecUIIcon.push_back(pIcon);
+	//pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Photo"));
+	//pIcon->Set_IconPosition(750, 62, 200, 35);
+	//pIcon->Set_PassIndex(3);
 
-	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-		return E_FAIL;
+	//if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+	//	return E_FAIL;
 	//증거
 	m_vecUIIcon.push_back(pIcon);
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));

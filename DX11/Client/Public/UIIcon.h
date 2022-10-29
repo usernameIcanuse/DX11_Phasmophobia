@@ -30,17 +30,14 @@ public:
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
 public:
-	void Set_MultiTex_Index(_uint _iTexIndex)
-	{
-		m_iTexIndex = _iTexIndex;
-	}
+	
 	void Is_Excepted(_bool _bExcepted)
 	{
 		m_bExcepted = _bExcepted;
 	}
 
 private:
-	_uint m_iTexIndex = 0;
+
 	_bool			m_bExcepted = false;
 public:
 	static CUIIcon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -39,6 +39,9 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;		
 	CVIBuffer_Rect*			m_pVIBufferCom = nullptr;
 
+private:
+	_int				m_iTexIndex = 0;
+	_int				m_iStage = 0;
 
 private:
 	HRESULT SetUp_Components();

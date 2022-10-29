@@ -31,6 +31,15 @@ public:
 
 	KEY_STATE				Get_KeyState(KEY _key);
 
+	void					Set_Mouse_Lock()
+	{
+		m_bLockCursor = !m_bLockCursor;
+	}
+
+	_bool				Get_Mouse_Lock()
+	{
+		return m_bLockCursor;
+	}
 public:
 	HRESULT Initialize(HINSTANCE hInst, HWND hWnd);
 	HRESULT SetUp_DeviceState();
@@ -45,7 +54,7 @@ private:
 	DIMOUSESTATE			m_MouseState;
 
 	vector<tKeyInfo>	m_vecKey; // 벡터 안의 인덱스가 곧 키 값을 의미함
-	
+	_bool				m_bLockCursor = true;
 
 public:
 	virtual void Free() override;

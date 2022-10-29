@@ -64,12 +64,24 @@ void CPlayer::Tick(_float fTimeDelta)
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
+	m_bLockCursor = pGameInstance->Get_Mouse_Lock();
 
 	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
 	{
-		m_bLockCursor = !m_bLockCursor;
+		pGameInstance->Set_Mouse_Lock();
+		m_bLockCursor =pGameInstance->Get_Mouse_Lock();;
 		m_pJournal->Set_Enable(!m_bLockCursor);
 		m_pJournal->Main_On(!m_bLockCursor);
+		if (true == m_bLockCursor)
+			m_pJournal->Off_AllUI();
+	}
+
+	if (pGameInstance->Is_KeyState(KEY::J, KEY_STATE::TAP))
+	{
+		pGameInstance->Set_Mouse_Lock();
+		m_bLockCursor = pGameInstance->Get_Mouse_Lock();;
+		m_pJournal->Set_Enable(!m_bLockCursor);
+		m_pJournal->Evidence_On(!m_bLockCursor);
 		if (true == m_bLockCursor)
 			m_pJournal->Off_AllUI();
 	}

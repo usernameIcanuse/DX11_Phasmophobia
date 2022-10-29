@@ -6,7 +6,7 @@
 #include "Lobby_GameResult.h"
 //#include "Lobby_Store.h"
 //#include "Lobby_AddItems.h"
-#include "Level_Loading.h"
+
 #include "Camera_Fixed.h"
 #include "UIBackGround.h"
 
@@ -52,6 +52,8 @@ HRESULT CMenuScreen::Initialize(void* pArg)
             m_bLock = false;
             m_pCurUI->Icon_Lock(m_bLock);
         }
+
+
     }
 
     if (FAILED(Setup_Component()))
@@ -73,6 +75,7 @@ void CMenuScreen::Tick(_float fTimeDelta)
         {
             if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
                 return;
+            GAMEINSTANCE->Set_Mouse_Lock();
             m_bLock = true;
             m_pCurUI->Icon_Lock(m_bLock);
         }
@@ -80,7 +83,7 @@ void CMenuScreen::Tick(_float fTimeDelta)
 #pragma region Lobby_Main
 	    if (m_pMain->Get_Enable())//로비
 	    {
-	    	_uint iSelectedMenu = static_cast<CUIBackground*>(m_pMain)->Selected_Menu();
+	    	_uint iSelectedMenu = m_pMain->Selected_Menu();
 
 	    	switch (iSelectedMenu)
 	    	{
@@ -109,22 +112,10 @@ void CMenuScreen::Tick(_float fTimeDelta)
 #pragma region  WaitingRoom
 	    else if (m_pWaitingRoom->Get_Enable())//대기실
 	    {
-	    	_uint iSelectedMenu = static_cast<CUIBackground*>(m_pWaitingRoom)->Selected_Menu();
+	    	_uint iSelectedMenu = m_pWaitingRoom->Selected_Menu();
 
 	    	switch (iSelectedMenu)
 	    	{
-	    	case 2://추가
-	    	/*	SetWindowText(g_hWnd, TEXT("Level_Lobby_AddItems. "));
-	    		m_pWaitingRoom->Set_Enable(false);
-	    		m_pAddItems->Set_Enable(true);*/
-	    		break;
-
-	    	case 3://구입
-	    	/*	SetWindowText(g_hWnd, TEXT("Level_Lobby_Store. "));
-	    		m_pWaitingRoom->Set_Enable(false);
-	    		m_pStore->Set_Enable(true);*/
-	    		break;
-
 	    	case 4://떠나기
 	    		SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
                 m_pMain->Set_Enable(true);
@@ -133,19 +124,12 @@ void CMenuScreen::Tick(_float fTimeDelta)
                 m_pCurUI->Icon_Lock(m_bLock);
 	    		break;
 
-            case 5://준비
-                m_pWaitingRoom->Set_Enable(false);
-                if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY, false, false, STREETHOUSE), LEVEL_GAMEPLAY)))
-                    return;
-                GAMEINSTANCE->Clear_Desc();
-                break;
-
-	    	case 6://시작
-	    		m_pWaitingRoom->Set_Enable(false);
-	    		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY,false,false,TUTORIAL), LEVEL_GAMEPLAY)))
-	    			return;
-                GAMEINSTANCE->Clear_Desc();
-	    		break;
+	    	//case 6://시작
+	    	//	m_pWaitingRoom->Set_Enable(false);
+	    	//	if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY,false,false,TUTORIAL), LEVEL_GAMEPLAY)))
+	    	//		return;
+      //          GAMEINSTANCE->Clear_Desc();
+	    	//	break;
 	    	}
 	    }
 #pragma endregion  WaitingRoom
@@ -155,7 +139,7 @@ void CMenuScreen::Tick(_float fTimeDelta)
         {
             if (true == m_pGameResult->Get_Enable())
             {
-                _uint iSelectedMenu = static_cast<CUIBackground*>(m_pGameResult)->Selected_Menu();
+                _uint iSelectedMenu = m_pGameResult->Selected_Menu();
 
                 switch (iSelectedMenu)
                 {
@@ -334,6 +318,7 @@ void CMenuScreen::On_Collision_Stay(CCollider* pCollider)
         {
             if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Fixed"))))
                 return;
+            GAMEINSTANCE->Set_Mouse_Lock();
             m_bLock = false;
             m_pCurUI->Icon_Lock(m_bLock);
 

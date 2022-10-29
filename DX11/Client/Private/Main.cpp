@@ -43,6 +43,7 @@ HRESULT CMain::Initialize(void * pArg)
 void CMain::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 }
 
 void CMain::LateTick(_float fTimeDelta)
@@ -126,6 +127,30 @@ HRESULT CMain::Setup_Component()
 
 HRESULT CMain::Setup_Icon()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CUIIcon* pIcon = nullptr;
+	//계속하기
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Main"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Resume"));
+	pIcon->Set_IconPosition(420, 310, 300, 70);
+	pIcon->Set_PassIndex(3);
+
+	//떠나기
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Main"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Exit"));
+	pIcon->Set_IconPosition(420, 465, 250, 70);
+	pIcon->Set_PassIndex(3);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 
