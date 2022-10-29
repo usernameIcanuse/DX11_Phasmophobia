@@ -30,22 +30,17 @@ public:
 
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
 
-public:
-	_bool	Is_Clicked()
-	{
-		return m_bClicked;
-	}
-
 private:
 	CShader* m_pShaderCom = nullptr;
 	CModel* m_pModelCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
-
+	CTexture* m_pTextureCom = nullptr;
 #ifdef _DEBUG
 	CRenderer* m_pRendererCom = nullptr;
 #endif
 
-	_bool		m_bClicked = false;
+	_bool	m_bClicked = false;
+	_float	m_fTimeAcc = 0.f;
 
 private:
 	virtual	HRESULT	Setup_Component();

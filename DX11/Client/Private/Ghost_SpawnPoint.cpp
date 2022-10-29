@@ -36,10 +36,10 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 		if (FAILED(Load_Point((_tchar*)pArg)))
 			return E_FAIL;
 
-		if (FAILED(Setup_Ghost()))
+		if (FAILED(Setup_GhostStatus()))
 			return E_FAIL;
 
-		if (FAILED(Setup_GhostStatus()))
+		if (FAILED(Setup_Ghost()))
 			return E_FAIL;
 	}
 	if (FAILED(Setup_Component()))

@@ -25,7 +25,11 @@
 #include "Journal.h"
 #include "Evidence.h"
 
-#include "Ghost.h"
+#include "Jinn.h"
+#include "Goryo.h"
+#include "Oni.h"
+#include "Phantom.h"
+#include "Wraith.h"
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
 #include "Ghost_Behavior.h"
@@ -308,7 +312,7 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "Keyboard.fbx", TransformMatrix))))
 		return E_FAIL;
 
-	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	/* For.Prototype_Component_Model_KeyPad*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Model_KeyPad"),
 		CModel::Create(m_pDevice, m_pContext, CModel::TYPE_NONANIM, "../Bin/Resources/Meshes/TruckProps/", "KeyPad.fbx", TransformMatrix))))
@@ -457,6 +461,10 @@ HRESULT CLoader::Loading_ForStaticProps()
 	/*For.Prototype_Component_Texture_Journal_GhostName_yurei*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_yurei"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/GhostName/yurei.png")))))
+		return E_FAIL;
+	/*For.Prototype_Component_Default_Texture*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Default_Texture"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Black.png")))))
 		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -683,7 +691,7 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	/* For.Prototype_GameObject_Ghost*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
-		CGhost::Create(m_pDevice, m_pContext))))
+		CJinn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Ghost_SpawnPoint*/
@@ -1087,7 +1095,7 @@ HRESULT CLoader::Loading_ForStreetHouseLevel()
 
 		/* For.Prototype_GameObject_Ghost*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
-		CGhost::Create(m_pDevice, m_pContext))))
+		CPhantom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Ghost_SpawnPoint*/

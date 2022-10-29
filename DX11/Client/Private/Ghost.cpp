@@ -26,11 +26,6 @@ HRESULT CGhost::Initialize_Prototype()
 
 HRESULT CGhost::Initialize(void* pArg)
 {
-	if (nullptr != pArg)
-	{
-		m_pSpawnPoint = (CGhost_SpawnPoint*)pArg;
-	}
-
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;

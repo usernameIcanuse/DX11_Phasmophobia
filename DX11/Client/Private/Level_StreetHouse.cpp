@@ -571,6 +571,41 @@ HRESULT CLevel_StreetHouse::Load_TruckProps()
 	CloseHandle(hFile);
 
 
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/KeyPad_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_KeyPad"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
+
 	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Dots_Default");
 	hFile = CreateFileA(Filepath,
 		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
