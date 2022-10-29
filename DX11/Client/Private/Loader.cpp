@@ -924,12 +924,12 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	/* For.Prototype_Component_Texture_XIcon*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_XIcon"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/X Icon.png"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/X Icon.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_GhostIcon*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_GhostIcon"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/SpiritBox_Ghost.png"), 1))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/SpiritBox/SpiritBox_Ghost.dds"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Black*/

@@ -44,6 +44,9 @@ private:
 	CTexture* m_pXIcon = nullptr;
 	CTexture* m_pGhostIcon = nullptr;
 
+	_bool		m_bXIconAlpha = true;
+	_bool		m_bGhostIconAlpha = true;
+
 
 	_long		m_lFrequency = 100;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력

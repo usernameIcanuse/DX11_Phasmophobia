@@ -258,7 +258,7 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	pShader->Set_RawValue("g_ProjMatrix", &ProjMatrix, sizeof(_float4x4));
 
-	if (FAILED(pTexture->Set_ShaderResourceView(pShader,"g_DiffuseTexture", iPassindex)))
+	if (FAILED(pTexture->Set_ShaderResourceView(pShader,"g_DiffuseTexture")))
 		return;
 
 	pShader->Begin(iPassindex);
@@ -271,9 +271,41 @@ void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture
 	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
 }
 
-void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pTexture[], CShader* pShader, _int iPassindex, _float3 vRenderPos[])
+void CRenderer::Draw_On_Texture(CRenderTarget* pRenderTarget, CTexture* pSourTex, CShader* pShader, _int iPassindex, _float3 vRenderPos, _float3 vScale)
 {
+	D3D11_TEXTURE2D_DESC TextureDesc;
+	pRenderTarget->Get_Desc(&TextureDesc);
+
+	_matrix WorldMat = XMMatrixIdentity();
+	WorldMat.r[0] = XMVectorSet(vScale.x, 0.f, 0.f, 0.f);
+	WorldMat.r[1] = XMVectorSet(0.f, vScale.y, 0.f, 0.f);
+	WorldMat.r[3] = XMVectorSet(vRenderPos.x- (TextureDesc.Width * 0.5f), -vRenderPos.y + (TextureDesc.Height * 0.5f), 0.f, 1.f);
+
+	_float4x4 WorldMatrix;
+	XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(WorldMat));
+
+	_float4x4 ProjMatrix;
+	XMStoreFloat4x4(&ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(TextureDesc.Width, TextureDesc.Height, 0.f, 1.f)));
+
+
+	m_pTarget_Manager->Store_BackBuffer(m_pContext);//백버퍼 보관해놓음
+
+	m_pTarget_Manager->Set_RenderTarget(m_pContext, pRenderTarget);
+
+	pShader->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	pShader->Set_RawValue("g_ProjMatrix", &ProjMatrix, sizeof(_float4x4));
+
+	if (FAILED(pSourTex->Set_ShaderResourceView(pShader, "g_DiffuseTexture")))
+		return;
+
+	pShader->Begin(iPassindex);
+
+	m_pVIBuffer->Render();
+
+	m_pTarget_Manager->Set_BackBuffer(m_pContext);//작업 끝났으므로 백버퍼 다시 세팅
 }
+
 
 HRESULT CRenderer::Render_Priority()
 {

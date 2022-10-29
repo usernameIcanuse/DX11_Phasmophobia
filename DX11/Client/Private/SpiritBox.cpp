@@ -66,27 +66,52 @@ void CSpiritBox::LateTick(_float fTimeDelta)
     
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
+    CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
+    CRenderer::RENDERFONT RenderFont;
+    if (!m_bSwitch)
+    {
+        RenderFont.pString = TEXT("000.00");
+        RenderFont.vPosition = XMVectorSet(650.f, 500.f, 0.f, 0.f);
+        RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+        RenderFont.rotation = 90.f;
+        RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+        RenderFont.vScale = XMVectorSet(0.9f, 1.7f, 1.f, 0.f);
+    }
+    else
+    {
+        RenderFont.pString = m_szDegree;
+        RenderFont.vPosition = XMVectorSet(650.f, 500.f, 0.f, 0.f);
+        RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+        RenderFont.rotation = 90.f;
+        RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+        RenderFont.vScale = XMVectorSet(0.9f, 1.7f, 1.f, 0.f);
+    }
+    m_pDiffuse->Clear();
+    ID3D11DepthStencilView* DSV = m_pDiffuse->GeT_DepthStencilView();
+    m_pContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+    m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
+
+    m_pShaderTexCom->Set_RawValue("bAlpha", &m_bXIconAlpha, sizeof(_bool));
+    m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pXIcon, m_pShaderTexCom, 5, _float3(600.f, 640.f, 0.f), _float3(35.f, 20.f, 1.f));
+
+    m_pShaderTexCom->Set_RawValue("bAlpha", &m_bGhostIconAlpha, sizeof(_bool));
+    m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pGhostIcon, m_pShaderTexCom, 5, _float3(600.f, 670.f, 0.f), _float3(45.f, 25.f, 1.f));
+
+
     if (m_bSwitch)
     {
-        CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
-        CRenderer::RENDERFONT RenderFont;
-        if (nullptr != pTexture)
-        {
-           
-            RenderFont.pString = m_szDegree;
-            RenderFont.vPosition = XMVectorSet(650.f, 560.f, 0.f, 0.f);
-            RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-            RenderFont.rotation = 90.f;
-            RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-            RenderFont.vScale = XMVectorSet(1.f, 1.f, 1.f, 0.f);
-
-            m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
-
-        }
+      
         pTexture = m_pModelCom->Get_SRV(0, aiTextureType_EMISSIVE);
         if (nullptr != pTexture)
         {
             m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
+
+            m_pShaderTexCom->Set_RawValue("bAlpha", &m_bXIconAlpha, sizeof(_bool));
+            m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pXIcon, m_pShaderTexCom, 5, _float3(600.f, 640.f, 0.f), _float3(35.f, 20.f, 1.f));
+
+            m_pShaderTexCom->Set_RawValue("bAlpha", &m_bGhostIconAlpha, sizeof(_bool));
+            m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pGhostIcon, m_pShaderTexCom, 5, _float3(600.f, 670.f, 0.f), _float3(45.f, 25.f, 1.f));
         }
     }
 
@@ -109,22 +134,16 @@ HRESULT CSpiritBox::Render()
          if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
               return E_FAIL;
 
+         if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pDiffuse->Get_SRV())))
+             return E_FAIL;
+
          if (m_bSwitch)
          {
-             if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_DiffuseTexture", m_pDiffuse->Get_SRV())))
-                 return E_FAIL;
-
              if (FAILED(m_pShaderCom->Set_ShaderResourceView("g_EmissiveTexture", m_pEmissive->Get_SRV())))
                  return E_FAIL;
              iPassIndex = 3;
          }
-         else
-         {
-             if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-                 return E_FAIL;
-             if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
-                 return E_FAIL;
-         }
+    
         
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
@@ -297,6 +316,14 @@ HRESULT CSpiritBox::Setup_Component()
 
     /* For.Com_TexShader*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxTex"), TEXT("Com_TexShader"), (CComponent**)&m_pShaderTexCom)))
+        return E_FAIL;
+
+    /*For.Com_XIcon*/
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_XIcon"), TEXT("Com_XIcon"), (CComponent**)&m_pXIcon)))
+        return E_FAIL;
+
+    /*For.Com_GhostIcon*/
+    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_GhostIcon"), TEXT("Com_GhostIcon"), (CComponent**)&m_pGhostIcon)))
         return E_FAIL;
 
     /* For.Com_OBB*/

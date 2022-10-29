@@ -133,8 +133,8 @@ HRESULT CTarget_Manager::Set_RenderTarget(ID3D11DeviceContext* pContext, CRender
 	ID3D11RenderTargetView* RTV = pRenderTarget->Get_RTV();
 	ID3D11DepthStencilView* DSV = pRenderTarget->GeT_DepthStencilView();
 
-	pContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-	pRenderTarget->Clear();
+	/*pContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	pRenderTarget->Clear();*/
 
 	pContext->OMSetRenderTargets(1, &RTV, DSV);
 
