@@ -72,7 +72,10 @@ void CEvidence::Tick(_float fTimeDelta)
 	{
 		_int iEvidenceCnt = 0;
 		_int iGhostEvidence = 0;
-		
+
+		_int iExceptedCnt = 0;
+		_int iGhostExceptedCnt = 0;
+
 		_bool bFlag = false;
 
 		for (_int j = 0; j < 7; ++j)
@@ -80,10 +83,16 @@ void CEvidence::Tick(_float fTimeDelta)
 			_int iEvidence = m_arrEvidence[j];
 			if (-1 == iEvidence)
 				continue;
-			if (0 == iEvidence)
-				++iEvidenceCnt;
 
-		
+			if (0 == iEvidence)
+			{
+				++iEvidenceCnt;
+			}
+			else if (1 == iEvidence)
+			{
+				++iExceptedCnt;
+			}
+
 			bFlag = true;
 
 			for (auto& elem : m_vecGhostEvidence[i])
@@ -91,17 +100,46 @@ void CEvidence::Tick(_float fTimeDelta)
 				_int iEvidenceIndex = elem;
 				if (0 == iEvidence)
 				{
+
 					if (iEvidenceIndex == j)
 						++iGhostEvidence;
 				}
-			}
-			
-		}
-		if (false == bFlag || iEvidenceCnt == iGhostEvidence)
-			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(false);
-		else
-			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(true);
+				else if (1 == iEvidence)
+				{
 
+					if (iEvidenceIndex == j)
+						++iGhostExceptedCnt;
+				}
+			}
+
+		}
+
+		if (false == bFlag)
+		{
+			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(false);
+		}
+		else
+		{
+			if (0 < iGhostExceptedCnt)
+				static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(true);
+			else
+			{
+				if (0 != iEvidenceCnt && iEvidenceCnt == iGhostEvidence)
+				{
+					static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(false);
+				}
+				else if(0== iEvidenceCnt)
+				{
+					static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(false);
+				}
+				else
+				{
+					static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(true);
+				}
+			}
+		}
+	/*	if(0!=iExceptedCnt && 0 < iGhostExceptedCnt)
+			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(true);*/
 	}
 }
 
