@@ -80,7 +80,7 @@ PS_OUT PS_MAIN_EXCEPT(PS_IN In)
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	if (g_bExcept)
-		Out.vColor.a *= 0.5f;
+		Out.vColor.a *= 0.3f;
 
 	return Out;
 }

@@ -34,7 +34,7 @@ public:
 	{
 		m_iTexIndex = _iTexIndex;
 	}
-	void Is_Exceptex(_bool _bExcepted)
+	void Is_Excepted(_bool _bExcepted)
 	{
 		m_bExcepted = _bExcepted;
 	}

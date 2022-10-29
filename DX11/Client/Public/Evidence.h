@@ -48,10 +48,13 @@ private:
 private:
 	vector<CUIIcon*>	m_IconEvidence;
 
+	_int	m_arrEvidence[7]={-1,-1,-1,-1,-1,-1,-1};//0 == true, 1 == false
+	vector<_int>	m_vecGhostEvidence[24];
+
 private:
 	HRESULT Setup_Component();
 	virtual HRESULT SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatrix);
-
+	void Set_GhostEvidence();
 
 public:
 	static CEvidence* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

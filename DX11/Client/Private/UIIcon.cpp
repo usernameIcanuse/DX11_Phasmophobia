@@ -64,6 +64,7 @@ HRESULT CUIIcon::Render()
 
 	if (m_iPassIndex == 4)
 		int a = 10;
+
 	m_pShaderCom->Begin(m_iPassIndex);
 
 	m_pVIBufferCom->Render();

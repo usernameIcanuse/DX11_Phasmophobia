@@ -18,7 +18,7 @@ HRESULT CEvidence::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CEvidence::Initialize(void * pArg)
+HRESULT CEvidence::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -42,12 +42,67 @@ HRESULT CEvidence::Initialize(void * pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
 
 
+	Set_GhostEvidence();
+
   	return S_OK;
 }
 
 void CEvidence::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_int iIndex = 0;
+
+	for (auto& elem : m_IconEvidence)
+	{
+		if (elem->Selected())
+		{
+			m_arrEvidence[iIndex] += 1;
+			if (m_arrEvidence[iIndex] == 2)
+				m_arrEvidence[iIndex] = -1;
+
+			elem->Set_MultiTex_Index(m_arrEvidence[iIndex] + 1);
+		}
+
+		++iIndex;
+	}
+
+
+	for (_int i = 0; i < 24; ++i)
+	{
+		_int iEvidenceCnt = 0;
+		_int iGhostEvidence = 0;
+		
+		_bool bFlag = false;
+
+		for (_int j = 0; j < 7; ++j)
+		{
+			_int iEvidence = m_arrEvidence[j];
+			if (-1 == iEvidence)
+				continue;
+			if (0 == iEvidence)
+				++iEvidenceCnt;
+
+		
+			bFlag = true;
+
+			for (auto& elem : m_vecGhostEvidence[i])
+			{
+				_int iEvidenceIndex = elem;
+				if (0 == iEvidence)
+				{
+					if (iEvidenceIndex == j)
+						++iGhostEvidence;
+				}
+			}
+			
+		}
+		if (false == bFlag || iEvidenceCnt == iGhostEvidence)
+			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(false);
+		else
+			static_cast<CUIIcon*>(m_vecUIIcon[i])->Is_Excepted(true);
+
+	}
 }
 
 void CEvidence::LateTick(_float fTimeDelta)
@@ -112,61 +167,61 @@ HRESULT CEvidence::Setup_Icon()
 	/*Evidence Icon*/
 
 	CUIIcon* pIcon = nullptr;
-//#pragma region 증거
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//emf
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Menu"));
-//	pIcon->Set_IconPosition(330, 60, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//도트
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Photo"));
-//	pIcon->Set_IconPosition(750, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//손자국
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
-//	pIcon->Set_IconPosition(950, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//오브
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
-//	pIcon->Set_IconPosition(950, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//라이팅
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
-//	pIcon->Set_IconPosition(950, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//주파수
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
-//	pIcon->Set_IconPosition(950, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
-//		return E_FAIL;
-//	//서늘함
-//	m_vecUIIcon.push_back(pIcon);
-//	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_Icon_Evidence"));
-//	pIcon->Set_IconPosition(950, 62, 200, 35);
-//	pIcon->Set_PassIndex(3);
-//
-//#pragma endregion 증거
+#pragma region 증거
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//emf
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(755, 165, 180, 35);
+	pIcon->Set_PassIndex(3);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//도트
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(935, 165, 180, 35);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//손자국
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(755, 195, 180, 35);
+	pIcon->Set_PassIndex(4);
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//오브
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(935, 195, 180, 35);
+	pIcon->Set_PassIndex(4);
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//라이팅
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(755, 225, 180, 35);
+	pIcon->Set_PassIndex(4);
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//주파수
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(935, 225, 180, 35);
+	pIcon->Set_PassIndex(4);
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+	//서늘함
+	m_IconEvidence.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_SelectEvidence_Texture"));
+	pIcon->Set_IconPosition(755, 260, 180, 35);
+	pIcon->Set_PassIndex(4);
+
+#pragma endregion 증거
 
 	/*GhostName_Icon*/
 
@@ -394,6 +449,122 @@ HRESULT CEvidence::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProj
 		return E_FAIL;
 
 	return S_OK;
+	
+}
+
+void CEvidence::Set_GhostEvidence()
+{
+	m_vecGhostEvidence[0].push_back(0);
+	m_vecGhostEvidence[0].push_back(4);
+	m_vecGhostEvidence[0].push_back(5);
+	
+	
+	m_vecGhostEvidence[1].push_back(0);
+	m_vecGhostEvidence[1].push_back(1);
+	m_vecGhostEvidence[1].push_back(5);
+	
+	
+	m_vecGhostEvidence[2].push_back(1);
+	m_vecGhostEvidence[2].push_back(2);
+	m_vecGhostEvidence[2].push_back(5);
+	
+	m_vecGhostEvidence[3].push_back(2);
+	m_vecGhostEvidence[3].push_back(4);
+	m_vecGhostEvidence[3].push_back(5);
+	
+	
+	m_vecGhostEvidence[4].push_back(1);
+	m_vecGhostEvidence[4].push_back(2);
+	m_vecGhostEvidence[4].push_back(3);
+	
+	
+	m_vecGhostEvidence[5].push_back(0);
+	m_vecGhostEvidence[5].push_back(2);
+	m_vecGhostEvidence[5].push_back(6);
+	
+	
+	m_vecGhostEvidence[6].push_back(3);
+	m_vecGhostEvidence[6].push_back(4);
+	m_vecGhostEvidence[6].push_back(5);
+	
+	
+	m_vecGhostEvidence[7].push_back(3);
+	m_vecGhostEvidence[7].push_back(4);
+	m_vecGhostEvidence[7].push_back(6);
+	
+	m_vecGhostEvidence[8].push_back(0);
+	m_vecGhostEvidence[8].push_back(4);
+	m_vecGhostEvidence[8].push_back(6);
+	
+	
+	m_vecGhostEvidence[9].push_back(2);
+	m_vecGhostEvidence[9].push_back(4);
+	m_vecGhostEvidence[9].push_back(6);
+	
+	
+	m_vecGhostEvidence[10].push_back(1);
+	m_vecGhostEvidence[10].push_back(3);
+	m_vecGhostEvidence[10].push_back(6);
+	
+	m_vecGhostEvidence[11].push_back(0);
+	m_vecGhostEvidence[11].push_back(1);
+	m_vecGhostEvidence[11].push_back(6);
+	
+	
+	m_vecGhostEvidence[12].push_back(1);
+	m_vecGhostEvidence[12].push_back(3);
+	m_vecGhostEvidence[12].push_back(5);
+	
+	
+	m_vecGhostEvidence[13].push_back(2);
+	m_vecGhostEvidence[13].push_back(3);
+	m_vecGhostEvidence[13].push_back(6);
+	
+	
+	m_vecGhostEvidence[14].push_back(0);
+	m_vecGhostEvidence[14].push_back(1);
+	m_vecGhostEvidence[14].push_back(2);
+	
+	m_vecGhostEvidence[15].push_back(0);
+	m_vecGhostEvidence[15].push_back(2);
+	m_vecGhostEvidence[15].push_back(4);
+	
+	
+	m_vecGhostEvidence[16].push_back(3);
+	m_vecGhostEvidence[16].push_back(5);
+	m_vecGhostEvidence[16].push_back(6);
+	
+	
+	m_vecGhostEvidence[17].push_back(0);
+	m_vecGhostEvidence[17].push_back(5);
+	m_vecGhostEvidence[17].push_back(6);
+	
+	
+	m_vecGhostEvidence[18].push_back(0);
+	m_vecGhostEvidence[18].push_back(1);
+	m_vecGhostEvidence[18].push_back(3);
+	
+	m_vecGhostEvidence[19].push_back(0);
+	m_vecGhostEvidence[19].push_back(2);
+	m_vecGhostEvidence[19].push_back(3);
+	
+	
+	m_vecGhostEvidence[20].push_back(2);
+	m_vecGhostEvidence[20].push_back(5);
+	m_vecGhostEvidence[20].push_back(6);
+	
+	m_vecGhostEvidence[21].push_back(4);
+	m_vecGhostEvidence[21].push_back(5);
+	m_vecGhostEvidence[21].push_back(6);
+	
+	
+	m_vecGhostEvidence[22].push_back(1);
+	m_vecGhostEvidence[22].push_back(4);
+	m_vecGhostEvidence[22].push_back(5);
+	
+	m_vecGhostEvidence[23].push_back(1);
+	m_vecGhostEvidence[23].push_back(3);
+	m_vecGhostEvidence[23].push_back(4);
 	
 }
 

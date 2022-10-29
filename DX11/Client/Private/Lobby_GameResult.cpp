@@ -167,12 +167,12 @@ HRESULT CLobby_GameResult::SetUp_Icon()
 	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	//싱글 플레이
+	//뒤로
 	_matrix IconWorld = XMMatrixIdentity();
 	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
 	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
 	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
-	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f + IconWorld.r[1] * 1.71f;
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.1f + IconWorld.r[1] * 1.71f;
 
 	pIcon->Set_Transform(IconWorld);
 	pIcon->Set_Texture(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"));
