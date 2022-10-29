@@ -43,6 +43,11 @@ private:
 
 	CItem* m_pTempDotsModel = nullptr;
 
+	_float4	m_vDiffuse;
+
+	_float4 m_vBlinkDiffuse;
+	_float m_fBlinkTime = 0.f;
+
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);
 	virtual void On_Collision_Stay(CCollider* pCollider);

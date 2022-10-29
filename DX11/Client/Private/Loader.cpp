@@ -710,7 +710,7 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	/* For.Prototype_GameObject_Ghost*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
-		CJinn::Create(m_pDevice, m_pContext))))
+		CPhantom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Ghost_SpawnPoint*/

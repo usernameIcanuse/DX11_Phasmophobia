@@ -2,6 +2,7 @@
 #include "..\Public\Main.h"
 #include "GameInstance.h"
 #include "UIIcon.h"
+#include "Level_Loading.h"
 
 CMain::CMain(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUIBackground(pDevice, pContext)
@@ -43,7 +44,13 @@ HRESULT CMain::Initialize(void * pArg)
 void CMain::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	if (2 == m_iSelectedMenu)
+	{
+		LEVEL CurLevel = (LEVEL)GAMEINSTANCE->Get_Current_Level();
+		if(LEVEL_GAMEPLAY == CurLevel)
+			GAMEINSTANCE->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY, false, true), LEVEL_LOBBY);
 
+	}
 }
 
 void CMain::LateTick(_float fTimeDelta)
