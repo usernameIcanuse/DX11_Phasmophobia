@@ -53,7 +53,8 @@ void CSpiritBox::Tick(_float fTimeDelta)
     if (m_bSwitch)
     {
         m_fTimeAcc += fTimeDelta;
-    
+        
+        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("evp white noise loop.wav"), CSoundMgr::ITEM_SPIRITBOX, this,0.6f);
 
         m_fAnswerTime -= fTimeDelta;
         if (0.f > m_fAnswerTime)
@@ -172,6 +173,14 @@ HRESULT CSpiritBox::Render()
 
 
     return S_OK;
+}
+
+void CSpiritBox::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+    if (false == m_bSwitch)
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_SPIRITBOX);
+
 }
 
 void CSpiritBox::OnEventMessage(const _tchar* pMessage)

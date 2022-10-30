@@ -46,8 +46,7 @@ HRESULT CLevel_Tutorial::Initialize()
 	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
 
-	CSoundMgr::Get_Instance()->PlayBGM(TEXT("nights ambience neighborhood.wav"), 1.f);
-
+	
 
 	return S_OK;
 }
@@ -55,6 +54,9 @@ HRESULT CLevel_Tutorial::Initialize()
 void CLevel_Tutorial::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
+
+	CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM,1.f);
+
 
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 	GAMEINSTANCE->Add_Desc(CEvent_Manager::PLAYTIME, fTimeDelta);

@@ -49,8 +49,7 @@ HRESULT CLevel_Lobby::Initialize( _bool bGamePlay)
 
 	SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
 
-	CSoundMgr::Get_Instance()->PlayBGM(TEXT("nights ambience neighborhood.wav"), 1.f);
-
+	
 	return S_OK;
 }
 
@@ -60,8 +59,10 @@ void CLevel_Lobby::Tick(_float fTimeDelta)
 	if (true == m_bFirst)
 	{
 		m_bFirst = false;
-		CSoundMgr::Get_Instance()->PlaySound(TEXT("welcome back 1.wav"), CSoundMgr::CHANNEL_BGM, 1.f);
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("welcome back 1.wav"), CSoundMgr::BGM_RADIO, 1.f);
 	}
+	CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, 1.f);
+
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 
 }

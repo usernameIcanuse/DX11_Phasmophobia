@@ -480,6 +480,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 	{
 		if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("lightswitch 3.wav"), CSoundMgr::ITEM_LIGHTSWITCH, 0.8f);
 			CLightSwitch* pOwner = (CLightSwitch*)pCollider->Get_Owner();
 			pOwner->Turn_Switch();
 		}

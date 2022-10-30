@@ -22,10 +22,7 @@ public:
 
 
 public:
-	virtual void Turn_Switch()
-	{
-		m_bSwitch = !m_bSwitch;
-	}
+	virtual void Turn_Switch();
 
 	virtual void Drop_Item(_vector vPower);
 

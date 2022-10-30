@@ -29,6 +29,8 @@ void CItem::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
+    if (false == m_bIsInHouse)
+        m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
 }
 
 void CItem::LateTick(_float fTimeDelta)

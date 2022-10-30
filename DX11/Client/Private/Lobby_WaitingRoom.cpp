@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UIIcon.h"
 #include "Level_Loading.h"
+#include "SoundMgr.h"
 
 
 CLobby_WaitingRoom::CLobby_WaitingRoom(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -75,6 +76,8 @@ void CLobby_WaitingRoom::Tick(_float fTimeDelta)
 			 
 		if (FAILED(CGameInstance::Get_Instance()->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY, false, false, enumStage), LEVEL_GAMEPLAY)))
 			return;
+		CSoundMgr::Get_Instance()->StopSound(CSoundMgr::BGM);
+
 		GAMEINSTANCE->Clear_Desc();
 		GAMEINSTANCE->Set_Mouse_Lock();
 	

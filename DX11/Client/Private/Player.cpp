@@ -53,6 +53,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Setup_Journal()))
 		return E_FAIL;
 
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+
+
 	return S_OK;
 }
 
@@ -70,6 +73,7 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
 	{
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("journal open 2.wav"), CSoundMgr::CHANNEL_UI, 0.9f);
 		pGameInstance->Set_Mouse_Lock();
 		m_bLockCursor =pGameInstance->Get_Mouse_Lock();;
 		m_pJournal->Set_Enable(!m_bLockCursor);
@@ -80,6 +84,8 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	if (pGameInstance->Is_KeyState(KEY::J, KEY_STATE::TAP))
 	{
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("journal open 2.wav"), CSoundMgr::CHANNEL_UI, 0.9f);
+
 		pGameInstance->Set_Mouse_Lock();
 		m_bLockCursor = pGameInstance->Get_Mouse_Lock();;
 		m_pJournal->Set_Enable(!m_bLockCursor);
@@ -181,6 +187,42 @@ void CPlayer::Tick(_float fTimeDelta)
 		pGameInstance->Add_Desc(CEvent_Manager::AROUNDGHOST, fTimeDelta);
 	}
 
+	if (true == m_bIsInHouse)
+	{
+		if (0.f < m_fBGMVolume)
+		{
+			m_fBGMVolume -= 0.05f;
+			if (0.f > m_fBGMVolume)
+				m_fBGMVolume = 0.f;
+		}
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"),CSoundMgr::BGM,m_fBGMVolume);
+		if (true == m_bEvent)
+		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("heartbeat (loop) 2.wav"), CSoundMgr::PLAYER_HEARTBEAT, 1.f);
+
+			if(CSoundMgr::GHOST_SINGING == m_iGhostPlaySound)
+			{
+				CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f);
+			}
+			else if (CSoundMgr::GHOST_MALESING == m_iGhostPlaySound)
+			{
+				CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f);
+			}
+		}
+		
+	}
+	else
+	{
+		if (1.f > m_fBGMVolume)
+		{
+			m_fBGMVolume += 0.05f;
+			if (1.f < m_fBGMVolume)
+				m_fBGMVolume = 1.f;
+		}
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, m_fBGMVolume);
+	}
+
+
 	RELEASE_INSTANCE(CGameInstance);
 }
 
@@ -198,6 +240,53 @@ HRESULT CPlayer::Render()
 {
 
 	return S_OK;
+}
+
+void CPlayer::OnEventMessage(const _tchar* pMessage)
+{
+
+	if (0 == lstrcmp(TEXT("Event"), pMessage))
+	{
+		if (false == m_bIsInHouse)
+			return;
+
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<int> dis(0, 10);
+
+		_int iValue = dis(gen);
+		if (1 == iValue % 5)
+		{
+			m_iGhostPlaySound = CSoundMgr::GHOST_SINGING;
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f);
+		}
+		else if (3 == iValue % 5)
+		{
+			m_iGhostPlaySound = CSoundMgr::GHOST_MALESING;
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f);
+		}
+
+		m_bEvent = true;
+	}
+	else if (0 == lstrcmp(TEXT("Attack"), pMessage))
+	{
+		if (false == m_bIsInHouse)
+			return;
+		m_bAttack = true;
+	}
+	else
+	{
+		if (CSoundMgr::GHOST_SINGING == m_iGhostPlaySound)
+		{
+			CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_SINGING);
+		}
+		else if (CSoundMgr::GHOST_MALESING == m_iGhostPlaySound)
+		{
+			CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_MALESING);
+		}
+		m_bEvent = false;
+		m_bAttack = false;
+	}
 }
 
 _bool CPlayer::Picking_Navigation(RAY tMouseRay, _float4& vPickedPos)

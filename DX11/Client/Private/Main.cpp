@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "UIIcon.h"
 #include "Level_Loading.h"
+#include "SoundMgr.h"
 
 CMain::CMain(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUIBackground(pDevice, pContext)
@@ -49,7 +50,7 @@ void CMain::Tick(_float fTimeDelta)
 		LEVEL CurLevel = (LEVEL)GAMEINSTANCE->Get_Current_Level();
 		if(LEVEL_GAMEPLAY == CurLevel)
 			GAMEINSTANCE->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY, false, true), LEVEL_LOBBY);
-
+		CSoundMgr::Get_Instance()->StopAll();
 	}
 }
 

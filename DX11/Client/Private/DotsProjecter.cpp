@@ -50,6 +50,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
 
     if (false == m_bInstalled)
     {
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_DOTS);
         m_pAreaCom->Set_Enable(false);
     }
 
@@ -57,6 +58,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
     if (m_bInstalled)
     {
+        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("dots_on_loop.wav"), CSoundMgr::ITEM_DOTS,this, 0.7f);
         m_pAreaCom->Update(m_pTransformCom->Get_WorldMatrix());
     }
 }

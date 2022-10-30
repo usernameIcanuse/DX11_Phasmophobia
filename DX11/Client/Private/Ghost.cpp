@@ -4,7 +4,7 @@
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
 #include "Ghost_Behavior.h"
-
+#include "SoundMgr.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -196,7 +196,7 @@ void CGhost::Light_Attack(_float fTimeDelta)
 {
 
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta*10);
 
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
 #ifdef _DEBUG
@@ -213,6 +213,12 @@ void CGhost::Light_Attack(_float fTimeDelta)
 
 void CGhost::Attack(_float fTimeDelta)
 {
+	static _float fFootstep = 1.f;
+
+	fFootstep -= fTimeDelta;
+	if (0.f > fFootstep)
+		CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("GhostFootStep.wav"), CSoundMgr::CHANNEL_GHOST, this, 0.9f);
+
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -221,7 +227,8 @@ void CGhost::Attack(_float fTimeDelta)
 	std::uniform_int_distribution<int> dis(0, 10);
 
 	_int iValue = dis(gen);
-
+	
+	
 	
 	if (0.f > m_fHideModel)
 	{

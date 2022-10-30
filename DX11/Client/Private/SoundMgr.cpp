@@ -23,33 +23,33 @@ HRESULT CSoundMgr::Initialize()
 {
 	m_fSound = 1;
 	m_bBGMOut = false;
-	m_fSoundMaxDistance = 200.f;
+	m_fSoundMaxDistance = 50.f;
 	//ZeroMemory(m_eCurChannel, sizeof(m_eCurChannel));
 
 	m_eCurChannel[CHANNEL_BGM] = BGM;
-	m_eCurChannel[CHANNEL_PLAYER] = CH5;
-	m_eCurChannel[CHANNEL_ITEM] = CH10;
-	m_eCurChannel[CHANNEL_GHOST] = CH20;
-	m_eCurChannel[CHANNEL_UI] = CH30;
+	m_eCurChannel[CHANNEL_PLAYER] = PLAYER_FOOTSTEP;
+	m_eCurChannel[CHANNEL_ITEM] = ITEM_DOOROPEN;
+	m_eCurChannel[CHANNEL_GHOST] = GHOST_FOOTSTEP;
+	m_eCurChannel[CHANNEL_UI] = UI_JOURNALOPEN;
 
 	m_eChannelMinNum[CHANNEL_BGM] = BGM;
-	m_eChannelMinNum[CHANNEL_PLAYER] = CH1;
-	m_eChannelMinNum[CHANNEL_ITEM] = CH6;
-	m_eChannelMinNum[CHANNEL_GHOST] = CH16;
-	m_eChannelMinNum[CHANNEL_UI] = CH26;
+	m_eChannelMinNum[CHANNEL_PLAYER] = PLAYER_FOOTSTEP;
+	m_eChannelMinNum[CHANNEL_ITEM] = ITEM_DOOROPEN;
+	m_eChannelMinNum[CHANNEL_GHOST] = GHOST_FOOTSTEP;
+	m_eChannelMinNum[CHANNEL_UI] = UI_JOURNALOPEN;
 
-	m_eChannelMaxNum[CHANNEL_BGM] = BGM;
-	m_eChannelMaxNum[CHANNEL_PLAYER] = CH5;
-	m_eChannelMaxNum[CHANNEL_ITEM] = CH15;
-	m_eChannelMaxNum[CHANNEL_GHOST] = CH25;
-	m_eChannelMaxNum[CHANNEL_UI] = CH30;
+	m_eChannelMaxNum[CHANNEL_BGM] = BGM_RADIO;
+	m_eChannelMaxNum[CHANNEL_PLAYER] = PLAYER_HEARTBEAT;
+	m_eChannelMaxNum[CHANNEL_ITEM] = ITEM_LIGHTSWITCH;
+	m_eChannelMaxNum[CHANNEL_GHOST] = GHOST_WHISPERING;
+	m_eChannelMaxNum[CHANNEL_UI] = UI_JOURNALOPEN;
 
 
 
 	FMOD_System_Create(&m_pSystem);
 
 	// 1. 시스템 포인터, 2. 사용할 가상채널 수 , 초기화 방식) 
-	if(FAILED(FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL)))
+	if(FAILED(FMOD_System_Init(m_pSystem, 42, FMOD_INIT_NORMAL, NULL)))
 		return E_FAIL;
 
 	LoadSoundFile();
@@ -142,8 +142,8 @@ void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)//계속플
 			_vol = 1.f;
 		else if (_vol <= SOUND_MIN)
 			_vol = 0.f;
-		FMOD_Channel_SetVolume(m_pChannelArr[eID], _vol);
 	}
+	FMOD_Channel_SetVolume(m_pChannelArr[eID], _vol);
 	FMOD_System_Update(m_pSystem);
 }
 
@@ -292,7 +292,50 @@ void CSoundMgr::PlaySoundDistance(const TCHAR * strSoundKey, CHANNEL_TYPE eType,
 
 	FMOD_System_Update(m_pSystem);
 
-	RELEASE_INSTANCE(CGameInstance);
+
+}
+
+void CSoundMgr::PlaySoundDistance(const TCHAR* strSoundKey, CHANNELID eID, CGameObject* pTarget, _float fVolume)
+{
+	map<TCHAR*, FMOD_SOUND*>::iterator iter;
+
+	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
+	iter = find_if(m_mapSound.begin(), m_mapSound.end(),
+		[&](auto& iter)->bool
+		{
+			return !lstrcmp(strSoundKey, iter.first);
+		});
+
+	if (iter == m_mapSound.end())
+		return;
+
+	FMOD_BOOL bPlay = FALSE;
+
+
+	_float	DistanceVolume = 0.f;
+	_vector vTargetPos = pTarget->Get_Pos();
+	_vector vPlayerPos = m_pPlayer->Get_Pos();
+	_float fDistance = XMVectorGetX(XMVector3Length(vTargetPos - vPlayerPos));
+	if (m_fSoundMaxDistance < fDistance)
+	{
+		fDistance = m_fSoundMaxDistance;
+	}
+	DistanceVolume = (1.f - (fDistance / m_fSoundMaxDistance)) * fVolume;
+
+
+	if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
+	{
+		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
+	}
+		FMOD_Channel_SetVolume(m_pChannelArr[eID], DistanceVolume);
+
+
+
+
+	//FMOD_Channel_SetVolume(m_pChannelArr[UINT(m_eCurChannel[eType])], DistanceVolume);
+
+	FMOD_System_Update(m_pSystem);
+
 }
 
 

@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "LightBulb.h"
 
+
 CLightSwitch::CLightSwitch(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
 {

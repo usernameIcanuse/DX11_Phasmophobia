@@ -41,6 +41,7 @@ void CEMF::Tick(_float fTimeDelta)
     if(m_bSwitch)
         m_iEMFLevel = 1;
 
+
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
     m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
 
@@ -52,6 +53,10 @@ void CEMF::LateTick(_float fTimeDelta)
 
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
 
+    if (1 < m_iEMFLevel)
+        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("emf sound.wav"), CSoundMgr::ITEM_EMF, this, 0.8f);
+    else
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_EMF);
 #ifdef _DEBUG
     //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -101,6 +106,12 @@ void CEMF::OnEventMessage(const _tchar* pMessage)
 {
 }
 
+
+void CEMF::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+    CSoundMgr::Get_Instance()->PlaySound(TEXT("lightswitch 1.wav"), CSoundMgr::CHANNEL_ITEM, 0.7f);
+}
 
 void CEMF::Drop_Item(_vector vPower)
 {

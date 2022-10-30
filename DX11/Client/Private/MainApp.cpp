@@ -13,7 +13,7 @@ CMainApp::CMainApp()
 	//, m_pImguiMgr(CImguiMgr::Get_Instance())
 {
 	Safe_AddRef(m_pGameInstance);
-	Safe_AddRef(m_pImguiMgr);
+	//Safe_AddRef(m_pImguiMgr);
 }
 
 HRESULT CMainApp::Initialize()

@@ -27,10 +27,8 @@ public:
 
 
 public:
-	virtual void Turn_Switch()
-	{
-		m_bSwitch = !m_bSwitch;
-	}
+	virtual void Turn_Switch();
+	
 
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);

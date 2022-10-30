@@ -142,6 +142,12 @@ HRESULT CThermometer::Render()
 }
 
 
+void CThermometer::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+    CSoundMgr::Get_Instance()->PlaySound(TEXT("lightswitch 1.wav"), CSoundMgr::CHANNEL_ITEM, 0.8f);
+}
+
 void CThermometer::MalFunction(_float fTimeDelta)
 {
     if (false == m_bIsInHouse)

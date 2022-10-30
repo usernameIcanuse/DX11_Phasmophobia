@@ -423,6 +423,12 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 				wsprintf(m_szWhispering, TEXT("À¯ÈÄ"));
 				m_fWhisperingTime = 2.f;
 #endif
+				if(iValue %2 ==0)
+					CSoundMgr::Get_Instance()->PlaySound(TEXT("ghost 1 (light attack).wav"), CSoundMgr::GHOST_LIGHTATTACK1, 1.f);
+				else
+					CSoundMgr::Get_Instance()->PlaySound(TEXT("ghost 2 (light attack).wav"), CSoundMgr::GHOST_LIGHTATTACK2, 1.f);
+
+
 				m_fWhisperCoolTime = 100.f;
 			}
 		}

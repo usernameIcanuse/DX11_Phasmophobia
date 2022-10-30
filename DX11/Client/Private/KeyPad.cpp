@@ -2,6 +2,7 @@
 #include "../Public/KeyPad.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "SoundMgr.h"
 
 CKeyPad::CKeyPad(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -42,10 +43,12 @@ void CKeyPad::Tick(_float fTimeDelta)
 
     if (true == m_bClicked)
     {
+        CSoundMgr::Get_Instance()->PlaySound(TEXT("truckexitsoundeffect.wav"), CSoundMgr::ITEM_TRUCK, 0.8f);
         m_fTimeAcc += fTimeDelta;
         if (m_fTimeAcc > 5.f)
         {
             GAMEINSTANCE->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY, false, true), LEVEL_LOBBY);
+            CSoundMgr::Get_Instance()->StopAll();
         }
     }
  
