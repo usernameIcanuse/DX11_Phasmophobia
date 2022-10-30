@@ -43,6 +43,10 @@ private:
 	_int				m_iTexIndex = 0;
 	_int				m_iStage = 0;
 
+	_tchar				m_szStage[20];
+
+	CIcon* m_pStageIcon = nullptr;
+
 private:
 	HRESULT SetUp_Components();
 	HRESULT SetUp_Icon();

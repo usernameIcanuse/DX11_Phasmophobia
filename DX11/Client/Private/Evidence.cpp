@@ -63,7 +63,7 @@ void CEvidence::Tick(_float fTimeDelta)
 			m_iSelectGhostIndex = m_iSelectedMenu;
 			_float2 vPosition = m_vecUIIcon[m_iSelectGhostIndex - 1]->Get_Position();
 			m_pSelectCircle->Set_Enable(true);
-			m_pSelectCircle->Set_IconPosition(vPosition.x, vPosition.y, 110.f, 35.f);
+			m_pSelectCircle->Set_IconPosition(vPosition.x, vPosition.y, 100.f, 35.f);
 		}
 	}
 	

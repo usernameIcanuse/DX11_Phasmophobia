@@ -52,7 +52,11 @@ void CLobby_WaitingRoom::Tick(_float fTimeDelta)
 
 	if (1 == m_iSelectedMenu)
 	{
-		m_iStage = (++m_iStage) % 2;
+		if (m_iTexIndex == 0)
+		{
+			m_iStage = (++m_iStage) % 2;
+			m_pStageIcon->Set_MultiTex_Index(m_iStage);
+		}
 	}
 
 	else if (5 == m_iSelectedMenu)
@@ -94,6 +98,8 @@ HRESULT CLobby_WaitingRoom::Render()
 void CLobby_WaitingRoom::Set_Enable(_bool _bEnable)
 {
 	__super::Set_Enable(_bEnable);
+
+	m_pStageIcon->Set_Enable(_bEnable);
 }
 
 HRESULT CLobby_WaitingRoom::SetUp_Components()
@@ -243,6 +249,19 @@ HRESULT CLobby_WaitingRoom::SetUp_Icon()
 	pIcon->Set_PassIndex(4);
 	m_vecUIIcon.push_back(pIcon);
 
+	//스테이지 아이콘
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_WaitingRoom"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&m_pStageIcon)))
+		return E_FAIL;
+	IconWorld = XMMatrixIdentity();
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 2.f;
+	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.32f;
+	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f + IconWorld.r[1] * 7.1f - IconWorld.r[0] * 1.f;
+
+	m_pStageIcon->Set_Transform(IconWorld);
+	m_pStageIcon->Set_Texture(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Stage"));
+	m_pStageIcon->Set_PassIndex(4);
+
 	RELEASE_INSTANCE(CGameInstance);
 
 	return S_OK;
@@ -283,4 +302,5 @@ void CLobby_WaitingRoom::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pStageIcon);
 }

@@ -616,6 +616,10 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Ready"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Ready%d.png"),2))))
 		return E_FAIL;
+	/* For.Prototype_Component_Texture_Stage*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Stage"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/WaitingRoom/Stage%d.png"), 2))))
+		return E_FAIL;
 
 
 	/* For.Prototype_Component_Texture_Sky */
