@@ -51,6 +51,23 @@ void CEvidence::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (0 < m_iSelectedMenu)
+	{
+		if (m_iSelectedMenu == m_iSelectGhostIndex)
+		{
+			m_iSelectGhostIndex = -1;
+			m_pSelectCircle->Set_Enable(false);
+		}
+		else
+		{
+			m_iSelectGhostIndex = m_iSelectedMenu;
+			_float2 vPosition = m_vecUIIcon[m_iSelectGhostIndex - 1]->Get_Position();
+			m_pSelectCircle->Set_Enable(true);
+			m_pSelectCircle->Set_IconPosition(vPosition.x, vPosition.y, 110.f, 35.f);
+		}
+	}
+	
+
 	_int iIndex = 0;
 
 	for (auto& elem : m_IconEvidence)
@@ -169,6 +186,15 @@ void CEvidence::Set_Enable(_bool _bEnable)
 
 	for(auto& elem : m_vecUIIcon)
 		elem->Set_Enable(_bEnable);
+
+
+	if (true == _bEnable)
+	{
+		if(-1 != m_iSelectGhostIndex)
+			m_pSelectCircle->Set_Enable(_bEnable);
+	}
+	else
+		m_pSelectCircle->Set_Enable(_bEnable);
 }
 
 void CEvidence::Icon_Lock(_bool _bLock)
@@ -263,7 +289,7 @@ HRESULT CEvidence::Setup_Icon()
 
 	/*GhostName_Icon*/
 
-	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//½ºÇÇ¸´
 	m_vecUIIcon.push_back(pIcon);
@@ -271,7 +297,7 @@ HRESULT CEvidence::Setup_Icon()
 	pIcon->Set_IconPosition(720, 370, 110, 30);
 	pIcon->Set_PassIndex(4);
 
-	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//·¹ÀÌ½º
 	m_vecUIIcon.push_back(pIcon);
@@ -279,7 +305,7 @@ HRESULT CEvidence::Setup_Icon()
 	pIcon->Set_IconPosition(845, 370, 110, 30);
 	pIcon->Set_PassIndex(4);
 
-	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
 	//ÆÒÅÒ
 	m_vecUIIcon.push_back(pIcon);
@@ -455,6 +481,14 @@ HRESULT CEvidence::Setup_Icon()
 	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Journal_GhostName_thaye"));
 	pIcon->Set_IconPosition(970, 580, 110, 30);
 	pIcon->Set_PassIndex(4);
+
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_UIIcon_Evidence"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&m_pSelectCircle)))
+		return E_FAIL;
+	m_pSelectCircle->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_PenCircle"));
+	m_pSelectCircle->Set_PassIndex(4);
+	m_pSelectCircle->Set_Enable(false);
+
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -640,5 +674,7 @@ void CEvidence::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pVIBufferCom);
+
+	Safe_Release(m_pSelectCircle);
 
 }

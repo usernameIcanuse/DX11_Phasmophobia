@@ -43,6 +43,9 @@ public:
 		m_fSizeX = _fSizeX;
 		m_fSizeY = _fSizeY;
 
+		m_pTransformCom->Set_Scaled(_float3(m_fSizeX, m_fSizeY, 0.f));
+		m_pTransformCom->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_fX - (g_iWinCX * 0.5f), -m_fY + (g_iWinCY * 0.5f), 0.f, 1.f));
+
 		XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 
 	}
@@ -67,6 +70,11 @@ public:
 	{
 		m_iTexIndex = _iTexIndex;
 	}
+	_float2 Get_Position()
+	{
+		return _float2(m_fX, m_fY);
+	}
+
 
 protected:
 	_float			m_fX, m_fY, m_fSizeX, m_fSizeY;

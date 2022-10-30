@@ -62,8 +62,6 @@ HRESULT CUIIcon::Render()
 	if (FAILED(SetUp_ShaderResource(nullptr, nullptr)))
 		return E_FAIL;
 
-	if (m_iPassIndex == 4)
-		int a = 10;
 
 	m_pShaderCom->Begin(m_iPassIndex);
 

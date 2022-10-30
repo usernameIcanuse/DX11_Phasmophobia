@@ -480,6 +480,11 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/Exit.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_PenCircle*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_PenCircle"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/PenCircle.dds")))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_EMF_Emission*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EMF_Emission"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/EMF/Level%d.png"),5))))

@@ -48,6 +48,9 @@ private:
 private:
 	vector<CUIIcon*>	m_IconEvidence;
 
+	CUIIcon* m_pSelectCircle= nullptr;
+	_int	m_iSelectGhostIndex = -1;
+
 	_int	m_arrEvidence[7]={-1,-1,-1,-1,-1,-1,-1};//0 == true, 1 == false
 	vector<_int>	m_vecGhostEvidence[24];
 
