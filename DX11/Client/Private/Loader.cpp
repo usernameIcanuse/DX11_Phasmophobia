@@ -480,6 +480,10 @@ HRESULT CLoader::Loading_ForStaticProps()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Journal/Exit.png")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_EMF_Emission*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EMF_Emission"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Meshes/EMF/Level%d.png"),5))))
+		return E_FAIL;
 
 	RELEASE_INSTANCE(CGameInstance);
 
@@ -611,7 +615,7 @@ HRESULT CLoader::Loading_ForLobbyLevel()
 
 	/* For.Prototype_Component_Texture_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_Sky"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/SkyBox.dds")))))
 		return E_FAIL;
 
 
@@ -710,7 +714,7 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	/* For.Prototype_GameObject_Ghost*/
 	if (FAILED(pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_Ghost"),
-		CPhantom::Create(m_pDevice, m_pContext))))
+		CJinn::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Ghost_SpawnPoint*/
@@ -905,7 +909,7 @@ HRESULT CLoader::Loading_ForTutorialLevel()
 
 	/* For.Prototype_Component_Texture_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/SkyBox.dds")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Terrain */
@@ -1309,7 +1313,7 @@ HRESULT CLoader::Loading_ForStreetHouseLevel()
 
 	/* For.Prototype_Component_Texture_Sky */
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), 4))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/SkyBox/SkyBox.dds")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Terrain */

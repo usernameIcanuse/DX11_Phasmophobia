@@ -56,7 +56,7 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	std::uniform_int_distribution<int> dis(80, 120);
 
 
-	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
+	m_iAreaDefaultTemperature = dis(gen) % 50 + 30;
 
 
 
@@ -182,7 +182,7 @@ void CGhost_SpawnPoint::Normal_Operation(_float fTimeDelta)
 	m_pAreaCom->Update(matWorld);
 	m_pSpawnPointCom->Update(matWorld);
 
-	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
+	m_iAreaTemperature = m_iAreaDefaultTemperature - 40 + (rand()%40-20);
 
 #ifdef _DEBUG
 	m_fWhisperingTime -= fTimeDelta;
@@ -222,12 +222,12 @@ _int   CGhost_SpawnPoint::Get_SpawnPointTemperature()
 			m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
 		m_bCheckFreeze = false;
 	}
-	return m_iAreaTemperature - 4;
+	return m_iAreaTemperature - 40;
 }
 
 void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 {
-	if (_lFrequency == m_lAnswerFrequency || DBL_EPSILON >= _fTime)
+	if (_lFrequency/100 == m_lAnswerFrequency || DBL_EPSILON >= _fTime)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
@@ -263,9 +263,9 @@ void CGhost_SpawnPoint::Set_Evidence(_bool SpiritBox, _bool DotsProjecter, _bool
 
 	m_pGhost_Status->Set_EMF(EMF);
 	
-	if (m_bFreeze && m_iAreaDefaultTemperature - 4 > 0)
+	if (m_bFreeze && m_iAreaDefaultTemperature - 40> 0)
 	{
-		m_iAreaDefaultTemperature -= 7;
+		m_iAreaDefaultTemperature -= 70;
 	}
 }
 

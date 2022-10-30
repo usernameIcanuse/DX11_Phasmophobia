@@ -66,11 +66,11 @@ void CThermometer::LateTick(_float fTimeDelta)
         {
             
             RenderFont.pString = m_szDegree;
-            RenderFont.vPosition = XMVectorSet(625, 150, 0.f, 0.f);
+            RenderFont.vPosition = XMVectorSet(580, 147, 0.f, 0.f);
             RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
             RenderFont.rotation = 0.f;
             RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-            RenderFont.vScale = XMVectorSet(1.f, 1.f, 1.f, 0.f);//시작 점을 오른쪽 아래로 넘기기
+            RenderFont.vScale = XMVectorSet(1.2f, 0.9f, 1.f, 0.f);//시작 점을 오른쪽 아래로 넘기기
 
             m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
 
@@ -151,9 +151,11 @@ void CThermometer::MalFunction(_float fTimeDelta)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dis(10, 99);
+        std::uniform_int_distribution<int> dis(100, 999);
 
-        wsprintf(m_szDegree, TEXT("%2d"), dis(gen));
+        _int iValue = dis(gen);
+
+        wsprintf(m_szDegree, TEXT("%2d.%1d"), iValue/10,iValue%10);
         m_fTimeAcc = 0.f;
 
     }
@@ -163,7 +165,21 @@ void CThermometer::Normal_Operation(_float fTimeDelta)
 {
     if (m_fTimeAcc >= 1.5f)
     {
-        wsprintf(m_szDegree, TEXT("%2d"), m_iDegree);
+        _int iDegree = m_iDegree;
+        _bool bMinus = false;
+        if (0.f > m_iDegree)
+        {
+            iDegree *= -1;
+            bMinus = true;
+        }
+
+        _int iInteger = iDegree / 10;
+        _int iPoint = iDegree % 10;
+        if (true == bMinus)
+            iInteger *= -1;
+        wsprintf(m_szDegree, TEXT("%2d.%1d"), iInteger, iPoint);
+
+        
         m_fTimeAcc = 0.f;
 
     }

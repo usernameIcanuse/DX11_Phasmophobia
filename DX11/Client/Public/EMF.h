@@ -42,7 +42,7 @@ public:
 private:
 	_uint		m_iEMFLevel = 1;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//임시 emf레벨 출력
-
+	CTexture* m_pEmissionTex = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

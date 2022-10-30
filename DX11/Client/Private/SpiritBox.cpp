@@ -54,9 +54,16 @@ void CSpiritBox::Tick(_float fTimeDelta)
     {
         m_fTimeAcc += fTimeDelta;
     
-#ifdef _DEBUG
+
         m_fAnswerTime -= fTimeDelta;
-#endif
+        if (0.f > m_fAnswerTime)
+        {
+            if (false == m_bGhostIconAlpha)
+                m_bGhostIconAlpha = true;
+            else if (false == m_bXIconAlpha)
+                m_bXIconAlpha = true;
+        }
+
     }
 }
 
@@ -68,24 +75,26 @@ void CSpiritBox::LateTick(_float fTimeDelta)
 
     CTexture* pTexture = m_pModelCom->Get_SRV(0, aiTextureType_DIFFUSE);
     CRenderer::RENDERFONT RenderFont;
-    if (!m_bSwitch)
+    if (m_bSwitch)
     {
-        RenderFont.pString = TEXT("000.00");
-        RenderFont.vPosition = XMVectorSet(650.f, 500.f, 0.f, 0.f);
-        RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+        RenderFont.pString = m_szDegree;
+        RenderFont.vPosition = XMVectorSet(643.f, 515.f, 0.f, 0.f);
+        RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 0.7f);
         RenderFont.rotation = 90.f;
         RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
         RenderFont.vScale = XMVectorSet(0.9f, 1.7f, 1.f, 0.f);
     }
     else
     {
-        RenderFont.pString = m_szDegree;
-        RenderFont.vPosition = XMVectorSet(650.f, 500.f, 0.f, 0.f);
+        RenderFont.pString = TEXT("");
+        RenderFont.vPosition = XMVectorSet(643.f, 515.f, 0.f, 0.f);
         RenderFont.vColor = XMVectorSet(0.f, 0.f, 0.f, 1.f);
         RenderFont.rotation = 90.f;
         RenderFont.vOrigin = XMVectorSet(0.f, 0.f, 0.f, 0.f);
         RenderFont.vScale = XMVectorSet(0.9f, 1.7f, 1.f, 0.f);
     }
+    
+ 
     m_pDiffuse->Clear();
     ID3D11DepthStencilView* DSV = m_pDiffuse->GeT_DepthStencilView();
     m_pContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
@@ -101,17 +110,18 @@ void CSpiritBox::LateTick(_float fTimeDelta)
 
     if (m_bSwitch)
     {
-      
+        m_pRendererCom->Draw_On_Texture(m_pDiffuse, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
+
         pTexture = m_pModelCom->Get_SRV(0, aiTextureType_EMISSIVE);
         if (nullptr != pTexture)
         {
             m_pRendererCom->Draw_On_Texture(m_pEmissive, pTexture, m_pShaderTexCom, 0, RenderFont, TEXT("Font_Digital"));
 
             m_pShaderTexCom->Set_RawValue("bAlpha", &m_bXIconAlpha, sizeof(_bool));
-            m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pXIcon, m_pShaderTexCom, 5, _float3(600.f, 640.f, 0.f), _float3(35.f, 20.f, 1.f));
+            m_pRendererCom->Draw_On_Texture(m_pEmissive, m_pXIcon, m_pShaderTexCom, 5, _float3(600.f, 640.f, 0.f), _float3(35.f, 20.f, 1.f));
 
             m_pShaderTexCom->Set_RawValue("bAlpha", &m_bGhostIconAlpha, sizeof(_bool));
-            m_pRendererCom->Draw_On_Texture(m_pDiffuse, m_pGhostIcon, m_pShaderTexCom, 5, _float3(600.f, 670.f, 0.f), _float3(45.f, 25.f, 1.f));
+            m_pRendererCom->Draw_On_Texture(m_pEmissive, m_pGhostIcon, m_pShaderTexCom, 5, _float3(600.f, 670.f, 0.f), _float3(45.f, 25.f, 1.f));
         }
     }
 
@@ -173,16 +183,18 @@ void CSpiritBox::OnEventMessage(const _tchar* pMessage)
        /*Ghost Icon*/
 #ifdef _DEBUG
         wsprintf(m_szAnswer, TEXT("응답"));
-        m_fAnswerTime = 3.f;
 #endif
+        m_fAnswerTime = 3.f;
+        m_bGhostIconAlpha = false;
     }
     else if (0 ==lstrcmp(TEXT("Not_Respone"), pMessage))
     {
         /*X Icon*/
 #ifdef _DEBUG
         wsprintf(m_szAnswer, TEXT("무응답"));
-        m_fAnswerTime = 3.f;
 #endif
+        m_fAnswerTime = 3.f;
+        m_bXIconAlpha = false;
     }
 }
 
@@ -196,9 +208,11 @@ void CSpiritBox::MalFunction(_float fTimeDelta)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dis(10, 90);
+        std::uniform_int_distribution<int> dis(0, 99999);
 
-        wsprintf(m_szDegree, TEXT("%03d"), dis(gen));
+        _int iValue = dis(gen);
+
+        wsprintf(m_szDegree, TEXT("%03d.%02d"), iValue/100, iValue%100);
         m_fTimeAcc = 0.f;
     }
 }
@@ -208,12 +222,12 @@ void CSpiritBox::Normal_Operation(_float fTimeDelta)
     if (m_bInGhostArea)
         m_fAnswerTimeLasting -= fTimeDelta;
 
-    wsprintf(m_szDegree, TEXT("%03d"), m_lFrequency);
+    wsprintf(m_szDegree, TEXT("%03d.%02d"), m_lFrequency/100, m_lFrequency % 100);
 }
 
 void CSpiritBox::Frequency_Control(_long lMouseMove)
 {
-    m_lFrequency += lMouseMove;
+    m_lFrequency += lMouseMove*50;
 }
 
 void CSpiritBox::Drop_Item(_vector vPower)

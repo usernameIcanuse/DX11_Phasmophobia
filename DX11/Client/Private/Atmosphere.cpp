@@ -31,7 +31,12 @@ HRESULT CAtmosphere::Initialize(void* pArg)
         return E_FAIL;
     //방마다 온도 랜덤 지정
 
-    m_iRoomDefault = rand() % 5 + 15;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, 900);
+
+    m_iRoomDefault = dis(gen) % 50 + 150;
 
     return S_OK;
 }
@@ -40,7 +45,12 @@ void CAtmosphere::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
  
-    m_iRoomTemperature = m_iRoomDefault - rand() % 5;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, 900);
+
+
+    m_iRoomTemperature = m_iRoomDefault - dis(gen) % 50;
 
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());

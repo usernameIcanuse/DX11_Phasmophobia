@@ -84,18 +84,18 @@ HRESULT CLobby_GameResult::Render()
 	_tchar	m_szTime[100];
 	//float rotation, _fvector vOrigin, _vector vScale
 	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iTotalMinute, m_iTotalSecond);
-	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(590.f, 215.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f,XMVectorSet(0.f,0.f,0.f,0.f),XMVectorSet(0.7f,0.6f,1.f,0.5f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(590.f, 215.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f,XMVectorSet(0.f,0.f,0.f,0.f),XMVectorSet(0.65f,0.55f,1.f,0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iGhostMinute, m_iGhostSecond);
-	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(670.f, 268.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.7f, 0.6f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(670.f, 268.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d 회"), m_iEventCnt);
-	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(780.f, 323.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.7f, 0.6f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(780.f, 323.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d 회"), m_iInteractionCnt);
-	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(640.f, 378.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.7f, 0.6f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(640.f, 378.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
-	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szGhostName, XMVectorSet(630.f, 468.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.7f, 0.6f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szGhostName, XMVectorSet(630.f, 468.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 
 	RELEASE_INSTANCE(CGameInstance);

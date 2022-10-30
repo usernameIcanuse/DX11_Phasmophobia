@@ -55,13 +55,7 @@ struct PS_IN
 struct PS_OUT
 {	
 	vector		vColor : SV_TARGET0;	
-	/*vector		vColor : SV_TARGET1;
-	vector		vColor : SV_TARGET2;
-	vector		vColor : SV_TARGET3;
-	vector		vColor : SV_TARGET4;
-	vector		vColor : SV_TARGET5;
-	vector		vColor : SV_TARGET6;
-	vector		vColor : SV_TARGET7;*/
+
 };
 
 PS_OUT PS_MAIN_SKY(PS_IN In)

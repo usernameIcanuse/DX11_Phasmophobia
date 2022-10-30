@@ -115,7 +115,7 @@ PS_OUT PS_MAIN_SPIRITBOX(PS_IN In)
 	if (Out.vColor.a < 0.1f)
 		discard;
 
-	Out.vColor.xyz = float3(0.f, 0.f, 0.f);
+	Out.vColor = vector(0.f, 0.f, 0.f,1.f);
 
 	if (bAlpha)
 		Out.vColor.a *= 0.3f;

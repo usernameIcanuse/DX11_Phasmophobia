@@ -71,12 +71,12 @@ HRESULT CEMF::Render()
             return E_FAIL;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;
-      /*  if (m_bSwitch)
-        {Emissive 없음 만들어 줘야함
-            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+        if (m_bSwitch)
+        {
+            if (FAILED(m_pEmissionTex->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture", m_iEMFLevel-1)))
                 return E_FAIL;
             iPassIndex = 3;
-        }*/
+        }
 
         
         m_pModelCom->Render(i, m_pShaderCom,iPassIndex);
@@ -192,6 +192,10 @@ HRESULT CEMF::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
+    /*For.Com_Emission*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EMF_Emission"), TEXT("Com_Emission"), (CComponent**)&m_pEmissionTex)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -228,4 +232,6 @@ void CEMF::Free()
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
     Safe_Release(m_pRigidBodyCom);
+
+    Safe_Release(m_pEmissionTex);
 }
