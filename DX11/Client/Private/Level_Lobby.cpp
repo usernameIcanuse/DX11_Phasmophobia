@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "MenuScreen.h"
-
+#include "SoundMgr.h"
 
 
 
@@ -48,13 +48,20 @@ HRESULT CLevel_Lobby::Initialize( _bool bGamePlay)
 	}
 
 	SetWindowText(g_hWnd, TEXT("Level_Lobby_Main. "));
+
+	CSoundMgr::Get_Instance()->PlayBGM(TEXT("nights ambience neighborhood.wav"), 1.f);
+
 	return S_OK;
 }
 
 void CLevel_Lobby::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
-	
+	if (true == m_bFirst)
+	{
+		m_bFirst = false;
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("welcome back 1.wav"), CSoundMgr::CHANNEL_BGM, 1.f);
+	}
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 
 }

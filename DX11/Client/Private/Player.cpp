@@ -5,6 +5,7 @@
 #include "Inventory.h"
 #include "Journal.h"
 #include "Level_Loading.h"
+#include "SoundMgr.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -39,6 +40,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	}
 
+	CSoundMgr::Get_Instance()->Set_Player(this);
 	
 	if (FAILED(Setup_Camera()))
 		return E_FAIL;
@@ -91,26 +93,46 @@ void CPlayer::Tick(_float fTimeDelta)
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
-
+	m_fFootstepTime -= fTimeDelta;
 	m_pTransformCom->Reset_Direction();
 
 	if (pGameInstance->Is_KeyState(KEY::W, KEY_STATE::HOLD))
 	{
+		if (0.f > m_fFootstepTime)
+		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER,0.6f);
+			m_fFootstepTime = 1.f;
+		}
 		m_pTransformCom->Add_Direction(CTransform::FRONT);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::S, KEY_STATE::HOLD))
 	{
+		if (0.f > m_fFootstepTime)
+		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			m_fFootstepTime = 1.f;
+		}
 		m_pTransformCom->Add_Direction(CTransform::BACK);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::A, KEY_STATE::HOLD))
 	{
+		if (0.f > m_fFootstepTime)
+		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			m_fFootstepTime = 1.f;
+		}
 		m_pTransformCom->Add_Direction(CTransform::LEFT);
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::D, KEY_STATE::HOLD))
 	{
+		if (0.f > m_fFootstepTime)
+		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			m_fFootstepTime = 1.f;
+		}
 		m_pTransformCom->Add_Direction(CTransform::RIGHT);
 	}
 

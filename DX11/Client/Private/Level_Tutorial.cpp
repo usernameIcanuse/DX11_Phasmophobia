@@ -5,6 +5,7 @@
 #include "Door.h"
 #include "Object_Collider.h"
 #include "Computer.h"
+#include "SoundMgr.h"
 
 
 
@@ -44,6 +45,9 @@ HRESULT CLevel_Tutorial::Initialize()
 
 	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
+
+	CSoundMgr::Get_Instance()->PlayBGM(TEXT("nights ambience neighborhood.wav"), 1.f);
+
 
 	return S_OK;
 }

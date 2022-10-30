@@ -9,6 +9,8 @@ namespace Client
 	enum STAGE {TUTORIAL,STREETHOUSE,STAGE_END};
 }
 
+
+
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
 

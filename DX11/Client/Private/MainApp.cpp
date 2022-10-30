@@ -5,11 +5,12 @@
 #include "Loading.h"
 #include "FirstLoading.h"
 #include "Engine_Defines.h"
+#include "SoundMgr.h"
 
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::Get_Instance())
-	, m_pImguiMgr(CImguiMgr::Get_Instance())
+	//, m_pImguiMgr(CImguiMgr::Get_Instance())
 {
 	Safe_AddRef(m_pGameInstance);
 	Safe_AddRef(m_pImguiMgr);
@@ -30,8 +31,11 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(g_hInst, LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;	
 
-	m_pImguiMgr->Init(m_pDevice, m_pContext);
+	//m_pImguiMgr->Init(m_pDevice, m_pContext);
 	
+	if (FAILED(CSoundMgr::Get_Instance()->Initialize()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 	
@@ -63,7 +67,9 @@ void CMainApp::Tick(float fTimeDelta)
 #endif
 	m_pGameInstance->Tick_Engine(fTimeDelta);
 	m_fTimeDelta = fTimeDelta;
-	m_pImguiMgr->Tick(fTimeDelta);
+
+	CSoundMgr::Get_Instance()->Tick();
+	//m_pImguiMgr->Tick(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -90,7 +96,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Render_Font(TEXT("Font_Dream"), m_szFPS, _float2(600.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 #endif
 
-	m_pImguiMgr->Render();
+	//m_pImguiMgr->Render();
 
 	m_pGameInstance->Present();
 
@@ -178,8 +184,8 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);		
-	Safe_Release(m_pImguiMgr);
-
-	CImguiMgr::Destroy_Instance();
+	//Safe_Release(m_pImguiMgr);
+	CSoundMgr::Get_Instance()->Destroy_Instance();
+	//CImguiMgr::Destroy_Instance();
 	CGameInstance::Release_Engine();	
 }

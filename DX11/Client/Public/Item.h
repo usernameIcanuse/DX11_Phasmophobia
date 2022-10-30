@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Client_Defines.h"
-
+#include "SoundMgr.h"
 BEGIN(Engine)
 class CShader;
 class CTexture;

@@ -51,6 +51,8 @@ using namespace DirectX;
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
 
+#include <io.h>
+
 
 #ifdef _DEBUG
 
@@ -71,5 +73,14 @@ using namespace DirectX;
 using namespace Engine;
 using namespace std;
 
+
+#include <io.h>
+#pragma comment(lib, "fmodex64_vc.lib")
+
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
+
+#include "../../Client/Bin/FMOD/fmod.h"
+#include "../../Client/Bin/FMOD/fmod.hpp"
 
 

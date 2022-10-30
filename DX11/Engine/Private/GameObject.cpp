@@ -27,6 +27,11 @@ CComponent * CGameObject::Get_Component(const _tchar * pComponentTag)
 	return Find_Components(pComponentTag);	
 }
 
+_vector CGameObject::Get_Pos()
+{
+	return m_pTransformCom->Get_State(CTransform::STATE_TRANSLATION);
+}
+
 HRESULT CGameObject::Initialize_Prototype()
 {
 	return S_OK;

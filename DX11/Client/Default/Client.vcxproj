@@ -115,7 +115,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../Reference/Librarys/;../FMOD/</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;DirectXTKd.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\Lobby_GameResult.h" />
     <ClInclude Include="..\Public\Oni.h" />
     <ClInclude Include="..\Public\Phantom.h" />
+    <ClInclude Include="..\Public\SoundMgr.h" />
     <ClInclude Include="..\Public\StreetHouse.h" />
     <ClInclude Include="..\Public\UIIcon.h" />
     <ClInclude Include="..\Public\Inventory.h" />
@@ -301,6 +302,7 @@
     <ClCompile Include="..\Private\Lobby_GameResult.cpp" />
     <ClCompile Include="..\Private\Oni.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />
+    <ClCompile Include="..\Private\SoundMgr.cpp" />
     <ClCompile Include="..\Private\StreetHouse.cpp" />
     <ClCompile Include="..\Private\UIIcon.cpp" />
     <ClCompile Include="..\Private\Journal.cpp" />

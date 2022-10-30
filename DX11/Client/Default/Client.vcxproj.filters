@@ -268,6 +268,9 @@
     <ClInclude Include="..\Public\Wraith.h">
       <Filter>02.GameObject\Ghost\Wraith</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SoundMgr.h">
+      <Filter>SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -521,6 +524,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Wraith.cpp">
       <Filter>02.GameObject\Ghost\Wraith</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoundMgr.cpp">
+      <Filter>SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -789,6 +795,9 @@
     </Filter>
     <Filter Include="02.GameObject\Ghost\Goryo">
       <UniqueIdentifier>{494ca3c7-42cd-4777-b033-60f93c01a92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SoundMgr">
+      <UniqueIdentifier>{80ac6a35-7d3a-40b4-bbec-3b97dbf3ecf2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

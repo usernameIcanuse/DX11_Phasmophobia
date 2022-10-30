@@ -24,7 +24,7 @@ public:
 	{
 		return m_fCullingRange;
 	}
-
+	_vector Get_Pos();
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);

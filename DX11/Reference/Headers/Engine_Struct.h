@@ -277,7 +277,7 @@ namespace Engine
 		_int	iGhostName;
 	}STAGEDESC;
 
-
+	enum CHANNELID { BGM, PLAYER, PLAYERBULLET, EFFECT, EFFECT2, UI, SYSTEM_EFFECT, SYSTEM_EFFECT2, SYSTEM_EFFECT3, MAXCHANNEL };
 	/*For Object Load & Save*/
 	enum class LAYER
 	{

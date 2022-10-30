@@ -52,6 +52,7 @@ private:
 #ifdef _DEBUG
 	CRenderer*   m_pRendererCom = nullptr;
 #endif
+	_float		m_fFootstepTime = 1.f;
 
 	CInventory* m_pInventory = nullptr;
 	class CJournal* m_pJournal = nullptr;
