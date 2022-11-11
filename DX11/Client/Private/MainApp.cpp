@@ -93,7 +93,7 @@ HRESULT CMainApp::Render()
 		m_iNumRender = 0;
 	}
 	// MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
-	m_pGameInstance->Render_Font(TEXT("Font_Dream"), m_szFPS, _float2(600.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	//m_pGameInstance->Render_Font(TEXT("Font_Dream"), m_szFPS, _float2(600.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 #endif
 
 	//m_pImguiMgr->Render();

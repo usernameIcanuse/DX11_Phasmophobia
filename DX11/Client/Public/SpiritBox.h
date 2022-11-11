@@ -55,8 +55,11 @@ private:
 	_float		m_fAnswerTime = 0.f;
 	_float		m_fTimeAcc = 0.f;
 
+	_float		m_fGhostAnswer = 0.f;
+
 	_float		m_fAnswerTimeLasting = 0.f;
 	_bool		m_bInGhostArea = false;
+
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

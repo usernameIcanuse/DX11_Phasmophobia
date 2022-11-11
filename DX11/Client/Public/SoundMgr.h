@@ -48,10 +48,12 @@ public:
 		ITEM_LIGHTSWITCH,
 		GHOST_FOOTSTEP,
 		GHOST_DEATH,
+		GHOST_CLOSE,
 		GHOST_DIEMALE,
 		GHOST_DIE,
 		GHOST_LIGHTATTACK1,
 		GHOST_LIGHTATTACK2,
+		GHOST_HUNTING,
 		GHOST_SINGING,
 		GHOST_MALESING,
 		GHOST_MUSICFEMALE,
@@ -84,12 +86,13 @@ public:
 
 	void Release();
 public:
+	int  SetVolume(CHANNELID eID, _float _fVolume);
 	int  VolumeUp(CHANNELID eID, _float _vol);
 	int  VolumeDown(CHANNELID eID, _float _vol);
 	int  BGMVolumeUp(_float _vol);
 	int  BGMVolumeDown(_float _vol);
 	int  Pause(CHANNELID eID);
-	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, _float _vol);
+	void PlaySound(TCHAR* pSoundKey, CHANNELID eID, _float _vol, _bool bLoop = false);
 	void PlayBGM(TCHAR* pSoundKey);
 	void PlayBGM(TCHAR* pSoundKey, _float fVolume);
 	void StopSound(CHANNELID eID);
@@ -110,7 +113,7 @@ public:
 
 private:
 	float m_volume = SOUND_DEFAULT;
-	float m_BGMvolume = SOUND_DEFAULT;
+	float m_BGMvolume = 1.f;
 	FMOD_BOOL m_bool;
 
 	CGameObject* m_pPlayer = nullptr;

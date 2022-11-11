@@ -61,7 +61,7 @@ void CLevel_Lobby::Tick(_float fTimeDelta)
 		m_bFirst = false;
 		CSoundMgr::Get_Instance()->PlaySound(TEXT("welcome back 1.wav"), CSoundMgr::BGM_RADIO, 1.f);
 	}
-	CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, 1.f);
+	CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, 1.f,true);
 
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 

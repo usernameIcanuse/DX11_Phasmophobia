@@ -183,6 +183,8 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 		m_EventFunc = std::bind(&CGhost::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
 		m_pModelCom->Set_CurrentAnimation(1);
 		m_fEventTime = m_fAttackTime = 0.f;
+
+		CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_HUNTING);
 	}
 
 }
@@ -217,7 +219,9 @@ void CGhost::Attack(_float fTimeDelta)
 
 	fFootstep -= fTimeDelta;
 	if (0.f > fFootstep)
-		CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("GhostFootStep.wav"), CSoundMgr::CHANNEL_GHOST, this, 0.9f);
+		CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("GhostFootStep.wav"), CSoundMgr::GHOST_FOOTSTEP, this, 0.9f);
+
+	CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("female_ghost_hunting_1.wav"), CSoundMgr::GHOST_HUNTING, this, 0.9f);
 
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
@@ -246,7 +250,7 @@ void CGhost::Attack(_float fTimeDelta)
 			m_fRenderModel = 0.5f;
 	}
 #ifdef _DEBUG
-	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
+	//wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)

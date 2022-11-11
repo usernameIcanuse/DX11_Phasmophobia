@@ -51,8 +51,10 @@ HRESULT CMenuScreen::Initialize(void* pArg)
             m_pCurUI->Set_Enable(true);
             m_bLock = false;
             m_pCurUI->Icon_Lock(m_bLock);
+            ShowCursor(true);
         }
-
+        else
+            ShowCursor(false);
 
     }
 
@@ -78,6 +80,7 @@ void CMenuScreen::Tick(_float fTimeDelta)
             GAMEINSTANCE->Set_Mouse_Lock();
             m_bLock = true;
             m_pCurUI->Icon_Lock(m_bLock);
+            ShowCursor(false);
         }
         //이게 맞냐
 #pragma region Lobby_Main
@@ -163,7 +166,7 @@ void CMenuScreen::LateTick(_float fTimeDelta)
 
     m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
 #ifdef _DEBUG
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+  //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 }
 
@@ -321,6 +324,7 @@ void CMenuScreen::On_Collision_Stay(CCollider* pCollider)
             GAMEINSTANCE->Set_Mouse_Lock();
             m_bLock = false;
             m_pCurUI->Icon_Lock(m_bLock);
+            ShowCursor(true);
 
         }
     }

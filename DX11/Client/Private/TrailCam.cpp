@@ -120,7 +120,7 @@ void CTrailCam::On_Collision_Enter(CCollider* pCollider)
 
         if (!m_bInstalled)
             return;
-        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("TrailCam_Beep.wav"), CSoundMgr::CHANNEL_ITEM, this, 1.f);
+        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("TrailCam_Beep.wav"), CSoundMgr::ITEM_TRAILCAM, this, 1.f);
         m_bSwitch = true;
     }
   
@@ -338,8 +338,12 @@ void CTrailCam::Sensor_Activating(_bool _bSwitch)
 {
     if (!m_bInstalled)
         return;
-    if (true == _bSwitch)
-        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("TrailCam_Beep.wav"), CSoundMgr::CHANNEL_ITEM ,this, 1.f);
+    if (true == _bSwitch && true == m_bFirst)
+    {
+        m_bFirst = false;
+        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("TrailCam_Beep.wav"), CSoundMgr::ITEM_TRAILCAM, this, 1.f);
+    }
+    
     m_bSwitch = _bSwitch;
 }
 

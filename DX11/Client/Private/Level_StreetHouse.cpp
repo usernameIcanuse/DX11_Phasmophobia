@@ -24,8 +24,8 @@ HRESULT CLevel_StreetHouse::Initialize()
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 	//임구이 안 쓸 때
-	//if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 		return E_FAIL;
@@ -46,7 +46,7 @@ HRESULT CLevel_StreetHouse::Initialize()
 	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
 
-	CSoundMgr::Get_Instance()->PlayBGM(TEXT("nights ambience neighborhood.wav"), 1.f);
+	//CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM,1.f);
 
 	return S_OK;
 }
@@ -401,9 +401,9 @@ HRESULT CLevel_StreetHouse::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)

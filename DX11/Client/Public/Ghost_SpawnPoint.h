@@ -58,7 +58,7 @@ public:
 
 	_int    Get_SpawnPointTemperature();
 	
-	void	Get_Answer(_long _lFrequency, _float& _fTime);
+	_bool	Get_Answer(_long _lFrequency, _float& _fTime);
 	void	Set_Ghost(CGhost* _pGhost)
 	{
 		m_pGhost = _pGhost;

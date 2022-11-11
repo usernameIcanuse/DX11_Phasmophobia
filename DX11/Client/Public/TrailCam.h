@@ -35,6 +35,8 @@ private:
 	CLight* m_pLight  =  nullptr;//인식시 불 켜짐
 	CItem* m_pTempTrailCamModel = nullptr;
 
+	_bool m_bFirst = true;
+
 
 
 public:

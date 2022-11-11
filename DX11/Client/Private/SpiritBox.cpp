@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Ghost_SpawnPoint.h"
 #include "RenderTarget.h"
+#include "SoundMgr.h"
 
 CSpiritBox::CSpiritBox(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CItem(pDevice, pContext)
@@ -36,7 +37,7 @@ HRESULT CSpiritBox::Initialize(void* pArg)
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dis(10, 90);
 
-    m_fAnswerTimeLasting = dis(gen) % 5 + 30;
+    m_fAnswerTimeLasting = dis(gen) % 5 + 5;
 
     GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
     m_pEventFunc = std::bind(&CItem::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
@@ -163,7 +164,7 @@ HRESULT CSpiritBox::Render()
 #ifdef _DEBUG
     if (m_fAnswerTime > 0.f)
     {
-        GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szAnswer, _float2(1100.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+       // GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szAnswer, _float2(1100.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
     }
 #endif
@@ -212,6 +213,7 @@ void CSpiritBox::MalFunction(_float fTimeDelta)
 {
     if (false == m_bIsInHouse)
         return;
+    CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_WHISPERING);
     /*·£´ýÇÑ °ªÀ» ³Ö¾îÁÜ*/
     if (0.1f <= m_fTimeAcc)
     {
@@ -230,6 +232,10 @@ void CSpiritBox::Normal_Operation(_float fTimeDelta)
 {
     if (m_bInGhostArea)
         m_fAnswerTimeLasting -= fTimeDelta;
+
+    m_fGhostAnswer -= fTimeDelta;
+    if (0.f > m_fGhostAnswer)
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_WHISPERING);
 
     wsprintf(m_szDegree, TEXT("%03d.%02d"), m_lFrequency/100, m_lFrequency % 100);
 }
@@ -279,7 +285,47 @@ void CSpiritBox::On_Collision_Stay(CCollider* pCollider)
         if (COLLISION_TYPE::GHOST_AREA == pCollider->Get_Type())
         {
            CGhost_SpawnPoint* pGhost = (CGhost_SpawnPoint*)pCollider->Get_Owner();
-           pGhost->Get_Answer(m_lFrequency, m_fAnswerTimeLasting);
+
+           if (pGhost->Get_Answer(m_lFrequency, m_fAnswerTimeLasting))
+           {
+               std::random_device rd;
+               std::mt19937 gen(rd());
+               std::uniform_int_distribution<int> dis(1, 100);
+
+               _int iValue = dis(gen);
+
+               if (50 > iValue)
+               {
+                   if(0 == iValue % 4)
+                     CSoundMgr::Get_Instance()->PlaySound(TEXT("death.wav"), CSoundMgr::GHOST_DEATH, 0.7f);
+                   else if( 1 == iValue%4)
+                     CSoundMgr::Get_Instance()->PlaySound(TEXT("close.wav"), CSoundMgr::GHOST_CLOSE, 0.7f);
+                   else if (2 == iValue % 4)
+                       CSoundMgr::Get_Instance()->PlaySound(TEXT("die.wav"), CSoundMgr::GHOST_DIE, 0.7f);
+                   else if (3 == iValue % 4)
+                       CSoundMgr::Get_Instance()->PlaySound(TEXT("die male.wav"), CSoundMgr::GHOST_DIEMALE, 0.7f);
+
+               }
+   /*            else
+               {
+                   std::random_device rd;
+                   std::mt19937 gen(rd());
+                   std::uniform_int_distribution<int> dis(1, 100);
+
+                   _int iValue = dis(gen)%5;
+
+                   m_fGhostAnswer = iValue + 1;
+
+                   if (1 == iValue % 2)
+                   {
+                       CSoundMgr::Get_Instance()->PlaySound(TEXT("whispering voices.wav"), CSoundMgr::GHOST_WHISPERING, 0.5f);
+                   }
+                   else
+                       CSoundMgr::Get_Instance()->PlaySound(TEXT("female whispering.wav"), CSoundMgr::GHOST_WHISPERING, 0.5f);
+               }*/
+
+
+           }
         }
     }
         

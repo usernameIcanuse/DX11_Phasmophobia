@@ -91,6 +91,14 @@ int CSoundMgr::VolumeDown(CHANNELID eID, _float _vol)
 	return 0;
 }
 
+int CSoundMgr::SetVolume(CHANNELID eID, _float _fVolume)
+{
+	if(1.f >= _fVolume)
+		FMOD_Channel_SetVolume(m_pChannelArr[eID], _fVolume);
+
+	return 0;
+}
+
 int CSoundMgr::BGMVolumeUp(_float _vol)
 {
 	if (m_BGMvolume < SOUND_MAX) {
@@ -122,7 +130,7 @@ int CSoundMgr::Pause(CHANNELID eID)
 }
 
 
-void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)//계속플레이하고 싶을 때
+void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol, _bool bLoop)//계속플레이하고 싶을 때
 {
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
@@ -135,14 +143,25 @@ void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, _float _vol)//계속플
 		return;
 
 	FMOD_BOOL bPlay = FALSE;
-	if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
+	if (true == bLoop)
 	{
-		FMOD_System_PlaySound(m_pSystem,FMOD_CHANNEL_FREE,iter->second, FALSE, &m_pChannelArr[eID]);
-		if (_vol >= SOUND_MAX)
-			_vol = 1.f;
-		else if (_vol <= SOUND_MIN)
-			_vol = 0.f;
+		if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
+		{
+			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
+			
+		}
 	}
+	else
+	{
+		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
+
+	}
+
+	if (_vol >= SOUND_MAX)
+		_vol = 1.f;
+	else if (_vol <= SOUND_MIN)
+		_vol = 0.f;
+
 	FMOD_Channel_SetVolume(m_pChannelArr[eID], _vol);
 	FMOD_System_Update(m_pSystem);
 }
@@ -327,7 +346,7 @@ void CSoundMgr::PlaySoundDistance(const TCHAR* strSoundKey, CHANNELID eID, CGame
 	{
 		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
 	}
-		FMOD_Channel_SetVolume(m_pChannelArr[eID], DistanceVolume);
+	FMOD_Channel_SetVolume(m_pChannelArr[eID], DistanceVolume);
 
 
 

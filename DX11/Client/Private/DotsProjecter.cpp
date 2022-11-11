@@ -58,7 +58,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
     if (m_bInstalled)
     {
-        CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("dots_on_loop.wav"), CSoundMgr::ITEM_DOTS,this, 0.7f);
+       // CSoundMgr::Get_Instance()->PlaySound(TEXT("dots_on_loop.wav"), CSoundMgr::ITEM_DOTS,1.f,true);
         m_pAreaCom->Update(m_pTransformCom->Get_WorldMatrix());
     }
 }

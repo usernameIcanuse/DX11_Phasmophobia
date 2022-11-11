@@ -27,7 +27,7 @@ HRESULT CDoor::Initialize(void* pArg)
 
     m_fCullingRange = 15.f;
 
-    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
+    GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 
     return S_OK;
 }
@@ -106,7 +106,7 @@ void CDoor::LateTick(_float fTimeDelta)
 
 
 #ifdef _DEBUG
-       m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+     //  m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }
@@ -118,14 +118,17 @@ HRESULT CDoor::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        _int       iPassIndex = 2;
+        _int       iPassIndex = 3;
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
             return E_FAIL;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            iPassIndex = 0;
+            iPassIndex = 4;
         }
+        if (FAILED(m_pBlackTex->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture")))
+            return E_FAIL;
+
 
         m_pModelCom->Render(i, m_pShaderCom,iPassIndex);
     }
@@ -207,8 +210,9 @@ HRESULT CDoor::Setup_Component()
         return E_FAIL;
 
     /* For.Com_Texture*/
-    //if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Sky"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
-    //    return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Default_Texture"), TEXT("Com_BlackTex"), (CComponent**)&m_pBlackTex)))
+       return E_FAIL;
+       
 
     /* For.Com_Renderer*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"), TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
@@ -284,6 +288,7 @@ void CDoor::Free()
     //Safe_Release(m_pTextureCom);
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);
+    Safe_Release(m_pBlackTex);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

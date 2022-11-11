@@ -47,6 +47,7 @@ HRESULT CLevel_Tutorial::Initialize()
 		return E_FAIL;
 
 	
+	//CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM,1.f);
 
 	return S_OK;
 }
@@ -55,7 +56,6 @@ void CLevel_Tutorial::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM,1.f);
 
 
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
@@ -447,7 +447,7 @@ HRESULT CLevel_Tutorial::Ready_Lights()
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)

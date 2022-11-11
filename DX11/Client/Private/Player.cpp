@@ -53,8 +53,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Setup_Journal()))
 		return E_FAIL;
 
-	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_ITEM, this);
-
+	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
+	
 
 	return S_OK;
 }
@@ -62,14 +62,15 @@ HRESULT CPlayer::Initialize(void* pArg)
 void CPlayer::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+	m_bLockCursor = pGameInstance->Get_Mouse_Lock();
 	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
 	{
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
-	m_bLockCursor = pGameInstance->Get_Mouse_Lock();
 
 	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
 	{
@@ -78,8 +79,11 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_bLockCursor =pGameInstance->Get_Mouse_Lock();;
 		m_pJournal->Set_Enable(!m_bLockCursor);
 		m_pJournal->Main_On(!m_bLockCursor);
+		ShowCursor(!m_bLockCursor);
 		if (true == m_bLockCursor)
+		{
 			m_pJournal->Off_AllUI();
+		}
 	}
 
 	if (pGameInstance->Is_KeyState(KEY::J, KEY_STATE::TAP))
@@ -90,8 +94,11 @@ void CPlayer::Tick(_float fTimeDelta)
 		m_bLockCursor = pGameInstance->Get_Mouse_Lock();;
 		m_pJournal->Set_Enable(!m_bLockCursor);
 		m_pJournal->Evidence_On(!m_bLockCursor);
+		ShowCursor(!m_bLockCursor);
 		if (true == m_bLockCursor)
+		{
 			m_pJournal->Off_AllUI();
+		}
 	}
 
 	if (false == m_bLockCursor)//UIÄ×À» ¶§
@@ -99,6 +106,8 @@ void CPlayer::Tick(_float fTimeDelta)
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
+
+	
 	m_fFootstepTime -= fTimeDelta;
 	m_pTransformCom->Reset_Direction();
 
@@ -106,7 +115,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		if (0.f > m_fFootstepTime)
 		{
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER,0.6f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::PLAYER_FOOTSTEP,0.6f);
 			m_fFootstepTime = 1.f;
 		}
 		m_pTransformCom->Add_Direction(CTransform::FRONT);
@@ -116,7 +125,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		if (0.f > m_fFootstepTime)
 		{
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::PLAYER_FOOTSTEP, 0.6f);
 			m_fFootstepTime = 1.f;
 		}
 		m_pTransformCom->Add_Direction(CTransform::BACK);
@@ -126,7 +135,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		if (0.f > m_fFootstepTime)
 		{
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::PLAYER_FOOTSTEP, 0.6f);
 			m_fFootstepTime = 1.f;
 		}
 		m_pTransformCom->Add_Direction(CTransform::LEFT);
@@ -136,7 +145,7 @@ void CPlayer::Tick(_float fTimeDelta)
 	{
 		if (0.f > m_fFootstepTime)
 		{
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::CHANNEL_PLAYER, 0.6f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Player_FootStep.wav"), CSoundMgr::PLAYER_FOOTSTEP, 0.6f);
 			m_fFootstepTime = 1.f;
 		}
 		m_pTransformCom->Add_Direction(CTransform::RIGHT);
@@ -176,11 +185,6 @@ void CPlayer::Tick(_float fTimeDelta)
 
 	m_pTransformCom->Move(fTimeDelta,m_pCurrNavigation);
 	m_pAABBCom->Update(m_pTransformCom->Get_WorldMatrix());
-	
-	if (true == m_bIsInHouse)
-	{
-		pGameInstance->Add_Desc(CEvent_Manager::HOUSETIME, fTimeDelta);
-	}
 
 	if (true == m_bIsInGhostArea)
 	{
@@ -195,31 +199,38 @@ void CPlayer::Tick(_float fTimeDelta)
 			if (0.f > m_fBGMVolume)
 				m_fBGMVolume = 0.f;
 		}
-		CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"),CSoundMgr::BGM,m_fBGMVolume);
+		
+		CSoundMgr::Get_Instance()->StopSound(CSoundMgr::BGM);
+
 		if (true == m_bEvent)
 		{
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("heartbeat (loop) 2.wav"), CSoundMgr::PLAYER_HEARTBEAT, 1.f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("heartbeat (loop) 2.wav"), CSoundMgr::PLAYER_HEARTBEAT, 1.f,true);
 
 			if(CSoundMgr::GHOST_SINGING == m_iGhostPlaySound)
 			{
-				CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f);
+				CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f,true);
 			}
 			else if (CSoundMgr::GHOST_MALESING == m_iGhostPlaySound)
 			{
-				CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f);
+				CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f,true);
 			}
 		}
 		
 	}
 	else
 	{
-		if (1.f > m_fBGMVolume)
+
+		if (0.5f > m_fBGMVolume)
 		{
 			m_fBGMVolume += 0.05f;
-			if (1.f < m_fBGMVolume)
+			if (0.5f < m_fBGMVolume)
 				m_fBGMVolume = 1.f;
 		}
-		CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, m_fBGMVolume);
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM, m_fBGMVolume, true);
+
+		CSoundMgr::Get_Instance()->StopSound(CSoundMgr::PLAYER_HEARTBEAT);
+		CSoundMgr::Get_Instance()->StopSound((CSoundMgr::CHANNELID)m_iGhostPlaySound);
+
 	}
 
 
@@ -231,7 +242,7 @@ void CPlayer::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 #ifdef _DEBUG
 	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONALPHABLEND, this);
-	m_pRendererCom->Add_DebugRenderGroup(m_pCurrNavigation);
+	//m_pRendererCom->Add_DebugRenderGroup(m_pCurrNavigation);
 #endif
 	
 }
@@ -258,12 +269,12 @@ void CPlayer::OnEventMessage(const _tchar* pMessage)
 		if (1 == iValue % 5)
 		{
 			m_iGhostPlaySound = CSoundMgr::GHOST_SINGING;
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("Ghost singing.wav"), CSoundMgr::GHOST_SINGING, 0.8f,true);
 		}
 		else if (3 == iValue % 5)
 		{
 			m_iGhostPlaySound = CSoundMgr::GHOST_MALESING;
-			CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f);
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("male singing.wav"), CSoundMgr::GHOST_MALESING, 0.8f,true);
 		}
 
 		m_bEvent = true;
@@ -273,6 +284,7 @@ void CPlayer::OnEventMessage(const _tchar* pMessage)
 		if (false == m_bIsInHouse)
 			return;
 		m_bAttack = true;
+		CSoundMgr::Get_Instance()->PlaySound(TEXT("female_ghost_hunting_1.wav"), CSoundMgr::GHOST_HUNTING, 0.8f,true);
 	}
 	else
 	{
@@ -426,6 +438,7 @@ void CPlayer::On_Collision_Enter(CCollider* pCollider)
 		pGameInstance->Broadcast_Message(CGame_Manager::EVENT_GHOST, TEXT("Normal_Operation"));
 		
 		pGameInstance->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY,false,true), LEVEL_LOBBY);
+		CSoundMgr::Get_Instance()->StopAll();
 
 		RELEASE_INSTANCE(CGameInstance);
 	}

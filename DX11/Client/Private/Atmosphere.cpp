@@ -63,7 +63,7 @@ void CAtmosphere::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+    //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 }
 

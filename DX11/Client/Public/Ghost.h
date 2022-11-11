@@ -77,7 +77,7 @@ protected:
 	_float				m_fEventTime = 10.f;
 	_float				m_fAttackTime = 10.f;
 
-	_float				m_fIdleTime = 0.f;
+	_float				m_fIdleTime = 2.f;
 
 	_float				m_fRenderModel = 0.f;
 	_float				m_fHideModel = 0.f;

@@ -43,7 +43,7 @@ void CKeyPad::Tick(_float fTimeDelta)
 
     if (true == m_bClicked)
     {
-        CSoundMgr::Get_Instance()->PlaySound(TEXT("truckexitsoundeffect.wav"), CSoundMgr::ITEM_TRUCK, 0.8f);
+        CSoundMgr::Get_Instance()->PlaySound(TEXT("truckexitsoundeffect.wav"), CSoundMgr::ITEM_TRUCK, 0.8f,true);
         m_fTimeAcc += fTimeDelta;
         if (m_fTimeAcc > 5.f)
         {
