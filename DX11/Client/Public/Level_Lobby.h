@@ -38,7 +38,7 @@ private://각 로비 저장할 용도로만
 
 	CLight* m_pBaseLight = nullptr;
 
-
+	_bool	m_bFirst = true;
 	_bool	m_bGamePlay = false;
 public:
 	static CLevel_Lobby* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool bGamePlay);

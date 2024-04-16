@@ -5,6 +5,7 @@
 #include "Door.h"
 #include "Object_Collider.h"
 #include "Computer.h"
+#include "SoundMgr.h"
 
 
 
@@ -45,12 +46,17 @@ HRESULT CLevel_Tutorial::Initialize()
 	if (FAILED(GAMEINSTANCE->Change_Camera(TEXT("Camera_Player"))))
 		return E_FAIL;
 
+	
+	//CSoundMgr::Get_Instance()->PlaySound(TEXT("nights ambience neighborhood.wav"), CSoundMgr::BGM,1.f);
+
 	return S_OK;
 }
 
 void CLevel_Tutorial::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
+
+
 
 	GAMEINSTANCE->Add_Light(m_pBaseLight);
 	GAMEINSTANCE->Add_Desc(CEvent_Manager::PLAYTIME, fTimeDelta);
@@ -439,9 +445,9 @@ HRESULT CLevel_Tutorial::Ready_Lights()
 
 	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vDiffuse = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 1.f);
 
 	m_pBaseLight = CLight::Create(m_pDevice, m_pContext, LightDesc);
 	if (nullptr == m_pBaseLight)
@@ -611,6 +617,40 @@ HRESULT CLevel_Tutorial::Load_TruckProps()
 
 	CloseHandle(hFile);
 
+	strcpy_s(Filepath, "../Bin/Resources/Map/Default/KeyPad_Default");
+	hFile = CreateFileA(Filepath,
+		GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		MSG_BOX("Failed to load file");
+		RELEASE_INSTANCE(CGameInstance);
+		return E_FAIL;
+	}
+
+	dwByteHouse = 0;
+
+	ZeroMemory(&tData, sizeof(MAP_DATA));
+
+	while (true)
+	{
+		if (TRUE == ReadFile(hFile, &tData, sizeof(MAP_DATA), &dwByteHouse, nullptr))
+		{
+			if (0 == dwByteHouse)
+			{
+				break;
+			}
+
+			_matrix LocalMat = tData.matWorld;
+			_float4x4 WorldMatrix;
+			XMStoreFloat4x4(&WorldMatrix, LocalMat * TruckWorldMat);
+
+			if (pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Layer_Truck"), TEXT("Prototype_GameObject_KeyPad"), nullptr, &WorldMatrix))
+				return E_FAIL;
+		}
+	}
+
+	CloseHandle(hFile);
 
 	strcpy_s(Filepath, "../Bin/Resources/Map/Default/Dots_Default");
 	hFile = CreateFileA(Filepath,

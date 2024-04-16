@@ -38,8 +38,19 @@ void CEMF::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+    if (m_bSwitch)
+    {
+        if (1 < m_iEMFLevel)
+            CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("emf sound.wav"), CSoundMgr::ITEM_EMF, this, 0.8f);
+        else
+            CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_EMF);
+    }
+    else
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_EMF);
+
     if(m_bSwitch)
         m_iEMFLevel = 1;
+
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
     m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
@@ -51,7 +62,7 @@ void CEMF::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
     GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-
+   
 #ifdef _DEBUG
     //m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
@@ -71,12 +82,12 @@ HRESULT CEMF::Render()
             return E_FAIL;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;
-      /*  if (m_bSwitch)
-        {Emissive 없음 만들어 줘야함
-            if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_EmissiveTexture", i, aiTextureType_EMISSIVE)))
+        if (m_bSwitch)
+        {
+            if (FAILED(m_pEmissionTex->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture", m_iEMFLevel-1)))
                 return E_FAIL;
             iPassIndex = 3;
-        }*/
+        }
 
         
         m_pModelCom->Render(i, m_pShaderCom,iPassIndex);
@@ -101,6 +112,12 @@ void CEMF::OnEventMessage(const _tchar* pMessage)
 {
 }
 
+
+void CEMF::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+   
+}
 
 void CEMF::Drop_Item(_vector vPower)
 {
@@ -192,6 +209,10 @@ HRESULT CEMF::Setup_Component()
     if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Collider_OBB"), TEXT("Com_OBB"), (CComponent**)&m_pOBBCom, &ColliderDesc)))
         return E_FAIL;
 
+    /*For.Com_Emission*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_EMF_Emission"), TEXT("Com_Emission"), (CComponent**)&m_pEmissionTex)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -228,4 +249,6 @@ void CEMF::Free()
     Safe_Release(m_pNaviHouseCom);
     Safe_Release(m_pNaviOutSideCom);
     Safe_Release(m_pRigidBodyCom);
+
+    Safe_Release(m_pEmissionTex);
 }

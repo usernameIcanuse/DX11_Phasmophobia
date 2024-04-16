@@ -4,7 +4,7 @@
 #include "Ghost_SpawnPoint.h"
 #include "Ghost_Status.h"
 #include "Ghost_Behavior.h"
-
+#include "SoundMgr.h"
 
 CGhost::CGhost(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice,pContext)
@@ -26,22 +26,13 @@ HRESULT CGhost::Initialize_Prototype()
 
 HRESULT CGhost::Initialize(void* pArg)
 {
-	CTransform::TRANSFORMDESC		TransformDesc;
-	TransformDesc.fSpeedPerSec = 10.f;
-	TransformDesc.fRotationPerSec = XMConvertToRadians(90.0f);
 
-	
-	if (FAILED(__super::Initialize(&TransformDesc)))
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 	
 	if (FAILED(Setup_Component()))
 		return E_FAIL;
 
-	if (nullptr != pArg)
-	{
-		m_pSpawnPoint = (CGhost_SpawnPoint*)pArg;
-
-	}
 	if (FAILED(Setup_Bahavior()))
 		return E_FAIL;
 
@@ -53,7 +44,6 @@ HRESULT CGhost::Initialize(void* pArg)
 
 	m_fUpdatePointTime = 5.f;
 
-	GAMEINSTANCE->Set_GhostName(TEXT("»ì·ÁÁà"));
 
 	return S_OK;
 }
@@ -193,6 +183,8 @@ void CGhost::OnEventMessage(const _tchar* pMessage)
 		m_EventFunc = std::bind(&CGhost::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
 		m_pModelCom->Set_CurrentAnimation(1);
 		m_fEventTime = m_fAttackTime = 0.f;
+
+		CSoundMgr::Get_Instance()->StopSound(CSoundMgr::GHOST_HUNTING);
 	}
 
 }
@@ -206,7 +198,7 @@ void CGhost::Light_Attack(_float fTimeDelta)
 {
 
 	GAMEINSTANCE->Add_Object_For_Culling(this, CRenderer::RENDER_NONALPHABLEND);
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta*10);
 
 	/*ºÒºû ±ôºý°Å¸², ±Í½Å ¸ðµ¨ ·»´õ¸µ, ÀüÀÚ Àåºñµé °íÀå*/
 #ifdef _DEBUG
@@ -223,6 +215,14 @@ void CGhost::Light_Attack(_float fTimeDelta)
 
 void CGhost::Attack(_float fTimeDelta)
 {
+	static _float fFootstep = 1.f;
+
+	fFootstep -= fTimeDelta;
+	if (0.f > fFootstep)
+		CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("GhostFootStep.wav"), CSoundMgr::GHOST_FOOTSTEP, this, 0.9f);
+
+	CSoundMgr::Get_Instance()->PlaySoundDistance(TEXT("female_ghost_hunting_1.wav"), CSoundMgr::GHOST_HUNTING, this, 0.9f);
+
 	/*Ãâ±¸ ´ÝÈû&Àá±è, ±Í½Å attack collider set enable, ÀüÀÚ Àåºñµé °íÀå*/
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
@@ -231,7 +231,8 @@ void CGhost::Attack(_float fTimeDelta)
 	std::uniform_int_distribution<int> dis(0, 10);
 
 	_int iValue = dis(gen);
-
+	
+	
 	
 	if (0.f > m_fHideModel)
 	{
@@ -249,7 +250,7 @@ void CGhost::Attack(_float fTimeDelta)
 			m_fRenderModel = 0.5f;
 	}
 #ifdef _DEBUG
-	wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
+	//wsprintf(m_szEvent, TEXT("µ¼È²Ã­"));
 #endif
 	m_fIdleTime -= fTimeDelta;
 	if (0.f > m_fIdleTime)

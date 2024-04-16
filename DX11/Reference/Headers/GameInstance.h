@@ -50,6 +50,8 @@ public: /* For.Input_Manager*/
 	_byte Get_DIMouseKeyState(MOUSEBUTTON eMouseButtonID);
 	_long Get_DIMouseMoveState(MOUSEMOVE eMouseMove);
 	bool Is_KeyState(KEY _Key, KEY_STATE _KeyState);
+	void Set_Mouse_Lock();
+	_bool Get_Mouse_Lock();
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iLevelID, class CLevel* pLevel, _uint iNextLevelID);

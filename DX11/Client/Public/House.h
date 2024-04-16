@@ -38,7 +38,7 @@ protected:
 #endif
 	CModel* m_pModelCom = nullptr;
 	CCollider* m_pOBBCom = nullptr;
-
+	CTexture* m_pBlackTex = nullptr;
 
 protected:
 	virtual	HRESULT	Setup_Component();

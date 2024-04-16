@@ -49,6 +49,8 @@ void CFlashLight::Tick(_float fTimeDelta)
     if (!m_bRenderModel)
         Adjust_Item(nullptr);
 
+   
+
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
     m_pRigidBodyCom->Update(fTimeDelta,m_pCurrNavigation);
 }
@@ -126,6 +128,12 @@ void CFlashLight::On_Collision_Exit(CCollider* pCollider)
         m_pCurrNavigation = m_pNaviOutSideCom;
         m_bIsInHouse = false;
     }
+}
+
+void CFlashLight::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+    CSoundMgr::Get_Instance()->PlaySound(TEXT("flashlight click.wav"), CSoundMgr::CHANNEL_ITEM, 0.8f);
 }
 
 void CFlashLight::MalFunction(_float fTimeDelta)

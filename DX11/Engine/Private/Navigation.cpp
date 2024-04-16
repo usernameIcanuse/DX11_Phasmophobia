@@ -110,6 +110,10 @@ _bool CNavigation::isMove(_fvector vPosition, _float& fPositionY, _vector vDirec
 
 	if(m_Cells.empty())
 		return true;
+	if (m_NaviDesc.m_iCurrentIndex >= m_Cells.size())
+	{
+		m_NaviDesc.m_iCurrentIndex = Find_PosIndex(vPosition);
+	}
 
 	/*1. 현재 존재하는 셀 안에서만 움직였을때  */
 	if (true == m_Cells[m_NaviDesc.m_iCurrentIndex]->isIn(vPosition + vDirection, &iNeighborIndex, fPositionY, iPrevIndex, vSlideDirection))

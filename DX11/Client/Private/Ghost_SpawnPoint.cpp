@@ -36,10 +36,10 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 		if (FAILED(Load_Point((_tchar*)pArg)))
 			return E_FAIL;
 
-		if (FAILED(Setup_Ghost()))
+		if (FAILED(Setup_GhostStatus()))
 			return E_FAIL;
 
-		if (FAILED(Setup_GhostStatus()))
+		if (FAILED(Setup_Ghost()))
 			return E_FAIL;
 	}
 	if (FAILED(Setup_Component()))
@@ -56,18 +56,15 @@ HRESULT CGhost_SpawnPoint::Initialize(void* pArg)
 	std::uniform_int_distribution<int> dis(80, 120);
 
 
-	m_iAreaDefaultTemperature = dis(gen) % 7 + 3;
-	if (m_bFreeze && m_iAreaDefaultTemperature - 4 > 0)
-	{
-		m_iAreaDefaultTemperature -=7;
-	}
+	m_iAreaDefaultTemperature = dis(gen) % 50 + 30;
+
 
 
 	m_lAnswerFrequency = dis(gen);
 
-	m_fHandPrintCoolTime = 30.f;
+	m_fHandPrintCoolTime = 25.f;
 	m_fTrailCamCoolTime = 30.f;
-	m_fDotsProjecterCoolTime = 30.f;
+	m_fDotsProjecterCoolTime = 10.f;
 
 	GAMEINSTANCE->Add_EventObject(CGame_Manager::EVENT_GHOST, this);
 	m_EventFunc = std::bind(&CGhost_SpawnPoint::Normal_Operation, std::placeholders::_1, std::placeholders::_2);
@@ -88,7 +85,7 @@ void CGhost_SpawnPoint::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 	//m_pRendererCom->Add_DebugRenderGroup(m_pAreaCom); 
 	//m_pRendererCom->Add_DebugRenderGroup(m_pSpawnPointCom);
 
@@ -101,7 +98,7 @@ HRESULT CGhost_SpawnPoint::Render()
 #ifdef _DEBUG
 	if (m_fWhisperingTime > 0.f)
 	{
-		GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szWhispering, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+		//GAMEINSTANCE->Render_Font(TEXT("Font_Dream"), m_szWhispering, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
 	}
 #endif // _DEBUG
@@ -185,7 +182,7 @@ void CGhost_SpawnPoint::Normal_Operation(_float fTimeDelta)
 	m_pAreaCom->Update(matWorld);
 	m_pSpawnPointCom->Update(matWorld);
 
-	m_iAreaTemperature = m_iAreaDefaultTemperature - rand() % 4;
+	m_iAreaTemperature = m_iAreaDefaultTemperature  + (rand()%20-20);
 
 #ifdef _DEBUG
 	m_fWhisperingTime -= fTimeDelta;
@@ -225,18 +222,18 @@ _int   CGhost_SpawnPoint::Get_SpawnPointTemperature()
 			m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
 		m_bCheckFreeze = false;
 	}
-	return m_iAreaTemperature - 4;
+	return m_iAreaTemperature - 40;
 }
 
-void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
+_bool CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 {
-	if (_lFrequency == m_lAnswerFrequency || DBL_EPSILON >= _fTime)
+	if (_lFrequency/100 == m_lAnswerFrequency || DBL_EPSILON >= _fTime)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
 		std::uniform_int_distribution<int> dis(80, 120);
 
-		_fTime = dis(gen) % 5 + 30;
+		_fTime = dis(gen) % 30+10;
 
 		if (m_bSpiritBox)
 		{
@@ -249,12 +246,35 @@ void CGhost_SpawnPoint::Get_Answer(_long _lFrequency, _float& _fTime)
 					m_pGhost_Status->Add_Score(CGhost_Status::FIND_EVIDENCE);
 				m_bCheckSpiritBox = false;
 			}
+			return true;
 		}
 		else
+		{
 			GAMEINSTANCE->Broadcast_Message(CGame_Manager::EVENT_ITEM, TEXT("Not_Respone"));
-
+			return false;
+		}
 	}
+	return false;
 	
+}
+
+void CGhost_SpawnPoint::Set_Evidence(_bool SpiritBox, _bool DotsProjecter, _bool Freeze, _bool HandPrint, _bool EMF)
+{
+	m_bSpiritBox = SpiritBox;
+	m_bDotsProjecter = DotsProjecter;
+	m_bFreeze = Freeze;
+	m_bHandPrint = HandPrint;
+
+	m_pGhost_Status->Set_EMF(EMF);
+	
+	if (m_bFreeze && m_iAreaDefaultTemperature - 40> 0)
+	{
+		m_iAreaDefaultTemperature -= 70;
+	}
+	else if (false == m_bFreeze && m_iAreaDefaultTemperature - 40 < 0)
+	{
+		m_iAreaDefaultTemperature = 60.f;
+	}
 }
 
 HRESULT CGhost_SpawnPoint::Setup_Component()
@@ -411,6 +431,12 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 				wsprintf(m_szWhispering, TEXT("À¯ÈÄ"));
 				m_fWhisperingTime = 2.f;
 #endif
+				if(iValue %2 ==0)
+					CSoundMgr::Get_Instance()->PlaySound(TEXT("ghost 1 (light attack).wav"), CSoundMgr::GHOST_LIGHTATTACK1, 1.f);
+				else
+					CSoundMgr::Get_Instance()->PlaySound(TEXT("ghost 2 (light attack).wav"), CSoundMgr::GHOST_LIGHTATTACK2, 1.f);
+
+
 				m_fWhisperCoolTime = 100.f;
 			}
 		}
@@ -456,7 +482,7 @@ void CGhost_SpawnPoint::On_Collision_Stay(CCollider* pCollider)
 
 				std::random_device rd;
 				std::mt19937 gen(rd());
-				std::uniform_int_distribution<int> dis(5, 90);
+				std::uniform_int_distribution<int> dis(5, 20);
 
 				if (nullptr != m_pGhost)
 				{

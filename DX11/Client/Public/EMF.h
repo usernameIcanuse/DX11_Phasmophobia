@@ -22,10 +22,7 @@ public:
 
 
 public:
-	virtual void Turn_Switch()
-	{
-		m_bSwitch = !m_bSwitch;
-	}
+	virtual void Turn_Switch();
 
 	virtual void Drop_Item(_vector vPower);
 
@@ -42,7 +39,7 @@ public:
 private:
 	_uint		m_iEMFLevel = 1;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//임시 emf레벨 출력
-
+	CTexture* m_pEmissionTex = nullptr;
 
 private:
 	virtual	HRESULT	Setup_Component() override;

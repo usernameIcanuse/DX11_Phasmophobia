@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Public/KeyBoard.h"
 #include "GameInstance.h"
+#include "SoundMgr.h"
 
 CKeyBoard::CKeyBoard(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -114,6 +115,7 @@ void CKeyBoard::On_Collision_Stay(CCollider* pCollider)
     {
         if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
         {
+            CSoundMgr::Get_Instance()->PlaySound(TEXT("keyboard click 1.wav"), CSoundMgr::ITEM_KEYBOARD, 0.8f);
             m_bClicked = true;
         }
     }

@@ -43,6 +43,11 @@ public:
 	{
 		m_iScore -= _iScore;
 	}
+	void	Set_EMF(_bool _bEnable)
+	{
+		m_bEMFLevel5 = _bEnable;
+	}
+
 
 private:
 

@@ -50,7 +50,7 @@ public:
 
 public:
 	void Draw_On_Texture(class CRenderTarget* pRenderTarget,class CTexture* pTexture, class CShader* pShader, _int iPassindex,RENDERFONT& RenderFont, const _tchar* pTexttag);
-	void Draw_On_Texture(class CRenderTarget* pRenderTarget, class CTexture* pTexture[], class CShader* pShader, _int iPassindex, _float3 vRenderPos[]);
+	void Draw_On_Texture(class CRenderTarget* pRenderTarget, class CTexture* pSourTex, class CShader* pShader, _int iPassindex, _float3 vRenderPos,_float3 vScale);
 
 protected:
 	list<class CGameObject*>				m_RenderObjects[RENDER_END];

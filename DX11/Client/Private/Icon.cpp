@@ -121,7 +121,7 @@ HRESULT CIcon::SetUp_ShaderResource(_float4x4* pViewMatrix, _float4x4* pProjMatr
 	if (FAILED(m_pShaderCom->Set_RawValue("bAlpha", &m_bOnMouse, sizeof(_bool))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+	if (FAILED(m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_iTexIndex)))
 		return E_FAIL;
 
 

@@ -27,10 +27,8 @@ public:
 
 
 public:
-	virtual void Turn_Switch() 
-	{
-		m_bSwitch = !m_bSwitch;
-	}
+	virtual void Turn_Switch();
+
 	virtual void MalFunction(_float fTimeDelta = 0.f);
 	virtual void Normal_Operation(_float fTimeDelta = 0.f);
 	virtual void Frequency_Control(_long lMouseMove);
@@ -44,18 +42,24 @@ private:
 	CTexture* m_pXIcon = nullptr;
 	CTexture* m_pGhostIcon = nullptr;
 
+	_bool		m_bXIconAlpha = true;
+	_bool		m_bGhostIconAlpha = true;
 
-	_long		m_lFrequency = 100;
+
+	_long		m_lFrequency = 10000;
 	_tchar		m_szDegree[MAX_PATH] = TEXT("");//주파수 출력
 
 #ifdef _DEBUG
 	_tchar		m_szAnswer[MAX_PATH] = TEXT("");
-	_float		m_fAnswerTime = 0.f;
 #endif
+	_float		m_fAnswerTime = 0.f;
 	_float		m_fTimeAcc = 0.f;
+
+	_float		m_fGhostAnswer = 0.f;
 
 	_float		m_fAnswerTimeLasting = 0.f;
 	_bool		m_bInGhostArea = false;
+
 
 public:
 	virtual void On_Collision_Enter(CCollider* pCollider);

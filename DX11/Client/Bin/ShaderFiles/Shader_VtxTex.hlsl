@@ -6,6 +6,7 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D	g_DiffuseTexture;
 
 bool	bAlpha = false;
+bool	g_bExcept = false;
 float   g_fFade;
 
 sampler DefaultSampler = sampler_state 
@@ -72,6 +73,18 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;	
 }
 
+PS_OUT PS_MAIN_EXCEPT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (g_bExcept)
+		Out.vColor.a *= 0.3f;
+
+	return Out;
+}
+
 PS_OUT PS_FADE_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -90,6 +103,22 @@ PS_OUT PS_MAIN_DARK(PS_IN In)
 
 	if (bAlpha)
 		Out.vColor.xyz *= 0.5f;
+
+	return Out;
+}
+
+PS_OUT PS_MAIN_SPIRITBOX(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	if (Out.vColor.a < 0.1f)
+		discard;
+
+	Out.vColor = vector(0.f, 0.f, 0.f,1.f);
+
+	if (bAlpha)
+		Out.vColor.a *= 0.3f;
 
 	return Out;
 }
@@ -138,5 +167,27 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_DARK();
+	}
+
+	pass Excepted
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_EXCEPT();
+	}
+
+	pass SpiritBox
+	{
+		SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_SPIRITBOX();
 	}
 }

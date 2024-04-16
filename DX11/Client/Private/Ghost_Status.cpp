@@ -110,6 +110,18 @@ void CGhost_Status::Tick(_float fTimeDelta)
 		m_iEventWeight = 5;
 		//m_iAttackWeight = 5;
 	}
+
+	m_iEMF = m_iScore / 4;
+	if (m_iEMF > 4)
+	{
+		if(false == m_bEMFLevel5)
+			m_iEMF = 4;
+		else
+		{
+			m_iEMF = 5;
+		}
+	}
+
 	if (m_iScore > 4)
 	{
 		if (!m_bEvent)
@@ -135,11 +147,9 @@ void CGhost_Status::Tick(_float fTimeDelta)
 			}
 			else
 			{
-				m_iEMF = m_iScore / 6;
-				if (m_iEMF > 4)
-					m_iEMF = 4;
+				
 
-				if (m_bAttack && m_iScore > 24)
+				if ((m_bAttack||m_bEvent) && m_iScore > 24)
 				{
 					if (m_bEMFLevel5)
 						m_iEMF = 5;
@@ -165,7 +175,7 @@ void CGhost_Status::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 #ifdef _DEBUG
-	m_pRenderercom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
+	//m_pRenderercom->Add_RenderGroup(CRenderer::RENDER_ALPHABLEND, this);
 #endif
 }
 

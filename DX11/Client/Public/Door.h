@@ -57,11 +57,13 @@ private:
 
 private:
 	CRenderTarget* m_pRenderTarget = nullptr;
-	CTexture* m_pHandPrintTextureCom = nullptr;
+	CTexture* m_pBlackTex = nullptr;
 	
 	CShader* m_pShaderCom = nullptr;
 	CRenderer* m_pRendererCom = nullptr;
 	CModel* m_pModelCom = nullptr;
+
+
 
 	CCollider* m_pOBBCom = nullptr;
 

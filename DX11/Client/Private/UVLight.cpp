@@ -120,6 +120,12 @@ void CUVLight::On_Collision_Exit(CCollider* pCollider)
     }
 }
 
+void CUVLight::Turn_Switch()
+{
+    m_bSwitch = !m_bSwitch;
+    CSoundMgr::Get_Instance()->PlaySound(TEXT("flashlight click.wav"), CSoundMgr::CHANNEL_ITEM, 0.8f);
+}
+
 void CUVLight::MalFunction(_float fTimeDelta)
 {
     if (false == m_bIsInHouse)

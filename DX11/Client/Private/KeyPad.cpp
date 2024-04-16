@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "../Public/KeyPad.h"
 #include "GameInstance.h"
+#include "Level_Loading.h"
+#include "SoundMgr.h"
 
 CKeyPad::CKeyPad(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CGameObject(pDevice,pContext)
@@ -39,7 +41,16 @@ void CKeyPad::Tick(_float fTimeDelta)
 
     m_pOBBCom->Update(m_pTransformCom->Get_WorldMatrix());
 
-    m_bClicked = false;
+    if (true == m_bClicked)
+    {
+        CSoundMgr::Get_Instance()->PlaySound(TEXT("truckexitsoundeffect.wav"), CSoundMgr::ITEM_TRUCK, 0.8f,true);
+        m_fTimeAcc += fTimeDelta;
+        if (m_fTimeAcc > 5.f)
+        {
+            GAMEINSTANCE->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY, false, true), LEVEL_LOBBY);
+            CSoundMgr::Get_Instance()->StopAll();
+        }
+    }
  
 }
 
@@ -62,7 +73,9 @@ HRESULT CKeyPad::Render()
     {
         _int    iPassIndex = 2;
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        {
+            m_pTextureCom->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture");
+        }
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
             iPassIndex = 0;
@@ -78,6 +91,10 @@ HRESULT CKeyPad::Render()
 
 HRESULT CKeyPad::Setup_Component()
 {
+    /*For.Com_Texture*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Default_Texture"), TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+        return E_FAIL;
+
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
         return E_FAIL;
@@ -177,6 +194,7 @@ void CKeyPad::Free()
     Safe_Release(m_pShaderCom);
     Safe_Release(m_pOBBCom);
     Safe_Release(m_pModelCom);
+    Safe_Release(m_pTextureCom);
 
 #ifdef _DEBUG
     Safe_Release(m_pRendererCom);

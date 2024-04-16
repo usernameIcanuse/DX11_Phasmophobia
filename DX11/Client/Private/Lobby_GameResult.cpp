@@ -82,21 +82,20 @@ HRESULT CLobby_GameResult::Render()
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
 	_tchar	m_szTime[100];
-
-	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iTotalMinute,m_iTotalSecond);
-	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 100.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-
-	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iHouseMinute, m_iHouseSecond);
-	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 200.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	//float rotation, _fvector vOrigin, _vector vScale
+	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iTotalMinute, m_iTotalSecond);
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(590.f, 215.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f,XMVectorSet(0.f,0.f,0.f,0.f),XMVectorSet(0.65f,0.55f,1.f,0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d분 %02d초"), m_iGhostMinute, m_iGhostSecond);
-	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 300.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(670.f, 268.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d 회"), m_iEventCnt);
-	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 400.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(780.f, 323.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 	wsprintf(m_szTime, TEXT("%02d 회"), m_iInteractionCnt);
-	pGameInstance->Render_Font(TEXT("Font_Dream"), m_szTime, _float2(600.f, 500.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szTime, XMVectorSet(640.f, 378.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
+
+	pGameInstance->Render_Font(TEXT("Font_Gothic"), m_szGhostName, XMVectorSet(630.f, 468.f,0.f,0.f), XMVectorSet(0.4f, 0.4f, 0.4f, 0.8f),0.f, XMVectorSet(0.f, 0.f, 0.f, 0.f), XMVectorSet(0.65f, 0.55f, 1.f, 0.5f));
 
 
 	RELEASE_INSTANCE(CGameInstance);
@@ -167,12 +166,12 @@ HRESULT CLobby_GameResult::SetUp_Icon()
 	_matrix MainWorldMat = m_pTransformCom->Get_WorldMatrix();
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOBBY, TEXT("Layer_Lobby"), TEXT("Prototype_GameObject_LobbyIcon"), (CGameObject**)&pIcon)))
 		return E_FAIL;
-	//싱글 플레이
+	//뒤로
 	_matrix IconWorld = XMMatrixIdentity();
-	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 3.14f;
+	IconWorld.r[0] = XMVector3Normalize(MainWorldMat.r[0]) * 2.f;
 	IconWorld.r[1] = XMVector3Normalize(MainWorldMat.r[1]) * 0.8f;
 	IconWorld.r[2] = XMVector3Normalize(MainWorldMat.r[2]);
-	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.01f + IconWorld.r[1] * 1.71f;
+	IconWorld.r[3] = MainWorldMat.r[3] - IconWorld.r[2] * 0.1f - IconWorld.r[1] * 3.35f + IconWorld.r[0]*1.3f;
 
 	pIcon->Set_Transform(IconWorld);
 	pIcon->Set_Texture(LEVEL_LOBBY, TEXT("Prototype_Component_Texture_OutLine"));

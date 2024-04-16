@@ -76,30 +76,24 @@ void CInventory::Tick(_float fTimeDelta)
 
 	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
 
-	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
-
-	if (pGameInstance->Is_KeyState(KEY::ESC, KEY_STATE::TAP))
-	{
-		m_bLockCursor = !m_bLockCursor;
-	}
-
 	if (FAILED(pGameInstance->Current_Camera(TEXT("Camera_Player"))))
 	{
 	
 		RELEASE_INSTANCE(CGameInstance);
 		return;
 	}
+	m_bLockCursor = pGameInstance->Get_Mouse_Lock();
+	m_pRayCom->Update(m_pTransformCom->Get_WorldMatrix());
 
-	//if (true == m_bLockCursor)
-	//{
-	//	POINT pt;
-	//	SetCursor(NULL);
-	//	pt.x = g_iWinCX / 2;
-	//	pt.y = g_iWinCY / 2;
-	//	ClientToScreen(g_hWnd, &pt);
-	//	SetCursorPos(pt.x, pt.y);
-
-	//}
+	if (true == m_bLockCursor)
+	{
+		POINT pt;
+		SetCursor(NULL);
+		pt.x = g_iWinCX / 2;
+		pt.y = g_iWinCY / 2;
+		ClientToScreen(g_hWnd, &pt);
+		SetCursorPos(pt.x, pt.y);
+	}
 
 	if (m_vInventory[m_iIndex])
 	{
@@ -486,6 +480,7 @@ void CInventory::On_Collision_Stay(CCollider* pCollider)
 	{
 		if (GAMEINSTANCE->Is_KeyState(KEY::LBUTTON, KEY_STATE::TAP))
 		{
+			CSoundMgr::Get_Instance()->PlaySound(TEXT("lightswitch 3.wav"), CSoundMgr::ITEM_LIGHTSWITCH, 0.8f);
 			CLightSwitch* pOwner = (CLightSwitch*)pCollider->Get_Owner();
 			pOwner->Turn_Switch();
 		}

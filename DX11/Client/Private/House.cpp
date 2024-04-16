@@ -49,8 +49,8 @@ void CHouse::LateTick(_float fTimeDelta)
     GAMEINSTANCE->Add_Object_For_Culling( this, CRenderer::RENDER_NONALPHABLEND);
 
 #ifdef _DEBUG
-    if(nullptr != m_pOBBCom)
-        m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
+    //if(nullptr != m_pOBBCom)
+    //    m_pRendererCom->Add_DebugRenderGroup(m_pOBBCom);
 #endif
 
 }
@@ -61,7 +61,7 @@ HRESULT CHouse::Render()
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        _int        iPassIndex = 2;
+        _int        iPassIndex = 3;
 
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
@@ -69,8 +69,12 @@ HRESULT CHouse::Render()
         }
         if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            iPassIndex = 0;
+            iPassIndex = 4;
         }
+        if (FAILED(m_pBlackTex->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture")))
+            return E_FAIL;
+        
+
 
         m_pModelCom->Render(i, m_pShaderCom, iPassIndex);
     }
@@ -95,6 +99,11 @@ HRESULT CHouse::Setup_Component()
 {
     /* For.Com_Shader*/
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxModel"), TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+        return E_FAIL;
+
+
+    /*For.Com_BlackTex*/
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Default_Texture"), TEXT("Com_BlackTex"), (CComponent**)&m_pBlackTex)))
         return E_FAIL;
 
 #ifdef _DEBUG
@@ -173,6 +182,7 @@ void CHouse::Free()
 #endif
     Safe_Release(m_pModelCom);
     Safe_Release(m_pOBBCom);
+    Safe_Release(m_pBlackTex);
    
     //해당 클래스에 있는 변수들은 항상 safe_release해주기
 }

@@ -2,6 +2,8 @@
 #include "..\Public\Main.h"
 #include "GameInstance.h"
 #include "UIIcon.h"
+#include "Level_Loading.h"
+#include "SoundMgr.h"
 
 CMain::CMain(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CUIBackground(pDevice, pContext)
@@ -43,6 +45,13 @@ HRESULT CMain::Initialize(void * pArg)
 void CMain::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	if (2 == m_iSelectedMenu)
+	{
+		LEVEL CurLevel = (LEVEL)GAMEINSTANCE->Get_Current_Level();
+		if(LEVEL_GAMEPLAY == CurLevel)
+			GAMEINSTANCE->Add_ReserveLevel(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_LOBBY, false, true), LEVEL_LOBBY);
+		CSoundMgr::Get_Instance()->StopAll();
+	}
 }
 
 void CMain::LateTick(_float fTimeDelta)
@@ -126,6 +135,30 @@ HRESULT CMain::Setup_Component()
 
 HRESULT CMain::Setup_Icon()
 {
+	CGameInstance* pGameInstance = GET_INSTANCE(CGameInstance);
+
+	CUIIcon* pIcon = nullptr;
+	//계속하기
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Main"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Resume"));
+	pIcon->Set_IconPosition(420, 310, 300, 70);
+	pIcon->Set_PassIndex(3);
+
+	//떠나기
+
+	if (FAILED(pGameInstance->Add_GameObject(pGameInstance->Get_Next_Level(), TEXT("Layer_Main"), TEXT("Prototype_GameObject_UIIcon"), (CGameObject**)&pIcon)))
+		return E_FAIL;
+
+	m_vecUIIcon.push_back(pIcon);
+	pIcon->Set_Texture(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Exit"));
+	pIcon->Set_IconPosition(420, 465, 250, 70);
+	pIcon->Set_PassIndex(3);
+
+	RELEASE_INSTANCE(CGameInstance);
+
 	return S_OK;
 }
 

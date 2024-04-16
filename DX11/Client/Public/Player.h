@@ -28,6 +28,13 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void OnEventMessage(const _tchar* pMessage);
+
+	virtual void MalFunction(_float fTimeDelta = 0.f) {}
+	virtual void Normal_Operation(_float fTimeDelta = 0.f) {}
+
+	virtual void Call_EventFunc(_float fTimeDelta = 0.f) {}
+
 public:
 	_bool	Picking_Navigation(RAY tMouseRay, _float4& vPickedPos);
 	_int	Get_CurrentIndex();
@@ -52,6 +59,7 @@ private:
 #ifdef _DEBUG
 	CRenderer*   m_pRendererCom = nullptr;
 #endif
+	_float		m_fFootstepTime = 1.f;
 
 	CInventory* m_pInventory = nullptr;
 	class CJournal* m_pJournal = nullptr;
@@ -59,6 +67,13 @@ private:
 
 	_bool			m_bLockCursor = true;
 	_bool			m_bIsInGhostArea = false;
+
+	_bool			m_bEvent = false;
+	_bool			m_bAttack = false;
+
+	_int			m_iGhostPlaySound = -1;
+
+	_float			m_fBGMVolume = 1.f;
 
 private:
 	HRESULT	Setup_Component();

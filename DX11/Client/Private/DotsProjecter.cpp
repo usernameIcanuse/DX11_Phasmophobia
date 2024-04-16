@@ -50,6 +50,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
 
     if (false == m_bInstalled)
     {
+        CSoundMgr::Get_Instance()->StopSound(CSoundMgr::ITEM_DOTS);
         m_pAreaCom->Set_Enable(false);
     }
 
@@ -57,6 +58,7 @@ void CDotsProjecter::Tick(_float fTimeDelta)
     m_pRigidBodyCom->Update(fTimeDelta, m_pCurrNavigation);
     if (m_bInstalled)
     {
+       // CSoundMgr::Get_Instance()->PlaySound(TEXT("dots_on_loop.wav"), CSoundMgr::ITEM_DOTS,1.f,true);
         m_pAreaCom->Update(m_pTransformCom->Get_WorldMatrix());
     }
 }
@@ -187,7 +189,23 @@ void CDotsProjecter::MalFunction(_float fTimeDelta)
 {
     if (false == m_bIsInHouse)
         return;
-    /*ºû ±ôºýÀÓ*/
+    if (m_bSwitch)
+    {
+        m_fBlinkTime += fTimeDelta;
+        if (0.1f < m_fBlinkTime)
+        {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<int> dis(0, 100);
+
+            _float fRatio = dis(gen) * 0.01f;
+            XMStoreFloat4(&m_vBlinkDiffuse, XMLoadFloat4(&m_vDiffuse) * fRatio);
+            m_fBlinkTime = 0.f;
+        }
+        LIGHTDESC* pLightDesc = m_pLight->Get_LightDesc();
+        _vector vLerpDiffuse = XMQuaternionSlerp(XMLoadFloat4(&pLightDesc->vDiffuse), XMLoadFloat4(&m_vBlinkDiffuse), 0.3f);
+        XMStoreFloat4(&pLightDesc->vDiffuse, vLerpDiffuse);
+    }
 }
 
 void CDotsProjecter::Normal_Operation(_float fTimeDelta)
@@ -328,7 +346,7 @@ HRESULT CDotsProjecter::Setup_Light()
     ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
     LightDesc.eType = LIGHTDESC::TYPE_POINT;
-    LightDesc.vDiffuse = _float4(0.f, 1.f, 0.f, 1.f);
+    LightDesc.vDiffuse = m_vDiffuse= _float4(0.f, 1.f, 0.f, 1.f);
     LightDesc.vAmbient = _float4(0.f, 1.f, 0.f, 1.f);
     LightDesc.vSpecular = _float4(0.f, 1.f, 0.f, 1.f);
 

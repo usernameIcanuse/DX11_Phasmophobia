@@ -52,6 +52,7 @@ HRESULT CInput_Manager::Initialize(HINSTANCE hInst, HWND hWnd)
 	for (int i = 0; i < (int)KEY::LAST; ++i)
 		m_vecKey.push_back(tKeyInfo{ KEY_STATE::NONE, false });
 
+
 	return S_OK;
 }
 
@@ -108,6 +109,7 @@ HRESULT CInput_Manager::Tick(_float fTimeDelta)
 	//		}
 	//	}
 	//}
+
 
 	return S_OK;
 }
